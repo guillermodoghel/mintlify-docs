@@ -19,7 +19,7 @@
           },
           {
             "group": "Comenzar",
-            "pages": ["es/getting-started"]
+            "pages": ["es/getting-started/index"]
           },
           {
             "group": "Guías",
@@ -40,7 +40,7 @@
           },
           {
             "group": "Get Started",
-            "pages": ["en/getting-started"]
+            "pages": ["en/getting-started/index"]
           },
           {
             "group": "Guides",

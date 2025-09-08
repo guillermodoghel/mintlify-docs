@@ -1,0 +1,165 @@
+---
+title: 'Getting Started with Facturear'
+description: 'Complete guide to set up your first CUIT in Facturear'
+---
+
+import { Card, CardGroup, Steps, Callout } from 'mintlify';
+
+# 🚀 Getting Started with Facturear
+
+Welcome to Facturear, the most comprehensive electronic invoicing platform for Argentina. This guide will walk you through setting up your first CUIT and start invoicing.
+
+<Callout type="info">
+  **What is a CUIT?** The CUIT (Código Único de Identificación Tributaria) is the unique identifier that AFIP assigns to each taxpayer. It's required to issue electronic invoices.
+</Callout>
+
+## 📋 Prerequisites
+
+Before you begin, make sure you have:
+
+- ✅ An active Facturear account
+- ✅ Your valid CUIT number
+- ✅ Access to your AFIP account
+- ✅ An active subscription (free or paid)
+
+## 🎯 Setup Process
+
+The CUIT setup process in Facturear consists of the following steps:
+
+<Steps>
+  <Steps.Step title="Add CUIT">Enter your CUIT number and validate it's registered with AFIP</Steps.Step>
+  <Steps.Step title="Choose integration strategy">Decide how you want to integrate with ARCA (digital certificate or delegation)</Steps.Step>
+  <Steps.Step title="Configure certificates">Set up production and testing certificates</Steps.Step>
+  <Steps.Step title="Configure points of sale">Establish your points of sale for issuing invoices</Steps.Step>
+  <Steps.Step title="Ready to invoice!">Your CUIT is configured and ready to use</Steps.Step>
+</Steps>
+
+## 1️⃣ Adding your CUIT
+
+### Step 1: Access CUIT management
+
+1. Log in to your Facturear account
+2. Navigate to **CUITs** in the side menu
+3. Click **"Add CUIT"**
+
+### Step 2: Enter CUIT number
+
+<Callout type="warning">**CUIT Format**: Must be in XX-XXXXXXXX-X format (example: 20-12345678-9)</Callout>
+
+1. In the modal that appears, enter your CUIT number
+2. The system will automatically validate:
+   - ✅ Correct CUIT format
+   - ✅ Existence in AFIP database
+   - ✅ Not duplicated in your account
+   - ✅ Your subscription limits
+
+### Step 3: Automatic configuration
+
+Once validated, Facturear automatically:
+
+- 🔐 Generates RSA keys for production and testing
+- 📄 Creates certificate signing requests (CSR) for ARCA
+- 🏷️ Retrieves AFIP information (name, tax category)
+- ⚙️ Configures default values based on your category:
+  - **Monotributistas**: Concept 2 (Services), Invoice type 11 (Invoice C)
+  - **General Regime**: Concept 1 (Products), Invoice type 9 (Invoice B)
+
+## 2️⃣ Integration strategy
+
+After adding your CUIT, you'll be directed to the setup wizard where you'll choose your integration strategy:
+
+<CardGroup cols={2}>
+  <Card title="🔐 Digital Certificate" icon="shield-check" href="/en/guides/digital-certificate">
+    **Recommended for technical users** - Full control over certificates - Manual configuration process - Greater flexibility
+  </Card>
+  <Card title="🤝 Delegation" icon="user-group" href="/en/guides/delegation">
+    **Recommended for most users** - Assisted configuration by our team - Simpler process - Full support
+  </Card>
+</CardGroup>
+
+## 3️⃣ Certificate configuration
+
+### For Digital Certificate
+
+1. **Download certificates**: Get the generated CSR files
+2. **Request in ARCA**: Upload CSRs in the ARCA portal
+3. **Upload certificates**: Once approved, upload them to Facturear
+4. **Validate connection**: The system will verify connectivity with AFIP
+
+### For Delegation
+
+1. **Request delegation**: Complete the delegation request form
+2. **Schedule video call**: Book a session with our team
+3. **Assisted configuration**: We help you with the entire process
+4. **Automatic activation**: Certificates are configured automatically
+
+## 4️⃣ Point of sale configuration
+
+Points of sale (POS) are required to issue invoices:
+
+1. **Default point of sale**: Automatically created (POS 1)
+2. **Configure concepts**: Set up invoicing concepts
+3. **Invoice types**: Configure invoice types according to your category
+4. **Validate configuration**: Verify everything is correct
+
+## 5️⃣ Ready to invoice!
+
+Once configuration is complete:
+
+- ✅ Your CUIT will be active and ready to use
+- ✅ You can issue electronic invoices
+- ✅ Certificates will be validated
+- ✅ Points of sale will be configured
+
+## 🔧 Advanced configuration
+
+### Multiple CUIT management
+
+If you have a subscription that allows multiple CUITs:
+
+1. **Add additional CUIT**: Repeat the process for each CUIT
+2. **Set default CUIT**: Mark one as default
+3. **Switch between CUITs**: Select the active CUIT for each operation
+
+### Tax configuration
+
+To configure specific taxes:
+
+1. Go to **CUITs** → Select your CUIT
+2. Navigate to **Taxes**
+3. Add the taxes you need (VAT, IIBB, etc.)
+4. Set default values
+
+## ❓ Troubleshooting
+
+### Common errors
+
+<Callout type="error">
+  **CUIT not found in AFIP** - Verify the CUIT is correctly registered - Make sure there are no spaces or special characters - Confirm the CUIT is active in AFIP
+</Callout>
+
+<Callout type="error">**Subscription limit exceeded** - Check your current plan - Consider upgrading your subscription - Contact support if you need help</Callout>
+
+<Callout type="error">
+  **CUIT already exists** - The CUIT is already associated with your account - Check in the list of existing CUITs - Contact support if you believe it's an error
+</Callout>
+
+## 📞 Support
+
+If you need help during the process:
+
+- 📧 **Email**: support@facturear.com
+- 💬 **Chat**: Available on the platform
+- 📚 **Documentation**: Explore our detailed guides
+- 🎥 **Video call**: For assisted configuration
+
+## 🎉 Next steps
+
+Once you have your CUIT configured:
+
+1. **[Explore the guides](/en/guides)** - Learn to use all features
+2. **[Check the API](/en/api-reference)** - Integrate Facturear with your system
+3. **[Configure webhooks](/en/guides/webhooks)** - Receive automatic notifications
+4. **[Customize your setup](/en/guides/customization)** - Adjust the platform to your needs
+
+Congratulations! You're now ready to start invoicing with Facturear. 🎊

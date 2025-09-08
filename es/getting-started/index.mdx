@@ -1,0 +1,165 @@
+---
+title: 'Comenzar con Facturear'
+description: 'Guía completa para configurar tu primer CUIT en Facturear'
+---
+
+import { Card, CardGroup, Steps, Callout } from 'mintlify';
+
+# 🚀 Comenzar con Facturear
+
+Bienvenido a Facturear, la plataforma de facturación electrónica más completa para Argentina. Esta guía te llevará paso a paso para configurar tu primer CUIT y comenzar a facturar.
+
+<Callout type="info">
+  **¿Qué es un CUIT?** El CUIT (Código Único de Identificación Tributaria) es el identificador único que AFIP asigna a cada contribuyente. Es necesario para emitir facturas
+  electrónicas.
+</Callout>
+
+## 📋 Requisitos previos
+
+Antes de comenzar, asegúrate de tener:
+
+- ✅ Una cuenta activa en Facturear
+- ✅ Tu número de CUIT válido
+- ✅ Acceso a tu cuenta de AFIP
+- ✅ Una suscripción activa (gratuita o de pago)
+
+## 🎯 Proceso de configuración
+
+El proceso de configuración de un CUIT en Facturear consta de los siguientes pasos:
+
+<Steps>
+  <Steps.Step title="Agregar CUIT">Ingresa tu número de CUIT y valida que esté registrado en AFIP</Steps.Step>
+  <Steps.Step title="Elegir estrategia de integración">Decide cómo quieres integrar con ARCA (certificado digital o delegación)</Steps.Step>
+  <Steps.Step title="Configurar certificados">Configura los certificados de producción y testing</Steps.Step>
+  <Steps.Step title="Configurar puntos de venta">Establece tus puntos de venta para emitir facturas</Steps.Step>
+  <Steps.Step title="¡Listo para facturar!">Tu CUIT está configurado y listo para usar</Steps.Step>
+</Steps>
+
+## 1️⃣ Agregar tu CUIT
+
+### Paso 1: Acceder a la gestión de CUITs
+
+1. Inicia sesión en tu cuenta de Facturear
+2. Navega a **CUITs** en el menú lateral
+3. Haz clic en **"Agregar CUIT"**
+
+### Paso 2: Ingresar el número de CUIT
+
+<Callout type="warning">**Formato del CUIT**: Debe tener el formato XX-XXXXXXXX-X (ejemplo: 20-12345678-9)</Callout>
+
+1. En el modal que aparece, ingresa tu número de CUIT
+2. El sistema validará automáticamente:
+   - ✅ Formato correcto del CUIT
+   - ✅ Existencia en la base de datos de AFIP
+   - ✅ Que no esté duplicado en tu cuenta
+   - ✅ Límites de tu suscripción
+
+### Paso 3: Configuración automática
+
+Una vez validado, Facturear automáticamente:
+
+- 🔐 Genera claves RSA para producción y testing
+- 📄 Crea certificados de solicitud (CSR) para ARCA
+- 🏷️ Obtiene información de AFIP (nombre, categoría fiscal)
+- ⚙️ Configura valores por defecto según tu categoría:
+  - **Monotributistas**: Concepto 2 (Servicios), Tipo de factura 11 (Factura C)
+  - **Régimen General**: Concepto 1 (Productos), Tipo de factura 9 (Factura B)
+
+## 2️⃣ Estrategia de integración
+
+Después de agregar tu CUIT, serás dirigido al asistente de configuración donde elegirás tu estrategia de integración:
+
+<CardGroup cols={2}>
+  <Card title="🔐 Certificado Digital" icon="shield-check" href="/es/guides/certificado-digital">
+    **Recomendado para usuarios técnicos** - Control total sobre los certificados - Proceso manual de configuración - Mayor flexibilidad
+  </Card>
+  <Card title="🤝 Delegación" icon="user-group" href="/es/guides/delegacion">
+    **Recomendado para la mayoría de usuarios** - Configuración asistida por nuestro equipo - Proceso más simple - Soporte completo
+  </Card>
+</CardGroup>
+
+## 3️⃣ Configuración de certificados
+
+### Para Certificado Digital
+
+1. **Descargar certificados**: Obtén los archivos CSR generados
+2. **Solicitar en ARCA**: Sube los CSR en el portal de ARCA
+3. **Subir certificados**: Una vez aprobados, súbelos a Facturear
+4. **Validar conexión**: El sistema verificará la conectividad con AFIP
+
+### Para Delegación
+
+1. **Solicitar delegación**: Completa el formulario de solicitud
+2. **Agendar videollamada**: Programa una sesión con nuestro equipo
+3. **Configuración asistida**: Te ayudamos con todo el proceso
+4. **Activación automática**: Los certificados se configuran automáticamente
+
+## 4️⃣ Configuración de puntos de venta
+
+Los puntos de venta (POS) son necesarios para emitir facturas:
+
+1. **Punto de venta por defecto**: Se crea automáticamente (POS 1)
+2. **Configurar conceptos**: Establece los conceptos de facturación
+3. **Tipos de factura**: Configura los tipos de factura según tu categoría
+4. **Validar configuración**: Verifica que todo esté correcto
+
+## 5️⃣ ¡Listo para facturar!
+
+Una vez completada la configuración:
+
+- ✅ Tu CUIT estará activo y listo para usar
+- ✅ Podrás emitir facturas electrónicas
+- ✅ Los certificados estarán validados
+- ✅ Los puntos de venta configurados
+
+## 🔧 Configuración avanzada
+
+### Gestión de múltiples CUITs
+
+Si tienes una suscripción que permite múltiples CUITs:
+
+1. **Agregar CUIT adicional**: Repite el proceso para cada CUIT
+2. **Establecer CUIT por defecto**: Marca uno como predeterminado
+3. **Cambiar entre CUITs**: Selecciona el CUIT activo en cada operación
+
+### Configuración de tributos
+
+Para configurar impuestos específicos:
+
+1. Ve a **CUITs** → Selecciona tu CUIT
+2. Navega a **Tributos**
+3. Agrega los impuestos que necesites (IVA, IIBB, etc.)
+4. Establece valores por defecto
+
+## ❓ Solución de problemas
+
+### Errores comunes
+
+<Callout type="error">
+  **CUIT no encontrado en AFIP** - Verifica que el CUIT esté correctamente registrado - Asegúrate de que no haya espacios o caracteres especiales - Confirma que el CUIT esté activo
+  en AFIP
+</Callout>
+
+<Callout type="error">**Límite de suscripción excedido** - Verifica tu plan actual - Considera actualizar tu suscripción - Contacta soporte si necesitas ayuda</Callout>
+
+<Callout type="error">**CUIT ya existe** - El CUIT ya está asociado a tu cuenta - Verifica en la lista de CUITs existentes - Contacta soporte si crees que es un error</Callout>
+
+## 📞 Soporte
+
+Si necesitas ayuda durante el proceso:
+
+- 📧 **Email**: support@facturear.com
+- 💬 **Chat**: Disponible en la plataforma
+- 📚 **Documentación**: Explora nuestras guías detalladas
+- 🎥 **Videollamada**: Para configuración asistida
+
+## 🎉 Próximos pasos
+
+Una vez que tengas tu CUIT configurado:
+
+1. **[Explora las guías](/es/guides)** - Aprende a usar todas las funcionalidades
+2. **[Consulta la API](/es/api-reference)** - Integra Facturear con tu sistema
+3. **[Configura webhooks](/es/guides/webhooks)** - Recibe notificaciones automáticas
+4. **[Personaliza tu configuración](/es/guides/personalizacion)** - Ajusta la plataforma a tus necesidades
+
+¡Felicitaciones! Ya estás listo para comenzar a facturar con Facturear. 🎊
