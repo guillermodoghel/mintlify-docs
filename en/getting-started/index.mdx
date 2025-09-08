@@ -18,7 +18,7 @@ Welcome to Facturear, the most comprehensive electronic invoicing platform for A
 Before you begin, make sure you have:
 
 - ✅ An active Facturear account
-- ✅ Your valid CUIT number
+- ✅ Your valid CUIT number with fiscal key level 3
 - ✅ Access to your AFIP account
 - ✅ An active subscription (free or paid)
 
@@ -53,27 +53,18 @@ The CUIT setup process in Facturear consists of the following steps:
    - ✅ Not duplicated in your account
    - ✅ Your subscription limits
 
-### Step 3: Automatic configuration
-
-Once validated, Facturear automatically:
-
-- 🔐 Generates RSA keys for production and testing
-- 📄 Creates certificate signing requests (CSR) for ARCA
-- 🏷️ Retrieves AFIP information (name, tax category)
-- ⚙️ Configures default values based on your category:
-  - **Monotributistas**: Concept 2 (Services), Invoice type 11 (Invoice C)
-  - **General Regime**: Concept 1 (Products), Invoice type 9 (Invoice B)
-
 ## 2️⃣ Integration strategy
 
 After adding your CUIT, you'll be directed to the setup wizard where you'll choose your integration strategy:
 
 <CardGroup cols={2}>
   <Card title="🔐 Digital Certificate" icon="shield-check" href="/en/guides/digital-certificate">
-    **Recommended for technical users** - Full control over certificates - Manual configuration process - Greater flexibility
+    **Recommended for technical users** - Full control over certificates - Manual configuration process - Greater flexibility [📄 Guide to configure your
+    CUIT](https://facture.ar/58874f1a-1abf-400c-b444-4a20c020e3e0_Gua_para_configurar_tu_CUIT.pdf)
   </Card>
   <Card title="🤝 Delegation" icon="user-group" href="/en/guides/delegation">
-    **Recommended for most users** - Assisted configuration by our team - Simpler process - Full support
+    **Recommended for most users** - Assisted configuration by our team - Simpler process - Full support [📄 Guide for CUIT
+    delegation](https://facture.ar/e072df0a-99bb-4dc7-85c4-cfea91bdb64a_Gua_para_la_delegacin_del_CUIT.pdf)
   </Card>
 </CardGroup>
 
@@ -98,9 +89,7 @@ After adding your CUIT, you'll be directed to the setup wizard where you'll choo
 Points of sale (POS) are required to issue invoices:
 
 1. **Default point of sale**: Automatically created (POS 1)
-2. **Configure concepts**: Set up invoicing concepts
-3. **Invoice types**: Configure invoice types according to your category
-4. **Validate configuration**: Verify everything is correct
+2. **Validate configuration**: Verify everything is correct
 
 ## 5️⃣ Ready to invoice!
 
@@ -121,13 +110,15 @@ If you have a subscription that allows multiple CUITs:
 2. **Set default CUIT**: Mark one as default
 3. **Switch between CUITs**: Select the active CUIT for each operation
 
+## 🔧 Advanced configuration
+
 ### Tax configuration
 
 To configure specific taxes:
 
 1. Go to **CUITs** → Select your CUIT
 2. Navigate to **Taxes**
-3. Add the taxes you need (VAT, IIBB, etc.)
+3. Add the taxes you need (national or provincial taxes)
 4. Set default values
 
 ## ❓ Troubleshooting
@@ -148,7 +139,7 @@ To configure specific taxes:
 
 If you need help during the process:
 
-- 📧 **Email**: support@facturear.com
+- 📧 **Email**: support@facture.ar
 - 💬 **Chat**: Available on the platform
 - 📚 **Documentation**: Explore our detailed guides
 - 🎥 **Video call**: For assisted configuration
@@ -159,7 +150,6 @@ Once you have your CUIT configured:
 
 1. **[Explore the guides](/en/guides)** - Learn to use all features
 2. **[Check the API](/en/api-reference)** - Integrate Facturear with your system
-3. **[Configure webhooks](/en/guides/webhooks)** - Receive automatic notifications
-4. **[Customize your setup](/en/guides/customization)** - Adjust the platform to your needs
+3. **[Customize your setup](/en/guides/customization)** - Adjust the platform to your needs
 
 Congratulations! You're now ready to start invoicing with Facturear. 🎊
