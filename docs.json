@@ -78,7 +78,7 @@
     "primary": {
       "type": "button",
       "label": "Dashboard",
-      "href": "/"
+      "href": "https://facturear.com"
     }
   },
   "contextual": {
