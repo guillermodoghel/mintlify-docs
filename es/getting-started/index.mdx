@@ -1,6 +1,6 @@
 ---
-title: 'Comenzar con Facturear'
-description: 'Guía completa para configurar tu primer CUIT en Facturear'
+title: "Comenzar con Facturear"
+description: "Guía completa para configurar tu primer CUIT en Facturear"
 ---
 
 import { Card, CardGroup, Steps, Callout } from 'mintlify';
@@ -9,10 +9,10 @@ import { Card, CardGroup, Steps, Callout } from 'mintlify';
 
 Bienvenido a Facturear, la plataforma de facturación electrónica más completa para Argentina. Esta guía te llevará paso a paso para configurar tu primer CUIT y comenzar a facturar.
 
-<Callout type="info">
+<info>
   **¿Qué es un CUIT?** El CUIT (Código Único de Identificación Tributaria) es el identificador único que AFIP asigna a cada contribuyente. Es necesario para emitir facturas
   electrónicas.
-</Callout>
+</info>
 
 ## 📋 Requisitos previos
 
@@ -28,11 +28,19 @@ Antes de comenzar, asegúrate de tener:
 El proceso de configuración de un CUIT en Facturear consta de los siguientes pasos:
 
 <Steps>
-  <Steps.Step title="Agregar CUIT">Ingresa tu número de CUIT y valida que esté registrado en AFIP</Steps.Step>
-  <Steps.Step title="Elegir estrategia de integración">Decide cómo quieres integrar con ARCA (certificado digital o delegación)</Steps.Step>
-  <Steps.Step title="Configurar certificados">Configura los certificados de producción y testing</Steps.Step>
-  <Steps.Step title="Configurar puntos de venta">Establece tus puntos de venta para emitir facturas</Steps.Step>
-  <Steps.Step title="¡Listo para facturar!">Tu CUIT está configurado y listo para usar</Steps.Step>
+  Ingresa tu número de CUIT y valida que esté registrado en AFIP
+
+  
+  Decide cómo quieres integrar con ARCA (certificado digital o delegación)
+
+  
+  Configura los certificados de producción y testing
+
+  
+  Establece tus puntos de venta para emitir facturas
+
+  
+  Tu CUIT está configurado y listo para usar
 </Steps>
 
 ## 1️⃣ Agregar tu CUIT
@@ -45,7 +53,7 @@ El proceso de configuración de un CUIT en Facturear consta de los siguientes pa
 
 ### Paso 2: Ingresar el número de CUIT
 
-<Callout type="warning">**Formato del CUIT**: Debe tener el formato XX-XXXXXXXX-X (ejemplo: 20-12345678-9)</Callout>
+**Formato del CUIT**: Debe tener el formato XX-XXXXXXXX-X (ejemplo: 20-12345678-9)
 
 1. En el modal que aparece, ingresa tu número de CUIT
 2. El sistema validará automáticamente:
@@ -64,17 +72,6 @@ Después de agregar tu CUIT, serás dirigido al asistente de configuración dond
   </Card>
   <Card title="🤝 Delegación" icon="user-group" href="/es/guides/delegacion">
     **Recomendado para la mayoría de usuarios** - Configuración asistida por nuestro equipo - Proceso más simple - Soporte completo
-  </Card>
-</CardGroup>
-
-### 📄 Guías detalladas
-
-<CardGroup cols={2}>
-  <Card title="🔐 Guía Certificado Digital" icon="document-text" href="https://facture.ar/58874f1a-1abf-400c-b444-4a20c020e3e0_Gua_para_configurar_tu_CUIT.pdf">
-    Descarga la guía completa para configurar tu CUIT con certificado digital
-  </Card>
-  <Card title="🤝 Guía Delegación" icon="document-text" href="https://facture.ar/e072df0a-99bb-4dc7-85c4-cfea91bdb64a_Gua_para_la_delegacin_del_CUIT.pdf">
-    Descarga la guía completa para delegar tu CUIT
   </Card>
 </CardGroup>
 
@@ -103,7 +100,7 @@ Los puntos de venta (POS) son necesarios para emitir facturas:
 1. **Punto de venta por defecto**: Se crea automáticamente (POS 1)
 2. **Validar configuración**: Verifica que todo esté correcto
 
-## 5️⃣ ¡Listo para facturar!
+## 5️⃣ ¡Listo para facturar\!
 
 Una vez completada la configuración:
 
@@ -137,20 +134,20 @@ Para configurar impuestos específicos:
 
 ### Errores comunes
 
-<Callout type="error">
+<error>
   **CUIT no encontrado en AFIP** - Verifica que el CUIT esté correctamente registrado - Asegúrate de que no haya espacios o caracteres especiales - Confirma que el CUIT esté activo
   en AFIP
-</Callout>
+</error>
 
-<Callout type="error">**Límite de suscripción excedido** - Verifica tu plan actual - Considera actualizar tu suscripción - Contacta soporte si necesitas ayuda</Callout>
+**Límite de suscripción excedido** - Verifica tu plan actual - Considera actualizar tu suscripción - Contacta soporte si necesitas ayuda
 
-<Callout type="error">**CUIT ya existe** - El CUIT ya está asociado a tu cuenta - Verifica en la lista de CUITs existentes - Contacta soporte si crees que es un error</Callout>
+**CUIT ya existe** - El CUIT ya está asociado a tu cuenta - Verifica en la lista de CUITs existentes - Contacta soporte si crees que es un error
 
 ## 📞 Soporte
 
 Si necesitas ayuda durante el proceso:
 
-- 📧 **Email**: support@facture.ar
+- 📧 **Email**: [support@facture.ar](mailto:support@facture.ar)
 - 💬 **Chat**: Disponible en la plataforma
 - 📚 **Documentación**: Explora nuestras guías detalladas
 - 🎥 **Videollamada**: Para configuración asistida
@@ -159,8 +156,8 @@ Si necesitas ayuda durante el proceso:
 
 Una vez que tengas tu CUIT configurado:
 
-1. **[Explora las guías](/es/guides)** - Aprende a usar todas las funcionalidades
-2. **[Consulta la API](/es/api-reference)** - Integra Facturear con tu sistema
-3. **[Personaliza tu configuración](/es/guides/personalizacion)** - Ajusta la plataforma a tus necesidades
+1. [**Explora las guías**](/es/guides) - Aprende a usar todas las funcionalidades
+2. [**Consulta la API**](/es/api-reference) - Integra Facturear con tu sistema
+3. [**Personaliza tu configuración**](/es/guides/personalizacion) - Ajusta la plataforma a tus necesidades
 
-¡Felicitaciones! Ya estás listo para comenzar a facturar con Facturear. 🎊
+¡Felicitaciones\! Ya estás listo para comenzar a facturar con Facturear. 🎊

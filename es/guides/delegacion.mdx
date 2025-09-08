@@ -1,249 +1,105 @@
 ---
-title: 'Configuración de CUIT por Delegación'
-description: 'Guía completa para configurar tu CUIT usando delegación'
+title: "Configuración de CUIT por Delegación"
+description: "Guía completa para configurar tu CUIT usando delegación"
 ---
 
 import { Card, CardGroup, Steps, Callout, Accordion } from 'mintlify';
 
-# 🤝 Configuración de CUIT por Delegación
+# 🤝 Guía para la delegación del CUIT
 
-Esta guía te llevará paso a paso para configurar tu CUIT usando delegación. Este método es más simple y te permite que nuestro equipo te ayude con todo el proceso.
+**Diste de alta un CUIT, y llegaste hasta acá.**
 
-<Callout type="info">
-  **¿Qué es la delegación?** Es un proceso donde autorizas a Facturear para que configure y gestione tus certificados en tu nombre, simplificando todo el proceso.
-</Callout>
+![Screenshot 2025-09-08 at 2.13.39 PM.png](/images/Screenshot2025-09-08at2.13.39PM.png)
 
-## 📋 Requisitos previos
+Ahora vamos a hacer dos cosas:
 
-Antes de comenzar, asegúrate de tener:
+- Delegar los web services de Factura electronica
+- Dar de alta un punto de venta
 
-- ✅ Tu CUIT agregado en Facturear
-- ✅ Clave fiscal nivel 3
-- ✅ Acceso a tu cuenta de AFIP
-- ✅ Tiempo para una videollamada (30-45 minutos)
+### Paso 1: Delegar los web services de Factura electronica
 
-## 🎯 Proceso completo
+Para comenzar a facturar electrónicamente, es necesario que le indiques a ARCA que vas a utilizar [FACTURE.AR](http://FACTURE.AR) como software de facturación. ¡Te mostramos cómo hacerlo\!
 
-<Steps>
-  <Steps.Step title="Solicitar delegación">Completa el formulario de solicitud</Steps.Step>
-  <Steps.Step title="Agendar videollamada">Programa una sesión con nuestro equipo</Steps.Step>
-  <Steps.Step title="Delegar en AFIP">Autoriza a Facturear en tu cuenta de AFIP</Steps.Step>
-  <Steps.Step title="Crear punto de venta">Configura tu punto de venta en AFIP</Steps.Step>
-  <Steps.Step title="Esperar activación">Nuestro equipo configura todo automáticamente</Steps.Step>
-  <Steps.Step title="¡Listo para facturar!">Tu CUIT está configurado y activo</Steps.Step>
-</Steps>
+Ingresá a la sección [**Acceso con Clave Fiscal**](https://auth.afip.gob.ar/contribuyente_/login.xhtml) de la web de ARCA. Escribí el **CUIT** de tu empresa y luego tu Clave Fiscal. El único requisito es contar con **Clave Fiscal nivel 3**.
 
-## 1️⃣ Solicitar delegación
+Ingresá a **Mis Servicios** y luego al **Administrador de Relaciones de Clave Fiscal**.
 
-### Paso 1: Acceder a la solicitud
+![Screenshot 2025-09-07 at 7.57.04 PM.png](/images/Screenshot2025-09-07at7.57.04PM.png)
 
-1. Ve a **CUITs** en el menú lateral
-2. Selecciona tu CUIT
-3. Navega a **Configuración** → **Delegación**
-4. Haz clic en **"Solicitar Delegación"**
+Hacé clic en **Nueva Relación**.
 
-### Paso 2: Completar formulario
+![Screenshot 2025-09-07 at 7.58.04 PM.png](/images/Screenshot2025-09-07at7.58.04PM.png)
 
-Completa la información solicitada:
+Hace clic en buscar
 
-- **Datos de contacto**: Teléfono y email
-- **Horarios preferidos**: Para la videollamada
-- **Información adicional**: Cualquier detalle relevante
+![Screenshot 2025-09-07 at 7.59.07 PM.png](/images/Screenshot2025-09-07at7.59.07PM.png)
 
-### Paso 3: Enviar solicitud
+Hacé clic en el **botón ARCA** y luego en **WebServices**.
 
-1. Revisa la información
-2. Acepta los términos y condiciones
-3. Haz clic en **"Enviar Solicitud"**
+![Screenshot 2025-09-07 at 8.01.08 PM.png](/images/Screenshot2025-09-07at8.01.08PM.png)
 
-<Callout type="success">**Confirmación**: Recibirás un email de confirmación con los próximos pasos.</Callout>
+Buscá **Facturación Electrónica**.
 
-## 2️⃣ Agendar videollamada
+![Screenshot 2025-09-07 at 8.02.09 PM.png](/images/Screenshot2025-09-07at8.02.09PM.png)
 
-### Paso 1: Recibir invitación
+Click en buscar
 
-Nuestro equipo te contactará para:
+![Screenshot 2025-09-07 at 8.03.11 PM.png](/images/Screenshot2025-09-07at8.03.11PM.png)
 
-- Confirmar tu solicitud
-- Proponer horarios disponibles
-- Enviar el link de la videollamada
+En **CUIT**, **20337746285**, presioná **Buscar** y confirmar.
 
-### Paso 2: Preparar la videollamada
+Si te aparece un mensaje en rojo; desestimalo. ARCA te avisa que no tenes un facturador registrado, de eso nos encargamos nosotros\!
 
-Antes de la videollamada, asegúrate de tener:
+![Screenshot 2025-09-07 at 10.30.54 PM.png](/images/Screenshot2025-09-07at10.30.54PM.png)
 
-- ✅ Acceso a tu cuenta de AFIP
-- ✅ Clave fiscal nivel 3
-- ✅ Conexión a internet estable
-- ✅ Cámara y micrófono funcionando
+y luego **Confirmar**.
 
-### Paso 3: Asistir a la videollamada
+![Screenshot 2025-09-07 at 10.33.32 PM.png](/images/Screenshot2025-09-07at10.33.32PM.png)
 
-Durante la videollamada:
+### Paso 2: Dar de alta un punto de venta
 
-- Te guiaremos paso a paso
-- Te ayudaremos con cualquier duda
-- Configuraremos todo juntos
+En la pagtina de ARCA, busca puntos de venta
 
-## 3️⃣ Delegar en AFIP
+![Screenshot 2025-09-07 at 8.18.00 PM.png](/images/Screenshot2025-09-07at8.18.00PM.png)
 
-### Paso 1: Acceder a AFIP
+Hacé clic en el **nombre de tu empresa y** seleccioná **A/B/M de puntos de venta**.
 
-1. Ve a [AFIP - Administración de Relaciones de Clave Fiscal](https://auth.afip.gob.ar/contribuyente_/login.xhtml)
-2. Inicia sesión con tu clave fiscal nivel 3
-3. Navega a **"Administración de Relaciones de Clave Fiscal"**
+![Screenshot 2025-09-07 at 8.19.19 PM.png](/images/Screenshot2025-09-07at8.19.19PM.png)
 
-### Paso 2: Crear relación
+Seleccioná "Agregar"
 
-1. Selecciona **"Crear Relación"**
-2. Busca **"Facturear"** o ingresa nuestro CUIT
-3. Selecciona los permisos necesarios:
-   - ✅ Consulta de datos
-   - ✅ Emisión de comprobantes
-   - ✅ Administración de certificados
+![Screenshot 2025-09-07 at 8.22.04 PM.png](/images/Screenshot2025-09-07at8.22.04PM.png)
 
-### Paso 3: Confirmar delegación
+Completá el **Código del punto de venta** (verificá que siempre sean 5 dígitos, por ejemplo: "00003"), Nombre de Fantasía, y luego seleccioná el sistema de facturación según corresponda.
 
-1. Revisa los permisos otorgados
-2. Confirma la delegación
-3. Guarda el comprobante
+**Número de punto de venta:** tiene que ser distinto a los que ya hayas creado.
 
-<Callout type="warning">**Importante**: Asegúrate de otorgar todos los permisos necesarios para que podamos configurar tu CUIT correctamente.</Callout>
+**Nombre de fantasía de tu empresa:** podés escribir el que quieras porque solo será visible para ARCA, incluso podés escribir [FACTURE.AR](http://FACTURE.AR).
 
-## 4️⃣ Crear punto de venta
+**Dominio asociado:** podés dejarlo sin completar o escribir el dominio de tu negocio, por ejemplo, [milocal.com.ar](http://milocal.com.ar).
 
-### Paso 1: Acceder a puntos de venta
+**Sistema:** tenés que elegir una opción dependiendo de cuál sea tu condición tributaria:
 
-1. En tu cuenta de AFIP, ve a **"Puntos de Venta"**
-2. Selecciona **"Crear Nuevo Punto de Venta"**
+- Si sos MONOTRIBUTISTA elegí Factura Electrónica – Monotributo - WebServices
+- Si sos RESPONSABLE INSCRIPTO elegí RECE para aplicativo y WebServices
+- Si sos IVA EXENTO elegí Facturación Electrónica - exento en IVA - WebServices
 
-### Paso 2: Configurar punto de venta
+**Domicilio:** Seleccioná el que corresponda al punto de venta.
 
-Completa la información:
+Presioná **Aceptar** y selecciona "**Sí"** para finalizar.
 
-- **Tipo de comprobante**: Factura
-- **Número de punto de venta**: 1 (por defecto)
-- **Descripción**: Punto de venta principal
+![image (5).png](/images/image\(5\).png)
 
-### Paso 3: Confirmar creación
+Ahora volve a [FACTURE.AR](http://FACTURE.AR) y hace clic en continuar asi nos llega el aviso de que ya complestaste estos pasos en ARCA.
 
-1. Revisa la información
-2. Confirma la creación
-3. Anota el número asignado
+![Screenshot 2025-09-07 at 8.23.21 PM.png](/images/Screenshot2025-09-07at8.23.21PM.png)
 
-<Callout type="info">**Nota**: El punto de venta se creará automáticamente en Facturear una vez que completemos la configuración.</Callout>
+🎉 Listo, en 24 horas vamos a estar aprobando tu solicitud para que puedas empezar a usar [FACTURE.AR](http://FACTURE.AR).
 
-## 5️⃣ Esperar activación
+![Screenshot 2025-09-07 at 8.24.13 PM.png](/images/Screenshot2025-09-07at8.24.13PM.png)
 
-### Proceso automático
+Te vamos a enviar un email avisandote de esto. Cuando vuelvas, vas a ver esta pantalla. Hace clic en Actualizar. Si esta todo bien, vas a ver tu punto de venta. y vas a poder finalizar este tutorial.
 
-Una vez que hayas completado los pasos anteriores:
+![Screenshot 2025-09-07 at 8.26.09 PM.png](/images/Screenshot2025-09-07at8.26.09PM.png)
 
-1. **Nuestro equipo recibe la notificación**
-2. **Configuramos los certificados automáticamente**
-3. **Validamos la conexión con AFIP**
-4. **Activamos tu CUIT en Facturear**
-
-### Tiempo de procesamiento
-
-- **Tiempo estimado**: 24-48 horas
-- **Notificación**: Recibirás un email cuando esté listo
-- **Estado**: Puedes verificar el progreso en tu cuenta
-
-## 6️⃣ ¡Listo para facturar!
-
-### Verificar configuración
-
-1. Ve a **CUITs** → Tu CUIT → **Estado**
-2. Verifica que aparezca:
-   - **Delegación**: ✅ Activa
-   - **Certificados**: ✅ Configurados
-   - **Conexión AFIP**: ✅ Activa
-   - **Punto de Venta**: ✅ Creado
-
-### Comenzar a facturar
-
-Una vez activado:
-
-- ✅ Puedes emitir facturas electrónicas
-- ✅ Los certificados están configurados automáticamente
-- ✅ La conexión con AFIP está activa
-- ✅ Tu punto de venta está listo
-
-## 🔧 Configuración adicional
-
-### Tributos
-
-Para configurar impuestos:
-
-1. Ve a **Tributos**
-2. Agrega los impuestos necesarios
-3. Establece valores por defecto
-
-### Personalización
-
-Puedes personalizar:
-
-- **Conceptos de facturación**
-- **Tipos de factura**
-- **Configuraciones por defecto**
-
-## ❓ Solución de problemas
-
-<Accordion title="Error: No puedo crear la relación en AFIP">
-**Causa**: Problemas con la clave fiscal o permisos.
-
-**Solución**:
-
-1. Verifica que tengas clave fiscal nivel 3
-2. Asegúrate de que tu cuenta esté activa
-3. Contacta a nuestro equipo para asistencia
-</Accordion>
-
-<Accordion title="Error: No aparece Facturear en la lista">
-**Causa**: Nuestro CUIT no está en la lista de relaciones disponibles.
-
-**Solución**:
-
-1. Busca manualmente nuestro CUIT
-2. Contacta a nuestro equipo para el CUIT exacto
-3. Crea la relación manualmente
-</Accordion>
-
-<Accordion title="Error: La delegación no se activa">
-**Causa**: Problemas en el proceso de configuración.
-
-**Solución**:
-
-1. Verifica que hayas completado todos los pasos
-2. Contacta a nuestro equipo
-3. Programamos una nueva videollamada si es necesario
-</Accordion>
-
-## 📄 Guía PDF
-
-Para una guía más detallada, descarga nuestro PDF:
-
-[📄 Guía para la delegación del CUIT](https://facture.ar/e072df0a-99bb-4dc7-85c4-cfea91bdb64a_Gua_para_la_delegacin_del_CUIT.pdf)
-
-## 📞 Soporte
-
-Si necesitas ayuda durante el proceso:
-
-- 📧 **Email**: support@facture.ar
-- 💬 **Chat**: Disponible en la plataforma
-- 🎥 **Videollamada**: Para asistencia personalizada
-- 📱 **WhatsApp**: Contacto directo con nuestro equipo
-
-## 🎉 ¡Listo!
-
-Una vez completado este proceso:
-
-- ✅ Tu CUIT estará configurado por delegación
-- ✅ Podrás emitir facturas electrónicas
-- ✅ Todo estará configurado automáticamente
-- ✅ Tendrás soporte completo de nuestro equipo
-
-<Callout type="success">
-  **¡Felicitaciones!** Has configurado exitosamente tu CUIT por delegación. Ahora puedes comenzar a facturar con la tranquilidad de que todo está configurado correctamente.
-</Callout>
+## 🎉 Listo\! Ya tenes tu CUIT configurado para usar FACTUREAR\!
