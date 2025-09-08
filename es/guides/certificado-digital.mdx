@@ -1,0 +1,217 @@
+---
+title: 'Configuración de CUIT por Certificado Digital'
+description: 'Guía completa para configurar tu CUIT usando certificado digital'
+---
+
+import { Card, CardGroup, Steps, Callout, Accordion } from 'mintlify';
+
+# 🔐 Configuración de CUIT por Certificado Digital
+
+Esta guía te llevará paso a paso para configurar tu CUIT usando certificado digital. Este método te da control total sobre tus certificados y es ideal para usuarios técnicos.
+
+<Callout type="info">**¿Qué es un certificado digital?** Es un archivo que certifica tu identidad ante AFIP y te permite conectarte de forma segura con sus servicios.</Callout>
+
+## 📋 Requisitos previos
+
+Antes de comenzar, asegúrate de tener:
+
+- ✅ Tu CUIT agregado en Facturear
+- ✅ Clave fiscal nivel 3
+- ✅ Acceso a tu cuenta de AFIP
+- ✅ Tiempo para completar el proceso (30-60 minutos)
+
+## 🎯 Proceso completo
+
+<Steps>
+  <Steps.Step title="Descargar certificados">Obtén los archivos CSR generados por Facturear</Steps.Step>
+  <Steps.Step title="Solicitar en ARCA">Sube los CSR en el portal de ARCA</Steps.Step>
+  <Steps.Step title="Esperar aprobación">AFIP revisa y aprueba tu solicitud</Steps.Step>
+  <Steps.Step title="Descargar certificados">Obtén los certificados aprobados de ARCA</Steps.Step>
+  <Steps.Step title="Subir a Facturear">Carga los certificados en la plataforma</Steps.Step>
+  <Steps.Step title="Validar conexión">Verifica que todo funcione correctamente</Steps.Step>
+</Steps>
+
+## 1️⃣ Descargar certificados CSR
+
+### Paso 1: Acceder a la configuración
+
+1. Ve a **CUITs** en el menú lateral
+2. Selecciona tu CUIT
+3. Navega a **Configuración** → **Certificados**
+4. Haz clic en **"Descargar CSR"**
+
+### Paso 2: Descargar archivos
+
+Descargarás dos archivos:
+
+- **CSR de Producción**: Para facturación real
+- **CSR de Testing**: Para pruebas
+
+<Callout type="warning">**Importante**: Guarda estos archivos en un lugar seguro. Los necesitarás para el siguiente paso.</Callout>
+
+## 2️⃣ Solicitar en ARCA
+
+### Paso 1: Acceder a ARCA
+
+1. Ve a [ARCA - Administración de Relaciones de Clave Fiscal](https://auth.afip.gob.ar/contribuyente_/login.xhtml)
+2. Inicia sesión con tu clave fiscal nivel 3
+3. Navega a **"Administración de Certificados"**
+
+### Paso 2: Subir CSR de Producción
+
+1. Selecciona **"Solicitar Certificado"**
+2. Elige **"Producción"**
+3. Sube el archivo CSR de producción
+4. Completa los datos solicitados
+5. Envía la solicitud
+
+### Paso 3: Subir CSR de Testing
+
+1. Repite el proceso para **"Testing"**
+2. Sube el archivo CSR de testing
+3. Completa los datos solicitados
+4. Envía la solicitud
+
+<Callout type="info">**Tiempo de procesamiento**: AFIP puede tardar entre 24-48 horas en procesar tu solicitud.</Callout>
+
+## 3️⃣ Esperar aprobación
+
+### Verificar estado
+
+1. Regresa a ARCA periódicamente
+2. Verifica el estado de tus solicitudes
+3. Una vez aprobadas, verás el estado **"Aprobado"**
+
+### Notificaciones
+
+- AFIP te enviará un email cuando estén listos
+- También puedes verificar en el portal de ARCA
+
+## 4️⃣ Descargar certificados aprobados
+
+### Paso 1: Acceder a certificados
+
+1. Ve a ARCA → **"Mis Certificados"**
+2. Busca tus certificados aprobados
+3. Haz clic en **"Descargar"**
+
+### Paso 2: Descargar archivos
+
+Descarga ambos certificados:
+
+- **Certificado de Producción** (.crt)
+- **Certificado de Testing** (.crt)
+
+<Callout type="warning">**Seguridad**: Los certificados contienen información sensible. Manténlos seguros y no los compartas.</Callout>
+
+## 5️⃣ Subir a Facturear
+
+### Paso 1: Acceder a la configuración
+
+1. Regresa a Facturear
+2. Ve a **CUITs** → Tu CUIT → **Configuración** → **Certificados**
+3. Haz clic en **"Subir Certificados"**
+
+### Paso 2: Subir certificados
+
+1. **Certificado de Producción**: Selecciona el archivo .crt de producción
+2. **Certificado de Testing**: Selecciona el archivo .crt de testing
+3. Haz clic en **"Subir"**
+
+### Paso 3: Confirmar subida
+
+- El sistema validará los certificados
+- Verás confirmación de que se subieron correctamente
+
+## 6️⃣ Validar conexión
+
+### Verificación automática
+
+Facturear automáticamente:
+
+- ✅ Valida los certificados
+- ✅ Prueba la conexión con AFIP
+- ✅ Verifica que todo funcione correctamente
+
+### Verificar estado
+
+1. Ve a **CUITs** → Tu CUIT → **Estado**
+2. Verifica que aparezca:
+   - **Certificado de Producción**: ✅ Válido
+   - **Certificado de Testing**: ✅ Válido
+   - **Conexión AFIP**: ✅ Activa
+
+## 🔧 Configuración adicional
+
+### Puntos de venta
+
+Una vez validados los certificados:
+
+1. Ve a **Puntos de Venta**
+2. Configura tu punto de venta por defecto
+3. Establece los conceptos de facturación
+
+### Tributos
+
+Para configurar impuestos:
+
+1. Ve a **Tributos**
+2. Agrega los impuestos necesarios
+3. Establece valores por defecto
+
+## ❓ Solución de problemas
+
+<Accordion title="Error: Certificado inválido">
+**Causa**: El certificado no es válido o está corrupto.
+
+**Solución**:
+
+1. Verifica que descargaste el certificado correcto
+2. Asegúrate de que no esté corrupto
+3. Intenta descargarlo nuevamente desde ARCA
+</Accordion>
+
+<Accordion title="Error: Conexión con AFIP fallida">
+**Causa**: Problemas de conectividad o certificados incorrectos.
+
+**Solución**:
+
+1. Verifica que los certificados sean los correctos
+2. Asegúrate de que estén vigentes
+3. Contacta soporte si el problema persiste
+</Accordion>
+
+<Accordion title="Error: CSR no válido">
+**Causa**: El CSR no fue generado correctamente.
+
+**Solución**:
+
+1. Regresa a Facturear
+2. Genera nuevos CSR
+3. Repite el proceso desde el inicio
+</Accordion>
+
+## 📄 Guía PDF
+
+Para una guía más detallada, descarga nuestro PDF:
+
+[📄 Guía para configurar tu CUIT con certificado digital](https://facture.ar/58874f1a-1abf-400c-b444-4a20c020e3e0_Gua_para_configurar_tu_CUIT.pdf)
+
+## 📞 Soporte
+
+Si necesitas ayuda durante el proceso:
+
+- 📧 **Email**: support@facture.ar
+- 💬 **Chat**: Disponible en la plataforma
+- 🎥 **Videollamada**: Para asistencia personalizada
+
+## 🎉 ¡Listo!
+
+Una vez completado este proceso:
+
+- ✅ Tu CUIT estará configurado con certificado digital
+- ✅ Podrás emitir facturas electrónicas
+- ✅ Tendrás control total sobre tus certificados
+- ✅ La conexión con AFIP estará activa
+
+<Callout type="success">**¡Felicitaciones!** Has configurado exitosamente tu CUIT con certificado digital. Ahora puedes comenzar a facturar.</Callout>

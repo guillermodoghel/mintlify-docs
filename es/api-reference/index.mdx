@@ -1,0 +1,168 @@
+---
+title: 'API Reference'
+description: 'Documentación completa de la API de Facturear'
+---
+
+import { Card, CardGroup, Steps, Callout, Accordion } from 'mintlify';
+
+# 🔌 API Reference
+
+Bienvenido a la documentación completa de la API de Facturear. Aquí encontrarás toda la información necesaria para integrar tu sistema con nuestra plataforma de facturación electrónica.
+
+## 🚀 Comenzar con la API
+
+### Autenticación
+
+Todas las peticiones requieren autenticación usando:
+
+- **Sesión Web**: Para aplicaciones basadas en navegador
+- **API Key**: Para integraciones servidor a servidor
+
+Incluye tu API key en el header `x-api-key`:
+
+```bash
+x-api-key: tu-api-key-aqui
+```
+
+### URL Base
+
+```
+https://facture.ar/api
+```
+
+## 📋 Endpoints Principales
+
+<CardGroup cols={2}>
+  <Card title="📄 POST /invoices" icon="file-text" href="/es/api-reference/invoices">
+    Crear facturas electrónicas individuales o en lote
+  </Card>
+  <Card title="👤 GET /cuits" icon="user" href="/es/api-reference/cuits">
+    Obtener información de CUITs del usuario
+  </Card>
+  <Card title="➕ POST /cuits" icon="plus" href="/es/api-reference/cuits-create">
+    Agregar un nuevo CUIT a la cuenta
+  </Card>
+  <Card title="📊 GET /invoices" icon="chart-bar" href="/es/api-reference/invoices-list">
+    Listar facturas con filtros y paginación
+  </Card>
+</CardGroup>
+
+## 🔧 Características de la API
+
+### ✅ Procesamiento Asíncrono
+
+- **Cola de procesamiento**: Todas las facturas se procesan de forma asíncrona
+- **Lógica de reintentos**: Sistema robusto de reintentos automáticos
+- **Escalabilidad**: Manejo eficiente de altos volúmenes
+- **Consistencia**: Procesamiento unificado para operaciones individuales y en lote
+
+### 🔐 Seguridad
+
+- **Autenticación por API Key**: Seguridad robusta para integraciones
+- **Validación de datos**: Validación completa de todos los parámetros
+- **Rate limiting**: Protección contra abuso
+- **HTTPS obligatorio**: Todas las comunicaciones encriptadas
+
+### 📈 Monitoreo
+
+- **Webhooks**: Notificaciones en tiempo real del estado de las facturas
+- **Logs detallados**: Registro completo de todas las operaciones
+- **Métricas**: Dashboard con estadísticas de uso
+- **Alertas**: Notificaciones automáticas de errores
+
+## 🎯 Casos de Uso Comunes
+
+### Crear una Factura Individual
+
+```bash
+curl -X POST https://facture.ar/api/invoices \
+  -H "x-api-key: tu-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "cuitId": "uuid-del-cuit",
+    "amount": 1000.0,
+    "description": "Venta de servicios",
+    "docTipo": 99,
+    "docNro": 0,
+    "invoiceType": 11
+  }'
+```
+
+### Crear Múltiples Facturas
+
+```bash
+curl -X POST https://facture.ar/api/invoices \
+  -H "x-api-key: tu-api-key" \
+  -H "Content-Type: application/json" \
+  -d '[
+    {
+      "cuitId": "uuid-del-cuit",
+      "amount": 1000.0,
+      "description": "Factura 1",
+      "invoiceType": 11
+    },
+    {
+      "cuitId": "uuid-del-cuit",
+      "amount": 2000.0,
+      "description": "Factura 2",
+      "invoiceType": 11
+    }
+  ]'
+```
+
+## 📚 Documentación Detallada
+
+Para información completa sobre cada endpoint, consulta:
+
+- **[POST /invoices](/es/api-reference/invoices)** - Creación de facturas
+- **[GET /cuits](/es/api-reference/cuits)** - Gestión de CUITs
+- **[POST /cuits](/es/api-reference/cuits-create)** - Agregar CUITs
+- **[GET /invoices](/es/api-reference/invoices-list)** - Listar facturas
+
+## ❓ Solución de Problemas
+
+<Accordion title="Error 401: Unauthorized">
+**Causa**: API key inválida o faltante.
+
+**Solución**:
+
+1. Verifica que tu API key sea correcta
+2. Asegúrate de incluir el header `x-api-key`
+3. Contacta soporte si el problema persiste
+</Accordion>
+
+<Accordion title="Error 400: Bad Request">
+**Causa**: Datos de entrada inválidos.
+
+**Solución**:
+
+1. Verifica el formato JSON de tu petición
+2. Revisa que todos los campos requeridos estén presentes
+3. Consulta la documentación del endpoint específico
+</Accordion>
+
+<Accordion title="Error 429: Too Many Requests">
+**Causa**: Has excedido el límite de peticiones.
+
+**Solución**:
+
+1. Implementa backoff exponencial
+2. Reduce la frecuencia de tus peticiones
+3. Considera usar procesamiento en lote
+</Accordion>
+
+## 📞 Soporte
+
+Si necesitas ayuda con la API:
+
+- 📧 **Email**: support@facture.ar
+- 💬 **Chat**: Disponible en la plataforma
+- 📚 **Documentación**: Explora nuestros ejemplos detallados
+- 🎥 **Videollamada**: Para asistencia personalizada
+
+## 🎉 Próximos Pasos
+
+1. **[Obtén tu API Key](/es/getting-started)** - Configura tu acceso a la API
+2. **[Explora los ejemplos](/es/api-reference/invoices)** - Ve ejemplos prácticos
+3. **[Configura webhooks](/es/guides/webhooks)** - Recibe notificaciones automáticas
+4. **[Integra tu sistema](/es/guides/integration)** - Conecta Facturear con tu software

@@ -11,11 +11,11 @@
   "navigation": {
     "tabs": [
       {
-        "tab": "🇪🇸 Español",
+        "tab": "Guías",
         "groups": [
           {
             "group": "Inicio",
-            "pages": ["es/index"]
+            "pages": ["index"]
           },
           {
             "group": "Comenzar",
@@ -23,56 +23,40 @@
           },
           {
             "group": "Guías",
-            "pages": ["es/guides"]
-          },
-          {
-            "group": "API Reference",
-            "pages": ["es/api-reference"]
+            "pages": ["es/guides/certificado-digital", "es/guides/delegacion"]
           }
         ]
       },
       {
-        "tab": "🇺🇸 English",
+        "tab": "API Reference",
         "groups": [
           {
-            "group": "Home",
-            "pages": ["en/index"]
-          },
-          {
-            "group": "Get Started",
-            "pages": ["en/getting-started/index"]
-          },
-          {
-            "group": "Guides",
-            "pages": ["en/guides"]
-          },
-          {
-            "group": "API Reference",
-            "pages": ["en/api-reference"]
+            "group": "API Documentation",
+            "pages": ["es/api-reference/index", "es/api-reference/invoices"]
           }
         ]
       }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "GitHub",
-          "href": "https://github.com/estoussel/facturear",
-          "icon": "github"
-        },
-        {
-          "anchor": "Support",
-          "href": "mailto:support@facturear.com",
-          "icon": "life-ring"
-        }
-      ]
-    }
+    ]
+  },
+  "global": {
+    "anchors": [
+      {
+        "anchor": "GitHub",
+        "href": "https://github.com/estoussel/facturear",
+        "icon": "github"
+      },
+      {
+        "anchor": "Support",
+        "href": "mailto:support@facture.ar",
+        "icon": "life-ring"
+      }
+    ]
   },
   "navbar": {
     "links": [
       {
         "label": "Support",
-        "href": "mailto:support@facturear.com"
+        "href": "mailto:support@facture.ar"
       }
     ],
     "primary": {

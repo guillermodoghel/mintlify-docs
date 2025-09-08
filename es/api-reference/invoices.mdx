@@ -1,0 +1,293 @@
+---
+title: 'POST /invoices - Crear Facturas'
+description: 'Documentación completa para crear facturas electrónicas con la API de Facturear'
+---
+
+import { Card, CardGroup, Steps, Callout, Accordion } from 'mintlify';
+
+# 📄 POST /invoices - Crear Facturas
+
+La API de creación de facturas te permite crear facturas electrónicas (facturas electrónicas) en el sistema AFIP de Argentina. Este endpoint soporta tanto la creación de facturas individuales como el procesamiento en lote a través de un sistema unificado basado en colas.
+
+## URL Base
+
+```
+https://facture.ar/api/invoices
+```
+
+## Autenticación
+
+Todas las peticiones requieren autenticación usando:
+
+- **Sesión Web**: Para aplicaciones basadas en navegador
+- **API Key**: Para integraciones servidor a servidor
+
+Incluye tu API key en el header `x-api-key`:
+
+```bash
+x-api-key: tu-api-key-aqui
+```
+
+## Resumen
+
+El endpoint POST /api/invoices procesa las solicitudes de creación de facturas a través de un sistema sofisticado basado en colas que garantiza:
+
+- **Confiabilidad**: Todas las facturas se procesan de forma asíncrona con lógica de reintentos
+- **Escalabilidad**: El procesamiento basado en colas maneja altos volúmenes eficientemente
+- **Consistencia**: Procesamiento unificado para operaciones individuales y en lote
+- **Manejo de errores**: Clasificación completa de errores y mecanismos de reintento
+
+## Formato de Petición
+
+El endpoint acepta tanto objetos de factura individuales como arrays de facturas:
+
+### Petición de Factura Individual
+
+```json
+{
+  "cuitId": "uuid-string",
+  "amount": 1000.0,
+  "description": "Venta de servicios",
+  "docTipo": 99,
+  "docNro": 0,
+  "invoiceType": 11
+}
+```
+
+### Petición de Facturas en Lote
+
+```json
+[
+  {
+    "cuitId": "uuid-string",
+    "amount": 1000.0,
+    "description": "Venta de servicios",
+    "docTipo": 99,
+    "docNro": 0,
+    "invoiceType": 11
+  },
+  {
+    "cuitId": "uuid-string",
+    "amount": 2000.0,
+    "description": "Venta de productos",
+    "docTipo": 99,
+    "docNro": 0,
+    "invoiceType": 9
+  }
+]
+```
+
+## Parámetros Requeridos
+
+| Parámetro     | Tipo   | Descripción                                         | Ejemplo                 |
+| ------------- | ------ | --------------------------------------------------- | ----------------------- |
+| `cuitId`      | string | ID único del CUIT a usar                            | `"clx1234567890abcdef"` |
+| `amount`      | number | Monto total de la factura                           | `1000.0`                |
+| `description` | string | Descripción de la factura                           | `"Venta de servicios"`  |
+| `invoiceType` | number | Tipo de factura (9=Regimen General, 11=Monotributo) | `11`                    |
+
+## Parámetros Opcionales
+
+| Parámetro | Tipo   | Descripción                     | Ejemplo                 |
+| --------- | ------ | ------------------------------- | ----------------------- |
+| `docTipo` | number | Tipo de documento del cliente   | `99` (Consumidor Final) |
+| `docNro`  | number | Número de documento del cliente | `0` (Consumidor Final)  |
+| `concept` | number | Concepto de la factura          | `2` (Servicios)         |
+| `pos`     | number | Punto de venta                  | `1`                     |
+| `dueDate` | string | Fecha de vencimiento (ISO 8601) | `"2024-12-31"`          |
+| `items`   | array  | Items detallados de la factura  | Ver sección de items    |
+
+## Ejemplo de Items Detallados
+
+```json
+{
+  "cuitId": "uuid-string",
+  "amount": 1000.0,
+  "description": "Venta de servicios",
+  "invoiceType": 11,
+  "items": [
+    {
+      "description": "Servicio de consultoría",
+      "quantity": 1,
+      "unitPrice": 1000.0,
+      "total": 1000.0
+    }
+  ]
+}
+```
+
+## Respuesta
+
+### Respuesta Exitosa
+
+```json
+{
+  "success": true,
+  "data": {
+    "batchId": "batch-uuid",
+    "totalItems": 1,
+    "processedItems": 0,
+    "status": "PENDING"
+  },
+  "message": "Factura(s) enviada(s) para procesamiento"
+}
+```
+
+### Respuesta de Error
+
+```json
+{
+  "success": false,
+  "error": "Validation error",
+  "details": "El campo 'cuitId' es requerido",
+  "code": "VALIDATION_ERROR"
+}
+```
+
+## Códigos de Estado
+
+| Código | Descripción                        |
+| ------ | ---------------------------------- |
+| `200`  | Petición procesada exitosamente    |
+| `400`  | Error de validación en los datos   |
+| `401`  | No autorizado (API key inválida)   |
+| `403`  | Prohibido (límites de suscripción) |
+| `429`  | Demasiadas peticiones              |
+| `500`  | Error interno del servidor         |
+
+## Ejemplos de Uso
+
+### Factura Simple (Monotributo)
+
+```bash
+curl -X POST https://facture.ar/api/invoices \
+  -H "x-api-key: tu-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "cuitId": "clx1234567890abcdef",
+    "amount": 1000.0,
+    "description": "Venta de servicios",
+    "invoiceType": 11
+  }'
+```
+
+### Factura con Cliente Específico
+
+```bash
+curl -X POST https://facture.ar/api/invoices \
+  -H "x-api-key: tu-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "cuitId": "clx1234567890abcdef",
+    "amount": 2000.0,
+    "description": "Venta de productos",
+    "docTipo": 80,
+    "docNro": 20123456789,
+    "invoiceType": 9
+  }'
+```
+
+### Múltiples Facturas en Lote
+
+```bash
+curl -X POST https://facture.ar/api/invoices \
+  -H "x-api-key: tu-api-key" \
+  -H "Content-Type: application/json" \
+  -d '[
+    {
+      "cuitId": "clx1234567890abcdef",
+      "amount": 1000.0,
+      "description": "Factura 1",
+      "invoiceType": 11
+    },
+    {
+      "cuitId": "clx1234567890abcdef",
+      "amount": 2000.0,
+      "description": "Factura 2",
+      "invoiceType": 11
+    }
+  ]'
+```
+
+## Procesamiento Asíncrono
+
+### Estados del Lote
+
+| Estado       | Descripción                          |
+| ------------ | ------------------------------------ |
+| `PENDING`    | Lote creado, esperando procesamiento |
+| `PROCESSING` | Lote en proceso                      |
+| `COMPLETED`  | Lote procesado completamente         |
+| `FAILED`     | Lote falló con errores               |
+
+### Monitoreo del Progreso
+
+```bash
+curl -X GET https://facture.ar/api/batches/{batchId} \
+  -H "x-api-key: tu-api-key"
+```
+
+Respuesta:
+
+```json
+{
+  "batchId": "batch-uuid",
+  "status": "PROCESSING",
+  "totalItems": 10,
+  "processedItems": 7,
+  "successfulItems": 6,
+  "failedItems": 1
+}
+```
+
+## Webhooks
+
+Para recibir notificaciones en tiempo real del estado de tus facturas, configura webhooks:
+
+```json
+{
+  "url": "https://tu-servidor.com/webhook",
+  "events": ["invoice.created", "invoice.failed", "batch.completed"]
+}
+```
+
+## ❓ Solución de Problemas
+
+<Accordion title="Error: CUIT no encontrado">
+**Causa**: El CUIT especificado no existe o no pertenece al usuario.
+
+**Solución**:
+
+1. Verifica que el `cuitId` sea correcto
+2. Asegúrate de que el CUIT esté configurado y activo
+3. Consulta la lista de CUITs disponibles
+</Accordion>
+
+<Accordion title="Error: Monto inválido">
+  **Causa**: El monto no cumple con los requisitos de AFIP.
+
+**Solución**:
+
+1. Verifica que el monto sea mayor a 0
+2. Asegúrate de que no exceda los límites de tu categoría fiscal
+3. Revisa que el formato numérico sea correcto
+</Accordion>
+
+<Accordion title="Error: Tipo de factura no válido">
+**Causa**: El tipo de factura no es compatible con la categoría fiscal.
+
+**Solución**:
+
+1. Verifica la categoría fiscal de tu CUIT
+2. Usa el tipo de factura correcto (9 para Régimen General, 11 para Monotributo)
+3. Consulta la documentación de tipos de factura
+</Accordion>
+
+## 📞 Soporte
+
+Si necesitas ayuda con este endpoint:
+
+- 📧 **Email**: support@facture.ar
+- 💬 **Chat**: Disponible en la plataforma
+- 📚 **Documentación**: Explora nuestros ejemplos detallados
+- 🎥 **Videollamada**: Para asistencia personalizada
