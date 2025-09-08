@@ -1,217 +1,235 @@
 ---
-title: 'Configuración de CUIT por Certificado Digital'
-description: 'Guía completa para configurar tu CUIT usando certificado digital'
+title: "Configuración de CUIT por Certificado Digital"
+description: "Guía completa para configurar tu CUIT usando certificado digital"
 ---
 
 import { Card, CardGroup, Steps, Callout, Accordion } from 'mintlify';
 
 # 🔐 Configuración de CUIT por Certificado Digital
 
-Esta guía te llevará paso a paso para configurar tu CUIT usando certificado digital. Este método te da control total sobre tus certificados y es ideal para usuarios técnicos.
+**Diste de alta tu CUIT y llegaste hasta acá**
 
-<Callout type="info">**¿Qué es un certificado digital?** Es un archivo que certifica tu identidad ante AFIP y te permite conectarte de forma segura con sus servicios.</Callout>
+![Screenshot 2025-09-08 at 2.16.23 PM.png](/images/Screenshot2025-09-08at2.16.23PM.png)
 
-## 📋 Requisitos previos
+Ahora viene lo bueno: [******configurar la integración entre FACTURE.AR y ARCA******](http://FACTURE.AR) 🔗
 
-Antes de comenzar, asegúrate de tener:
+Este proceso te va a llevar unos **30 minutos aproximadamente**. Te recomendamos hacerlo desde una computadora y con tiempo para estar tranquilo/a.
 
-- ✅ Tu CUIT agregado en Facturear
-- ✅ Clave fiscal nivel 3
-- ✅ Acceso a tu cuenta de AFIP
-- ✅ Tiempo para completar el proceso (30-60 minutos)
+## 📋 ¿Qué vamos a hacer?
 
-## 🎯 Proceso completo
+- **Paso 1:** Agregar la aplicación _«WSASS - Autogestión Certificados Homologación»_ a tu escritorio de ARCA
+- **Paso 2:** Generar el certificado de testing 🧪
+- **Paso 3:** Autorizar web service de testing
+- **Paso 4:** Habilitar administrador de certificados de producción
+- **Paso 5:** Generar los certificados de producción 🚀
+- **Paso 6:** Autorizar web service de producción
+- **Paso 7:** Crear un punto de venta
+- 
 
-<Steps>
-  <Steps.Step title="Descargar certificados">Obtén los archivos CSR generados por Facturear</Steps.Step>
-  <Steps.Step title="Solicitar en ARCA">Sube los CSR en el portal de ARCA</Steps.Step>
-  <Steps.Step title="Esperar aprobación">AFIP revisa y aprueba tu solicitud</Steps.Step>
-  <Steps.Step title="Descargar certificados">Obtén los certificados aprobados de ARCA</Steps.Step>
-  <Steps.Step title="Subir a Facturear">Carga los certificados en la plataforma</Steps.Step>
-  <Steps.Step title="Validar conexión">Verifica que todo funcione correctamente</Steps.Step>
-</Steps>
+> 💡 ¿Necesitás ayuda? Podés contratar la configuración experta o asistencia por videollamada desde https://www.facture.ar/app/add-ons
 
-## 1️⃣ Descargar certificados CSR
+Dale continuar y vamos a la configuracion\!
 
-### Paso 1: Acceder a la configuración
+### **Paso 1: Agregar la aplicación WSASS a tu escritorio de ARCA 🖥️**
 
-1. Ve a **CUITs** en el menú lateral
-2. Selecciona tu CUIT
-3. Navega a **Configuración** → **Certificados**
-4. Haz clic en **"Descargar CSR"**
+**Primero,** ingresá en _«Administrador de Relaciones de Clave Fiscal»_
 
-### Paso 2: Descargar archivos
+![image.avif](/images/image.avif)
 
-Descargarás dos archivos:
+Si tenés permisos para administrar las relaciones de otros contribuyentes, elegí el que querés administrar. Si no, se va a seleccionar el tuyo automáticamente.
 
-- **CSR de Producción**: Para facturación real
-- **CSR de Testing**: Para pruebas
+![image-1.avif](/images/image-1.avif)
 
-<Callout type="warning">**Importante**: Guarda estos archivos en un lugar seguro. Los necesitarás para el siguiente paso.</Callout>
+**Después,** elegí _«Adherir servicio»_
 
-## 2️⃣ Solicitar en ARCA
+![image-2.avif](/images/image-2.avif)
 
-### Paso 1: Acceder a ARCA
+**Ahí dentro,** elegí: _«ARCA \> Servicios interactivos \> WSASS - Autogestión Certificados Homologación»_
 
-1. Ve a [ARCA - Administración de Relaciones de Clave Fiscal](https://auth.afip.gob.ar/contribuyente_/login.xhtml)
-2. Inicia sesión con tu clave fiscal nivel 3
-3. Navega a **"Administración de Certificados"**
+![image-3.avif](/images/image-3.avif)
 
-### Paso 2: Subir CSR de Producción
+Dale a _«Confirmar»_ y **¡listo\!** 🎯 Ya vas a tener acceso a la aplicación desde tu escritorio de ARCA.
 
-1. Selecciona **"Solicitar Certificado"**
-2. Elige **"Producción"**
-3. Sube el archivo CSR de producción
-4. Completa los datos solicitados
-5. Envía la solicitud
+![image-4.avif](/images/image-4.avif)
 
-### Paso 3: Subir CSR de Testing
+### **Paso 2: Generar el certificado de testing 🧪**
 
-1. Repite el proceso para **"Testing"**
-2. Sube el archivo CSR de testing
-3. Completa los datos solicitados
-4. Envía la solicitud
+Desde tu escritorio de ARCA, ingresá en _«WSASS - Autogestión Certificados Homologación»_.
 
-<Callout type="info">**Tiempo de procesamiento**: AFIP puede tardar entre 24-48 horas en procesar tu solicitud.</Callout>
+> ⚠️ ¿No tenés esta aplicación en tu escritorio? Revisá el Paso 1.
 
-## 3️⃣ Esperar aprobación
+![image-5.avif](/images/image-5.avif)
 
-### Verificar estado
+Una vez adentro, andá a _«Nuevo Certificado»_
 
-1. Regresa a ARCA periódicamente
-2. Verifica el estado de tus solicitudes
-3. Una vez aprobadas, verás el estado **"Aprobado"**
+![image.png](/images/image.png)
 
-### Notificaciones
+**Acá viene lo importante:** tenés que copiar los valores que ves en **CSR de Prueba**
 
-- AFIP te enviará un email cuando estén listos
-- También puedes verificar en el portal de ARCA
+![Screenshot 2025-09-08 at 1.24.12 PM.png](/images/Screenshot2025-09-08at1.24.12PM.png)
 
-## 4️⃣ Descargar certificados aprobados
+**Completá estos campos:**
 
-### Paso 1: Acceder a certificados
+- En `1. Nombre simbólico del DN`: poné el nombre que le diste al certificado dentro del CSR
+- En `2. Solicitud del certificado en formato PKCS#10`: pegá el contenido de tu CSR
 
-1. Ve a ARCA → **"Mis Certificados"**
-2. Busca tus certificados aprobados
-3. Haz clic en **"Descargar"**
+![Screenshot 2025-09-03 at 2.42.05 PM.png](/images/Screenshot2025-09-03at2.42.05PM.png)
 
-### Paso 2: Descargar archivos
+Hace clic en Crear DN y obtener certificado.
 
-Descarga ambos certificados:
+[******Ahora, en FACTURE.AR:******](http://FACTURE.AR) hacé clic en _«Continuar»_ y pegá el resultado y dale a guardar
 
-- **Certificado de Producción** (.crt)
-- **Certificado de Testing** (.crt)
+![Screenshot 2025-09-08 at 1.25.08 PM.png](/images/Screenshot2025-09-08at1.25.08PM.png)
 
-<Callout type="warning">**Seguridad**: Los certificados contienen información sensible. Manténlos seguros y no los compartas.</Callout>
+**Una vez guardado,** si todo está bien, la prueba de conexión debería ser **exitosa** ✅
 
-## 5️⃣ Subir a Facturear
+![Screenshot 2025-09-08 at 1.30.30 PM.png](/images/Screenshot2025-09-08at1.30.30PM.png)
 
-### Paso 1: Acceder a la configuración
+Dale continuar y seguir con el tutorial
 
-1. Regresa a Facturear
-2. Ve a **CUITs** → Tu CUIT → **Configuración** → **Certificados**
-3. Haz clic en **"Subir Certificados"**
+### **Paso 3: Autorizar web service de testing 🔐**
 
-### Paso 2: Subir certificados
+Dentro de _«WSASS - Autogestión Certificados Homologación»_, andá a _«Crear autorización a servicio»_
 
-1. **Certificado de Producción**: Selecciona el archivo .crt de producción
-2. **Certificado de Testing**: Selecciona el archivo .crt de testing
-3. Haz clic en **"Subir"**
+![image (2).png](/images/image\(2\).png)
 
-### Paso 3: Confirmar subida
+**Completá estos datos:**
 
-- El sistema validará los certificados
-- Verás confirmación de que se subieron correctamente
+- `1. Nombre simbólico del DN a autorizar`: seleccioná el certificado que querés autorizar
+- `3. CUIT representado`: ingresá el CUIT con el que querés usar el web service (en modo testing te recomendamos usar tu propio CUIT para no generar confusión)
+- `5. Servicio al que desea acceder`: elegí `wsfe - Facturación Electrónica`
 
-## 6️⃣ Validar conexión
+**Con todo listo,** presioná _«Crear autorización de acceso»_
 
-### Verificación automática
+![image-1.png](/images/image-1.png)
 
-Facturear automáticamente:
+## Paso 4: Habilitar administrador de certificados de producción 🏭
 
-- ✅ Valida los certificados
-- ✅ Prueba la conexión con AFIP
-- ✅ Verifica que todo funcione correctamente
+Para agregar la aplicación _«Administración de Certificados Digitales»_ a tu escritorio de ARCA, **primero** ingresá en _«Administrador de Relaciones de Clave Fiscal»_
 
-### Verificar estado
+![image (1).avif](/images/image\(1\).avif)
 
-1. Ve a **CUITs** → Tu CUIT → **Estado**
-2. Verifica que aparezca:
-   - **Certificado de Producción**: ✅ Válido
-   - **Certificado de Testing**: ✅ Válido
-   - **Conexión AFIP**: ✅ Activa
+Si tenés permisos para administrar otros contribuyentes, elegí el que querés administrar.
 
-## 🔧 Configuración adicional
+![image-1 (1).avif](/images/image-1\(1\).avif)
 
-### Puntos de venta
+**Después,** elegí _«Adherir servicio»_
 
-Una vez validados los certificados:
+![image-2 (1).avif](/images/image-2\(1\).avif)
 
-1. Ve a **Puntos de Venta**
-2. Configura tu punto de venta por defecto
-3. Establece los conceptos de facturación
+**Ahí dentro,** seleccioná: _«ARCA \> Servicios interactivos \> Administración de Certificados Digitales»_
 
-### Tributos
+![image-3 (1).avif](/images/image-3\(1\).avif)
 
-Para configurar impuestos:
+Dale a _«Confirmar»_ y **¡ya está\!** ✨ Tenés acceso a la aplicación desde tu escritorio de ARCA.
 
-1. Ve a **Tributos**
-2. Agrega los impuestos necesarios
-3. Establece valores por defecto
+![image-4 (1).avif](/images/image-4\(1\).avif)
 
-## ❓ Solución de problemas
+### **Paso 5: Generar los certificados de producción 🚀**
 
-<Accordion title="Error: Certificado inválido">
-**Causa**: El certificado no es válido o está corrupto.
+**Ahora sí,** volvé a [FACTURE.AR](http://FACTURE.AR)
 
-**Solución**:
+![Screenshot 2025-09-08 at 1.41.06 PM.png](/images/Screenshot2025-09-08at1.41.06PM.png)
 
-1. Verifica que descargaste el certificado correcto
-2. Asegúrate de que no esté corrupto
-3. Intenta descargarlo nuevamente desde ARCA
-</Accordion>
+**Copiá** nuevamente el `Nombre simbólico del DN` y hacé clic en _«Descargar»_.
 
-<Accordion title="Error: Conexión con AFIP fallida">
-**Causa**: Problemas de conectividad o certificados incorrectos.
+Se va a descargar un archivo tipo `csr_production_[cuit].pem` 📄
 
-**Solución**:
+**En tu escritorio de ARCA,** ingresá en _«Administración de Certificados Digitales»_
 
-1. Verifica que los certificados sean los correctos
-2. Asegúrate de que estén vigentes
-3. Contacta soporte si el problema persiste
-</Accordion>
+![image-3 (2).avif](/images/image-3\(2\).avif)
 
-<Accordion title="Error: CSR no válido">
-**Causa**: El CSR no fue generado correctamente.
+Si podés administrar varios contribuyentes, te va a pedir que elijas cuál querés administrar.
 
-**Solución**:
+![image (2).avif](/images/image\(2\).avif)
 
-1. Regresa a Facturear
-2. Genera nuevos CSR
-3. Repite el proceso desde el inicio
-</Accordion>
+**Una vez adentro,** andá a _«Agregar alias»_
 
-## 📄 Guía PDF
+![image-1 (2).avif](/images/image-1\(2\).avif)
 
-Para una guía más detallada, descarga nuestro PDF:
+**Completá los campos:**
 
-[📄 Guía para configurar tu CUIT con certificado digital](https://facture.ar/58874f1a-1abf-400c-b444-4a20c020e3e0_Gua_para_configurar_tu_CUIT.pdf)
+- En _«Alias»_: poné el `Nombre simbólico del DN`
+- Presioná _«Examinar»_ y elegí el archivo `csr_production_[cuit].pem` que descargaste
 
-## 📞 Soporte
+**Por último,** presioná _«Agregar Alias»_ y **¡listo\!** Ya tenés tu certificado 🎉
 
-Si necesitas ayuda durante el proceso:
+![image-2 (2).avif](/images/image-2\(2\).avif)
 
-- 📧 **Email**: support@facture.ar
-- 💬 **Chat**: Disponible en la plataforma
-- 🎥 **Videollamada**: Para asistencia personalizada
+**Ahora,** en la lista de Alias presioná _«Ver»_
 
-## 🎉 ¡Listo!
+![image-4 (2).avif](/images/image-4\(2\).avif)
 
-Una vez completado este proceso:
+Y ahí presioná el botón de _«Descargar»_
 
-- ✅ Tu CUIT estará configurado con certificado digital
-- ✅ Podrás emitir facturas electrónicas
-- ✅ Tendrás control total sobre tus certificados
-- ✅ La conexión con AFIP estará activa
+![image-5 (1).avif](/images/image-5\(1\).avif)
 
-<Callout type="success">**¡Felicitaciones!** Has configurado exitosamente tu CUIT con certificado digital. Ahora puedes comenzar a facturar.</Callout>
+**Último paso:** abrí este archivo con un editor de texto (Notepad en Windows o TextEdit en Mac), y copiá el contenido en el campo _«Certificado»_
+
+![Screenshot 2025-09-08 at 1.41.38 PM.png](/images/Screenshot2025-09-08at1.41.38PM.png)
+
+**Si todo está OK,** deberías ver una prueba de conexión exitosa ✅
+
+![Screenshot 2025-09-08 at 1.43.21 PM.png](/images/Screenshot2025-09-08at1.43.21PM.png)
+
+### **Paso 6: Autorizar web service de producción ✅**
+
+Para autorizar el acceso a un web service de producción con el certificado que creaste, ingresá a _«Administrador de Relaciones de Clave Fiscal»_ desde tu escritorio de ARCA.
+
+![image (3).avif](/images/image\(3\).avif)
+
+Si podés administrar varios contribuyentes, elegí el que querés configurar.
+
+![image-1 (3).avif](/images/image-1\(3\).avif)
+
+**Ahora** andá a _«Nueva Relación»_
+
+![image-2 (3).avif](/images/image-2\(3\).avif)
+
+**Importante:** Si estás vinculando un web service delegado por alguien más, en _«Representado»_ elegí el CUIT de quien te hizo la delegación. Si no, va a aparecer tu propio CUIT seleccionado. Presionamos «Buscar»
+
+![image-3 (3).avif](/images/image-3\(3\).avif)
+
+Abrí _«ARCA \> Web Services»_ y elegí `Facturación Electrónica`
+
+![image-4 (3).avif](/images/image-4\(3\).avif)
+
+![Screenshot 2025-09-03 at 3.22.10 PM.png](/images/Screenshot2025-09-03at3.22.10PM.png)
+
+**Después,** presioná el segundo botón _«Buscar»_
+
+![image-5 (2).avif](/images/image-5\(2\).avif)
+
+Elegí el certificado que querés autorizar y dale a _«Confirmar»_
+
+![image-6.avif](/images/image-6.avif)
+
+**Una vez más,** dale a _«Confirmar»_
+
+![image-7.avif](/images/image-7.avif)
+
+### **Paso 7: Crear un punto de venta 🏪**
+
+Desde la página de ARCA, andá a _«Administración de puntos de venta y domicilios»_
+
+![image-8.avif](/images/image-8.avif)
+
+**Ingresá** en _«A/B/M de puntos de venta»_. Hacé clic en _«Agregar nuevo punto de venta»_ y elegí la opción que corresponda para tu caso:
+
+**🏷️ Para monotributista:** _«Factura Electrónica - Monotributo - Web Service»_
+
+**🏢 Para responsable inscripto:** _«RECE para aplicativo y Web Service»_
+
+![image (3).png](/images/image\(3\).png)
+
+Dale a _«Aceptar»_
+
+**¡Casi terminamos\!** 🎯 Ahora tenés que hacer clic en _«Actualizar»_
+
+**¡Genial\!** Debería aparecer el punto de venta que acabás de crear.
+
+# 🎉 Felicitaciones\! Ya tenes tu cuit configurado\!
+
+**¡Increíble\!** 🚀 Tu CUIT ya está listo para usar en [FACTURE.AR](http://FACTURE.AR). Ahora podés empezar a facturar sin problemas.
+
+**¿Todo salió bien?** ¡Perfecto\! Ya podés empezar a generar tus facturas electrónicas de forma súper fácil.
