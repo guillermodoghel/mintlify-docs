@@ -72,39 +72,39 @@ El endpoint acepta tanto objetos de factura individuales como arrays de facturas
 
 ### Parámetros Requeridos
 
-| Parámetro              | Tipo   | Descripción                                      |
-| ---------------------- | ------ | ------------------------------------------------ |
-| `amount` o `impTotal`  | number | Monto total de la factura |
+| Parámetro             | Tipo   | Descripción               |
+| --------------------- | ------ | ------------------------- |
+| `amount` o `impTotal` | number | Monto total de la factura |
 
 <Callout type="warning">
-**Importante**: Para facturas con montos superiores a $10,000,000, los campos `docTipo` y `docNro` son obligatorios y deben especificarse en la petición.
+  **Importante**: Para facturas con montos superiores a $10,000,000, los campos `docTipo` y `docNro` son obligatorios y deben especificarse en la petición.
 </Callout>
 
 ### Parámetros Opcionales
 
-| Parámetro                | Tipo   | Por defecto                                 | Descripción                                                                                      |
-| ------------------------ | ------ | --------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| `cuitId` o `cuit`        | string | CUIT por defecto del usuario                     | UUID del CUIT o número de CUIT (con o sin guiones). Si no se proporciona, usa el CUIT por defecto del usuario |
-| `docTipo`                | number | 99                                      | Tipo de documento (99=Consumidor Final, 80=CUIT)                                                     |
-| `docNro`                 | number | 0                                       | Número de documento                                                                                  |
-| `condicionIVAReceptorId` | number | 5                                       | Condición de IVA (5=Consumidor Final, 1=IVA Responsable)                                            |
-| `monId`                  | string | "PES"                                   | ID de moneda                                                                                      |
-| `invoiceType`            | number | 9 (Régimen General) o 11 (Monotributo) | Tipo de factura (1=Factura A, 11=Factura C, etc.)                                                   |
-| `concepto`               | number | Por defecto del CUIT                            | Tipo de concepto (1=Productos, 2=Servicios, 3=Ambos)                                                    |
-| `ptoVta`                 | number | Por defecto del CUIT                            | Número de punto de venta                                                                             |
-| `description`            | string | "Venta de `concepto por defecto del cuit`   | Descripción de la factura                                                                              |
-| `clientName`             | string | -                                       | Nombre/empresa del cliente                                                                              |
-| `cbteFch`                | string | Fecha actual                            | Fecha de la factura (formato YYYYMMDD)                                                                   |
+| Parámetro                | Tipo   | Por defecto                               | Descripción                                                                                                   |
+| ------------------------ | ------ | ----------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `cuitId` o `cuit`        | string | CUIT por defecto del usuario              | UUID del CUIT o número de CUIT (con o sin guiones). Si no se proporciona, usa el CUIT por defecto del usuario |
+| `docTipo`                | number | 99                                        | Tipo de documento (99=Consumidor Final, 80=CUIT)                                                              |
+| `docNro`                 | number | 0                                         | Número de documento                                                                                           |
+| `condicionIVAReceptorId` | number | 5                                         | Condición de IVA (5=Consumidor Final, 1=IVA Responsable)                                                      |
+| `monId`                  | string | "PES"                                     | ID de moneda                                                                                                  |
+| `invoiceType`            | number | 9 (Régimen General) o 11 (Monotributo)    | Tipo de factura (1=Factura A, 11=Factura C, etc.)                                                             |
+| `concepto`               | number | Por defecto del CUIT                      | Tipo de concepto (1=Productos, 2=Servicios, 3=Ambos)                                                          |
+| `ptoVta`                 | number | Por defecto del CUIT                      | Número de punto de venta                                                                                      |
+| `description`            | string | "Venta de `concepto por defecto del cuit` | Descripción de la factura                                                                                     |
+| `clientName`             | string | -                                         | Nombre/empresa del cliente                                                                                    |
+| `cbteFch`                | string | Fecha actual                              | Fecha de la factura (formato YYYYMMDD)                                                                        |
 
 ### Campos de Montos Específicos de AFIP
 
-| Parámetro    | Tipo   | Descripción                            |
-| ------------ | ------ | -------------------------------------- |
-| `impNeto`    | number | Monto neto (sin IVA e impuestos)     |
+| Parámetro    | Tipo   | Descripción                              |
+| ------------ | ------ | ---------------------------------------- |
+| `impNeto`    | number | Monto neto (sin IVA e impuestos)         |
 | `impTotal`   | number | Monto total (incluyendo IVA e impuestos) |
-| `impTotConc` | number | Monto total para conceptos 1-3          |
-| `impOpEx`    | number | Monto de operaciones exentas               |
-| `impTrib`    | number | Monto total de impuestos                     |
+| `impTotConc` | number | Monto total para conceptos 1-3           |
+| `impOpEx`    | number | Monto de operaciones exentas             |
+| `impTrib`    | number | Monto total de impuestos                 |
 | `impIVA`     | number | Monto total de IVA                       |
 | `monCotiz`   | number | Tipo de cambio de moneda                 |
 
@@ -223,15 +223,14 @@ El endpoint acepta tanto objetos de factura individuales como arrays de facturas
 }
 ```
 
-
 ### Procesamiento de IVA
 
 Para facturas no tipo C con items:
+
 - Agrupa IVA por tasa desde los detalles de los items
 - Mapea las tasas de IVA a IDs de AFIP via `IVAMappingService`
 - Calcula los montos totales de IVA
 - Maneja facturas tipo C (IVA = 0)
-
 
 ## Formato de Respuesta
 
@@ -626,4 +625,3 @@ Para soporte técnico o preguntas sobre la API:
 - **Email**: support@facture.ar
 - **Documentación**: https://docs.facture.ar
 - **Página de Estado**: https://status.facture.ar
-

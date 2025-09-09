@@ -27,19 +27,21 @@ x-api-key: tu-api-key-aqui
 Facturear utiliza la misma URL base pero diferentes API keys para distinguir entre ambientes:
 
 **Testing (Homologación)**
+
 - **Prefijo API Key**: `test_sk_`
 - **Propósito**: Pruebas y desarrollo
 - **Datos**: Ambiente de homologación ARCA, no genera facturas reales
 - **Límites**: Más permisivo para testing
 
 **Producción**
+
 - **Prefijo API Key**: `prod_sk_`
 - **Propósito**: Ambiente real de facturación
 - **Datos**: Genera facturas electrónicas reales con validez fiscal
 - **Límites**: Restricciones de rate limiting estrictas
 
 <Callout type="warning">
-⚠️ **Importante**: Nunca uses tu API key de producción (`prod_sk_`) para testing. Las facturas generadas en producción son reales y tienen validez fiscal.
+  ⚠️ **Importante**: Nunca uses tu API key de producción (`prod_sk_`) para testing. Las facturas generadas en producción son reales y tienen validez fiscal.
 </Callout>
 
 #### 📋 Obtener tu API Key
@@ -49,9 +51,7 @@ Facturear utiliza la misma URL base pero diferentes API keys para distinguir ent
 3. **Genera una nueva API key** para el ambiente que necesites
 4. **Copia y guarda** tu API key de forma segura
 
-<Callout type="info">
-⚠️ **Tip**: Puedes regenerar tu API key en cualquier momento. Solo asegurate de guardar la nueva key, la anterior se perdera.
-</Callout>
+<Callout type="info">⚠️ **Tip**: Puedes regenerar tu API key en cualquier momento. Solo asegurate de guardar la nueva key, la anterior se perdera.</Callout>
 
 ### URL Base
 
@@ -61,9 +61,7 @@ La URL base es la misma para todos los ambientes:
 https://facture.ar/api
 ```
 
-<Callout type="info">
-💡 **Nota**: El ambiente (testing/producción) se determina automáticamente por tu API key, no por la URL.
-</Callout>
+<Callout type="info">💡 **Nota**: El ambiente (testing/producción) se determina automáticamente por tu API key, no por la URL.</Callout>
 
 ## 🎮 Playground Interactivo
 

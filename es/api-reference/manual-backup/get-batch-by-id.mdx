@@ -28,8 +28,8 @@ x-api-key: tu-api-key-aqui
 
 ## Parámetros de Ruta
 
-| Parámetro | Tipo | Requerido | Descripción | Ejemplo |
-| --------- | ---- | --------- | ----------- | ------- |
+| Parámetro | Tipo   | Requerido | Descripción       | Ejemplo                                  |
+| --------- | ------ | --------- | ----------------- | ---------------------------------------- |
 | `id`      | string | ✅        | ID único del lote | `"123e4567-e89b-12d3-a456-426614174000"` |
 
 ## Respuesta
@@ -127,50 +127,50 @@ x-api-key: tu-api-key-aqui
 
 ### Lote (Batch)
 
-| Campo | Tipo | Descripción |
-| ----- | ---- | ----------- |
-| `id` | string | ID único del lote |
-| `status` | string | Estado del lote |
-| `totalItems` | number | Total de items en el lote |
-| `processedItems` | number | Items procesados |
-| `successfulItems` | number | Items exitosos |
-| `failedItems` | number | Items fallidos |
-| `environment` | string | Ambiente (production/homologation) |
-| `createdAt` | string | Fecha de creación (ISO 8601) |
-| `updatedAt` | string | Fecha de última actualización (ISO 8601) |
-| `items` | array | Items del lote |
+| Campo             | Tipo   | Descripción                              |
+| ----------------- | ------ | ---------------------------------------- |
+| `id`              | string | ID único del lote                        |
+| `status`          | string | Estado del lote                          |
+| `totalItems`      | number | Total de items en el lote                |
+| `processedItems`  | number | Items procesados                         |
+| `successfulItems` | number | Items exitosos                           |
+| `failedItems`     | number | Items fallidos                           |
+| `environment`     | string | Ambiente (production/homologation)       |
+| `createdAt`       | string | Fecha de creación (ISO 8601)             |
+| `updatedAt`       | string | Fecha de última actualización (ISO 8601) |
+| `items`           | array  | Items del lote                           |
 
 ### Item del Lote
 
-| Campo | Tipo | Descripción |
-| ----- | ---- | ----------- |
-| `id` | string | ID único del item |
-| `status` | string | Estado del item |
-| `order` | number | Orden en el lote |
-| `createdAt` | string | Fecha de creación (ISO 8601) |
-| `updatedAt` | string | Fecha de última actualización (ISO 8601) |
-| `requestBody` | object | Datos de la factura original |
-| `responseBody` | object | Respuesta del procesamiento |
-| `cuit` | object | Información del CUIT (id, number) |
+| Campo          | Tipo   | Descripción                              |
+| -------------- | ------ | ---------------------------------------- |
+| `id`           | string | ID único del item                        |
+| `status`       | string | Estado del item                          |
+| `order`        | number | Orden en el lote                         |
+| `createdAt`    | string | Fecha de creación (ISO 8601)             |
+| `updatedAt`    | string | Fecha de última actualización (ISO 8601) |
+| `requestBody`  | object | Datos de la factura original             |
+| `responseBody` | object | Respuesta del procesamiento              |
+| `cuit`         | object | Información del CUIT (id, number)        |
 
 ## Estados de Lote
 
-| Estado | Descripción |
-| ------ | ----------- |
-| `pending` | Lote creado, esperando procesamiento |
-| `processing` | Lote en proceso |
-| `completed` | Lote procesado completamente |
-| `completed_with_errors` | Lote procesado con algunos errores |
-| `error` | Lote falló completamente |
+| Estado                  | Descripción                          |
+| ----------------------- | ------------------------------------ |
+| `pending`               | Lote creado, esperando procesamiento |
+| `processing`            | Lote en proceso                      |
+| `completed`             | Lote procesado completamente         |
+| `completed_with_errors` | Lote procesado con algunos errores   |
+| `error`                 | Lote falló completamente             |
 
 ## Estados de Item
 
-| Estado | Descripción |
-| ------ | ----------- |
-| `pending` | Item en cola |
-| `processing` | Item siendo procesado |
-| `completed` | Item procesado exitosamente |
-| `error` | Item falló en el procesamiento |
+| Estado       | Descripción                    |
+| ------------ | ------------------------------ |
+| `pending`    | Item en cola                   |
+| `processing` | Item siendo procesado          |
+| `completed`  | Item procesado exitosamente    |
+| `error`      | Item falló en el procesamiento |
 
 ## Ejemplos de Uso
 
@@ -242,7 +242,7 @@ print('Items con errores:', failed_items)
 1. Verifica que el ID del lote sea correcto
 2. Asegúrate de que el lote pertenezca a tu cuenta
 3. Verifica que estés usando la API key correcta
-</Accordion>
+   </Accordion>
 
 <Accordion title="Error: No autorizado">
 **Causa**: No tienes permisos para acceder a este lote.
@@ -252,7 +252,7 @@ print('Items con errores:', failed_items)
 1. Verifica que el lote pertenezca a tu cuenta
 2. Asegúrate de estar usando la API key correcta
 3. Contacta soporte si el problema persiste
-</Accordion>
+   </Accordion>
 
 <Accordion title="Error: Items con errores">
 **Causa**: Algunos items del lote fallaron en el procesamiento.
@@ -262,7 +262,7 @@ print('Items con errores:', failed_items)
 1. Revisa los detalles del error en `responseBody`
 2. Corrige los datos y reintenta los items fallidos
 3. Usa el endpoint de retry para reintentar items específicos
-</Accordion>
+   </Accordion>
 
 ## 📞 Soporte
 

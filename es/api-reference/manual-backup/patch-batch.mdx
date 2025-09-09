@@ -28,8 +28,8 @@ x-api-key: tu-api-key-aqui
 
 ## Parámetros de Ruta
 
-| Parámetro | Tipo | Requerido | Descripción | Ejemplo |
-| --------- | ---- | --------- | ----------- | ------- |
+| Parámetro | Tipo   | Requerido | Descripción       | Ejemplo                                  |
+| --------- | ------ | --------- | ----------------- | ---------------------------------------- |
 | `id`      | string | ✅        | ID único del lote | `"123e4567-e89b-12d3-a456-426614174000"` |
 
 ## Cuerpo de la Petición
@@ -51,11 +51,11 @@ x-api-key: tu-api-key-aqui
 
 ## Parámetros del Cuerpo
 
-| Parámetro | Tipo | Requerido | Descripción | Ejemplo |
-| --------- | ---- | --------- | ----------- | ------- |
-| `amount` | number | ✅ | Monto total de la factura | `1000.0` |
-| `description` | string | ✅ | Descripción de la factura | `"Venta de servicios"` |
-| `cuitId` | string | ❌ | ID del CUIT (usa por defecto si no se especifica) | `"456e7890-e89b-12d3-a456-426614174001"` |
+| Parámetro     | Tipo   | Requerido | Descripción                                       | Ejemplo                                  |
+| ------------- | ------ | --------- | ------------------------------------------------- | ---------------------------------------- |
+| `amount`      | number | ✅        | Monto total de la factura                         | `1000.0`                                 |
+| `description` | string | ✅        | Descripción de la factura                         | `"Venta de servicios"`                   |
+| `cuitId`      | string | ❌        | ID del CUIT (usa por defecto si no se especifica) | `"456e7890-e89b-12d3-a456-426614174001"` |
 
 ## Respuesta
 
@@ -133,13 +133,13 @@ x-api-key: tu-api-key-aqui
 
 ## Estados de Lote Válidos
 
-| Estado | Permite Agregar Facturas |
-| ------ | ----------------------- |
-| `pending` | ✅ Sí |
-| `processing` | ✅ Sí |
-| `completed` | ❌ No |
-| `completed_with_errors` | ❌ No |
-| `error` | ❌ No |
+| Estado                  | Permite Agregar Facturas |
+| ----------------------- | ------------------------ |
+| `pending`               | ✅ Sí                    |
+| `processing`            | ✅ Sí                    |
+| `completed`             | ❌ No                    |
+| `completed_with_errors` | ❌ No                    |
+| `error`                 | ❌ No                    |
 
 ## Ejemplos de Uso
 
@@ -190,13 +190,13 @@ const response = await fetch('https://facture.ar/api/invoices/batches/123e4567-e
     {
       amount: 1000.0,
       description: 'Venta de servicios',
-      cuitId: '456e7890-e89b-12d3-a456-426614174001'
+      cuitId: '456e7890-e89b-12d3-a456-426614174001',
     },
     {
       amount: 2000.0,
       description: 'Venta de productos',
-      cuitId: '456e7890-e89b-12d3-a456-426614174001'
-    }
+      cuitId: '456e7890-e89b-12d3-a456-426614174001',
+    },
   ]),
 });
 
@@ -251,7 +251,7 @@ if result.get('batch'):
 1. Verifica el estado del lote antes de intentar agregar facturas
 2. Crea un nuevo lote si necesitas agregar más facturas
 3. Solo se pueden agregar facturas a lotes en estado `pending` o `processing`
-</Accordion>
+   </Accordion>
 
 <Accordion title="Error: Límite de suscripción excedido">
 **Causa**: Has alcanzado el límite mensual de facturas de tu plan.
@@ -261,7 +261,7 @@ if result.get('batch'):
 1. Verifica tu límite de suscripción actual
 2. Espera al próximo período de facturación
 3. Considera actualizar tu plan si necesitas más facturas
-</Accordion>
+   </Accordion>
 
 <Accordion title="Error: Datos inválidos">
 **Causa**: Los datos de las facturas no pasan la validación.
@@ -271,7 +271,7 @@ if result.get('batch'):
 1. Revisa los detalles del error en la respuesta
 2. Corrige los datos según los mensajes de error
 3. Asegúrate de que todos los campos requeridos estén presentes
-</Accordion>
+   </Accordion>
 
 ## 📞 Soporte
 

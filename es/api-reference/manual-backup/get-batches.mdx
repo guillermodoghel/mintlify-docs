@@ -28,10 +28,10 @@ x-api-key: tu-api-key-aqui
 
 ## Parámetros de Consulta
 
-| Parámetro | Tipo | Requerido | Descripción | Ejemplo |
-| --------- | ---- | --------- | ----------- | ------- |
-| `page` | number | ❌ | Número de página (por defecto: 1) | `1` |
-| `limit` | number | ❌ | Elementos por página (por defecto: 10, máx: 100) | `20` |
+| Parámetro | Tipo   | Requerido | Descripción                                      | Ejemplo |
+| --------- | ------ | --------- | ------------------------------------------------ | ------- |
+| `page`    | number | ❌        | Número de página (por defecto: 1)                | `1`     |
+| `limit`   | number | ❌        | Elementos por página (por defecto: 10, máx: 100) | `20`    |
 
 ## Respuesta
 
@@ -104,60 +104,60 @@ x-api-key: tu-api-key-aqui
 
 ### Lote (Batch)
 
-| Campo | Tipo | Descripción |
-| ----- | ---- | ----------- |
-| `id` | string | ID único del lote |
-| `status` | string | Estado del lote |
-| `totalItems` | number | Total de items en el lote |
-| `processedItems` | number | Items procesados |
-| `successfulItems` | number | Items exitosos |
-| `failedItems` | number | Items fallidos |
-| `environment` | string | Ambiente (production/homologation) |
-| `createdAt` | string | Fecha de creación (ISO 8601) |
-| `updatedAt` | string | Fecha de última actualización (ISO 8601) |
-| `jobs` | array | Items del lote |
+| Campo             | Tipo   | Descripción                              |
+| ----------------- | ------ | ---------------------------------------- |
+| `id`              | string | ID único del lote                        |
+| `status`          | string | Estado del lote                          |
+| `totalItems`      | number | Total de items en el lote                |
+| `processedItems`  | number | Items procesados                         |
+| `successfulItems` | number | Items exitosos                           |
+| `failedItems`     | number | Items fallidos                           |
+| `environment`     | string | Ambiente (production/homologation)       |
+| `createdAt`       | string | Fecha de creación (ISO 8601)             |
+| `updatedAt`       | string | Fecha de última actualización (ISO 8601) |
+| `jobs`            | array  | Items del lote                           |
 
 ### Item del Lote (Job)
 
-| Campo | Tipo | Descripción |
-| ----- | ---- | ----------- |
-| `id` | string | ID único del item |
-| `status` | string | Estado del item |
-| `order` | number | Orden en el lote |
-| `createdAt` | string | Fecha de creación (ISO 8601) |
-| `updatedAt` | string | Fecha de última actualización (ISO 8601) |
-| `requestBody` | object | Datos de la factura original |
-| `responseBody` | object | Respuesta del procesamiento |
+| Campo          | Tipo   | Descripción                              |
+| -------------- | ------ | ---------------------------------------- |
+| `id`           | string | ID único del item                        |
+| `status`       | string | Estado del item                          |
+| `order`        | number | Orden en el lote                         |
+| `createdAt`    | string | Fecha de creación (ISO 8601)             |
+| `updatedAt`    | string | Fecha de última actualización (ISO 8601) |
+| `requestBody`  | object | Datos de la factura original             |
+| `responseBody` | object | Respuesta del procesamiento              |
 
 ### Paginación
 
-| Campo | Tipo | Descripción |
-| ----- | ---- | ----------- |
-| `page` | number | Página actual |
-| `limit` | number | Elementos por página |
-| `totalCount` | number | Total de lotes |
-| `totalPages` | number | Total de páginas |
+| Campo         | Tipo    | Descripción          |
+| ------------- | ------- | -------------------- |
+| `page`        | number  | Página actual        |
+| `limit`       | number  | Elementos por página |
+| `totalCount`  | number  | Total de lotes       |
+| `totalPages`  | number  | Total de páginas     |
 | `hasNextPage` | boolean | Hay página siguiente |
-| `hasPrevPage` | boolean | Hay página anterior |
+| `hasPrevPage` | boolean | Hay página anterior  |
 
 ## Estados de Lote
 
-| Estado | Descripción |
-| ------ | ----------- |
-| `pending` | Lote creado, esperando procesamiento |
-| `processing` | Lote en proceso |
-| `completed` | Lote procesado completamente |
-| `completed_with_errors` | Lote procesado con algunos errores |
-| `error` | Lote falló completamente |
+| Estado                  | Descripción                          |
+| ----------------------- | ------------------------------------ |
+| `pending`               | Lote creado, esperando procesamiento |
+| `processing`            | Lote en proceso                      |
+| `completed`             | Lote procesado completamente         |
+| `completed_with_errors` | Lote procesado con algunos errores   |
+| `error`                 | Lote falló completamente             |
 
 ## Estados de Item
 
-| Estado | Descripción |
-| ------ | ----------- |
-| `pending` | Item en cola |
-| `processing` | Item siendo procesado |
-| `completed` | Item procesado exitosamente |
-| `error` | Item falló en el procesamiento |
+| Estado       | Descripción                    |
+| ------------ | ------------------------------ |
+| `pending`    | Item en cola                   |
+| `processing` | Item siendo procesado          |
+| `completed`  | Item procesado exitosamente    |
+| `error`      | Item falló en el procesamiento |
 
 ## Ejemplos de Uso
 
@@ -232,7 +232,7 @@ if result['pagination']['hasNextPage']:
 1. Verifica que hayas creado al menos un lote de facturas
 2. Asegúrate de estar usando el ambiente correcto
 3. Revisa que el lote no esté en estado de error
-</Accordion>
+   </Accordion>
 
 <Accordion title="Error: Límite excedido">
 **Causa**: El parámetro limit excede el máximo permitido.
@@ -242,7 +242,7 @@ if result['pagination']['hasNextPage']:
 1. Usa un límite menor o igual a 100
 2. Implementa paginación para obtener más resultados
 3. Usa filtros más específicos si están disponibles
-</Accordion>
+   </Accordion>
 
 <Accordion title="Error: No autorizado">
 **Causa**: API key inválida o sesión expirada.
@@ -252,7 +252,7 @@ if result['pagination']['hasNextPage']:
 1. Verifica que tu API key sea válida
 2. Asegúrate de incluir el header `x-api-key`
 3. Regenera tu API key si es necesario
-</Accordion>
+   </Accordion>
 
 ## 📞 Soporte
 

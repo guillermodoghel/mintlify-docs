@@ -28,20 +28,20 @@ x-api-key: tu-api-key-aqui
 
 ## Parámetros de Consulta
 
-| Parámetro | Tipo | Requerido | Descripción | Ejemplo |
-| --------- | ---- | --------- | ----------- | ------- |
-| `cuitId` | string | ❌ | Filtrar por ID de CUIT | `"123e4567-e89b-12d3-a456-426614174000"` |
-| `status` | string | ❌ | Filtrar por estado | `"success"` |
-| `invoiceType` | number | ❌ | Filtrar por tipo de factura | `11` |
-| `dateFrom` | string | ❌ | Fecha desde (YYYY-MM-DD) | `"2024-01-01"` |
-| `dateTo` | string | ❌ | Fecha hasta (YYYY-MM-DD) | `"2024-01-31"` |
-| `amountMin` | number | ❌ | Monto mínimo | `100.0` |
-| `amountMax` | number | ❌ | Monto máximo | `5000.0` |
-| `clientName` | string | ❌ | Buscar por nombre de cliente | `"Cliente S.A."` |
-| `page` | number | ❌ | Número de página (por defecto: 1) | `1` |
-| `limit` | number | ❌ | Elementos por página (por defecto: 20, máx: 100) | `50` |
-| `sortBy` | string | ❌ | Campo para ordenar | `"createdAt"` |
-| `sortOrder` | string | ❌ | Orden (asc/desc, por defecto: desc) | `"desc"` |
+| Parámetro     | Tipo   | Requerido | Descripción                                      | Ejemplo                                  |
+| ------------- | ------ | --------- | ------------------------------------------------ | ---------------------------------------- |
+| `cuitId`      | string | ❌        | Filtrar por ID de CUIT                           | `"123e4567-e89b-12d3-a456-426614174000"` |
+| `status`      | string | ❌        | Filtrar por estado                               | `"success"`                              |
+| `invoiceType` | number | ❌        | Filtrar por tipo de factura                      | `11`                                     |
+| `dateFrom`    | string | ❌        | Fecha desde (YYYY-MM-DD)                         | `"2024-01-01"`                           |
+| `dateTo`      | string | ❌        | Fecha hasta (YYYY-MM-DD)                         | `"2024-01-31"`                           |
+| `amountMin`   | number | ❌        | Monto mínimo                                     | `100.0`                                  |
+| `amountMax`   | number | ❌        | Monto máximo                                     | `5000.0`                                 |
+| `clientName`  | string | ❌        | Buscar por nombre de cliente                     | `"Cliente S.A."`                         |
+| `page`        | number | ❌        | Número de página (por defecto: 1)                | `1`                                      |
+| `limit`       | number | ❌        | Elementos por página (por defecto: 20, máx: 100) | `50`                                     |
+| `sortBy`      | string | ❌        | Campo para ordenar                               | `"createdAt"`                            |
+| `sortOrder`   | string | ❌        | Orden (asc/desc, por defecto: desc)              | `"desc"`                                 |
 
 ## Respuesta
 
@@ -129,53 +129,53 @@ x-api-key: tu-api-key-aqui
 
 ### Datos de Factura
 
-| Campo | Tipo | Descripción |
-| ----- | ---- | ----------- |
-| `id` | string | ID único de la factura |
-| `cuitId` | string | ID del CUIT que emitió la factura |
-| `amount` | number | Monto total de la factura |
-| `description` | string | Descripción de la factura |
-| `docTipo` | number | Tipo de documento del cliente |
-| `docNro` | number | Número de documento del cliente |
-| `invoiceType` | number | Tipo de factura |
-| `concepto` | number | Tipo de concepto |
-| `ptoVta` | number | Punto de venta |
-| `clientName` | string | Nombre del cliente |
-| `cbteFch` | string | Fecha de la factura (YYYYMMDD) |
-| `status` | string | Estado de la factura |
-| `afipData` | object | Datos de AFIP (solo si status = success) |
-| `createdAt` | string | Fecha de creación (ISO 8601) |
-| `updatedAt` | string | Fecha de última actualización (ISO 8601) |
+| Campo         | Tipo   | Descripción                              |
+| ------------- | ------ | ---------------------------------------- |
+| `id`          | string | ID único de la factura                   |
+| `cuitId`      | string | ID del CUIT que emitió la factura        |
+| `amount`      | number | Monto total de la factura                |
+| `description` | string | Descripción de la factura                |
+| `docTipo`     | number | Tipo de documento del cliente            |
+| `docNro`      | number | Número de documento del cliente          |
+| `invoiceType` | number | Tipo de factura                          |
+| `concepto`    | number | Tipo de concepto                         |
+| `ptoVta`      | number | Punto de venta                           |
+| `clientName`  | string | Nombre del cliente                       |
+| `cbteFch`     | string | Fecha de la factura (YYYYMMDD)           |
+| `status`      | string | Estado de la factura                     |
+| `afipData`    | object | Datos de AFIP (solo si status = success) |
+| `createdAt`   | string | Fecha de creación (ISO 8601)             |
+| `updatedAt`   | string | Fecha de última actualización (ISO 8601) |
 
 ### Paginación
 
-| Campo | Tipo | Descripción |
-| ----- | ---- | ----------- |
-| `page` | number | Página actual |
-| `limit` | number | Elementos por página |
-| `total` | number | Total de elementos |
-| `totalPages` | number | Total de páginas |
-| `hasNext` | boolean | Hay página siguiente |
-| `hasPrev` | boolean | Hay página anterior |
+| Campo        | Tipo    | Descripción          |
+| ------------ | ------- | -------------------- |
+| `page`       | number  | Página actual        |
+| `limit`      | number  | Elementos por página |
+| `total`      | number  | Total de elementos   |
+| `totalPages` | number  | Total de páginas     |
+| `hasNext`    | boolean | Hay página siguiente |
+| `hasPrev`    | boolean | Hay página anterior  |
 
 ## Estados de Factura
 
-| Estado | Descripción |
-| ------ | ----------- |
-| `pending` | Factura en cola, esperando procesamiento |
-| `processing` | Factura siendo procesada por AFIP |
-| `success` | Factura procesada exitosamente |
-| `failed` | Factura falló en el procesamiento |
+| Estado       | Descripción                              |
+| ------------ | ---------------------------------------- |
+| `pending`    | Factura en cola, esperando procesamiento |
+| `processing` | Factura siendo procesada por AFIP        |
+| `success`    | Factura procesada exitosamente           |
+| `failed`     | Factura falló en el procesamiento        |
 
 ## Campos de Ordenamiento
 
-| Campo | Descripción |
-| ----- | ----------- |
-| `createdAt` | Fecha de creación |
-| `updatedAt` | Fecha de última actualización |
-| `amount` | Monto de la factura |
-| `cbteFch` | Fecha de la factura |
-| `clientName` | Nombre del cliente |
+| Campo        | Descripción                   |
+| ------------ | ----------------------------- |
+| `createdAt`  | Fecha de creación             |
+| `updatedAt`  | Fecha de última actualización |
+| `amount`     | Monto de la factura           |
+| `cbteFch`    | Fecha de la factura           |
+| `clientName` | Nombre del cliente            |
 
 ## Ejemplos de Uso
 
@@ -251,7 +251,7 @@ print('Total:', result['pagination']['total'])
 1. Usa el formato YYYY-MM-DD para las fechas
 2. Verifica que las fechas sean válidas
 3. Asegúrate de que dateFrom sea anterior a dateTo
-</Accordion>
+   </Accordion>
 
 <Accordion title="Error: Límite excedido">
 **Causa**: El parámetro limit excede el máximo permitido.
@@ -261,7 +261,7 @@ print('Total:', result['pagination']['total'])
 1. Usa un límite menor o igual a 100
 2. Implementa paginación para obtener más resultados
 3. Usa filtros más específicos para reducir resultados
-</Accordion>
+   </Accordion>
 
 <Accordion title="Error: Estado inválido">
 **Causa**: El estado especificado no es válido.
@@ -271,7 +271,7 @@ print('Total:', result['pagination']['total'])
 1. Usa solo estados válidos: pending, processing, success, failed
 2. Verifica la ortografía del estado
 3. Consulta la tabla de estados disponibles
-</Accordion>
+   </Accordion>
 
 ## 📞 Soporte
 

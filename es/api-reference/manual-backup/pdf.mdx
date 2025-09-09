@@ -28,16 +28,16 @@ x-api-key: tu-api-key-aqui
 
 ## Parámetros de Ruta
 
-| Parámetro | Tipo | Requerido | Descripción | Ejemplo |
-| --------- | ---- | --------- | ----------- | ------- |
+| Parámetro | Tipo   | Requerido | Descripción            | Ejemplo                                  |
+| --------- | ------ | --------- | ---------------------- | ---------------------------------------- |
 | `id`      | string | ✅        | ID único de la factura | `"123e4567-e89b-12d3-a456-426614174000"` |
 
 ## Parámetros de Consulta
 
-| Parámetro | Tipo | Requerido | Descripción | Ejemplo |
-| --------- | ---- | --------- | ----------- | ------- |
-| `format` | string | ❌ | Formato del PDF (por defecto: "standard") | `"standard"` |
-| `download` | boolean | ❌ | Forzar descarga (por defecto: true) | `true` |
+| Parámetro  | Tipo    | Requerido | Descripción                               | Ejemplo      |
+| ---------- | ------- | --------- | ----------------------------------------- | ------------ |
+| `format`   | string  | ❌        | Formato del PDF (por defecto: "standard") | `"standard"` |
+| `download` | boolean | ❌        | Forzar descarga (por defecto: true)       | `true`       |
 
 ## Respuesta
 
@@ -48,6 +48,7 @@ x-api-key: tu-api-key-aqui
 **Content-Type**: `application/pdf`
 
 **Headers**:
+
 ```
 Content-Type: application/pdf
 Content-Disposition: attachment; filename="factura-0001-00000001-production.pdf"
@@ -107,10 +108,10 @@ Cache-Control: no-cache
 
 ## Formatos de PDF
 
-| Formato | Descripción |
-| ------- | ----------- |
-| `standard` | PDF estándar con diseño oficial de AFIP |
-| `simplified` | PDF simplificado (si está disponible) |
+| Formato      | Descripción                             |
+| ------------ | --------------------------------------- |
+| `standard`   | PDF estándar con diseño oficial de AFIP |
+| `simplified` | PDF simplificado (si está disponible)   |
 
 ## Ejemplos de Uso
 
@@ -142,7 +143,7 @@ const response = await fetch('https://facture.ar/api/invoices/123e4567-e89b-12d3
 
 if (response.ok) {
   const pdfBlob = await response.blob();
-  
+
   // Crear enlace de descarga
   const url = window.URL.createObjectURL(pdfBlob);
   const a = document.createElement('a');
@@ -210,7 +211,7 @@ if url_response.status_code == 200:
 ### React/Next.js
 
 ```jsx
-const downloadPDF = async (invoiceId) => {
+const downloadPDF = async invoiceId => {
   try {
     const response = await fetch(`/api/invoices/${invoiceId}/pdf`, {
       method: 'GET',
@@ -268,7 +269,7 @@ const downloadPDF = async (invoiceId) => {
 1. Verifica que la factura tenga estado "success"
 2. Espera unos minutos y vuelve a intentar
 3. Contacta soporte si el problema persiste
-</Accordion>
+   </Accordion>
 
 <Accordion title="Error: Factura no encontrada">
 **Causa**: El ID de la factura no existe o no tienes acceso a ella.
@@ -278,7 +279,7 @@ const downloadPDF = async (invoiceId) => {
 1. Verifica que el ID de la factura sea correcto
 2. Asegúrate de que la factura pertenezca a tu cuenta
 3. Verifica que estés usando la API key correcta
-</Accordion>
+   </Accordion>
 
 <Accordion title="Error: Descarga fallida">
 **Causa**: Problema con la descarga del archivo.
@@ -288,7 +289,7 @@ const downloadPDF = async (invoiceId) => {
 1. Verifica tu conexión a internet
 2. Intenta descargar nuevamente
 3. Usa un navegador diferente si es necesario
-</Accordion>
+   </Accordion>
 
 ## 📞 Soporte
 

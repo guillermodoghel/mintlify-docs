@@ -28,8 +28,8 @@ x-api-key: tu-api-key-aqui
 
 ## Parámetros de Ruta
 
-| Parámetro | Tipo   | Requerido | Descripción | Ejemplo |
-| --------- | ------ | --------- | ----------- | ------- |
+| Parámetro | Tipo   | Requerido | Descripción            | Ejemplo                                  |
+| --------- | ------ | --------- | ---------------------- | ---------------------------------------- |
 | `id`      | string | ✅        | ID único de la factura | `"123e4567-e89b-12d3-a456-426614174000"` |
 
 ## Respuesta
@@ -93,32 +93,32 @@ x-api-key: tu-api-key-aqui
 
 ## Campos de Respuesta
 
-| Campo | Tipo | Descripción |
-| ----- | ---- | ----------- |
-| `id` | string | ID único de la factura |
-| `cuitId` | string | ID del CUIT que emitió la factura |
-| `amount` | number | Monto total de la factura |
-| `description` | string | Descripción de la factura |
-| `docTipo` | number | Tipo de documento del cliente |
-| `docNro` | number | Número de documento del cliente |
-| `invoiceType` | number | Tipo de factura |
-| `concepto` | number | Tipo de concepto |
-| `ptoVta` | number | Punto de venta |
-| `clientName` | string | Nombre del cliente |
-| `cbteFch` | string | Fecha de la factura (YYYYMMDD) |
-| `status` | string | Estado de la factura (pending, processing, success, failed) |
-| `afipData` | object | Datos de AFIP (solo si status = success) |
-| `createdAt` | string | Fecha de creación (ISO 8601) |
-| `updatedAt` | string | Fecha de última actualización (ISO 8601) |
+| Campo         | Tipo   | Descripción                                                 |
+| ------------- | ------ | ----------------------------------------------------------- |
+| `id`          | string | ID único de la factura                                      |
+| `cuitId`      | string | ID del CUIT que emitió la factura                           |
+| `amount`      | number | Monto total de la factura                                   |
+| `description` | string | Descripción de la factura                                   |
+| `docTipo`     | number | Tipo de documento del cliente                               |
+| `docNro`      | number | Número de documento del cliente                             |
+| `invoiceType` | number | Tipo de factura                                             |
+| `concepto`    | number | Tipo de concepto                                            |
+| `ptoVta`      | number | Punto de venta                                              |
+| `clientName`  | string | Nombre del cliente                                          |
+| `cbteFch`     | string | Fecha de la factura (YYYYMMDD)                              |
+| `status`      | string | Estado de la factura (pending, processing, success, failed) |
+| `afipData`    | object | Datos de AFIP (solo si status = success)                    |
+| `createdAt`   | string | Fecha de creación (ISO 8601)                                |
+| `updatedAt`   | string | Fecha de última actualización (ISO 8601)                    |
 
 ## Estados de Factura
 
-| Estado | Descripción |
-| ------ | ----------- |
-| `pending` | Factura en cola, esperando procesamiento |
-| `processing` | Factura siendo procesada por AFIP |
-| `success` | Factura procesada exitosamente |
-| `failed` | Factura falló en el procesamiento |
+| Estado       | Descripción                              |
+| ------------ | ---------------------------------------- |
+| `pending`    | Factura en cola, esperando procesamiento |
+| `processing` | Factura siendo procesada por AFIP        |
+| `success`    | Factura procesada exitosamente           |
+| `failed`     | Factura falló en el procesamiento        |
 
 ## Ejemplos de Uso
 
@@ -169,7 +169,7 @@ print('Factura:', invoice)
 1. Verifica que el ID de la factura sea correcto
 2. Asegúrate de que la factura pertenezca a tu cuenta
 3. Verifica que estés usando la API key correcta
-</Accordion>
+   </Accordion>
 
 <Accordion title="Error: No autorizado">
 **Causa**: API key inválida o sesión expirada.
@@ -179,7 +179,7 @@ print('Factura:', invoice)
 1. Verifica que tu API key sea válida
 2. Asegúrate de incluir el header `x-api-key`
 3. Regenera tu API key si es necesario
-</Accordion>
+   </Accordion>
 
 ## 📞 Soporte
 

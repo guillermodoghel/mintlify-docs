@@ -36,6 +36,7 @@ Recomendamos generar tu playground de API desde una especificación OpenAPI. Con
     <Callout type="warning">
       ⚠️ **Importante**: Usa tu API key de testing (`test_sk_`) para experimentar en el playground. Nunca uses tu API key de producción (`prod_sk_`) para pruebas.
     </Callout>
+
   </Step>
 
   <Step title="Explorar endpoints">
@@ -46,6 +47,7 @@ Recomendamos generar tu playground de API desde una especificación OpenAPI. Con
     - **POST /invoices** - Crear facturas
     - **GET /invoices/{id}** - Obtener factura por ID
     - **GET /invoices/search** - Buscar facturas
+
   </Step>
 
   <Step title="Probar peticiones">
@@ -104,6 +106,7 @@ Puedes personalizar tu playground de API definiendo las siguientes propiedades e
     <ResponseField name="proxy" type="boolean" defaultOpen="True">
       Si pasar las peticiones de API a través de un servidor proxy. Por defecto es `true`.
     </ResponseField>
+
   </Expandable>
 </ResponseField>
 
@@ -120,6 +123,7 @@ Puedes personalizar tu playground de API definiendo las siguientes propiedades e
     <ResponseField name="defaults" type="&#x22;required&#x22; | &#x22;all&#x22;">
       Si mostrar parámetros opcionales en los ejemplos de API. Por defecto es `all`.
     </ResponseField>
+
   </Expandable>
 </ResponseField>
 
@@ -127,15 +131,15 @@ Puedes personalizar tu playground de API definiendo las siguientes propiedades e
 
 ```json
 {
- "api": {
-   "playground": {
-     "display": "interactive"
-   },
-   "examples": {
-     "languages": ["curl", "python", "javascript"],
-     "defaults": "required"
-   }
- }
+  "api": {
+    "playground": {
+      "display": "interactive"
+    },
+    "examples": {
+      "languages": ["curl", "python", "javascript"],
+      "defaults": "required"
+    }
+  }
 }
 ```
 
@@ -171,5 +175,5 @@ Si necesitas ayuda con el playground:
 - 🎥 **Videollamada**: Para asistencia personalizada
 
 <Callout type="info">
-💡 **Tip**: El playground es la forma más rápida de probar la API y entender cómo funciona. ¡Úsalo para experimentar antes de implementar en tu aplicación!
+  💡 **Tip**: El playground es la forma más rápida de probar la API y entender cómo funciona. ¡Úsalo para experimentar antes de implementar en tu aplicación!
 </Callout>

@@ -19,27 +19,27 @@ Este endpoint requiere autenticación web. Usa el middleware `withWebOnly`.
 
 ## Parámetros de Ruta
 
-| Parámetro | Tipo | Requerido | Descripción | Ejemplo |
-| --------- | ---- | --------- | ----------- | ------- |
-| `name` | string | ✅ | Nombre del parámetro AFIP a obtener | `"FEPARAMGETTIPOSDOC"` |
+| Parámetro | Tipo   | Requerido | Descripción                         | Ejemplo                |
+| --------- | ------ | --------- | ----------------------------------- | ---------------------- |
+| `name`    | string | ✅        | Nombre del parámetro AFIP a obtener | `"FEPARAMGETTIPOSDOC"` |
 
 ## Parámetros de Consulta
 
-| Parámetro | Tipo | Requerido | Descripción | Ejemplo |
-| --------- | ---- | --------- | ----------- | ------- |
-| `codId` | string | ❌ | ID de moneda (requerido para `FEPARAMGETCOTIZACION`) | `"USD"` |
+| Parámetro | Tipo   | Requerido | Descripción                                          | Ejemplo |
+| --------- | ------ | --------- | ---------------------------------------------------- | ------- |
+| `codId`   | string | ❌        | ID de moneda (requerido para `FEPARAMGETCOTIZACION`) | `"USD"` |
 
 ## Parámetros Disponibles
 
-| Parámetro | Descripción |
-| --------- | ----------- |
-| `FEPARAMGETCONDICIONIVARECEPTOR` | Tipos de condición de IVA para receptores |
-| `FEPARAMGETTIPOSDOC` | Tipos de documento |
-| `FEPARAMGETTIPOSIVA` | Tipos de IVA |
-| `FEPARAMGETTIPOSCBTE` | Tipos de comprobante |
-| `FEPARAMGETTIPOSMONEDAS` | Tipos de monedas |
-| `FEPARAMGETTIPOSCONCEPTO` | Tipos de concepto |
-| `FEPARAMGETCOTIZACION` | Cotizaciones de monedas (requiere `codId`) |
+| Parámetro                        | Descripción                                |
+| -------------------------------- | ------------------------------------------ |
+| `FEPARAMGETCONDICIONIVARECEPTOR` | Tipos de condición de IVA para receptores  |
+| `FEPARAMGETTIPOSDOC`             | Tipos de documento                         |
+| `FEPARAMGETTIPOSIVA`             | Tipos de IVA                               |
+| `FEPARAMGETTIPOSCBTE`            | Tipos de comprobante                       |
+| `FEPARAMGETTIPOSMONEDAS`         | Tipos de monedas                           |
+| `FEPARAMGETTIPOSCONCEPTO`        | Tipos de concepto                          |
+| `FEPARAMGETCOTIZACION`           | Cotizaciones de monedas (requiere `codId`) |
 
 ## Respuesta
 
@@ -105,11 +105,11 @@ Este endpoint requiere autenticación web. Usa el middleware `withWebOnly`.
 
 ## Estructura de Respuesta
 
-| Campo | Tipo | Descripción |
-| ----- | ---- | ----------- |
-| `ResultGet` | object | Datos del parámetro solicitado |
-| `Errors` | array | Errores de AFIP (null si no hay errores) |
-| `Events` | array | Eventos de AFIP (null si no hay eventos) |
+| Campo       | Tipo   | Descripción                              |
+| ----------- | ------ | ---------------------------------------- |
+| `ResultGet` | object | Datos del parámetro solicitado           |
+| `Errors`    | array  | Errores de AFIP (null si no hay errores) |
+| `Events`    | array  | Eventos de AFIP (null si no hay eventos) |
 
 ## Ejemplos de Uso
 
@@ -186,28 +186,28 @@ print('Cotización USD:', cotizacion['ResultGet'])
 
 ## Tipos de Documento Comunes
 
-| ID | Descripción |
-| -- | ----------- |
-| 80 | CUIT |
-| 86 | CUIL |
-| 99 | Consumidor Final |
+| ID  | Descripción      |
+| --- | ---------------- |
+| 80  | CUIT             |
+| 86  | CUIL             |
+| 99  | Consumidor Final |
 
 ## Tipos de IVA Comunes
 
-| ID | Descripción |
-| -- | ----------- |
-| 3 | 0% |
-| 4 | 10.5% |
-| 5 | 21% |
-| 6 | 27% |
+| ID  | Descripción |
+| --- | ----------- |
+| 3   | 0%          |
+| 4   | 10.5%       |
+| 5   | 21%         |
+| 6   | 27%         |
 
 ## Tipos de Comprobante Comunes
 
-| ID | Descripción |
-| -- | ----------- |
-| 1 | Factura A |
-| 6 | Factura B |
-| 11 | Factura C |
+| ID  | Descripción |
+| --- | ----------- |
+| 1   | Factura A   |
+| 6   | Factura B   |
+| 11  | Factura C   |
 
 ## ❓ Solución de Problemas
 
@@ -219,7 +219,7 @@ print('Cotización USD:', cotizacion['ResultGet'])
 1. Verifica que el nombre del parámetro sea correcto
 2. Consulta la tabla de parámetros disponibles
 3. Asegúrate de usar el nombre exacto del parámetro
-</Accordion>
+   </Accordion>
 
 <Accordion title="Error: Parámetro requerido faltante">
 **Causa**: Falta el parámetro `codId` para cotizaciones.
@@ -229,7 +229,7 @@ print('Cotización USD:', cotizacion['ResultGet'])
 1. Incluye el parámetro `codId` en la consulta
 2. Usa un código de moneda válido (ej: USD, EUR)
 3. Verifica que la moneda esté disponible en AFIP
-</Accordion>
+   </Accordion>
 
 <Accordion title="Error: No autorizado">
 **Causa**: No tienes autenticación web válida.
@@ -239,7 +239,7 @@ print('Cotización USD:', cotizacion['ResultGet'])
 1. Asegúrate de estar logueado en la plataforma
 2. Incluye las cookies de sesión en la petición
 3. Verifica que tu sesión no haya expirado
-</Accordion>
+   </Accordion>
 
 ## 📞 Soporte
 

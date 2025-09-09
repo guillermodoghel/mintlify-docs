@@ -34,8 +34,8 @@ Establece el tipo de concepto por defecto para un CUIT. Este valor se usará al 
 
 ### Parámetros de Ruta
 
-| Parámetro | Tipo   | Requerido | Descripción |
-| --------- | ------ | --------- | ----------- |
+| Parámetro | Tipo   | Requerido | Descripción   |
+| --------- | ------ | --------- | ------------- |
 | `cuitId`  | string | ✅        | UUID del CUIT |
 
 ### Cuerpo de la Petición
@@ -48,9 +48,9 @@ Establece el tipo de concepto por defecto para un CUIT. Este valor se usará al 
 
 ### Parámetros
 
-| Parámetro        | Tipo   | Requerido | Descripción                                   | Ejemplo |
-| ---------------- | ------ | --------- | --------------------------------------------- | ------- |
-| `defaultConcept` | number | ✅        | Tipo de concepto (1=Productos, 2=Servicios, 3=Ambos) | `2` |
+| Parámetro        | Tipo   | Requerido | Descripción                                          | Ejemplo |
+| ---------------- | ------ | --------- | ---------------------------------------------------- | ------- |
+| `defaultConcept` | number | ✅        | Tipo de concepto (1=Productos, 2=Servicios, 3=Ambos) | `2`     |
 
 ### Respuesta
 
@@ -96,8 +96,8 @@ Establece el punto de venta por defecto para un CUIT. Este valor se usará al cr
 
 ### Parámetros de Ruta
 
-| Parámetro | Tipo   | Requerido | Descripción |
-| --------- | ------ | --------- | ----------- |
+| Parámetro | Tipo   | Requerido | Descripción   |
+| --------- | ------ | --------- | ------------- |
 | `cuitId`  | string | ✅        | UUID del CUIT |
 
 ### Cuerpo de la Petición
@@ -110,9 +110,9 @@ Establece el punto de venta por defecto para un CUIT. Este valor se usará al cr
 
 ### Parámetros
 
-| Parámetro    | Tipo   | Requerido | Descripción                   | Ejemplo |
-| ------------ | ------ | --------- | ----------------------------- | ------- |
-| `defaultPos` | number | ✅        | Número de punto de venta (1-9999) | `1` |
+| Parámetro    | Tipo   | Requerido | Descripción                       | Ejemplo |
+| ------------ | ------ | --------- | --------------------------------- | ------- |
+| `defaultPos` | number | ✅        | Número de punto de venta (1-9999) | `1`     |
 
 ### Respuesta
 
@@ -158,8 +158,8 @@ Establece el tipo de factura por defecto para un CUIT. Este valor se usará al c
 
 ### Parámetros de Ruta
 
-| Parámetro | Tipo   | Requerido | Descripción |
-| --------- | ------ | --------- | ----------- |
+| Parámetro | Tipo   | Requerido | Descripción   |
+| --------- | ------ | --------- | ------------- |
 | `cuitId`  | string | ✅        | UUID del CUIT |
 
 ### Cuerpo de la Petición
@@ -172,9 +172,9 @@ Establece el tipo de factura por defecto para un CUIT. Este valor se usará al c
 
 ### Parámetros
 
-| Parámetro            | Tipo   | Requerido | Descripción                                    | Ejemplo |
-| -------------------- | ------ | --------- | ---------------------------------------------- | ------- |
-| `defaultInvoiceType` | number | ✅        | Tipo de factura (1=Factura A, 11=Factura C, etc.) | `11` |
+| Parámetro            | Tipo   | Requerido | Descripción                                       | Ejemplo |
+| -------------------- | ------ | --------- | ------------------------------------------------- | ------- |
+| `defaultInvoiceType` | number | ✅        | Tipo de factura (1=Factura A, 11=Factura C, etc.) | `11`    |
 
 ### Respuesta
 
@@ -369,38 +369,38 @@ print('Resultado Tipo de Factura:', invoice_type_result['message'])
 
 ## Tipos de Concepto
 
-| Valor | Descripción           | Nombre en Español          |
-| ----- | --------------------- | -------------------------- |
-| 1     | Products              | Productos                  |
-| 2     | Services              | Servicios                  |
-| 3     | Products and Services | Productos y Servicios      |
+| Valor | Descripción           | Nombre en Español     |
+| ----- | --------------------- | --------------------- |
+| 1     | Products              | Productos             |
+| 2     | Services              | Servicios             |
+| 3     | Products and Services | Productos y Servicios |
 
 ## Tipos de Factura
 
-| Valor | Descripción           | Nombre en Español          |
-| ----- | --------------------- | -------------------------- |
-| 1     | Factura A             | Factura A                  |
-| 6     | Factura B             | Factura B                  |
-| 11    | Factura C             | Factura C                  |
-| 12    | Nota de Débito A      | Nota de Débito A           |
-| 13    | Nota de Débito B      | Nota de Débito B           |
-| 15    | Nota de Débito C      | Nota de Débito C           |
-| 16    | Nota de Crédito A     | Nota de Crédito A          |
-| 17    | Nota de Crédito B     | Nota de Crédito B          |
-| 18    | Nota de Crédito C     | Nota de Crédito C          |
-| 19    | Recibo A              | Recibo A                   |
-| 20    | Recibo B              | Recibo B                   |
-| 21    | Recibo C              | Recibo C                   |
-| 83    | Tique Factura A       | Tique Factura A            |
-| 88    | Tique Factura B       | Tique Factura B            |
+| Valor | Descripción       | Nombre en Español |
+| ----- | ----------------- | ----------------- |
+| 1     | Factura A         | Factura A         |
+| 6     | Factura B         | Factura B         |
+| 11    | Factura C         | Factura C         |
+| 12    | Nota de Débito A  | Nota de Débito A  |
+| 13    | Nota de Débito B  | Nota de Débito B  |
+| 15    | Nota de Débito C  | Nota de Débito C  |
+| 16    | Nota de Crédito A | Nota de Crédito A |
+| 17    | Nota de Crédito B | Nota de Crédito B |
+| 18    | Nota de Crédito C | Nota de Crédito C |
+| 19    | Recibo A          | Recibo A          |
+| 20    | Recibo B          | Recibo B          |
+| 21    | Recibo C          | Recibo C          |
+| 83    | Tique Factura A   | Tique Factura A   |
+| 88    | Tique Factura B   | Tique Factura B   |
 
 ## Códigos de Error
 
-| Código               | Descripción                                   |
-| -------------------- | --------------------------------------------- |
-| `VALIDATION_ERROR`   | Valor de concepto o POS inválido             |
-| `CUIT_NOT_FOUND`     | El CUIT no existe o pertenece a otro usuario |
-| `SERVER_ERROR`       | Error interno del servidor                   |
+| Código             | Descripción                                  |
+| ------------------ | -------------------------------------------- |
+| `VALIDATION_ERROR` | Valor de concepto o POS inválido             |
+| `CUIT_NOT_FOUND`   | El CUIT no existe o pertenece a otro usuario |
+| `SERVER_ERROR`     | Error interno del servidor                   |
 
 ## ❓ Solución de Problemas
 
@@ -412,7 +412,7 @@ print('Resultado Tipo de Factura:', invoice_type_result['message'])
 1. Verifica que el `cuitId` sea correcto
 2. Asegúrate de que el CUIT esté configurado y activo
 3. Consulta la lista de CUITs disponibles
-</Accordion>
+   </Accordion>
 
 <Accordion title="Error: Valor de concepto inválido">
 **Causa**: El valor del concepto no es válido.
@@ -422,7 +422,7 @@ print('Resultado Tipo de Factura:', invoice_type_result['message'])
 1. Usa solo valores válidos: 1 (Productos), 2 (Servicios), 3 (Ambos)
 2. Verifica que el valor sea un número entero positivo
 3. Consulta la tabla de tipos de concepto
-</Accordion>
+   </Accordion>
 
 <Accordion title="Error: Punto de venta inválido">
 **Causa**: El número de punto de venta no es válido.
@@ -432,7 +432,7 @@ print('Resultado Tipo de Factura:', invoice_type_result['message'])
 1. Usa valores entre 1 y 9999
 2. Verifica que el punto de venta esté habilitado en AFIP
 3. Asegúrate de que el valor sea un número entero positivo
-</Accordion>
+   </Accordion>
 
 ## 📞 Soporte
 

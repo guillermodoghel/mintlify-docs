@@ -28,11 +28,11 @@ x-api-key: tu-api-key-aqui
 
 ## Parámetros de Consulta
 
-| Parámetro | Tipo | Requerido | Descripción | Ejemplo |
-| --------- | ---- | --------- | ----------- | ------- |
-| `status` | string | ❌ | Filtrar por estado del CUIT | `"active"` |
-| `type` | string | ❌ | Filtrar por tipo de CUIT | `"monotributo"` |
-| `includeDefaults` | boolean | ❌ | Incluir valores por defecto (por defecto: false) | `true` |
+| Parámetro         | Tipo    | Requerido | Descripción                                      | Ejemplo         |
+| ----------------- | ------- | --------- | ------------------------------------------------ | --------------- |
+| `status`          | string  | ❌        | Filtrar por estado del CUIT                      | `"active"`      |
+| `type`            | string  | ❌        | Filtrar por tipo de CUIT                         | `"monotributo"` |
+| `includeDefaults` | boolean | ❌        | Incluir valores por defecto (por defecto: false) | `true`          |
 
 ## Respuesta
 
@@ -91,35 +91,35 @@ x-api-key: tu-api-key-aqui
 
 ## Campos de Respuesta
 
-| Campo | Tipo | Descripción |
-| ----- | ---- | ----------- |
-| `id` | string | ID único del CUIT |
-| `cuit` | string | Número de CUIT (formato: XX-XXXXXXXX-X) |
-| `businessName` | string | Razón social |
-| `status` | string | Estado del CUIT (active, inactive, pending) |
-| `type` | string | Tipo de CUIT (monotributo, iva_responsable, exento) |
-| `category` | string | Categoría fiscal (para monotributo: A, B, C, etc.) |
-| `isDefault` | boolean | Si es el CUIT por defecto |
-| `defaults` | object | Valores por defecto del CUIT |
-| `afipData` | object | Datos específicos de AFIP |
-| `createdAt` | string | Fecha de creación (ISO 8601) |
-| `updatedAt` | string | Fecha de última actualización (ISO 8601) |
+| Campo          | Tipo    | Descripción                                         |
+| -------------- | ------- | --------------------------------------------------- |
+| `id`           | string  | ID único del CUIT                                   |
+| `cuit`         | string  | Número de CUIT (formato: XX-XXXXXXXX-X)             |
+| `businessName` | string  | Razón social                                        |
+| `status`       | string  | Estado del CUIT (active, inactive, pending)         |
+| `type`         | string  | Tipo de CUIT (monotributo, iva_responsable, exento) |
+| `category`     | string  | Categoría fiscal (para monotributo: A, B, C, etc.)  |
+| `isDefault`    | boolean | Si es el CUIT por defecto                           |
+| `defaults`     | object  | Valores por defecto del CUIT                        |
+| `afipData`     | object  | Datos específicos de AFIP                           |
+| `createdAt`    | string  | Fecha de creación (ISO 8601)                        |
+| `updatedAt`    | string  | Fecha de última actualización (ISO 8601)            |
 
 ## Estados de CUIT
 
-| Estado | Descripción |
-| ------ | ----------- |
-| `active` | CUIT activo y configurado |
-| `inactive` | CUIT inactivo |
-| `pending` | CUIT en proceso de configuración |
+| Estado     | Descripción                      |
+| ---------- | -------------------------------- |
+| `active`   | CUIT activo y configurado        |
+| `inactive` | CUIT inactivo                    |
+| `pending`  | CUIT en proceso de configuración |
 
 ## Tipos de CUIT
 
-| Tipo | Descripción |
-| ---- | ----------- |
-| `monotributo` | Monotributista |
+| Tipo              | Descripción     |
+| ----------------- | --------------- |
+| `monotributo`     | Monotributista  |
 | `iva_responsable` | IVA Responsable |
-| `exento` | Exento de IVA |
+| `exento`          | Exento de IVA   |
 
 ## Ejemplos de Uso
 
@@ -198,7 +198,7 @@ print('CUIT por defecto:', default_cuit)
 1. Verifica que hayas configurado al menos un CUIT
 2. Asegúrate de que el CUIT esté activo
 3. Revisa el estado de configuración en tu dashboard
-</Accordion>
+   </Accordion>
 
 <Accordion title="Error: CUIT inactivo">
 **Causa**: El CUIT está inactivo o en proceso de configuración.
@@ -208,7 +208,7 @@ print('CUIT por defecto:', default_cuit)
 1. Verifica el estado del CUIT en tu dashboard
 2. Completa la configuración si está pendiente
 3. Contacta soporte si el CUIT está inactivo
-</Accordion>
+   </Accordion>
 
 <Accordion title="Error: No autorizado">
 **Causa**: API key inválida o sesión expirada.
@@ -218,7 +218,7 @@ print('CUIT por defecto:', default_cuit)
 1. Verifica que tu API key sea válida
 2. Asegúrate de incluir el header `x-api-key`
 3. Regenera tu API key si es necesario
-</Accordion>
+   </Accordion>
 
 ## 📞 Soporte
 
