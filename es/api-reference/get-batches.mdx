@@ -1,0 +1,264 @@
+---
+title: 'GET /invoices/batches - Listar Lotes'
+description: 'Documentación para obtener la lista de lotes de facturas'
+---
+
+# 📦 GET /invoices/batches - Listar Lotes
+
+Este endpoint te permite obtener la lista de lotes de facturas con paginación.
+
+## URL Base
+
+```
+https://facture.ar/api/invoices/batches
+```
+
+## Autenticación
+
+Todas las peticiones requieren autenticación usando:
+
+- **Sesión Web**: Para aplicaciones basadas en navegador
+- **API Key**: Para integraciones servidor a servidor
+
+Incluye tu API key en el header `x-api-key`:
+
+```bash
+x-api-key: tu-api-key-aqui
+```
+
+## Parámetros de Consulta
+
+| Parámetro | Tipo | Requerido | Descripción | Ejemplo |
+| --------- | ---- | --------- | ----------- | ------- |
+| `page` | number | ❌ | Número de página (por defecto: 1) | `1` |
+| `limit` | number | ❌ | Elementos por página (por defecto: 10, máx: 100) | `20` |
+
+## Respuesta
+
+### Éxito (200)
+
+```json
+{
+  "batches": [
+    {
+      "id": "123e4567-e89b-12d3-a456-426614174000",
+      "status": "completed",
+      "totalItems": 5,
+      "processedItems": 5,
+      "successfulItems": 4,
+      "failedItems": 1,
+      "environment": "production",
+      "createdAt": "2024-01-01T10:00:00Z",
+      "updatedAt": "2024-01-01T10:05:00Z",
+      "jobs": [
+        {
+          "id": "456e7890-e89b-12d3-a456-426614174001",
+          "status": "completed",
+          "order": 1,
+          "createdAt": "2024-01-01T10:00:00Z",
+          "updatedAt": "2024-01-01T10:01:00Z",
+          "requestBody": {
+            "amount": 1000.0,
+            "description": "Venta de servicios"
+          },
+          "responseBody": {
+            "success": true,
+            "invoiceId": "789e0123-e89b-12d3-a456-426614174002"
+          }
+        }
+      ]
+    }
+  ],
+  "pagination": {
+    "page": 1,
+    "limit": 10,
+    "totalCount": 25,
+    "totalPages": 3,
+    "hasNextPage": true,
+    "hasPrevPage": false
+  }
+}
+```
+
+### Respuestas de Error
+
+#### No Autorizado (401)
+
+```json
+{
+  "error": "Unauthorized",
+  "details": "Invalid API key or session"
+}
+```
+
+#### Error del Servidor (500)
+
+```json
+{
+  "error": "Internal server error",
+  "details": "Failed to fetch batches"
+}
+```
+
+## Campos de Respuesta
+
+### Lote (Batch)
+
+| Campo | Tipo | Descripción |
+| ----- | ---- | ----------- |
+| `id` | string | ID único del lote |
+| `status` | string | Estado del lote |
+| `totalItems` | number | Total de items en el lote |
+| `processedItems` | number | Items procesados |
+| `successfulItems` | number | Items exitosos |
+| `failedItems` | number | Items fallidos |
+| `environment` | string | Ambiente (production/homologation) |
+| `createdAt` | string | Fecha de creación (ISO 8601) |
+| `updatedAt` | string | Fecha de última actualización (ISO 8601) |
+| `jobs` | array | Items del lote |
+
+### Item del Lote (Job)
+
+| Campo | Tipo | Descripción |
+| ----- | ---- | ----------- |
+| `id` | string | ID único del item |
+| `status` | string | Estado del item |
+| `order` | number | Orden en el lote |
+| `createdAt` | string | Fecha de creación (ISO 8601) |
+| `updatedAt` | string | Fecha de última actualización (ISO 8601) |
+| `requestBody` | object | Datos de la factura original |
+| `responseBody` | object | Respuesta del procesamiento |
+
+### Paginación
+
+| Campo | Tipo | Descripción |
+| ----- | ---- | ----------- |
+| `page` | number | Página actual |
+| `limit` | number | Elementos por página |
+| `totalCount` | number | Total de lotes |
+| `totalPages` | number | Total de páginas |
+| `hasNextPage` | boolean | Hay página siguiente |
+| `hasPrevPage` | boolean | Hay página anterior |
+
+## Estados de Lote
+
+| Estado | Descripción |
+| ------ | ----------- |
+| `pending` | Lote creado, esperando procesamiento |
+| `processing` | Lote en proceso |
+| `completed` | Lote procesado completamente |
+| `completed_with_errors` | Lote procesado con algunos errores |
+| `error` | Lote falló completamente |
+
+## Estados de Item
+
+| Estado | Descripción |
+| ------ | ----------- |
+| `pending` | Item en cola |
+| `processing` | Item siendo procesado |
+| `completed` | Item procesado exitosamente |
+| `error` | Item falló en el procesamiento |
+
+## Ejemplos de Uso
+
+### Obtener Primera Página
+
+```bash
+curl -X GET https://facture.ar/api/invoices/batches \
+  -H "x-api-key: tu-api-key"
+```
+
+### Obtener Página Específica
+
+```bash
+curl -X GET "https://facture.ar/api/invoices/batches?page=2&limit=20" \
+  -H "x-api-key: tu-api-key"
+```
+
+### JavaScript/Node.js
+
+```javascript
+// Obtener lotes con paginación
+const response = await fetch('https://facture.ar/api/invoices/batches?page=1&limit=10', {
+  method: 'GET',
+  headers: {
+    'x-api-key': 'tu-api-key',
+  },
+});
+
+const result = await response.json();
+console.log('Lotes:', result.batches);
+console.log('Paginación:', result.pagination);
+
+// Verificar si hay más páginas
+if (result.pagination.hasNextPage) {
+  console.log('Hay más páginas disponibles');
+}
+```
+
+### Python
+
+```python
+import requests
+
+# Obtener lotes
+response = requests.get(
+    'https://facture.ar/api/invoices/batches',
+    headers={
+        'x-api-key': 'tu-api-key'
+    },
+    params={
+        'page': 1,
+        'limit': 20
+    }
+)
+
+result = response.json()
+print('Lotes:', result['batches'])
+print('Total de lotes:', result['pagination']['totalCount'])
+
+# Verificar si hay más páginas
+if result['pagination']['hasNextPage']:
+    print('Hay más páginas disponibles')
+```
+
+## ❓ Solución de Problemas
+
+<Accordion title="Error: No se encontraron lotes">
+**Causa**: No tienes lotes creados en tu cuenta.
+
+**Solución**:
+
+1. Verifica que hayas creado al menos un lote de facturas
+2. Asegúrate de estar usando el ambiente correcto
+3. Revisa que el lote no esté en estado de error
+</Accordion>
+
+<Accordion title="Error: Límite excedido">
+**Causa**: El parámetro limit excede el máximo permitido.
+
+**Solución**:
+
+1. Usa un límite menor o igual a 100
+2. Implementa paginación para obtener más resultados
+3. Usa filtros más específicos si están disponibles
+</Accordion>
+
+<Accordion title="Error: No autorizado">
+**Causa**: API key inválida o sesión expirada.
+
+**Solución**:
+
+1. Verifica que tu API key sea válida
+2. Asegúrate de incluir el header `x-api-key`
+3. Regenera tu API key si es necesario
+</Accordion>
+
+## 📞 Soporte
+
+Para soporte técnico o preguntas sobre la API:
+
+- 📧 **Email**: support@facture.ar
+- 💬 **Chat**: Disponible en la plataforma
+- 📚 **Documentación**: Explora nuestros ejemplos detallados
+- 🎥 **Videollamada**: Para asistencia personalizada

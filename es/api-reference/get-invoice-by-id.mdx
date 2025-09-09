@@ -1,0 +1,191 @@
+---
+title: 'GET /invoices/{id} - Obtener Factura por ID'
+description: 'Documentación para obtener una factura específica por su ID'
+---
+
+# 📄 GET /invoices/{id} - Obtener Factura por ID
+
+Este endpoint te permite obtener los detalles de una factura específica usando su ID único.
+
+## URL Base
+
+```
+https://facture.ar/api/invoices/{id}
+```
+
+## Autenticación
+
+Todas las peticiones requieren autenticación usando:
+
+- **Sesión Web**: Para aplicaciones basadas en navegador
+- **API Key**: Para integraciones servidor a servidor
+
+Incluye tu API key en el header `x-api-key`:
+
+```bash
+x-api-key: tu-api-key-aqui
+```
+
+## Parámetros de Ruta
+
+| Parámetro | Tipo   | Requerido | Descripción | Ejemplo |
+| --------- | ------ | --------- | ----------- | ------- |
+| `id`      | string | ✅        | ID único de la factura | `"123e4567-e89b-12d3-a456-426614174000"` |
+
+## Respuesta
+
+### Éxito (200)
+
+```json
+{
+  "id": "123e4567-e89b-12d3-a456-426614174000",
+  "cuitId": "456e7890-e89b-12d3-a456-426614174001",
+  "amount": 1000.0,
+  "description": "Venta de servicios",
+  "docTipo": 99,
+  "docNro": 0,
+  "invoiceType": 11,
+  "concepto": 2,
+  "ptoVta": 1,
+  "clientName": "Cliente S.A.",
+  "cbteFch": "20240101",
+  "status": "success",
+  "afipData": {
+    "cae": "12345678901234",
+    "caeFchVto": "20240115",
+    "voucherNumber": 1,
+    "ptoVta": 1,
+    "invoiceType": 11
+  },
+  "createdAt": "2024-01-01T10:00:00Z",
+  "updatedAt": "2024-01-01T10:05:00Z"
+}
+```
+
+### Respuestas de Error
+
+#### Factura No Encontrada (404)
+
+```json
+{
+  "error": "Invoice not found",
+  "details": "The requested invoice does not exist or you don't have access to it"
+}
+```
+
+#### No Autorizado (401)
+
+```json
+{
+  "error": "Unauthorized",
+  "details": "Invalid API key or session"
+}
+```
+
+#### Error del Servidor (500)
+
+```json
+{
+  "error": "Internal server error",
+  "details": "Failed to retrieve invoice"
+}
+```
+
+## Campos de Respuesta
+
+| Campo | Tipo | Descripción |
+| ----- | ---- | ----------- |
+| `id` | string | ID único de la factura |
+| `cuitId` | string | ID del CUIT que emitió la factura |
+| `amount` | number | Monto total de la factura |
+| `description` | string | Descripción de la factura |
+| `docTipo` | number | Tipo de documento del cliente |
+| `docNro` | number | Número de documento del cliente |
+| `invoiceType` | number | Tipo de factura |
+| `concepto` | number | Tipo de concepto |
+| `ptoVta` | number | Punto de venta |
+| `clientName` | string | Nombre del cliente |
+| `cbteFch` | string | Fecha de la factura (YYYYMMDD) |
+| `status` | string | Estado de la factura (pending, processing, success, failed) |
+| `afipData` | object | Datos de AFIP (solo si status = success) |
+| `createdAt` | string | Fecha de creación (ISO 8601) |
+| `updatedAt` | string | Fecha de última actualización (ISO 8601) |
+
+## Estados de Factura
+
+| Estado | Descripción |
+| ------ | ----------- |
+| `pending` | Factura en cola, esperando procesamiento |
+| `processing` | Factura siendo procesada por AFIP |
+| `success` | Factura procesada exitosamente |
+| `failed` | Factura falló en el procesamiento |
+
+## Ejemplos de Uso
+
+### cURL
+
+```bash
+curl -X GET https://facture.ar/api/invoices/123e4567-e89b-12d3-a456-426614174000 \
+  -H "x-api-key: tu-api-key"
+```
+
+### JavaScript/Node.js
+
+```javascript
+const response = await fetch('https://facture.ar/api/invoices/123e4567-e89b-12d3-a456-426614174000', {
+  method: 'GET',
+  headers: {
+    'x-api-key': 'tu-api-key',
+  },
+});
+
+const invoice = await response.json();
+console.log('Factura:', invoice);
+```
+
+### Python
+
+```python
+import requests
+
+response = requests.get(
+    'https://facture.ar/api/invoices/123e4567-e89b-12d3-a456-426614174000',
+    headers={
+        'x-api-key': 'tu-api-key'
+    }
+)
+
+invoice = response.json()
+print('Factura:', invoice)
+```
+
+## ❓ Solución de Problemas
+
+<Accordion title="Error: Factura no encontrada">
+**Causa**: El ID de la factura no existe o no tienes acceso a ella.
+
+**Solución**:
+
+1. Verifica que el ID de la factura sea correcto
+2. Asegúrate de que la factura pertenezca a tu cuenta
+3. Verifica que estés usando la API key correcta
+</Accordion>
+
+<Accordion title="Error: No autorizado">
+**Causa**: API key inválida o sesión expirada.
+
+**Solución**:
+
+1. Verifica que tu API key sea válida
+2. Asegúrate de incluir el header `x-api-key`
+3. Regenera tu API key si es necesario
+</Accordion>
+
+## 📞 Soporte
+
+Para soporte técnico o preguntas sobre la API:
+
+- 📧 **Email**: support@facture.ar
+- 💬 **Chat**: Disponible en la plataforma
+- 📚 **Documentación**: Explora nuestros ejemplos detallados
+- 🎥 **Videollamada**: Para asistencia personalizada

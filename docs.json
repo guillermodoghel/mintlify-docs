@@ -31,8 +31,24 @@
         "tab": "API Reference",
         "groups": [
           {
-            "group": "API Documentation",
-            "pages": ["es/api-reference/index", "es/api-reference/invoices"]
+            "group": "Overview",
+            "pages": ["es/api-reference/index"]
+          },
+          {
+            "group": "Facturas",
+            "pages": ["es/api-reference/invoices", "es/api-reference/get-invoice-by-id", "es/api-reference/get-invoices-search"]
+          },
+          {
+            "group": "Lotes",
+            "pages": ["es/api-reference/get-batches", "es/api-reference/get-batch-by-id", "es/api-reference/patch-batch", "es/api-reference/retry-batch-item"]
+          },
+          {
+            "group": "CUITs",
+            "pages": ["es/api-reference/cuits", "es/api-reference/cuit-defaults"]
+          },
+          {
+            "group": "Utilidades",
+            "pages": ["es/api-reference/arca-parameters", "es/api-reference/pdf"]
           }
         ]
       }
