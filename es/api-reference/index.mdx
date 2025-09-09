@@ -40,9 +40,9 @@ Facturear utiliza la misma URL base pero diferentes API keys para distinguir ent
 - **Datos**: Genera facturas electrónicas reales con validez fiscal
 - **Límites**: Restricciones de rate limiting estrictas
 
-<Warning>
+<callout type="warning">
   ⚠️ **Importante**: Nunca uses tu API key de producción (`prod_sk_`) para testing. Las facturas generadas en producción son reales y tienen validez fiscal.
-</Warning>
+</callout>
 
 #### 📋 Obtener tu API Key
 
@@ -51,9 +51,9 @@ Facturear utiliza la misma URL base pero diferentes API keys para distinguir ent
 3. **Genera una nueva API key** para el ambiente que necesites
 4. **Copia y guarda** tu API key de forma segura
 
-<Info>
+<info>
   ⚠️ **Tip**: Puedes regenerar tu API key en cualquier momento. Solo asegurate de guardar la nueva key, la anterior se perdera.
-</Info>
+</info>
 
 ### URL Base
 
@@ -63,9 +63,9 @@ La URL base es la misma para todos los ambientes:
 https://facture.ar/api
 ```
 
-<Info>
+<info>
   💡 **Nota**: El ambiente (testing/producción) se determina automáticamente por tu API key, no por la URL.
-</Info>
+</info>
 
 ## 🎮 Playground Interactivo
 
@@ -76,9 +76,7 @@ Prueba la API directamente desde la documentación usando nuestro playground int
 - **Autenticación integrada**: Configura tu API key una vez y úsala en todas las pruebas
 - **Ambiente seguro**: Usa tu API key de testing para experimentar sin riesgos
 
-<Link to="/api-reference/playground">
-  <Button>Explorar Playground</Button>
-</Link>
+[Explorar Playground](/es/api-reference/playground)
 
 ## 📞 Soporte
 
