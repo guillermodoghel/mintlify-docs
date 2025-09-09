@@ -1,0 +1,1216 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Facturear API",
+    "description": "API completa para facturación electrónica en Argentina. Integra con AFIP y genera facturas electrónicas válidas de forma rápida y segura.",
+    "version": "1.0.0",
+    "contact": {
+      "name": "Facturear Support",
+      "email": "support@facture.ar",
+      "url": "https://facture.ar"
+    },
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://facture.ar/api",
+      "description": "Servidor de producción"
+    }
+  ],
+  "security": [
+    {
+      "apiKey": []
+    }
+  ],
+  "paths": {
+    "/cuits": {
+      "get": {
+        "summary": "Obtener CUITs",
+        "description": "Obtiene la lista de CUITs asociados a tu cuenta y gestiona su información.",
+        "tags": ["CUITs"],
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Filtrar por estado del CUIT",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["active", "inactive", "pending"]
+            }
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "Filtrar por tipo de CUIT",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["monotributo", "responsable_inscripto", "exento"]
+            }
+          },
+          {
+            "name": "includeDefaults",
+            "in": "query",
+            "description": "Incluir valores por defecto",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de CUITs obtenida exitosamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Cuit"
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/Meta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No autorizado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cuits/{cuitId}/defaults": {
+      "get": {
+        "summary": "Obtener valores por defecto de CUIT",
+        "description": "Obtiene los valores por defecto configurados para un CUIT específico.",
+        "tags": ["CUITs"],
+        "parameters": [
+          {
+            "name": "cuitId",
+            "in": "path",
+            "description": "ID del CUIT",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Valores por defecto obtenidos exitosamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CuitDefaults"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "CUIT no encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Actualizar valores por defecto de CUIT",
+        "description": "Actualiza los valores por defecto para un CUIT específico.",
+        "tags": ["CUITs"],
+        "parameters": [
+          {
+            "name": "cuitId",
+            "in": "path",
+            "description": "ID del CUIT",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CuitDefaultsUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Valores por defecto actualizados exitosamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CuitDefaults"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Datos inválidos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/invoices": {
+      "post": {
+        "summary": "Crear facturas",
+        "description": "Crea facturas electrónicas individuales o en lote. El sistema procesa las solicitudes de forma asíncrona a través de un sistema de colas.",
+        "tags": ["Facturas"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/InvoiceRequest"
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/InvoiceRequest"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Factura(s) aceptada(s) para procesamiento",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/InvoiceResponse"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/InvoiceResponse"
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Datos de factura inválidos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/invoices/{invoiceId}": {
+      "get": {
+        "summary": "Obtener factura por ID",
+        "description": "Obtiene los detalles de una factura específica por su ID.",
+        "tags": ["Facturas"],
+        "parameters": [
+          {
+            "name": "invoiceId",
+            "in": "path",
+            "description": "ID de la factura",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Factura obtenida exitosamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Invoice"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Factura no encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/invoices/search": {
+      "get": {
+        "summary": "Buscar facturas",
+        "description": "Busca facturas con filtros específicos como fecha, CUIT, estado, etc.",
+        "tags": ["Facturas"],
+        "parameters": [
+          {
+            "name": "cuitId",
+            "in": "query",
+            "description": "ID del CUIT",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Estado de la factura",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["pending", "processing", "completed", "failed"]
+            }
+          },
+          {
+            "name": "dateFrom",
+            "in": "query",
+            "description": "Fecha desde (ISO 8601)",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "dateTo",
+            "in": "query",
+            "description": "Fecha hasta (ISO 8601)",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Número de página",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Elementos por página",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Búsqueda realizada exitosamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Invoice"
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/Meta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/arca-parameters": {
+      "get": {
+        "summary": "Obtener parámetros ARCA",
+        "description": "Obtiene los parámetros necesarios para la integración con ARCA (AFIP).",
+        "tags": ["Utilidades"],
+        "responses": {
+          "200": {
+            "description": "Parámetros ARCA obtenidos exitosamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArcaParameters"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/arca/{name}": {
+      "get": {
+        "summary": "Obtener parámetro ARCA específico",
+        "description": "Obtiene un parámetro específico de AFIP/ARCA por nombre. Estos parámetros son esenciales para la facturación electrónica en Argentina.",
+        "tags": ["Utilidades"],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "description": "Nombre del parámetro AFIP a obtener",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "FEPARAMGETTIPOSDOC",
+                "FEPARAMGETTIPOSCBTES",
+                "FEPARAMGETTIPOSCONCEPTO",
+                "FEPARAMGETTIPOSIVA",
+                "FEPARAMGETTIPOSMONEDAS",
+                "FEPARAMGETTIPOSOPCIONALES",
+                "FEPARAMGETTIPOSTRIBUTOS",
+                "FEPARAMGETCOTIZACION"
+              ]
+            }
+          },
+          {
+            "name": "codId",
+            "in": "query",
+            "description": "ID de moneda (requerido para FEPARAMGETCOTIZACION)",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["USD", "EUR", "BRL"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Parámetro ARCA obtenido exitosamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Nombre del parámetro"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "description": "ID del parámetro"
+                          },
+                          "desc": {
+                            "type": "string",
+                            "description": "Descripción del parámetro"
+                          },
+                          "fchDesde": {
+                            "type": "string",
+                            "format": "date",
+                            "description": "Fecha desde"
+                          },
+                          "fchHasta": {
+                            "type": "string",
+                            "format": "date",
+                            "description": "Fecha hasta"
+                          }
+                        }
+                      }
+                    },
+                    "cachedAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "Fecha de cache"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Parámetro inválido o faltante",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/invoices/batches": {
+      "get": {
+        "summary": "Listar lotes de facturas",
+        "description": "Obtiene la lista de lotes de facturas con paginación.",
+        "tags": ["Lotes"],
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Filtrar por estado del lote",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["pending", "processing", "completed", "failed"]
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Número de página",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Elementos por página",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de lotes obtenida exitosamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Batch"
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/Meta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/invoices/batches/{batchId}": {
+      "get": {
+        "summary": "Obtener lote por ID",
+        "description": "Obtiene los detalles completos de un lote específico, incluyendo todos sus items.",
+        "tags": ["Lotes"],
+        "parameters": [
+          {
+            "name": "batchId",
+            "in": "path",
+            "description": "ID del lote",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lote obtenido exitosamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BatchDetail"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Lote no encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Agregar facturas a lote",
+        "description": "Agrega facturas adicionales a un lote existente que aún no ha sido completado.",
+        "tags": ["Lotes"],
+        "parameters": [
+          {
+            "name": "batchId",
+            "in": "path",
+            "description": "ID del lote",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["invoices"],
+                "properties": {
+                  "invoices": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/InvoiceRequest"
+                    },
+                    "description": "Array de facturas a agregar al lote"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Facturas agregadas al lote exitosamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BatchDetail"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Datos inválidos o lote ya completado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/invoices/batches/{batchId}/items/{itemId}/retry": {
+      "post": {
+        "summary": "Reintentar item de lote",
+        "description": "Reintenta el procesamiento de un item específico que falló en un lote.",
+        "tags": ["Lotes"],
+        "parameters": [
+          {
+            "name": "batchId",
+            "in": "path",
+            "description": "ID del lote",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "itemId",
+            "in": "path",
+            "description": "ID del item del lote",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Item reintentado exitosamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Mensaje de confirmación"
+                    },
+                    "item": {
+                      "$ref": "#/components/schemas/BatchItem"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Lote o item no encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pdf/{invoiceId}": {
+      "get": {
+        "summary": "Descargar PDF de factura",
+        "description": "Descarga el PDF de una factura específica.",
+        "tags": ["Utilidades"],
+        "parameters": [
+          {
+            "name": "invoiceId",
+            "in": "path",
+            "description": "ID de la factura",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "PDF descargado exitosamente",
+            "content": {
+              "application/pdf": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Factura no encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Cuit": {
+        "type": "object",
+        "required": ["id", "cuit", "businessName", "status"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID único del CUIT"
+          },
+          "cuit": {
+            "type": "string",
+            "pattern": "^[0-9]{2}-[0-9]{8}-[0-9]{1}$",
+            "description": "Número de CUIT en formato XX-XXXXXXXX-X"
+          },
+          "businessName": {
+            "type": "string",
+            "description": "Razón social de la empresa"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["active", "inactive", "pending"],
+            "description": "Estado del CUIT"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["monotributo", "responsable_inscripto", "exento"],
+            "description": "Tipo de CUIT"
+          },
+          "category": {
+            "type": "string",
+            "description": "Categoría del monotributo (si aplica)"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Fecha de creación"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Fecha de última actualización"
+          }
+        }
+      },
+      "CuitDefaults": {
+        "type": "object",
+        "properties": {
+          "cuitId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID del CUIT"
+          },
+          "defaultInvoiceType": {
+            "type": "integer",
+            "description": "Tipo de factura por defecto"
+          },
+          "defaultDocTipo": {
+            "type": "integer",
+            "description": "Tipo de documento por defecto"
+          },
+          "defaultDocNro": {
+            "type": "integer",
+            "description": "Número de documento por defecto"
+          },
+          "defaultIvaType": {
+            "type": "integer",
+            "description": "Tipo de IVA por defecto"
+          },
+          "defaultCurrency": {
+            "type": "string",
+            "enum": ["ARS", "USD"],
+            "default": "ARS",
+            "description": "Moneda por defecto"
+          }
+        }
+      },
+      "CuitDefaultsUpdate": {
+        "type": "object",
+        "properties": {
+          "defaultInvoiceType": {
+            "type": "integer",
+            "description": "Tipo de factura por defecto"
+          },
+          "defaultDocTipo": {
+            "type": "integer",
+            "description": "Tipo de documento por defecto"
+          },
+          "defaultDocNro": {
+            "type": "integer",
+            "description": "Número de documento por defecto"
+          },
+          "defaultIvaType": {
+            "type": "integer",
+            "description": "Tipo de IVA por defecto"
+          },
+          "defaultCurrency": {
+            "type": "string",
+            "enum": ["ARS", "USD"],
+            "description": "Moneda por defecto"
+          }
+        }
+      },
+      "InvoiceRequest": {
+        "type": "object",
+        "required": ["cuitId", "amount", "description", "docTipo", "docNro", "invoiceType"],
+        "properties": {
+          "cuitId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID del CUIT emisor"
+          },
+          "amount": {
+            "type": "number",
+            "format": "float",
+            "minimum": 0.01,
+            "description": "Monto de la factura"
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 500,
+            "description": "Descripción de la factura"
+          },
+          "docTipo": {
+            "type": "integer",
+            "description": "Tipo de documento del cliente"
+          },
+          "docNro": {
+            "type": "integer",
+            "description": "Número de documento del cliente"
+          },
+          "invoiceType": {
+            "type": "integer",
+            "description": "Tipo de factura"
+          },
+          "ivaType": {
+            "type": "integer",
+            "description": "Tipo de IVA"
+          },
+          "currency": {
+            "type": "string",
+            "enum": ["ARS", "USD"],
+            "default": "ARS",
+            "description": "Moneda de la factura"
+          },
+          "dueDate": {
+            "type": "string",
+            "format": "date",
+            "description": "Fecha de vencimiento"
+          }
+        }
+      },
+      "Invoice": {
+        "type": "object",
+        "required": ["id", "cuitId", "amount", "status", "createdAt"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID único de la factura"
+          },
+          "cuitId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID del CUIT emisor"
+          },
+          "amount": {
+            "type": "number",
+            "format": "float",
+            "description": "Monto de la factura"
+          },
+          "description": {
+            "type": "string",
+            "description": "Descripción de la factura"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["pending", "processing", "completed", "failed"],
+            "description": "Estado de la factura"
+          },
+          "invoiceNumber": {
+            "type": "string",
+            "description": "Número de factura generado por AFIP"
+          },
+          "cae": {
+            "type": "string",
+            "description": "Código de Autorización Electrónica"
+          },
+          "caeExpirationDate": {
+            "type": "string",
+            "format": "date",
+            "description": "Fecha de vencimiento del CAE"
+          },
+          "qrCode": {
+            "type": "string",
+            "description": "Código QR de la factura"
+          },
+          "pdfUrl": {
+            "type": "string",
+            "format": "uri",
+            "description": "URL del PDF de la factura"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Fecha de creación"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Fecha de última actualización"
+          }
+        }
+      },
+      "InvoiceResponse": {
+        "type": "object",
+        "required": ["id", "status"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID único de la factura"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["pending", "processing"],
+            "description": "Estado inicial de la factura"
+          },
+          "message": {
+            "type": "string",
+            "description": "Mensaje de confirmación"
+          }
+        }
+      },
+      "ArcaParameters": {
+        "type": "object",
+        "properties": {
+          "invoiceTypes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "description": "Código del tipo de factura"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "Nombre del tipo de factura"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "Descripción del tipo de factura"
+                }
+              }
+            }
+          },
+          "docTypes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "description": "Código del tipo de documento"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "Nombre del tipo de documento"
+                }
+              }
+            }
+          },
+          "ivaTypes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "description": "Código del tipo de IVA"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "Nombre del tipo de IVA"
+                },
+                "rate": {
+                  "type": "number",
+                  "format": "float",
+                  "description": "Tasa de IVA"
+                }
+              }
+            }
+          }
+        }
+      },
+      "Meta": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "description": "Página actual"
+          },
+          "limit": {
+            "type": "integer",
+            "description": "Elementos por página"
+          },
+          "total": {
+            "type": "integer",
+            "description": "Total de elementos"
+          },
+          "totalPages": {
+            "type": "integer",
+            "description": "Total de páginas"
+          }
+        }
+      },
+      "Batch": {
+        "type": "object",
+        "required": ["id", "status", "createdAt"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID único del lote"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["pending", "processing", "completed", "failed"],
+            "description": "Estado del lote"
+          },
+          "totalItems": {
+            "type": "integer",
+            "description": "Total de items en el lote"
+          },
+          "processedItems": {
+            "type": "integer",
+            "description": "Items procesados exitosamente"
+          },
+          "failedItems": {
+            "type": "integer",
+            "description": "Items que fallaron"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Fecha de creación"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Fecha de última actualización"
+          }
+        }
+      },
+      "BatchDetail": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Batch"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "items": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/BatchItem"
+                },
+                "description": "Items del lote"
+              }
+            }
+          }
+        ]
+      },
+      "BatchItem": {
+        "type": "object",
+        "required": ["id", "status", "invoiceData"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID único del item"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["pending", "processing", "completed", "failed"],
+            "description": "Estado del item"
+          },
+          "invoiceData": {
+            "$ref": "#/components/schemas/InvoiceRequest",
+            "description": "Datos de la factura"
+          },
+          "invoiceId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID de la factura creada (si fue exitosa)"
+          },
+          "error": {
+            "type": "string",
+            "description": "Mensaje de error (si falló)"
+          },
+          "retryCount": {
+            "type": "integer",
+            "description": "Número de reintentos"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Fecha de creación"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Fecha de última actualización"
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "required": ["error", "message"],
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "Código de error"
+          },
+          "message": {
+            "type": "string",
+            "description": "Mensaje de error descriptivo"
+          },
+          "details": {
+            "type": "object",
+            "description": "Detalles adicionales del error"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "apiKey": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "x-api-key",
+        "description": "API Key para autenticación. Formato: test_sk_xxx para testing, prod_sk_xxx para producción."
+      }
+    }
+  }
+}

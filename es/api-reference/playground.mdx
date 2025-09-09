@@ -1,0 +1,175 @@
+---
+title: 'Playground'
+description: 'Entorno interactivo para probar y explorar la API de Facturear'
+---
+
+# 🎮 Playground
+
+> Permite a los usuarios interactuar con tu API
+
+## Descripción General
+
+El playground de la API es un entorno interactivo que permite a los usuarios probar y explorar los endpoints de tu API. Los desarrolladores pueden crear peticiones API, enviarlas y ver las respuestas sin salir de la documentación.
+
+<Frame>
+  <img src="https://mintcdn.com/mintlify/f7fo9pnTEtzBD70_/images/playground/API-playground-light.png?fit=max&auto=format&n=f7fo9pnTEtzBD70_&q=85&s=f83551b5d84cf27a44ed1d9418ca61be" alt="API playground para el endpoint de crear facturas." className="block dark:hidden" width="2534" height="1022" data-path="images/playground/API-playground-light.png" srcset="https://mintcdn.com/mintlify/f7fo9pnTEtzBD70_/images/playground/API-playground-light.png?w=280&fit=max&auto=format&n=f7fo9pnTEtzBD70_&q=85&s=87a778f73c13b231ae61b3b3e4ead063 280w, https://mintcdn.com/mintlify/f7fo9pnTEtzBD70_/images/playground/API-playground-light.png?w=560&fit=max&auto=format&n=f7fo9pnTEtzBD70_&q=85&s=fb0ce88ecd599c819dd780738b87c24d 560w, https://mintcdn.com/mintlify/f7fo9pnTEtzBD70_/images/playground/API-playground-light.png?w=840&fit=max&auto=format&n=f7fo9pnTEtzBD70_&q=85&s=e7cf7572fa5fcd7205c8ebcfda839f64 840w, https://mintcdn.com/mintlify/f7fo9pnTEtzBD70_/images/playground/API-playground-light.png?w=1100&fit=max&auto=format&n=f7fo9pnTEtzBD70_&q=85&s=81337643c958f66b3962e16ac569afcd 1100w, https://mintcdn.com/mintlify/f7fo9pnTEtzBD70_/images/playground/API-playground-light.png?w=1650&fit=max&auto=format&n=f7fo9pnTEtzBD70_&q=85&s=94ab7ee928898ec25390934c8897a867 1650w, https://mintcdn.com/mintlify/f7fo9pnTEtzBD70_/images/playground/API-playground-light.png?w=2500&fit=max&auto=format&n=f7fo9pnTEtzBD70_&q=85&s=440d9f8a2d8dcbbf55d665d20e6408ed 2500w" data-optimize="true" data-opv="2" />
+
+  <img src="https://mintcdn.com/mintlify/f7fo9pnTEtzBD70_/images/playground/API-playground-dark.png?fit=max&auto=format&n=f7fo9pnTEtzBD70_&q=85&s=5a0dc3fd3ca0a5766c599c00a5910dba" alt="API playground para el endpoint de crear facturas." className="hidden dark:block" width="2534" height="1022" data-path="images/playground/API-playground-dark.png" srcset="https://mintcdn.com/mintlify/f7fo9pnTEtzBD70_/images/playground/API-playground-light.png?w=280&fit=max&auto=format&n=f7fo9pnTEtzBD70_&q=85&s=e3ffd7bdd28940bc42bff50ffac5b169 280w, https://mintcdn.com/mintlify/f7fo9pnTEtzBD70_/images/playground/API-playground-dark.png?w=560&fit=max&auto=format&n=f7fo9pnTEtzBD70_&q=85&s=fdf601c84aeb05836c8e711722fbd2ee 560w, https://mintcdn.com/mintlify/f7fo9pnTEtzBD70_/images/playground/API-playground-dark.png?w=840&fit=max&auto=format&n=f7fo9pnTEtzBD70_&q=85&s=45b0f029d05636ca86b99b4d1590ddb3 840w, https://mintcdn.com/mintlify/f7fo9pnTEtzBD70_/images/playground/API-playground-dark.png?w=1100&fit=max&auto=format&n=f7fo9pnTEtzBD70_&q=85&s=5e7389355d83faf84d9625c84396868f 1100w, https://mintcdn.com/mintlify/f7fo9pnTEtzBD70_/images/playground/API-playground-dark.png?w=1650&fit=max&auto=format&n=f7fo9pnTEtzBD70_&q=85&s=f826d034daefdb906bed0ed0ac6b668e 1650w, https://mintcdn.com/mintlify/f7fo9pnTEtzBD70_/images/playground/API-playground-dark.png?w=2500&fit=max&auto=format&n=f7fo9pnTEtzBD70_&q=85&s=a530b0340d9ad9a29b72a164fc7dabe5 2500w" data-optimize="true" data-opv="2" />
+</Frame>
+
+El playground se genera automáticamente desde tu especificación OpenAPI, por lo que cualquier actualización a tu API se refleja automáticamente en el playground. También puedes crear páginas de referencia de API manualmente después de definir una URL base y método de autenticación en tu `docs.json`.
+
+Recomendamos generar tu playground de API desde una especificación OpenAPI. Consulta [Configuración OpenAPI](/api-playground/openapi-setup) para obtener más información sobre cómo crear tu documento OpenAPI.
+
+## Comenzar
+
+<Steps>
+  <Step title="Configurar autenticación">
+    <Info>
+      Para usar el playground, necesitas configurar tu API key. Puedes obtenerla desde tu dashboard en [facturear.com](https://facturear.com).
+    </Info>
+
+    ```bash
+    x-api-key: tu-api-key-aqui
+    ```
+
+    <Callout type="warning">
+      ⚠️ **Importante**: Usa tu API key de testing (`test_sk_`) para experimentar en el playground. Nunca uses tu API key de producción (`prod_sk_`) para pruebas.
+    </Callout>
+  </Step>
+
+  <Step title="Explorar endpoints">
+    Navega por los diferentes endpoints disponibles en la sección "API Endpoints" para ver todos los endpoints disponibles con sus parámetros y respuestas.
+
+    Los endpoints principales incluyen:
+    - **GET /cuits** - Obtener lista de CUITs
+    - **POST /invoices** - Crear facturas
+    - **GET /invoices/{id}** - Obtener factura por ID
+    - **GET /invoices/search** - Buscar facturas
+  </Step>
+
+  <Step title="Probar peticiones">
+    Usa el playground interactivo para:
+    - Modificar parámetros de petición
+    - Enviar peticiones reales a la API
+    - Ver respuestas en tiempo real
+    - Copiar código de ejemplo en diferentes lenguajes
+  </Step>
+</Steps>
+
+## Características del Playground
+
+### 🔧 Interfaz Interactiva
+
+- **Editor de parámetros**: Modifica fácilmente los parámetros de petición
+- **Vista previa de petición**: Ve exactamente qué se enviará a la API
+- **Respuestas en tiempo real**: Obtén respuestas inmediatas de la API
+- **Historial de peticiones**: Mantén un registro de tus pruebas
+
+### 📝 Ejemplos de Código
+
+El playground genera automáticamente ejemplos de código en múltiples lenguajes:
+
+- **cURL**: Para pruebas rápidas desde terminal
+- **JavaScript**: Para integración en aplicaciones web
+- **Python**: Para scripts y aplicaciones backend
+- **PHP**: Para aplicaciones PHP
+
+### 🔐 Autenticación Segura
+
+- **API Key Management**: Configura y gestiona tu API key de forma segura
+- **Ambientes separados**: Diferencia entre testing y producción
+- **Validación automática**: El playground valida tu API key antes de enviar peticiones
+
+## Configuración Avanzada
+
+### Personalización del Playground
+
+Puedes personalizar tu playground de API definiendo las siguientes propiedades en tu `docs.json`:
+
+<ResponseField name="playground" type="object">
+  Configuraciones para el playground de la API.
+
+  <Expandable title="playground" defaultOpen="True">
+    <ResponseField name="display" type="&#x22;interactive&#x22; | &#x22;simple&#x22; | &#x22;none&#x22;">
+      El modo de visualización del playground de la API.
+
+      * `"interactive"`: Muestra el playground interactivo.
+      * `"simple"`: Muestra un endpoint copiable sin playground.
+      * `"none"`: No muestra nada.
+
+      Por defecto es `interactive`.
+    </ResponseField>
+
+    <ResponseField name="proxy" type="boolean" defaultOpen="True">
+      Si pasar las peticiones de API a través de un servidor proxy. Por defecto es `true`.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="examples" type="object">
+  Configuraciones para los ejemplos de API autogenerados.
+
+  <Expandable title="examples" defaultOpen="True">
+    <ResponseField name="languages" type="array of string">
+      Lenguajes de ejemplo para los snippets de API autogenerados.
+
+      Los lenguajes se muestran en el orden especificado.
+    </ResponseField>
+
+    <ResponseField name="defaults" type="&#x22;required&#x22; | &#x22;all&#x22;">
+      Si mostrar parámetros opcionales en los ejemplos de API. Por defecto es `all`.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+### Ejemplo de configuración
+
+```json
+{
+ "api": {
+   "playground": {
+     "display": "interactive"
+   },
+   "examples": {
+     "languages": ["curl", "python", "javascript"],
+     "defaults": "required"
+   }
+ }
+}
+```
+
+Este ejemplo configura el playground de API para ser interactivo con snippets de código de ejemplo para cURL, Python y JavaScript. Solo se muestran los parámetros requeridos en los snippets de código.
+
+## Mejores Prácticas
+
+### 🧪 Testing
+
+- **Usa el ambiente de testing**: Siempre prueba con tu API key de testing (`test_sk_`)
+- **Valida respuestas**: Revisa las respuestas para entender la estructura de datos
+- **Prueba casos edge**: Experimenta con diferentes valores de parámetros
+
+### 🔒 Seguridad
+
+- **Nunca compartas tu API key**: Mantén tu API key privada y segura
+- **Usa HTTPS**: Todas las peticiones se envían a través de HTTPS
+- **Rota tus keys**: Regenera tu API key periódicamente
+
+### 📚 Documentación
+
+- **Lee los ejemplos**: Los ejemplos de código te ayudan a entender la implementación
+- **Consulta los esquemas**: Revisa los esquemas de respuesta para entender la estructura
+- **Usa los filtros**: Aprovecha los filtros de búsqueda para encontrar endpoints específicos
+
+## Soporte
+
+Si necesitas ayuda con el playground:
+
+- 📧 **Email**: support@facture.ar
+- 💬 **Chat**: Disponible en la plataforma
+- 📚 **Documentación**: Explora nuestros ejemplos detallados
+- 🎥 **Videollamada**: Para asistencia personalizada
+
+<Callout type="info">
+💡 **Tip**: El playground es la forma más rápida de probar la API y entender cómo funciona. ¡Úsalo para experimentar antes de implementar en tu aplicación!
+</Callout>

@@ -32,23 +32,11 @@
         "groups": [
           {
             "group": "Overview",
-            "pages": ["es/api-reference/index"]
+            "pages": ["es/api-reference/index", "es/api-reference/playground"]
           },
           {
-            "group": "Facturas",
-            "pages": ["es/api-reference/invoices", "es/api-reference/get-invoice-by-id", "es/api-reference/get-invoices-search"]
-          },
-          {
-            "group": "Lotes",
-            "pages": ["es/api-reference/get-batches", "es/api-reference/get-batch-by-id", "es/api-reference/patch-batch", "es/api-reference/retry-batch-item"]
-          },
-          {
-            "group": "CUITs",
-            "pages": ["es/api-reference/cuits", "es/api-reference/cuit-defaults"]
-          },
-          {
-            "group": "Utilidades",
-            "pages": ["es/api-reference/arca-parameters", "es/api-reference/pdf"]
+            "group": "API Endpoints",
+            "openapi": "openapi.json"
           }
         ]
       }
@@ -83,6 +71,16 @@
   },
   "contextual": {
     "options": ["copy", "view", "chatgpt", "claude", "perplexity", "mcp", "cursor", "vscode"]
+  },
+  "api": {
+    "playground": {
+      "display": "interactive",
+      "proxy": true
+    },
+    "examples": {
+      "languages": ["curl", "javascript", "python", "php"],
+      "defaults": "required"
+    }
   },
   "footer": {
     "socials": {
