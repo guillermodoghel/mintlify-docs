@@ -1,0 +1,155 @@
+---
+title: 'API Keys en Facturear: cómo obtenerlas y usarlas'
+description: 'Cómo obtener, rotar y usar las API Keys de Facturear para autenticar llamadas a la API de facturación electrónica en Argentina.'
+---
+
+# API Keys en Facturear
+
+La **API Key** es el mecanismo de autenticación principal de la API de Facturear. Toda llamada a la API debe incluir una API Key válida en el header `x-api-key`.
+
+---
+
+## ¿Qué es una API Key?
+
+Una API Key es un token secreto que identifica y autentica a tu aplicación cuando llama a la API de Facturear. Es como una contraseña para tu integración.
+
+<Warning>
+  Tratá las API Keys como contraseñas. No las compartas en código público, repositorios de GitHub, logs, o mensajes. Si una API Key se compromete, rotatela inmediatamente.
+</Warning>
+
+---
+
+## Cómo obtener tu API Key
+
+<Steps>
+  Registrá tu cuenta en **facturear.com**
+
+  Ingresá al panel de control
+
+  Navegá a **Configuración → API Keys**
+
+  Hacé clic en **"Nueva API Key"**
+
+  Ponele un nombre descriptivo (ej: "Producción", "Test", "ERP Integración")
+
+  Copiá la API Key generada y guardala en un lugar seguro. **No se puede ver de nuevo** después de cerrar la ventana
+
+  Configurá permisos si el panel lo permite (lectura, emisión, administración)
+</Steps>
+
+---
+
+## Cómo usar la API Key
+
+Incluí la API Key en el header `x-api-key` de todas las requests:
+
+### curl
+
+```bash
+curl https://api.facturear.com/cuits/20123456789/facturas \
+  -H "x-api-key: fct_live_abc123xyz..."
+```
+
+### JavaScript (fetch)
+
+```javascript
+const response = await fetch('https://api.facturear.com/cuits/20123456789/facturas', {
+  method: 'POST',
+  headers: {
+    'x-api-key': process.env.FACTUREAR_API_KEY,
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify(facturaData)
+});
+```
+
+### Python
+
+```python
+import requests
+
+headers = {
+    "x-api-key": os.environ["FACTUREAR_API_KEY"],
+    "Content-Type": "application/json"
+}
+response = requests.post(
+    "https://api.facturear.com/cuits/20123456789/facturas",
+    headers=headers,
+    json=factura_data
+)
+```
+
+---
+
+## Prefijos de API Keys
+
+Las API Keys de Facturear usan prefijos para identificar el entorno:
+
+| Prefijo | Entorno | Descripción |
+|---|---|---|
+| `fct_live_` | Producción | Emite facturas reales con CAE de ARCA |
+| `fct_test_` | Testing | Entorno de pruebas, sin efectos reales |
+
+---
+
+## Buenas prácticas de seguridad
+
+### Usar variables de entorno
+
+Nunca hardcodees la API Key en el código. Usá variables de entorno:
+
+```bash
+# .env (no subir al repositorio)
+FACTUREAR_API_KEY=fct_live_abc123xyz...
+```
+
+```javascript
+// código
+const apiKey = process.env.FACTUREAR_API_KEY;
+```
+
+### Rotación periódica
+
+Rotá las API Keys periódicamente:
+
+1. Creá una nueva API Key
+2. Actualizá tu aplicación para usar la nueva key
+3. Verificá que todo funciona con la nueva key
+4. Revocá la key anterior
+
+### Usar keys distintas por entorno
+
+Tenés que tener API Keys separadas para:
+- **Producción**: la key que usa tu sistema real
+- **Testing/Staging**: para pruebas internas
+- **Desarrollo local**: para que cada developer tenga su propia key
+
+---
+
+## Revocar una API Key
+
+Si una key se comprometió o ya no la necesitás:
+
+1. Ingresá al panel de Facturear → **Configuración → API Keys**
+2. Encontrá la key que querés revocar
+3. Hacé clic en **"Revocar"** o **"Eliminar"**
+4. La key queda inválida inmediatamente; todas las requests con esa key empezarán a fallar con error 401
+
+---
+
+## Errores comunes de autenticación
+
+| Error HTTP | Significado | Solución |
+|---|---|---|
+| `401 Unauthorized` | API Key inválida o no enviada | Verificá que enviás el header `x-api-key` correctamente |
+| `403 Forbidden` | API Key válida pero sin permisos | Verificá los permisos de la key en el panel |
+| `429 Too Many Requests` | Rate limit excedido | Esperá y reducí la frecuencia de llamadas |
+
+---
+
+## Recursos relacionados
+
+- [Entorno de testing](/es/guides/entorno-testing)
+- [Configurar defaults por CUIT](/es/guides/configurar-defaults-cuit)
+- [Primera factura con Facturear](/es/guides/primera-factura)
+- [Gestión de múltiples CUITs](/es/guides/multiples-cuits)

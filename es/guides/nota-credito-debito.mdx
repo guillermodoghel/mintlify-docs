@@ -1,0 +1,138 @@
+---
+title: 'Cómo emitir Notas de Crédito y Débito con Facturear'
+description: 'Guía paso a paso para emitir Notas de Crédito y Notas de Débito electrónicas con Facturear: cuándo corresponde cada una, cómo asociarlas a la factura original y ejemplos prácticos.'
+---
+
+# Notas de Crédito y Débito con Facturear
+
+Las **Notas de Crédito** y **Notas de Débito** son comprobantes que ajustan el importe de una factura ya emitida. Son la única forma legal de corregir o anular una factura electrónica que ya tiene CAE.
+
+---
+
+## Cuándo emitir cada una
+
+| Comprobante | Cuándo usarlo |
+|---|---|
+| **Nota de Crédito** | Para **reducir** el importe de una factura (devolución, descuento, error de monto excesivo) |
+| **Nota de Débito** | Para **aumentar** el importe de una factura (intereses, gastos adicionales, error de monto insuficiente) |
+
+---
+
+## Tipos de Notas según la factura original
+
+Las notas de crédito/débito siguen el **mismo tipo** que la factura que ajustan:
+
+| Factura original | Nota de Crédito | Nota de Débito |
+|---|---|---|
+| Factura A | Nota de Crédito A (tipo 3) | Nota de Débito A (tipo 2) |
+| Factura B | Nota de Crédito B (tipo 8) | Nota de Débito B (tipo 7) |
+| Factura C | Nota de Crédito C (tipo 13) | Nota de Débito C (tipo 12) |
+| Factura E | Nota de Crédito E (tipo 21) | Nota de Débito E (tipo 20) |
+
+---
+
+## Nota de Crédito: casos de uso comunes
+
+- **Devolución de mercadería**: el cliente devuelve todo o parte
+- **Descuento postventa**: acordás un descuento después de emitida la factura
+- **Error en la factura original**: importe incorrecto, error en la descripción
+- **Anulación total**: para "anular" una factura debés emitir NC por el mismo importe total
+
+---
+
+## Cómo emitir una Nota de Crédito en Facturear
+
+### Desde el Dashboard
+
+<Steps>
+  Buscá la factura original en **Facturas → Buscar**
+
+  Hacé clic en la factura → **"Emitir Nota de Crédito"**
+
+  El sistema pre-carga los datos de la factura original
+
+  Editá el **importe** que querés acreditar (puede ser parcial o total)
+
+  Ajustá la **descripción** si es necesario
+
+  Verificá que el tipo de comprobante sea el correcto (NC A/B/C según la factura original)
+
+  Emití la Nota de Crédito
+</Steps>
+
+### Via API
+
+```javascript
+const response = await fetch('https://api.facturear.com/invoices', {
+  method: 'POST',
+  headers: {
+    'x-api-key': 'tu_api_key',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    cuitId: 'id-de-tu-cuit',
+    comprobante: {
+      tipo: 3,        // Nota de Crédito A
+      puntoVenta: 1,
+      comprobanteAsociado: {  // Referencia a la factura original
+        tipo: 1,              // Factura A
+        puntoVenta: 1,
+        numero: 42,
+        cuit: '20-12345678-9',
+        fecha: '2025-05-01'
+      },
+      receptor: {
+        razonSocial: 'Cliente S.A.',
+        cuit: '30-12345678-9',
+        condicionIva: 'RI'
+      },
+      items: [
+        {
+          descripcion: 'Devolución parcial - productos defectuosos',
+          cantidad: 5,
+          precioUnitario: 10000,
+          alicuotaIva: 21
+        }
+      ]
+    }
+  })
+})
+```
+
+---
+
+## Nota de Débito: casos de uso comunes
+
+- **Intereses por mora**: el cliente no pagó a tiempo
+- **Gastos adicionales**: costo de envío no incluido en la factura original
+- **Corrección al alza**: la factura original tenía un monto menor al correcto
+
+---
+
+## Cómo emitir una Nota de Débito en Facturear
+
+El proceso es idéntico al de la Nota de Crédito, pero seleccionando "Emitir Nota de Débito" y el tipo de comprobante correspondiente (ND).
+
+---
+
+## Preguntas frecuentes
+
+<AccordionGroup>
+  <Accordion title="¿La Nota de Crédito 'anula' la factura?">
+    No en el sentido técnico. La factura original sigue existiendo con su CAE. La Nota de Crédito reduce el saldo pendiente. Para una anulación efectiva, emitís una NC por el importe total de la factura.
+  </Accordion>
+  <Accordion title="¿Puedo emitir una NC por una factura de otro mes?">
+    Sí. Las notas de crédito y débito pueden emitirse en cualquier momento, no tienen que ser del mismo mes que la factura original.
+  </Accordion>
+  <Accordion title="¿Las NC/ND tienen impacto en el IVA?">
+    Sí. Una Nota de Crédito A reduce el débito fiscal del emisor y el crédito fiscal del receptor. Una Nota de Débito A aumenta el débito del emisor y el crédito del receptor.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Recursos relacionados
+
+- [Tipos de comprobantes AFIP/ARCA](/es/fundamentos/tipos-de-comprobantes)
+- [Emitir tu primera factura](/es/guides/primera-factura)
+- [API Reference](/es/api-reference)

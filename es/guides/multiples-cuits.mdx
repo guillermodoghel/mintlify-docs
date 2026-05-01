@@ -1,0 +1,128 @@
+---
+title: 'Gestionar múltiples CUITs en Facturear'
+description: 'Cómo administrar varios CUITs en una sola cuenta de Facturear: estudios contables, grupos empresarios, delegación y facturación por cuenta de terceros.'
+---
+
+# Gestionar múltiples CUITs en Facturear
+
+Facturear permite gestionar **múltiples CUITs** desde una sola cuenta. Es ideal para estudios contables, agencias, grupos empresarios y cualquier organización que facture a nombre de varias entidades.
+
+---
+
+## Casos de uso para múltiples CUITs
+
+- **Estudios contables**: gestionás la facturación de todos tus clientes desde una sola plataforma
+- **Grupos empresarios**: una SA y varias SRL del mismo grupo
+- **Emprendedores con múltiples actividades**: algunas como Monotributista y otras en una sociedad
+- **Facturación por delegación**: facturás en nombre de otros con su autorización
+
+---
+
+## Cómo agregar un CUIT adicional
+
+<Steps>
+  Ingresá a Facturear → **"CUITs"** en el menú lateral
+
+  Hacé clic en **"Agregar CUIT"**
+
+  Ingresá el nuevo CUIT
+
+  El sistema valida que sea un CUIT válido en ARCA
+
+  Seguí el [proceso de configuración](/es/getting-started): certificado digital o delegación
+
+  Una vez configurado, el nuevo CUIT está disponible en tu cuenta
+</Steps>
+
+---
+
+## Límites según el plan
+
+La cantidad de CUITs que podés gestionar depende de tu **plan de suscripción**:
+
+| Plan | CUITs incluidos |
+|---|---|
+| Free | 1 |
+| Starter | Hasta 3 |
+| Pro | Hasta 10 |
+| Business | Hasta 25 |
+| Enterprise | Ilimitado |
+
+Si necesitás más CUITs, contactá a [support@facture.ar](mailto:support@facture.ar).
+
+---
+
+## Cambiar entre CUITs activos
+
+Cuando tenés múltiples CUITs configurados:
+
+1. En el dashboard, el **selector de CUIT** está visible en la parte superior
+2. Seleccioná el CUIT para el que querés operar
+3. Todas las operaciones (facturas, lotes, configuración) aplican al CUIT seleccionado
+
+### Via API
+
+En cada request a la API, especificás el `cuitId` del CUIT para el que querés operar:
+
+```javascript
+{
+  "cuitId": "id-del-cuit-especifico",  // ID del CUIT configurado en Facturear
+  "comprobante": { ... }
+}
+```
+
+---
+
+## CUIT por defecto
+
+Podés configurar un **CUIT por defecto** que se pre-selecciona al iniciar sesión:
+
+1. Ir a **CUITs** → Seleccioná el CUIT
+2. Hacé clic en **"Establecer como predeterminado"**
+
+---
+
+## Delegación de CUIT vs. CUIT propio
+
+Hay dos formas de operar con un CUIT en Facturear:
+
+| | CUIT propio | CUIT delegado |
+|---|---|---|
+| **Quién factura** | Vos con tu propio CUIT | Facturear actúa como representante de otro |
+| **Certificado** | Tu certificado | Certificado de Facturear autorizad por el titular |
+| **Ideal para** | Tu propia actividad | Estudios contables, facturación por terceros |
+
+Ver la [guía de delegación](/es/guides/delegacion) para más detalles.
+
+---
+
+## Reportes por CUIT
+
+El dashboard de Facturear permite filtrar todos los reportes por CUIT:
+
+- Facturas emitidas por CUIT
+- Totales facturados por CUIT
+- Exportación de datos por CUIT
+
+Esto es especialmente útil para estudios contables que necesitan separar la información de cada cliente.
+
+---
+
+## Preguntas frecuentes
+
+<AccordionGroup>
+  <Accordion title="¿Puedo compartir el acceso a Facturear con mi equipo?">
+    Sí. Facturear permite agregar usuarios adicionales a la cuenta con diferentes niveles de acceso. Podés limitar qué CUITs y qué operaciones puede hacer cada usuario.
+  </Accordion>
+  <Accordion title="¿Los CUITs de mis clientes están aislados entre sí?">
+    Sí. Los datos de facturación de cada CUIT son independientes. Un usuario con acceso al CUIT A no ve automáticamente los datos del CUIT B.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Recursos relacionados
+
+- [Comenzar con Facturear](/es/getting-started)
+- [Guía de delegación de CUIT](/es/guides/delegacion)
+- [Configurar certificado digital](/es/guides/certificado-digital)

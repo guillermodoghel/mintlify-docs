@@ -1,0 +1,159 @@
+---
+title: 'Puntos de venta en Facturear: configuración y gestión'
+description: 'Cómo crear y gestionar puntos de venta en la API de Facturear para emitir facturas electrónicas en Argentina: alta en ARCA, tipos de punto de venta y uso en la API.'
+---
+
+# Puntos de venta en Facturear
+
+Los **puntos de venta** son identificadores numéricos que ARCA usa para organizar la facturación electrónica. Cada factura lleva el número de punto de venta más el número correlativo (ej: 0001-00000001). Esta guía explica cómo gestionarlos en Facturear.
+
+---
+
+## ¿Qué es un punto de venta?
+
+Un punto de venta (PDV) es un número del 1 al 9999 que:
+
+- Identifica el origen de la facturación (física o electrónica)
+- Reinicia el correlativo de numeración por cada número de PDV
+- Puede representar una sucursal, un sistema diferente, un tipo de cliente, etc.
+
+La mayoría de las empresas usa el **punto de venta 1** para la facturación electrónica.
+
+---
+
+## Alta del punto de venta en ARCA
+
+Antes de usar un punto de venta en Facturear, debe estar dado de alta en ARCA:
+
+<Steps>
+  Ingresá a **arca.gob.ar** → servicios → **"ABM Puntos de Venta"**
+
+  Hacé clic en **"Alta"** de nuevo punto de venta
+
+  Asignale un número (recomendado: empezar por el 1)
+
+  Seleccioná el tipo: **"Factura en línea"** (para facturación por web service como Facturear)
+
+  Guardá el alta. El punto de venta ya puede usarse para emitir facturas
+</Steps>
+
+---
+
+## Tipos de puntos de venta
+
+ARCA define diferentes tipos de PDV:
+
+| Tipo | Uso |
+|---|---|
+| **Factura en línea** | Facturación a través de web service (Facturear, sistemas ERP) |
+| **Controlador fiscal** | Facturas emitidas desde controlador fiscal homologado |
+| **Manual** | Talonario en papel (excepcional) |
+| **CAEA** | Para contribuyentes con Código de Autorización Electrónico Anticipado |
+
+Para integrarse con Facturear, el punto de venta debe ser del tipo **"Factura en línea"**.
+
+---
+
+## Listar puntos de venta en Facturear
+
+### GET /cuits/{cuit}/puntos-de-venta
+
+```bash
+curl https://api.facturear.com/cuits/20123456789/puntos-de-venta \
+  -H "x-api-key: tu_api_key"
+```
+
+### Respuesta
+
+```json
+{
+  "cuit": "20123456789",
+  "puntos_de_venta": [
+    {
+      "numero": 1,
+      "tipo": "factura_en_linea",
+      "bloqueado": false,
+      "fecha_baja": null
+    },
+    {
+      "numero": 2,
+      "tipo": "factura_en_linea",
+      "bloqueado": false,
+      "fecha_baja": null
+    }
+  ]
+}
+```
+
+---
+
+## Consultar el último número de comprobante
+
+Para conocer el último número emitido y saber cuál será el próximo:
+
+### GET /cuits/{cuit}/ultimo-comprobante
+
+```bash
+curl "https://api.facturear.com/cuits/20123456789/ultimo-comprobante?punto_venta=1&tipo_comprobante=B" \
+  -H "x-api-key: tu_api_key"
+```
+
+### Respuesta
+
+```json
+{
+  "punto_venta": 1,
+  "tipo_comprobante": "B",
+  "ultimo_numero": 145,
+  "proximo_numero": 146
+}
+```
+
+<Info>
+  Facturear maneja automáticamente el incremento del número de comprobante. No necesitás controlar la numeración manualmente; el sistema consulta a ARCA y asigna el número correcto.
+</Info>
+
+---
+
+## Uso de múltiples puntos de venta
+
+Estrategias comunes para usar múltiples PDV:
+
+| Estrategia | PDV 1 | PDV 2 |
+|---|---|---|
+| Por tipo de cliente | Facturas A (empresa) | Facturas B (consumidor) |
+| Por canal | Facturación web | Facturación por API |
+| Por sucursal | Sucursal Buenos Aires | Sucursal Córdoba |
+| Por sistema | Sistema propio | Facturear |
+
+---
+
+## Baja de un punto de venta
+
+Si necesitás dar de baja un punto de venta:
+
+1. Tramitá la baja en **arca.gob.ar → ABM Puntos de Venta**
+2. Una vez dado de baja en ARCA, ese PDV no podrá usarse para emitir más facturas
+3. Los comprobantes emitidos previamente desde ese PDV siguen siendo válidos
+
+---
+
+## Preguntas frecuentes
+
+<AccordionGroup>
+  <Accordion title="¿Puedo usar el mismo punto de venta para distintos tipos de factura (A, B, C)?">
+    Sí. Un punto de venta puede usarse para emitir distintos tipos de comprobante. La numeración es independiente por tipo: el último número de la Factura A es distinto al último número de la Factura B, aunque usen el mismo punto de venta.
+  </Accordion>
+  <Accordion title="¿Qué pasa si el punto de venta no está dado de alta en ARCA?">
+    ARCA rechaza la solicitud de facturación. El error devuelto indicará que el punto de venta no existe o no está habilitado para el CUIT. Primero debés dar de alta el PDV en ARCA y luego podrás usarlo en Facturear.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Recursos relacionados
+
+- [Configurar defaults por CUIT](/es/guides/configurar-defaults-cuit)
+- [Gestión de múltiples CUITs](/es/guides/multiples-cuits)
+- [Primera factura con Facturear](/es/guides/primera-factura)
+- [Parámetros de ARCA](/es/guides/parametros-arca)

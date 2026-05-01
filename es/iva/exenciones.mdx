@@ -1,0 +1,122 @@
+---
+title: 'Exenciones de IVA en Argentina: qué está exento'
+description: 'Lista completa de bienes y servicios exentos de IVA en Argentina: educación, salud, libros, alquileres de vivienda y otros casos especiales con su base legal.'
+---
+
+# Exenciones de IVA en Argentina
+
+Las **exenciones de IVA** son situaciones donde la ley excluye expresamente a ciertos bienes o servicios del impuesto. A diferencia de la tasa 0% (exportaciones), en las exenciones no podés recuperar el crédito fiscal de las compras vinculadas.
+
+---
+
+## Diferencia entre exención y tasa 0%
+
+| | Exento | Tasa 0% |
+|---|---|---|
+| **IVA en la venta** | No se cobra | Se cobra $0 |
+| **Crédito fiscal de compras** | No se puede recuperar | Se puede recuperar |
+| **Aplicación típica** | Educación, salud, alquiler | Exportaciones |
+
+---
+
+## Bienes exentos de IVA
+
+### Alimentación básica
+- **Leche** sin aditivos (entera, semidescremada, descremada) en envases de hasta 1 litro
+- **Agua natural** sin gas en envases hasta 1 litro (en ciertos casos)
+- **Harina de trigo** (lista para consumo)
+- **Pan**, galletitas y productos de panadería elaborados con harina de trigo y sin otros ingredientes que alteren su clasificación como "pan"
+
+### Medicamentos y salud
+- **Medicamentos** de uso humano (cuando se venden directamente al consumidor y tienen receta médica o están en ciertos listados)
+- **Sangre, plasma y órganos humanos** para trasplantes
+- **Material bibliográfico** de divulgación científica y técnica (en algunos casos)
+
+### Educación y cultura
+- **Servicios educativos** prestados por establecimientos privados incorporados a los planes de enseñanza oficial: jardines de infantes, escuelas primarias, secundarias, universidades
+- **Libros** (excluidas agendas, calendarios y similares)
+- **Folletos**, impresos y catálogos de carácter científico o técnico
+- **Periódicos y revistas** de venta al público
+
+---
+
+## Servicios exentos de IVA
+
+### Alquileres
+- **Alquiler de vivienda** (inmuebles destinados exclusivamente a casa habitación del locatario y su familia)
+- **Alquiler de inmuebles rurales** con destino a actividades agropecuarias (en ciertos casos)
+
+<Warning>
+  El alquiler de **inmuebles comerciales**, oficinas, locales o garajes **NO está exento** — paga IVA al 21%.
+</Warning>
+
+### Servicios médicos y de salud
+- **Servicios médicos** prestados por obras sociales (a sus afiliados)
+- **Servicios de atención** en sanatorios, clínicas y hospitales (en ciertos casos con obras sociales)
+- **Transporte de enfermos** y urgencias médicas
+
+### Servicios financieros y seguros
+- **Intereses** sobre depósitos bancarios en cuentas corrientes y cajas de ahorro
+- **Intereses** de créditos hipotecarios para vivienda (primer tramo)
+- **Seguros de vida** (en ciertos casos)
+- **Seguros de retiro** privados
+
+### Servicios del Estado
+- Servicios prestados por el **Estado Nacional, Provincial y Municipal** (en su carácter de poder público)
+- **Correo oficial** en ciertos servicios postales
+
+### Transporte
+- **Transporte de pasajeros** por vía terrestre (largo recorrido, servicios interurbanos) — en algunos casos es tasa reducida 10,5%, no exento
+- **Transporte escolar** cuando es prestado como actividad principal
+
+### Otros servicios
+- **Servicios religiosos**
+- **Servicios funerarios** en ciertos casos
+
+---
+
+## Impacto en la facturación
+
+Cuando emitís facturas por operaciones exentas:
+
+### Si sos Responsable Inscripto con actividades mixtas (gravadas y exentas)
+- El crédito fiscal de tus compras se divide proporcionalmente
+- Solo podés computar la parte vinculada a actividades gravadas
+- Aplicás la regla de **prorrata** del IVA
+
+Ver: [Prorrata de IVA para actividades mixtas](/es/iva/prorata)
+
+### En Facturear
+Para ítems exentos en una Factura A o B:
+```javascript
+items: [
+  {
+    descripcion: 'Servicio educativo exento',
+    cantidad: 1,
+    precioUnitario: 50000,
+    alicuotaIva: 0,
+    condicion: 'exento'  // Identifica como exento, no como tasa 0%
+  }
+]
+```
+
+---
+
+## Preguntas frecuentes
+
+<AccordionGroup>
+  <Accordion title="¿Un servicio médico privado está exento?">
+    Depende. Los servicios médicos prestados directamente a obras sociales o mutuales están exentos. Las consultas médicas particulares (sin obra social) pueden estar exentas o a tasa 10,5%, según el tipo de prestación. Consultá con tu contador.
+  </Accordion>
+  <Accordion title="¿Si alquilo una casa y una cochera juntas, el alquiler está exento?">
+    El alquiler de vivienda está exento. Si la cochera es parte del mismo contrato y sirve únicamente para uso del inquilino de la vivienda, generalmente también está exenta. Si se factura por separado como cochera comercial, puede estar gravada.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Recursos relacionados
+
+- [Qué es el IVA en Argentina](/es/iva/que-es-iva)
+- [Alícuotas de IVA vigentes](/es/iva/alicuotas)
+- [Prorrata de IVA](/es/iva/prorata)

@@ -1,0 +1,169 @@
+---
+title: 'Tributos adicionales en facturas: cómo declararlos en Facturear'
+description: 'Cómo incluir tributos adicionales (impuesto interno, impuesto de sellos, IIBB percepción, etc.) en las facturas electrónicas emitidas a través de la API de Facturear.'
+---
+
+# Tributos adicionales en facturas
+
+Algunas facturas requieren incluir **tributos adicionales** más allá del IVA: percepciones de IIBB, impuestos internos, impuestos de sellos, contribuciones municipales, etc. La API de Facturear permite declarar estos tributos en el comprobante.
+
+---
+
+## ¿Qué son los tributos adicionales?
+
+Son gravámenes distintos al IVA que pueden aparecer en una factura:
+
+| Tributo | Descripción |
+|---|---|
+| **Percepción IIBB** | El emisor actúa como agente de percepción de Ingresos Brutos |
+| **Impuesto interno** | Aplica para ciertos bienes (combustibles, cigarrillos, bebidas alcohólicas, etc.) |
+| **Impuesto de sellos** | En algunas provincias se aplica a contratos y facturas |
+| **Contribución municipal** | Algunas municipalidades tienen tributos sobre las ventas |
+
+---
+
+## Cómo incluir tributos en la API de Facturear
+
+Dentro del objeto de la factura, incluís un array `tributos`:
+
+```json
+{
+  "tipo_comprobante": "A",
+  "punto_venta": 1,
+  "receptor": {
+    "cuit": "30987654321",
+    "razon_social": "Cliente SA",
+    "iva_condition": "responsable_inscripto"
+  },
+  "items": [
+    {
+      "descripcion": "Producto con impuesto interno",
+      "cantidad": 100,
+      "precio_unitario": 1000,
+      "alicuota_iva": 21
+    }
+  ],
+  "tributos": [
+    {
+      "id": 4,
+      "descripcion": "Impuesto Interno",
+      "base_imponible": 100000,
+      "alicuota": 20,
+      "importe": 20000
+    }
+  ]
+}
+```
+
+---
+
+## Códigos de tributos (ARCA)
+
+ARCA define códigos para cada tipo de tributo:
+
+| Código | Descripción |
+|---|---|
+| 1 | Impuesto Nacional a las Ganancias |
+| 2 | Impuesto Nacional al Valor Agregado |
+| 3 | Impuesto Interno |
+| 4 | Impuesto Interno (otro) |
+| 5 | Reintegro |
+| 6 | Percepción de Ingresos Brutos |
+| 7 | Impuesto de Sellos |
+| 8 | Impuesto Municipal a las Actividades Económicas |
+| 99 | Otros |
+
+---
+
+## Ejemplo: factura con percepción de IIBB
+
+Cuando actuás como agente de percepción de IIBB, incluís la percepción como tributo:
+
+```json
+{
+  "tipo_comprobante": "A",
+  "items": [
+    {
+      "descripcion": "Servicio de consultoría",
+      "cantidad": 1,
+      "precio_unitario": 500000,
+      "alicuota_iva": 21
+    }
+  ],
+  "tributos": [
+    {
+      "id": 6,
+      "descripcion": "Percepción IIBB CABA",
+      "base_imponible": 500000,
+      "alicuota": 3,
+      "importe": 15000
+    }
+  ]
+}
+```
+
+La factura mostrará:
+```
+Subtotal:           $500.000
+IVA 21%:            $105.000
+Percepción IIBB:     $15.000
+TOTAL:              $620.000
+```
+
+---
+
+## Estructura del objeto tributo
+
+| Campo | Tipo | Descripción |
+|---|---|---|
+| `id` | integer | Código de tributo según tabla ARCA |
+| `descripcion` | string | Descripción del tributo (aparece en la factura) |
+| `base_imponible` | number | Base sobre la que se calcula el tributo |
+| `alicuota` | number | Porcentaje del tributo |
+| `importe` | number | Monto del tributo (base × alícuota / 100) |
+
+---
+
+## Múltiples tributos en la misma factura
+
+Podés incluir varios tributos:
+
+```json
+{
+  "tributos": [
+    {
+      "id": 3,
+      "descripcion": "Impuesto Interno",
+      "base_imponible": 100000,
+      "alicuota": 8,
+      "importe": 8000
+    },
+    {
+      "id": 6,
+      "descripcion": "Percepción IIBB PBA",
+      "base_imponible": 100000,
+      "alicuota": 3.5,
+      "importe": 3500
+    }
+  ]
+}
+```
+
+---
+
+## Validaciones de ARCA
+
+ARCA puede rechazar la factura si los tributos tienen inconsistencias:
+
+- El importe no coincide con base × alícuota
+- El código de tributo no es válido
+- Se declara un tributo que no corresponde al tipo de bien/servicio
+
+---
+
+## Recursos relacionados
+
+- [Primera factura con Facturear](/es/guides/primera-factura)
+- [Parámetros de ARCA](/es/guides/parametros-arca)
+- [Percepciones de IVA](/es/iva/percepciones)
+- [Percepciones IIBB](/es/ingresos-brutos/percepciones-retenciones-iibb)

@@ -1,0 +1,179 @@
+---
+title: 'Integración de Facturear con ERP: guía técnica'
+description: 'Cómo integrar la API de Facturear con sistemas ERP (SAP, Odoo, Tango, etc.) para automatizar la facturación electrónica en Argentina desde tu sistema de gestión.'
+---
+
+# Integración de Facturear con ERP
+
+Integrar Facturear a tu sistema ERP permite emitir facturas electrónicas directamente desde tu sistema de gestión, sin entrar al portal de ARCA. Esta guía cubre los patrones de integración más comunes.
+
+---
+
+## Arquitectura de integración
+
+```
+┌────────────────┐     API REST      ┌────────────────┐     WSFE      ┌──────────┐
+│   Tu ERP /     │ ──────────────→   │   Facturear    │ ──────────→   │  ARCA    │
+│   Sistema de   │ ←──────────────   │   API          │ ←──────────   │  WSFE    │
+│   Gestión      │   JSON + CAE      └────────────────┘   CAE         └──────────┘
+└────────────────┘
+```
+
+Tu sistema envía los datos de la factura a Facturear, que se comunica con ARCA, obtiene el CAE y te devuelve la factura aprobada.
+
+---
+
+## Flujo de integración típico
+
+<Steps>
+  El ERP genera un pedido de factura al cerrar una venta o servicio
+
+  El ERP llama a la API de Facturear con los datos del comprobante
+
+  Facturear valida los datos, contacta a ARCA y obtiene el CAE
+
+  Facturear devuelve el comprobante aprobado con CAE, vencimiento y número
+
+  El ERP almacena el CAE y actualiza el registro de la factura
+
+  El ERP muestra o envía el PDF de la factura al cliente
+</Steps>
+
+---
+
+## Datos mínimos para la integración
+
+Tu ERP debe proveer estos datos para cada factura:
+
+```json
+{
+  "cuit_emisor": "20123456789",
+  "punto_venta": 1,
+  "tipo_comprobante": "B",
+  "concepto": 2,
+  "receptor": {
+    "tipo_documento": 99,
+    "numero_documento": "0",
+    "razon_social": "Consumidor Final",
+    "iva_condition": "consumidor_final"
+  },
+  "items": [
+    {
+      "descripcion": "Producto o servicio",
+      "cantidad": 1,
+      "precio_unitario": 100000,
+      "alicuota_iva": 21
+    }
+  ]
+}
+```
+
+---
+
+## Integración con sistemas comunes
+
+### Odoo
+
+Odoo tiene un módulo de facturación electrónica argentina. Podés usar la API de Facturear como backend de facturación creando un módulo personalizado:
+
+```python
+# Ejemplo simplificado de módulo Odoo
+import requests
+
+class AccountMove(models.Model):
+    _inherit = 'account.move'
+    
+    def action_post(self):
+        result = super().action_post()
+        if self._es_factura_electronica():
+            self._emitir_con_facturear()
+        return result
+    
+    def _emitir_con_facturear(self):
+        payload = self._build_facturear_payload()
+        response = requests.post(
+            f"https://api.facturear.com/cuits/{self.company_id.vat}/facturas",
+            json=payload,
+            headers={"x-api-key": self.company_id.facturear_api_key}
+        )
+        data = response.json()
+        self.write({
+            'l10n_ar_afip_auth_code': data['cae'],
+            'l10n_ar_afip_auth_code_due': data['cae_vencimiento']
+        })
+```
+
+### Tango Gestión
+
+Para Tango, la integración se hace mediante:
+1. El módulo de **Exportación de Facturación** de Tango
+2. Un script que lee los archivos exportados y llama a la API de Facturear
+3. Un script que importa los resultados (CAE) de vuelta a Tango
+
+### SAP
+
+Para SAP (B1 o S/4HANA), la integración se implementa mediante:
+- Un **Add-on** o extensión de SAP
+- O un proceso de middleware (usando herramientas como MuleSoft, Boomi, o un servicio propio)
+
+---
+
+## Manejo de errores en la integración
+
+```javascript
+async function emitirFactura(facturaData) {
+  try {
+    const response = await fetch(
+      `https://api.facturear.com/cuits/${cuit}/facturas`,
+      {
+        method: 'POST',
+        headers: { 'x-api-key': apiKey, 'Content-Type': 'application/json' },
+        body: JSON.stringify(facturaData)
+      }
+    );
+    
+    if (!response.ok) {
+      const error = await response.json();
+      // Registrar el error para revisión manual
+      await registrarErrorFacturacion(facturaData, error);
+      throw new Error(`Error ARCA: ${error.message}`);
+    }
+    
+    const factura = await response.json();
+    return factura;
+    
+  } catch (err) {
+    // No dejar facturas sin CAE sin registrar
+    console.error('Error al emitir factura:', err);
+    throw err;
+  }
+}
+```
+
+---
+
+## Cola de trabajo para alta disponibilidad
+
+Para producción, implementá un sistema de cola:
+
+1. El ERP encola la factura en lugar de llamar directamente a la API
+2. Un worker procesa la cola y llama a Facturear
+3. Si falla, el worker reintenta con backoff exponencial
+4. El ERP consulta el estado de la factura periódicamente
+
+---
+
+## Webhook para notificaciones asíncronas
+
+Si configurás webhooks en Facturear, tu ERP puede recibir notificaciones cuando una factura es aprobada:
+
+Ver: [Integración con webhooks](/es/guides/webhook-integracion)
+
+---
+
+## Recursos relacionados
+
+- [API Keys y autenticación](/es/guides/api-keys)
+- [Integración con e-commerce](/es/guides/integracion-ecommerce)
+- [Webhooks en Facturear](/es/guides/webhook-integracion)
+- [Facturación en lotes](/es/guides/facturacion-lotes)

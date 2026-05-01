@@ -1,0 +1,168 @@
+---
+title: 'Descarga masiva de PDFs de facturas en Facturear'
+description: 'Cómo descargar PDFs de facturas en lote desde la API de Facturear: descarga individual, por período y exportación masiva para auditorías o envío a clientes.'
+---
+
+# Descarga masiva de PDFs de facturas
+
+Facturear permite descargar los PDFs de las facturas emitidas, tanto de forma individual como en lote. Esta guía cubre las opciones disponibles para descargar facturas en forma masiva.
+
+---
+
+## Descarga de un PDF individual
+
+Para descargar el PDF de una factura específica:
+
+```bash
+curl "https://api.facturear.com/cuits/20123456789/facturas/fct_abc123/pdf" \
+  -H "x-api-key: tu_api_key" \
+  --output factura-001.pdf
+```
+
+O solicitar la URL temporal del PDF:
+
+```bash
+curl "https://api.facturear.com/cuits/20123456789/facturas/fct_abc123/pdf-url" \
+  -H "x-api-key: tu_api_key"
+```
+
+```json
+{
+  "url": "https://cdn.facturear.com/pdfs/fct_abc123.pdf",
+  "expires_at": "2025-01-16T10:00:00Z"
+}
+```
+
+---
+
+## Descarga masiva por período
+
+Para descargar todos los PDFs de un mes en un archivo ZIP:
+
+### POST /cuits/{cuit}/facturas/export-pdf
+
+```bash
+curl -X POST "https://api.facturear.com/cuits/20123456789/facturas/export-pdf" \
+  -H "x-api-key: tu_api_key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "desde": "2025-01-01",
+    "hasta": "2025-01-31",
+    "tipo": "B"
+  }'
+```
+
+### Respuesta (exportación asíncrona)
+
+```json
+{
+  "export_id": "exp_abc123",
+  "estado": "procesando",
+  "total_facturas": 145
+}
+```
+
+---
+
+## Consultar el estado de la exportación
+
+Como la exportación puede tardar para lotes grandes, usá polling o webhook:
+
+```bash
+curl "https://api.facturear.com/exports/exp_abc123" \
+  -H "x-api-key: tu_api_key"
+```
+
+```json
+{
+  "export_id": "exp_abc123",
+  "estado": "completado",
+  "total_facturas": 145,
+  "url_descarga": "https://cdn.facturear.com/exports/exp_abc123.zip",
+  "expires_at": "2025-01-17T10:00:00Z"
+}
+```
+
+---
+
+## Descarga masiva en Node.js
+
+```javascript
+async function descargarFacturasMes(cuit, mes, anio) {
+  const desde = `${anio}-${String(mes).padStart(2, '0')}-01`;
+  const hasta = new Date(anio, mes, 0).toISOString().split('T')[0];
+  
+  // Iniciar exportación
+  const exportResponse = await fetch(
+    `https://api.facturear.com/cuits/${cuit}/facturas/export-pdf`,
+    {
+      method: 'POST',
+      headers: { 'x-api-key': apiKey, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ desde, hasta })
+    }
+  );
+  const { export_id } = await exportResponse.json();
+  
+  // Esperar a que termine
+  let exportData;
+  do {
+    await new Promise(r => setTimeout(r, 5000)); // esperar 5s
+    const statusResponse = await fetch(
+      `https://api.facturear.com/exports/${export_id}`,
+      { headers: { 'x-api-key': apiKey } }
+    );
+    exportData = await statusResponse.json();
+  } while (exportData.estado === 'procesando');
+  
+  if (exportData.estado === 'completado') {
+    // Descargar el ZIP
+    const zipResponse = await fetch(exportData.url_descarga);
+    const buffer = await zipResponse.arrayBuffer();
+    fs.writeFileSync(`facturas-${anio}-${mes}.zip`, Buffer.from(buffer));
+    console.log(`Descargadas ${exportData.total_facturas} facturas`);
+  }
+}
+```
+
+---
+
+## Envío automático de facturas por e-mail
+
+Para enviar cada factura por e-mail al receptor automáticamente:
+
+```bash
+curl -X POST "https://api.facturear.com/cuits/20123456789/facturas/fct_abc123/enviar-email" \
+  -H "x-api-key: tu_api_key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "cliente@empresa.com",
+    "asunto": "Factura B 0001-00000145",
+    "mensaje": "Adjuntamos la factura correspondiente al servicio del mes de enero."
+  }'
+```
+
+---
+
+## Estructura del ZIP descargado
+
+El archivo ZIP contiene:
+
+```
+facturas-2025-01.zip
+├── 0001-00000001.pdf
+├── 0001-00000002.pdf
+├── ...
+├── 0001-00000145.pdf
+└── resumen.csv
+```
+
+El `resumen.csv` incluye el listado de todas las facturas con sus datos (número, receptor, total, CAE).
+
+---
+
+## Recursos relacionados
+
+- [Buscar y consultar facturas](/es/guides/buscar-facturas)
+- [Webhooks en Facturear](/es/guides/webhook-integracion)
+- [Primera factura con Facturear](/es/guides/primera-factura)
+- [Facturación en lotes](/es/guides/facturacion-lotes)

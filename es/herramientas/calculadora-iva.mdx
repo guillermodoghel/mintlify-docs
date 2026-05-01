@@ -1,0 +1,134 @@
+---
+title: 'Cómo calcular el IVA de una factura'
+description: 'Aprende a calcular el IVA en Argentina: agregar IVA a un precio neto, extraer IVA de un precio total y calcular el saldo a pagar de IVA en tu DDJJ mensual.'
+---
+
+# Cómo calcular el IVA de una factura
+
+Calcular correctamente el IVA es fundamental para facturar bien y para hacer la DDJJ mensual. Estos son los tres cálculos más frecuentes.
+
+---
+
+## 1. Calcular IVA para agregar a un precio neto
+
+Cuando tenés el **precio neto** (sin IVA) y querés calcular el IVA a agregar:
+
+```
+IVA = Precio neto × Alícuota / 100
+Precio total = Precio neto + IVA
+```
+
+### Ejemplo: alícuota 21%
+
+```
+Precio neto:    $100.000
+IVA 21%:        $100.000 × 0,21 = $21.000
+Precio total:   $100.000 + $21.000 = $121.000
+```
+
+### Ejemplo: alícuota 10,5%
+
+```
+Precio neto:    $50.000
+IVA 10,5%:      $50.000 × 0,105 = $5.250
+Precio total:   $50.000 + $5.250 = $55.250
+```
+
+---
+
+## 2. Extraer IVA de un precio final (precio con IVA incluido)
+
+Cuando tenés el **precio total** (con IVA incluido) y necesitás saber cuánto es el IVA:
+
+```
+IVA = Precio total × Alícuota / (100 + Alícuota)
+Precio neto = Precio total - IVA
+```
+
+### Ejemplo: alícuota 21%
+
+```
+Precio total:   $121.000
+IVA:            $121.000 × 21 / 121 = $21.000
+Precio neto:    $121.000 - $21.000 = $100.000
+```
+
+**Fórmula simplificada para 21%**: dividir el precio total por 1,21
+
+```
+Precio neto = $121.000 / 1,21 = $100.000
+IVA = $121.000 - $100.000 = $21.000
+```
+
+**Fórmula simplificada para 10,5%**: dividir por 1,105
+
+```
+Precio neto = $55.250 / 1,105 = $50.000
+IVA = $55.250 - $50.000 = $5.250
+```
+
+---
+
+## 3. Calcular el saldo mensual de IVA
+
+```
+Saldo a pagar = Débito fiscal - Crédito fiscal
+```
+
+| Ventas del mes | Base neta | IVA 21% |
+|---|---|---|
+| Factura 001 | $200.000 | $42.000 |
+| Factura 002 | $150.000 | $31.500 |
+| **Subtotal débito** | | **$73.500** |
+
+| Compras del mes | Base neta | IVA 21% |
+|---|---|---|
+| Proveedor A | $80.000 | $16.800 |
+| Proveedor B | $40.000 | $8.400 |
+| **Subtotal crédito** | | **$-25.200** |
+
+```
+Saldo a pagar = $73.500 - $25.200 = $48.300
+```
+
+---
+
+## Factores del divisor por alícuota
+
+| Alícuota | Divisor para extraer IVA |
+|---|---|
+| 21% | ÷ 1,21 |
+| 10,5% | ÷ 1,105 |
+| 27% | ÷ 1,27 |
+| 5% | ÷ 1,05 |
+| 2,5% | ÷ 1,025 |
+
+---
+
+## IVA en Facturear: cálculo automático
+
+En Facturear no necesitás hacer estos cálculos manualmente. Al crear una factura:
+
+1. Ingresás el **precio unitario neto** de cada ítem
+2. Seleccionás la **alícuota de IVA**
+3. Facturear calcula automáticamente el IVA por ítem y el total
+
+En el PDF generado, el IVA aparece **discriminado por alícuota** (para Facturas A) o incluido en el total (para Facturas B y C).
+
+---
+
+## Herramientas adicionales
+
+Para cálculos rápidos podés usar:
+
+- La calculadora integrada del dashboard de Facturear
+- Cualquier calculadora con la fórmula de arriba
+- Hojas de cálculo (Excel, Google Sheets)
+
+---
+
+## Recursos relacionados
+
+- [Qué es el IVA en Argentina](/es/iva/que-es-iva)
+- [Alícuotas de IVA vigentes](/es/iva/alicuotas)
+- [Crédito y débito fiscal](/es/iva/credito-debito-fiscal)

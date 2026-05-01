@@ -1,0 +1,128 @@
+---
+title: 'Factura E: todo sobre la exportación de servicios en Argentina'
+description: 'Guía completa de la Factura E para exportación de servicios en Argentina: quién puede emitirla, cómo hacerlo, tasa 0% de IVA y beneficios para exportadores.'
+---
+
+# Factura E: exportación de servicios
+
+La **Factura E** (tipo 19 en ARCA) es el comprobante que emitís cuando prestás servicios o vendés bienes **al exterior** — es decir, cuando tu cliente está domiciliado fuera de Argentina.
+
+---
+
+## ¿Quiénes pueden emitir Factura E?
+
+Tanto **Monotributistas** como **Responsables Inscriptos** pueden emitir Factura E para exportaciones de servicios al exterior.
+
+| Categoría | Puede emitir Factura E | Observaciones |
+|---|---|---|
+| Monotributista | Sí | Para servicios digitales al exterior |
+| Responsable Inscripto | Sí | Para servicios y bienes |
+| Exento en IVA | Sí | Para actividades exentas prestadas al exterior |
+
+---
+
+## Tasa 0% de IVA: qué significa
+
+Las exportaciones tienen **tasa cero de IVA**, que es diferente a estar exento:
+
+- **Tasa 0%**: el IVA de la exportación es $0, pero podés recuperar el crédito fiscal de tus compras vinculadas
+- **Exento**: tampoco cobrás IVA, pero **no podés recuperar** el crédito fiscal
+
+Si sos Responsable Inscripto y exportás servicios, el IVA que pagaste en las compras vinculadas a esos servicios (materiales, software, servicios de terceros) te genera **crédito fiscal recuperable**.
+
+---
+
+## Cuándo se configura como exportación de servicios
+
+Para que la operación sea exportación de servicios, el servicio debe:
+- Ser prestado por alguien en Argentina
+- Para un receptor en el exterior
+- Y ser **utilizado económicamente en el exterior** (no en Argentina)
+
+<Info>
+  Si diseñás un sitio web para una empresa de EE.UU. que opera solo en EE.UU., es exportación de servicios. Si esa empresa tiene operaciones en Argentina y usa el sitio para el mercado local, puede no ser exportación.
+</Info>
+
+---
+
+## Cómo emitir Factura E con Facturear
+
+### Desde el Dashboard
+
+1. Nueva Factura → Tipo: **"E — Exportación"**
+2. Seleccioná el **país del receptor** (código de país ARCA)
+3. Ingresá la **identificación fiscal** del cliente en su país
+4. Completá los ítems (sin alícuota de IVA, tasa 0%)
+5. Indicá la **moneda** del contrato (puede ser USD, EUR, etc.) y el tipo de cambio
+6. Emití la factura
+
+### Via API
+
+```javascript
+{
+  "cuitId": "id-de-tu-cuit",
+  "comprobante": {
+    "tipo": 19,
+    "puntoVenta": 1,
+    "receptor": {
+      "razonSocial": "Digital Services Inc.",
+      "paisCodigo": 212,      // 212 = Estados Unidos
+      "identificacion": "12-3456789",
+      "tipoDoc": 80           // Código NIF/tax ID según país
+    },
+    "moneda": "DOL",           // Dólares
+    "tipoCambio": 1005.50,     // Tipo de cambio oficial
+    "items": [
+      {
+        "descripcion": "Software development - April 2025",
+        "cantidad": 1,
+        "precioUnitario": 3000,
+        "alicuotaIva": 0
+      }
+    ]
+  }
+}
+```
+
+---
+
+## Monedas habilitadas para Factura E
+
+Podés facturar en distintas monedas:
+
+| Código | Moneda |
+|---|---|
+| PES | Pesos argentinos |
+| DOL | Dólar estadounidense |
+| EUR | Euro |
+| 060 | Libra esterlina |
+| 123 | Real brasileño |
+| Y otros | Según la tabla ARCA |
+
+El tipo de cambio que usés debe ser el **tipo de cambio oficial del BCRA** del día de emisión. Facturear obtiene automáticamente el tipo de cambio vigente.
+
+---
+
+## Obligaciones adicionales del exportador de servicios
+
+Como exportador de servicios, podés tener obligaciones adicionales:
+
+1. **Liquidación de divisas**: el BCRA establece plazos y condiciones para ingresar y liquidar el cobro en dólares
+2. **Declaración INDEC**: estadísticas de exportaciones de servicios (SECOEXPO)
+3. **Registro en padrón de exportadores**: en ciertos casos
+
+---
+
+## Beneficios fiscales para exportadores de servicios
+
+- **Recupero de IVA** de compras vinculadas a la exportación
+- **Reducción de retenciones** sobre los ingresos en divisas (según normativa vigente)
+- **Beneficios cambiarios** en períodos especiales (tipos de cambio diferenciales)
+
+---
+
+## Recursos relacionados
+
+- [Monotributista que exporta servicios](/es/monotributo/exportacion-servicios)
+- [Cobro en divisas por exportación](/es/exportacion/cobro-en-divisas)
+- [Tipos de comprobantes AFIP/ARCA](/es/fundamentos/tipos-de-comprobantes)

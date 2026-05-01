@@ -1,0 +1,107 @@
+---
+title: 'Cómo verificar si una factura electrónica es válida'
+description: 'Cómo constatar la validez de una factura electrónica en ARCA: qué es el CAE, cómo verificarlo online, qué datos revisar y cómo detectar facturas apócrifas.'
+---
+
+# Cómo verificar si una factura electrónica es válida
+
+Recibiste una factura y querés saber si es auténtica. O emitiste una y querés confirmar que está registrada en ARCA. La **constatación de comprobantes** es el proceso para verificar la validez de una factura electrónica.
+
+---
+
+## Qué hace válida a una factura electrónica
+
+Una factura electrónica es válida cuando:
+
+1. Tiene **CAE (Código de Autorización Electrónico)** vigente
+2. Los datos de la factura **coinciden** con los registrados en ARCA para ese CAE
+3. El CAE **no está vencido** al momento de la emisión
+4. El **CUIT del emisor** está activo y habilitado para emitir ese tipo de comprobante
+
+---
+
+## Cómo verificar una factura en ARCA
+
+### Método 1: Constatación de comprobantes en el portal de ARCA
+
+<Steps>
+  Ingresá a **arca.gob.ar** — este servicio **NO requiere** Clave Fiscal, es público
+
+  Buscá **"Constatación de Comprobantes"** o "Consulta de Comprobantes"
+
+  Completá los datos de la factura:
+  - CUIT del emisor
+  - Tipo de comprobante (Factura A, B, C, etc.)
+  - Punto de venta
+  - Número de comprobante
+  - Fecha de emisión
+  - Importe total (en algunos casos)
+
+  Hacé clic en **"Consultar"**
+
+  El sistema confirma si el comprobante existe y es válido, o informa que no está registrado
+</Steps>
+
+### Método 2: Leer el código QR de la factura
+
+Desde 2021, todas las facturas electrónicas tienen un **código QR** obligatorio. Al escanearlo:
+
+- Se abre una página en arca.gob.ar con los datos del comprobante
+- Podés comparar los datos del QR con los de la factura en papel o PDF
+- Si el QR no abre o los datos no coinciden, la factura puede ser apócrifa
+
+---
+
+## Qué verificar en el CAE
+
+El CAE tiene **14 dígitos** y una **fecha de vencimiento** de hasta 10 días después de la fecha de emisión. Verificá:
+
+- Que el CAE tenga 14 dígitos
+- Que la fecha del CAE sea coherente con la fecha de emisión
+- Que el CAE esté registrado en ARCA para los datos de la factura
+
+---
+
+## Señales de alerta: facturas apócrifas
+
+Una factura puede ser **apócrifa** (falsa) si:
+
+- El CUIT del emisor no existe en ARCA o está inactivo
+- El número de CAE no corresponde a los datos de la factura
+- La factura tiene errores de formato (numeración incorrecta, tipo de comprobante inválido)
+- El código QR no carga o muestra datos diferentes
+- El emisor no está habilitado para ese tipo de comprobante (ej: Monotributista emitiendo Factura A)
+
+<Warning>
+  Usar facturas apócrifas para computar crédito fiscal de IVA o deducir gastos de Ganancias es una infracción grave. ARCA cruza automáticamente la información de compradores y vendedores. Si el vendedor no declaró la factura, tu crédito puede ser impugnado.
+</Warning>
+
+---
+
+## Verificación masiva via API de Facturear
+
+Si necesitás verificar muchas facturas recibidas (ej: cuentas a pagar de una empresa), Facturear ofrece integración para validar comprobantes en batch.
+
+---
+
+## Preguntas frecuentes
+
+<AccordionGroup>
+  <Accordion title="¿Puedo usar una factura no constatada como crédito fiscal?">
+    No es recomendable. Si la factura no está registrada en ARCA, el crédito fiscal puede ser objetado en una fiscalización. Siempre verificá antes de computar el crédito.
+  </Accordion>
+  <Accordion title="¿Qué hago si descubro que una factura que recibí es apócrifa?">
+    No uses esa factura para ningún efecto fiscal (no la computes como crédito de IVA ni como gasto deducible de Ganancias). Podrías además denunciar el hecho ante ARCA si lo considerás conveniente.
+  </Accordion>
+  <Accordion title="¿Las facturas emitidas por Facturear siempre son válidas?">
+    Sí. Facturear solo emite facturas después de recibir el CAE de ARCA. Cada factura emitida tiene CAE verificable y está registrada en el sistema de ARCA.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Recursos relacionados
+
+- [Facturación apócrifa: cómo evitarla](/es/novedades/facturacion-apocrifa)
+- [Qué es la factura electrónica en Argentina](/es/fundamentos/que-es-factura-electronica)
+- [Tipos de comprobantes AFIP/ARCA](/es/fundamentos/tipos-de-comprobantes)

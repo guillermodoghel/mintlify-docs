@@ -1,0 +1,161 @@
+---
+title: 'Cómo buscar y consultar facturas emitidas en Facturear'
+description: 'Cómo buscar, filtrar y consultar facturas electrónicas emitidas a través de la API de Facturear: filtros por fecha, CUIT receptor, estado y número de comprobante.'
+---
+
+# Buscar y consultar facturas emitidas
+
+La API de Facturear incluye endpoints para **consultar el historial de facturas** emitidas. Podés buscar por fecha, receptor, tipo de comprobante o número, y obtener los detalles completos incluyendo el CAE y el PDF.
+
+---
+
+## Listar facturas de un CUIT
+
+### GET /cuits/{cuit}/facturas
+
+```bash
+curl "https://api.facturear.com/cuits/20123456789/facturas" \
+  -H "x-api-key: tu_api_key"
+```
+
+### Con filtros
+
+```bash
+curl "https://api.facturear.com/cuits/20123456789/facturas?desde=2025-01-01&hasta=2025-01-31&tipo=B" \
+  -H "x-api-key: tu_api_key"
+```
+
+---
+
+## Parámetros de búsqueda disponibles
+
+| Parámetro | Tipo | Descripción | Ejemplo |
+|---|---|---|---|
+| `desde` | date | Fecha desde (inclusiva) | `2025-01-01` |
+| `hasta` | date | Fecha hasta (inclusiva) | `2025-01-31` |
+| `tipo` | string | Tipo de comprobante | `A`, `B`, `C`, `E` |
+| `punto_venta` | integer | Número de punto de venta | `1` |
+| `receptor_cuit` | string | CUIT del receptor | `30987654321` |
+| `estado` | string | Estado del comprobante | `emitida`, `error` |
+| `page` | integer | Página para paginación | `1` |
+| `per_page` | integer | Resultados por página (máx. 100) | `50` |
+
+---
+
+## Respuesta de listado
+
+```json
+{
+  "facturas": [
+    {
+      "id": "fct_abc123",
+      "tipo": "B",
+      "punto_venta": 1,
+      "numero": 145,
+      "fecha": "2025-01-15",
+      "receptor": {
+        "razon_social": "Juan Pérez",
+        "cuit": "20111222333"
+      },
+      "total": 121000,
+      "cae": "71234567890123",
+      "cae_vencimiento": "2025-01-25",
+      "estado": "emitida"
+    }
+  ],
+  "pagination": {
+    "total": 145,
+    "page": 1,
+    "per_page": 50,
+    "pages": 3
+  }
+}
+```
+
+---
+
+## Consultar una factura específica
+
+### GET /cuits/{cuit}/facturas/{id}
+
+```bash
+curl "https://api.facturear.com/cuits/20123456789/facturas/fct_abc123" \
+  -H "x-api-key: tu_api_key"
+```
+
+O por número de comprobante:
+
+```bash
+curl "https://api.facturear.com/cuits/20123456789/facturas?punto_venta=1&tipo=B&numero=145" \
+  -H "x-api-key: tu_api_key"
+```
+
+---
+
+## Obtener el PDF de una factura
+
+```bash
+curl "https://api.facturear.com/cuits/20123456789/facturas/fct_abc123/pdf" \
+  -H "x-api-key: tu_api_key" \
+  --output factura.pdf
+```
+
+O como URL de descarga:
+
+```bash
+curl "https://api.facturear.com/cuits/20123456789/facturas/fct_abc123/pdf-url" \
+  -H "x-api-key: tu_api_key"
+```
+
+```json
+{
+  "url": "https://cdn.facturear.com/pdfs/fct_abc123.pdf",
+  "expires_at": "2025-01-16T10:00:00Z"
+}
+```
+
+---
+
+## Filtrar por estado
+
+Las facturas pueden tener estos estados:
+
+| Estado | Descripción |
+|---|---|
+| `emitida` | Factura emitida exitosamente con CAE |
+| `error` | Hubo un error al emitir (ARCA rechazó) |
+| `pendiente` | En cola de procesamiento |
+
+---
+
+## Exportar facturas a CSV
+
+Para descargar el listado en CSV:
+
+```bash
+curl "https://api.facturear.com/cuits/20123456789/facturas/export?format=csv&desde=2025-01-01&hasta=2025-01-31" \
+  -H "x-api-key: tu_api_key" \
+  --output facturas-enero-2025.csv
+```
+
+---
+
+## Ejemplo: buscar facturas a un cliente
+
+```javascript
+const response = await fetch(
+  `https://api.facturear.com/cuits/${miCuit}/facturas?receptor_cuit=30987654321`,
+  { headers: { 'x-api-key': apiKey } }
+);
+const { facturas } = await response.json();
+console.log(`Facturas al cliente: ${facturas.length}`);
+```
+
+---
+
+## Recursos relacionados
+
+- [Primera factura con Facturear](/es/guides/primera-factura)
+- [Descarga masiva de PDFs](/es/guides/descarga-pdf-masiva)
+- [Nota de crédito y débito](/es/guides/nota-credito-debito)
+- [API Keys y autenticación](/es/guides/api-keys)

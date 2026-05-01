@@ -1,0 +1,149 @@
+---
+title: 'Emitir Factura E (exportación) con Facturear'
+description: 'Guía paso a paso para emitir facturas de exportación de servicios (tipo E) con Facturear: configuración, datos del receptor, moneda extranjera y tipo de cambio.'
+---
+
+# Emitir Factura E con Facturear
+
+La **Factura E** (tipo 19 en ARCA) es el comprobante para exportaciones de servicios y bienes al exterior. Tanto Monotributistas como Responsables Inscriptos pueden emitirla.
+
+---
+
+## Requisitos previos
+
+- CUIT configurado en Facturear con certificado de producción activo
+- Punto de venta habilitado en ARCA
+- Datos del cliente del exterior (nombre, país, identificación fiscal)
+
+---
+
+## Emitir Factura E desde el Dashboard
+
+<Steps>
+  Ir a **Nueva Factura** en Facturear
+
+  En "Tipo de comprobante" seleccioná **"E — Exportación"**
+
+  Seleccioná el **punto de venta**
+
+  En "Datos del receptor" completá:
+  - Nombre o razón social del cliente
+  - **País** del receptor (usá el buscador por nombre de país)
+  - Tipo y número de identificación fiscal del cliente en su país
+
+  En "Moneda", seleccioná la moneda de la operación (USD, EUR, etc.)
+
+  El sistema precarga el **tipo de cambio oficial** del día automáticamente — podés modificarlo si corresponde
+
+  Agregá los ítems del servicio (sin alícuota de IVA)
+
+  Emití la factura — Facturear obtiene el CAE de ARCA
+
+  Descargá el PDF con el QR incluido
+</Steps>
+
+---
+
+## Emitir Factura E via API
+
+```javascript
+const response = await fetch('https://api.facturear.com/invoices', {
+  method: 'POST',
+  headers: {
+    'x-api-key': process.env.FACTUREAR_API_KEY,
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    cuitId: process.env.FACTUREAR_CUIT_ID,
+    comprobante: {
+      tipo: 19,              // Factura E
+      puntoVenta: 1,
+      moneda: 'DOL',         // USD
+      tipoCambio: 1005.50,   // Tipo de cambio oficial del día
+      receptor: {
+        razonSocial: 'Acme Corp',
+        paisCodigo: 212,     // EE.UU.
+        tipoDocRec: 80,      // NIF extranjero
+        nroDocRec: '12-3456789'
+      },
+      items: [
+        {
+          descripcion: 'Backend development services - May 2025',
+          cantidad: 1,
+          precioUnitario: 5000,  // En USD
+          alicuotaIva: 0         // Tasa 0%
+        }
+      ]
+    }
+  })
+})
+
+const factura = await response.json()
+console.log('CAE:', factura.cae)
+console.log('Total en USD:', factura.total)
+```
+
+---
+
+## Códigos de país más usados
+
+| País | Código ARCA |
+|---|---|
+| Estados Unidos | 212 |
+| España | 203 |
+| Alemania | 143 |
+| Chile | 152 |
+| Brasil | 101 |
+| México | 160 |
+| Uruguay | 225 |
+| Colombia | 159 |
+| Francia | 139 |
+| Italia | 175 |
+| Países Bajos | 191 |
+| Reino Unido | 220 |
+
+Podés obtener la lista completa via API: `GET /arca/Pais`
+
+---
+
+## Tipo de cambio en la Factura E
+
+El tipo de cambio que usás en la Factura E debe ser el **tipo de cambio vendedor del BCRA** del día de emisión.
+
+Facturear obtiene este valor automáticamente. Si por algún motivo necesitás un tipo de cambio diferente (por ejemplo, en contratos que especifican una tasa pactada), podés indicarlo manualmente.
+
+---
+
+## Receptor sin identificación fiscal
+
+En algunos casos el cliente del exterior no tiene identificación fiscal (persona física extranjera, etc.):
+
+```javascript
+receptor: {
+  razonSocial: 'John Doe',
+  paisCodigo: 212,
+  tipoDocRec: 99,   // Sin identificación
+  nroDocRec: '0'
+}
+```
+
+---
+
+## Preguntas frecuentes
+
+<AccordionGroup>
+  <Accordion title="¿La Factura E necesita un punto de venta especial?">
+    No. Podés usar el mismo punto de venta que usás para las facturas locales. ARCA diferencia el tipo de exportación por el tipo de comprobante (19), no por el punto de venta.
+  </Accordion>
+  <Accordion title="¿Puedo emitir Factura E siendo Monotributista?">
+    Sí. Los Monotributistas pueden emitir Factura E para exportación de servicios. Ver [Monotributista que exporta servicios](/es/monotributo/exportacion-servicios).
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Recursos relacionados
+
+- [Factura E: todo sobre exportación de servicios](/es/exportacion/factura-e)
+- [Cobro en divisas](/es/exportacion/cobro-en-divisas)
+- [API Reference](/es/api-reference)

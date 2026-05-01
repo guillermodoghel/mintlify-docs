@@ -1,0 +1,174 @@
+---
+title: 'Usar la API de parámetros ARCA en Facturear'
+description: 'Cómo obtener los parámetros de ARCA (tipos de comprobante, alícuotas, países, monedas, etc.) a través de la API de Facturear para mantener tu sistema actualizado.'
+---
+
+# API de parámetros ARCA
+
+ARCA mantiene tablas de referencia que se usan al emitir facturas: tipos de comprobante, alícuotas de IVA, países, monedas, tipos de documento, condiciones frente al IVA, unidades de medida y más.
+
+Facturear expone estos parámetros a través de su API para que no tengas que hardcodearlos en tu sistema.
+
+---
+
+## ¿Por qué usar la API de parámetros?
+
+- Los parámetros de ARCA **se actualizan periódicamente** (nuevos tipos de comprobante, cambios de alícuotas, nuevos países, etc.)
+- Si hardcodeás los valores, tu sistema puede quedar desactualizado
+- La API de Facturear siempre devuelve los valores vigentes directamente de ARCA
+
+---
+
+## Endpoints disponibles
+
+### Listar todos los parámetros disponibles
+
+```bash
+GET /arca-parameters
+```
+
+Respuesta:
+```json
+{
+  "parameters": [
+    "Cbte_Tipo",
+    "Concepto",
+    "Doc_Tipo",
+    "Iva_Tipo",
+    "MConc_Tipo",
+    "Mon_Tipo",
+    "Opt_Compra",
+    "Pais_Tipo",
+    "PtoVta",
+    "Tributos_Tipo",
+    "UMed_Tipo"
+  ]
+}
+```
+
+### Obtener un parámetro específico
+
+```bash
+GET /arca/{name}
+```
+
+---
+
+## Parámetros más usados
+
+### Tipos de comprobante (Cbte_Tipo)
+
+```bash
+GET /arca/Cbte_Tipo
+```
+
+```json
+[
+  { "Id": 1, "Desc": "FACTURAS A" },
+  { "Id": 2, "Desc": "NOTAS DE DEBITO A" },
+  { "Id": 3, "Desc": "NOTAS DE CREDITO A" },
+  { "Id": 6, "Desc": "FACTURAS B" },
+  { "Id": 11, "Desc": "FACTURAS C" },
+  { "Id": 19, "Desc": "FACTURAS E" },
+  { "Id": 201, "Desc": "FACTURAS DE CREDITO ELECTRONICAS MIPYMES (FCE) A" }
+  // ...
+]
+```
+
+### Alícuotas de IVA (Iva_Tipo)
+
+```bash
+GET /arca/Iva_Tipo
+```
+
+```json
+[
+  { "Id": 3, "Desc": "0%" },
+  { "Id": 4, "Desc": "10.5%" },
+  { "Id": 5, "Desc": "21%" },
+  { "Id": 6, "Desc": "27%" },
+  { "Id": 8, "Desc": "5%" },
+  { "Id": 9, "Desc": "2.5%" }
+]
+```
+
+### Países (Pais_Tipo)
+
+```bash
+GET /arca/Pais_Tipo
+```
+
+Devuelve la lista completa de países con sus códigos para la Factura E.
+
+### Monedas (Mon_Tipo)
+
+```bash
+GET /arca/Mon_Tipo
+```
+
+```json
+[
+  { "Id": "PES", "Desc": "Pesos Argentinos" },
+  { "Id": "DOL", "Desc": "Dólar Estadounidense" },
+  { "Id": "EUR", "Desc": "Euro" }
+  // ...
+]
+```
+
+### Tipos de documento (Doc_Tipo)
+
+```bash
+GET /arca/Doc_Tipo
+```
+
+Tipos de documento para identificar al receptor (DNI, CUIT, pasaporte, etc.)
+
+---
+
+## Ejemplo de uso en una integración
+
+```javascript
+// Al inicializar tu app, cacheá los parámetros
+async function cargarParametrosARCA() {
+  const [tiposComprobante, alicuotas, paises, monedas] = await Promise.all([
+    fetch('https://api.facturear.com/arca/Cbte_Tipo', {
+      headers: { 'x-api-key': API_KEY }
+    }).then(r => r.json()),
+    fetch('https://api.facturear.com/arca/Iva_Tipo', {
+      headers: { 'x-api-key': API_KEY }
+    }).then(r => r.json()),
+    fetch('https://api.facturear.com/arca/Pais_Tipo', {
+      headers: { 'x-api-key': API_KEY }
+    }).then(r => r.json()),
+    fetch('https://api.facturear.com/arca/Mon_Tipo', {
+      headers: { 'x-api-key': API_KEY }
+    }).then(r => r.json())
+  ])
+  
+  // Guardá en caché (Redis, memoria, etc.)
+  await cache.set('arca:tiposComprobante', tiposComprobante, 86400) // 24hs TTL
+  await cache.set('arca:alicuotas', alicuotas, 86400)
+  await cache.set('arca:paises', paises, 86400)
+  await cache.set('arca:monedas', monedas, 86400)
+}
+```
+
+---
+
+## Frecuencia de actualización recomendada
+
+| Parámetro | Frecuencia de actualización recomendada |
+|---|---|
+| Tipos de comprobante | Mensual (rara vez cambian) |
+| Alícuotas de IVA | Mensual |
+| Países | Anual |
+| Monedas | Mensual |
+| Puntos de venta | Cuando agregás uno nuevo |
+
+---
+
+## Recursos relacionados
+
+- [API Reference completa](/es/api-reference)
+- [Emitir tu primera factura](/es/guides/primera-factura)
+- [Tipos de comprobantes AFIP/ARCA](/es/fundamentos/tipos-de-comprobantes)

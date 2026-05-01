@@ -1,0 +1,139 @@
+---
+title: 'Facturación con CAEA: Código de Autorización Electrónico Anticipado'
+description: 'Cómo funciona el CAEA (Código de Autorización Electrónico Anticipado) en Argentina: para qué sirve, cuándo usarlo y cómo integrarlo con la API de Facturear.'
+---
+
+# Facturación con CAEA
+
+El **CAEA (Código de Autorización Electrónico Anticipado)** es una modalidad de autorización de comprobantes electrónicos donde el contribuyente obtiene por adelantado un código que luego usa para autorizar las facturas, en lugar de autorizar cada factura individualmente en tiempo real.
+
+---
+
+## ¿Cuándo se usa el CAEA?
+
+El CAEA está diseñado para contribuyentes con **gran volumen de operaciones** o que operan en condiciones donde la conectividad en tiempo real no siempre es posible (supermercados, estaciones de servicio, comercios con muchos puntos de venta, etc.).
+
+| Modalidad | Cuándo usarla |
+|---|---|
+| **CAE (normal)** | Cada factura se autoriza en tiempo real. Para la mayoría de los casos. |
+| **CAEA** | Se obtiene un código anticipado para un período y se asocia a los comprobantes emitidos en ese período. Para operaciones de gran volumen o sin conectividad constante. |
+
+---
+
+## Cómo funciona el CAEA
+
+<Steps>
+  Al inicio de cada quincena, el contribuyente solicita el CAEA para esa quincena
+
+  ARCA devuelve el código CAEA válido para esos 15 días
+
+  Durante la quincena, el contribuyente emite comprobantes usando ese código CAEA (sin consultar ARCA por cada uno)
+
+  Al finalizar la quincena, el contribuyente informa a ARCA todos los comprobantes emitidos con ese CAEA
+
+  Si el CAEA no se usa (no se emitieron comprobantes), igual debe informarse que no se usó
+</Steps>
+
+---
+
+## Períodos del CAEA
+
+El CAEA se solicita **por quincena**:
+
+| Quincena | Período de uso | Fecha límite de información |
+|---|---|---|
+| 1ra quincena | 1 al 15 del mes | Hasta el 20 del mismo mes |
+| 2da quincena | 16 al último día del mes | Hasta el 5 del mes siguiente |
+
+---
+
+## Obtener el CAEA con la API de Facturear
+
+### GET /cuits/{cuit}/caea
+
+```bash
+curl "https://api.facturear.com/cuits/20123456789/caea?periodo=202501&orden=1" \
+  -H "x-api-key: tu_api_key"
+```
+
+Parámetros:
+- `periodo`: Año y mes (YYYYMM)
+- `orden`: 1 para primera quincena, 2 para segunda quincena
+
+### Respuesta
+
+```json
+{
+  "caea": "12345678901234",
+  "periodo": "202501",
+  "orden": 1,
+  "fecha_desde": "2025-01-01",
+  "fecha_hasta": "2025-01-15",
+  "fecha_tope_informacion": "2025-01-20",
+  "fecha_proceso": "2025-01-01T08:00:00Z"
+}
+```
+
+---
+
+## Emitir facturas con CAEA
+
+Al emitir facturas en modo CAEA, incluís el código en el comprobante:
+
+```json
+{
+  "modo": "caea",
+  "caea": "12345678901234",
+  "tipo_comprobante": "B",
+  "punto_venta": 5,
+  "items": [...]
+}
+```
+
+Las facturas emitidas en modo CAEA se acumulan en Facturear hasta que las informás a ARCA.
+
+---
+
+## Informar comprobantes emitidos con CAEA
+
+### POST /cuits/{cuit}/caea/{caea}/informar
+
+```bash
+curl -X POST "https://api.facturear.com/cuits/20123456789/caea/12345678901234/informar" \
+  -H "x-api-key: tu_api_key"
+```
+
+Facturear envía a ARCA todos los comprobantes emitidos con ese CAEA durante la quincena.
+
+---
+
+## CAEA sin uso (quincena sin ventas)
+
+Si obtuviste un CAEA pero no emitiste ningún comprobante, igual debés informarlo:
+
+```bash
+curl -X POST "https://api.facturear.com/cuits/20123456789/caea/12345678901234/sin-movimiento" \
+  -H "x-api-key: tu_api_key" \
+  -d '{"punto_venta": 5}'
+```
+
+---
+
+## ¿CAE o CAEA? Cómo elegir
+
+| Factor | CAE | CAEA |
+|---|---|---|
+| Volumen de facturas | Bajo-medio | Alto |
+| Conectividad | Siempre conectado | Puede funcionar offline |
+| Proceso | Simple (una llamada por factura) | Más complejo (quincena + informe final) |
+| Complejidad de integración | Baja | Media-alta |
+| Casos de uso típicos | PyMEs, profesionales, e-commerce | Supermercados, estaciones de servicio, grandes superficies |
+
+---
+
+## Recursos relacionados
+
+- [Primera factura con Facturear](/es/guides/primera-factura)
+- [Facturación en lotes](/es/guides/facturacion-lotes)
+- [Puntos de venta](/es/guides/puntos-de-venta)
+- [Parámetros de ARCA](/es/guides/parametros-arca)

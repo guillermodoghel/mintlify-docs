@@ -1,0 +1,116 @@
+---
+title: 'Entorno de testing (homologación) en Facturear'
+description: 'Cómo usar el entorno de pruebas de ARCA para testear tu integración con Facturear sin emitir facturas reales: configuración, endpoints y datos de prueba.'
+---
+
+# Entorno de testing (homologación) en Facturear
+
+Antes de conectar tu sistema con producción y emitir facturas reales, podés usar el **entorno de homologación (testing)** de ARCA. Este entorno te permite probar toda la integración sin impacto fiscal real.
+
+---
+
+## ¿Qué es el entorno de homologación?
+
+ARCA ofrece un entorno de **homologación** (también llamado "testing") que replica el comportamiento del webservice de facturación electrónica, pero las facturas emitidas ahí **no tienen validez fiscal**.
+
+- Los CAEs emitidos en testing son "de prueba"
+- No se informan al sistema fiscal real
+- Podés emitir tantas facturas de prueba como necesités
+
+---
+
+## Configuración en Facturear
+
+El entorno de testing en Facturear se configura al crear el certificado digital:
+
+1. Primero configurás un **certificado de testing** (WSASS en ARCA)
+2. Luego configurás el **certificado de producción**
+3. Podés alternar entre ambos entornos desde el dashboard
+
+### Certificados separados
+
+El entorno de testing requiere su propio certificado, diferente al de producción. Ver la [guía de certificado digital](/es/guides/certificado-digital) para el proceso completo.
+
+---
+
+## Diferencias entre testing y producción
+
+| Aspecto | Testing (Homologación) | Producción |
+|---|---|---|
+| URL webservice ARCA | wswhomo.afip.gov.ar | servicios1.afip.gov.ar |
+| CAE generado | Sin validez fiscal | Válido legalmente |
+| CUIT necesario | Tu CUIT real | Tu CUIT real |
+| Certificado | Certificado de testing | Certificado de producción |
+| Facturear configura | Automáticamente según el cert | Automáticamente según el cert |
+
+---
+
+## Cómo testear con la API de Facturear
+
+Al crear una factura via API, podés indicar el entorno:
+
+```javascript
+const response = await fetch('https://api.facturear.com/invoices', {
+  method: 'POST',
+  headers: {
+    'x-api-key': 'tu_api_key',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    cuitId: 'id-de-tu-cuit-testing',  // CUIT configurado con cert de testing
+    comprobante: {
+      tipo: 11,
+      puntoVenta: 1,
+      receptor: {
+        razonSocial: 'Cliente de Prueba',
+        condicionIva: 'CF'
+      },
+      items: [{
+        descripcion: 'Producto de prueba',
+        cantidad: 1,
+        precioUnitario: 1000
+      }]
+    }
+  })
+})
+```
+
+---
+
+## Casos de prueba recomendados
+
+Antes de pasar a producción, testeá al menos estos escenarios:
+
+- Factura C a Consumidor Final (sin datos del receptor)
+- Factura A con CUIT de receptor válido
+- Factura B con datos del receptor
+- Nota de Crédito sobre una factura existente
+- Factura con múltiples ítems y alícuotas diferentes
+- Factura E (exportación)
+- Error intencional (CUIT receptor inválido) — verificar manejo de errores
+- Lote con múltiples facturas
+- Lote con algún ítem que falla
+
+---
+
+## Preguntas frecuentes
+
+<AccordionGroup>
+  <Accordion title="¿Las facturas de testing aparecen en mis reportes?">
+    Depende de la configuración. Facturear puede separar los comprobantes de testing de los de producción en el dashboard para evitar confusiones.
+  </Accordion>
+  <Accordion title="¿Puedo usar el mismo CUIT para testing y producción?">
+    Sí, pero con diferentes certificados. El CUIT es el mismo; lo que cambia es si usás el certificado de homologación (testing) o el de producción.
+  </Accordion>
+  <Accordion title="¿El entorno de testing tiene límites de uso?">
+    ARCA puede tener límites de velocidad en el entorno de testing, pero son generosos para desarrollo normal. No usés el entorno de testing para cargas de producción.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Recursos relacionados
+
+- [Configurar certificado digital](/es/guides/certificado-digital)
+- [Emitir tu primera factura](/es/guides/primera-factura)
+- [API Reference](/es/api-reference)

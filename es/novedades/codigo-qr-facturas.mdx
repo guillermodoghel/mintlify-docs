@@ -1,0 +1,102 @@
+---
+title: 'Código QR obligatorio en facturas electrónicas: RG 4804'
+description: 'Todo sobre el código QR obligatorio en las facturas electrónicas argentinas: qué información contiene, por qué es obligatorio, cómo verificarlo y desde cuándo rige.'
+---
+
+# Código QR obligatorio en facturas electrónicas
+
+Desde 2021, todas las facturas electrónicas emitidas en Argentina deben incluir un **código QR** con la información del comprobante. Esta obligación fue establecida por la **RG (AFIP) 4804/2020** y tiene como objetivo facilitar la verificación de autenticidad de los comprobantes.
+
+---
+
+## Base legal: RG 4804/2020
+
+La Resolución General 4804/2020 estableció la obligatoriedad del código QR en comprobantes electrónicos. Los plazos de implementación fueron escalonados:
+
+- **Grandes Contribuyentes**: desde enero 2021
+- **Responsables Inscriptos en general**: desde julio 2021
+- **Monotributistas**: desde enero 2022
+
+Hoy, **todos los comprobantes electrónicos** deben incluir el código QR.
+
+---
+
+## Qué información contiene el código QR
+
+El QR de una factura electrónica argentina contiene un JSON con:
+
+```json
+{
+  "ver": 1,
+  "fecha": "2025-05-01",
+  "cuit": 20123456789,
+  "ptoVta": 1,
+  "tipoCmp": 11,
+  "nroCmp": 42,
+  "importe": 75000.00,
+  "moneda": "PES",
+  "ctz": 1,
+  "tipoDocRec": 96,
+  "nroDocRec": 12345678,
+  "tipoCodAut": "E",
+  "codAut": 71234567890123
+}
+```
+
+| Campo | Descripción |
+|---|---|
+| `ver` | Versión del QR |
+| `fecha` | Fecha de emisión |
+| `cuit` | CUIT del emisor |
+| `ptoVta` | Punto de venta |
+| `tipoCmp` | Tipo de comprobante (11 = Factura C) |
+| `nroCmp` | Número de comprobante |
+| `importe` | Importe total |
+| `moneda` | Moneda (PES = Pesos) |
+| `tipoCodAut` | Tipo de autorización (E = CAE, A = CAEA) |
+| `codAut` | Código de autorización (CAE o CAEA) |
+
+---
+
+## Cómo funciona la verificación
+
+Al escanear el QR con la cámara del celular:
+
+1. Se abre automáticamente una página en **arca.gob.ar**
+2. La página muestra los datos del comprobante verificados por ARCA
+3. Podés comparar esos datos con la factura que tenés
+4. Si los datos no coinciden o el QR no abre → posible factura apócrifa
+
+---
+
+## Cómo Facturear genera el código QR
+
+Facturear genera el código QR automáticamente en cada factura:
+
+- El contenido del QR se calcula con los datos del comprobante + el CAE asignado por ARCA
+- El QR se incluye en el **PDF de la factura** automáticamente
+- También se puede obtener el QR via API para integrarlo en sistemas propios
+
+---
+
+## Preguntas frecuentes
+
+<AccordionGroup>
+  <Accordion title="¿El QR es obligatorio en las facturas de papel (talonarios)?">
+    Los talonarios en papel están prácticamente eliminados para la mayoría de los contribuyentes. Quienes aún emiten comprobantes en papel (casos excepcionales autorizados por ARCA) no tienen QR — ese es uno de los motivos por los que ARCA está migrando todo a digital.
+  </Accordion>
+  <Accordion title="¿Qué pasa si emito una factura sin QR?">
+    Técnicamente incumplís la RG 4804. ARCA puede observar los comprobantes sin QR. Facturear incluye el QR automáticamente en todas las facturas generadas.
+  </Accordion>
+  <Accordion title="¿Puedo verificar el QR sin internet?">
+    No. La verificación del QR requiere conexión a internet para consultar la base de datos de ARCA. El QR por sí solo solo contiene los datos del comprobante; la validación la hace el servidor de ARCA.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Recursos relacionados
+
+- [Cómo verificar si una factura es válida](/es/tramites/constatacion-comprobantes)
+- [Facturación apócrifa: cómo evitarla](/es/novedades/facturacion-apocrifa)
+- [ARCA reemplaza a AFIP](/es/novedades/arca-reemplaza-afip)

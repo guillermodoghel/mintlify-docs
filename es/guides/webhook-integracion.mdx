@@ -1,0 +1,182 @@
+---
+title: 'Webhooks en Facturear: notificaciones en tiempo real'
+description: 'Cómo configurar y usar webhooks de Facturear para recibir notificaciones cuando se emiten, aprueban o rechazan facturas electrónicas en Argentina.'
+---
+
+# Webhooks en Facturear
+
+Los **webhooks** te permiten recibir notificaciones en tiempo real cuando ocurren eventos en Facturear (factura emitida, error, etc.), sin necesidad de hacer polling a la API. Tu sistema recibe un POST automático cuando algo sucede.
+
+---
+
+## ¿Cómo funcionan los webhooks?
+
+```
+Facturear emite factura → obtiene CAE de ARCA → POST a tu URL webhook
+```
+
+1. Registrás una URL de tu sistema en Facturear
+2. Cuando se emite (o falla) una factura, Facturear hace un HTTP POST a esa URL
+3. Tu sistema recibe el evento y actúa (actualiza la base de datos, envía el PDF al cliente, etc.)
+
+---
+
+## Eventos disponibles
+
+| Evento | Cuándo se dispara |
+|---|---|
+| `factura.emitida` | Factura aprobada exitosamente con CAE |
+| `factura.error` | ARCA rechazó la factura |
+| `factura.anulada` | Nota de crédito que anula una factura |
+| `lote.completado` | Lote de facturas procesado completamente |
+
+---
+
+## Configurar un webhook
+
+### POST /webhooks
+
+```bash
+curl -X POST https://api.facturear.com/webhooks \
+  -H "x-api-key: tu_api_key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "url": "https://tusistema.com/webhooks/facturear",
+    "eventos": ["factura.emitida", "factura.error"],
+    "secret": "tu_secret_para_verificacion"
+  }'
+```
+
+### Respuesta
+
+```json
+{
+  "id": "wh_abc123",
+  "url": "https://tusistema.com/webhooks/facturear",
+  "eventos": ["factura.emitida", "factura.error"],
+  "activo": true,
+  "created_at": "2025-01-01T00:00:00Z"
+}
+```
+
+---
+
+## Payload del evento
+
+Cuando se dispara un evento, Facturear envía un POST con este body:
+
+```json
+{
+  "evento": "factura.emitida",
+  "timestamp": "2025-01-15T10:30:00Z",
+  "data": {
+    "id": "fct_abc123",
+    "cuit_emisor": "20123456789",
+    "tipo": "B",
+    "punto_venta": 1,
+    "numero": 145,
+    "fecha": "2025-01-15",
+    "cae": "71234567890123",
+    "cae_vencimiento": "2025-01-25",
+    "total": 121000,
+    "receptor": {
+      "razon_social": "Juan Pérez",
+      "cuit": "20111222333"
+    }
+  }
+}
+```
+
+---
+
+## Verificar la autenticidad del webhook
+
+Facturear firma cada webhook con un HMAC-SHA256 usando el `secret` que configuraste:
+
+```javascript
+const crypto = require('crypto');
+
+function verificarWebhook(body, signature, secret) {
+  const hmac = crypto.createHmac('sha256', secret);
+  hmac.update(body);
+  const expectedSignature = hmac.digest('hex');
+  return crypto.timingSafeEqual(
+    Buffer.from(signature),
+    Buffer.from(expectedSignature)
+  );
+}
+
+// En tu endpoint
+app.post('/webhooks/facturear', (req, res) => {
+  const signature = req.headers['x-facturear-signature'];
+  const isValid = verificarWebhook(
+    JSON.stringify(req.body),
+    signature,
+    process.env.WEBHOOK_SECRET
+  );
+  
+  if (!isValid) {
+    return res.status(401).json({ error: 'Firma inválida' });
+  }
+  
+  // Procesar el evento
+  procesarEvento(req.body);
+  res.status(200).json({ received: true });
+});
+```
+
+---
+
+## Responder correctamente al webhook
+
+Tu endpoint debe:
+
+1. Responder con **HTTP 200** lo antes posible
+2. Procesar el evento en background si es operación lenta
+3. Si respondés con cualquier código que no sea 2xx, Facturear reintentará el webhook
+
+```javascript
+app.post('/webhooks/facturear', async (req, res) => {
+  // Responder primero para evitar timeout
+  res.status(200).json({ received: true });
+  
+  // Procesar en background
+  setImmediate(() => {
+    procesarEventoFacturear(req.body).catch(console.error);
+  });
+});
+```
+
+---
+
+## Reintentos de webhooks
+
+Si tu endpoint no responde con 2xx, Facturear reintenta:
+
+| Intento | Delay |
+|---|---|
+| 1 (original) | Inmediato |
+| 2 | 1 minuto |
+| 3 | 5 minutos |
+| 4 | 30 minutos |
+| 5 | 2 horas |
+
+Después del 5to intento fallido, el webhook se marca como fallido.
+
+---
+
+## Consultar webhooks fallidos
+
+```bash
+curl "https://api.facturear.com/webhooks/wh_abc123/entregas?estado=fallido" \
+  -H "x-api-key: tu_api_key"
+```
+
+---
+
+## Recursos relacionados
+
+- [API Keys y autenticación](/es/guides/api-keys)
+- [Integración con ERP](/es/guides/integracion-erp)
+- [Integración con e-commerce](/es/guides/integracion-ecommerce)
+- [Facturación en lotes](/es/guides/facturacion-lotes)

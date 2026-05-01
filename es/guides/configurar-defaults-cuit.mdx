@@ -1,0 +1,144 @@
+---
+title: 'Configurar defaults por CUIT en la API de Facturear'
+description: 'Cómo configurar valores por defecto (defaults) para un CUIT en la API de Facturear: tipo de comprobante, punto de venta, conceptos y tributos predeterminados.'
+---
+
+# Configurar defaults por CUIT en Facturear
+
+La **API de Facturear** permite configurar valores predeterminados para cada CUIT, de modo que no tengas que enviar todos los parámetros en cada llamada de facturación. Esta funcionalidad simplifica la integración para casos de uso repetitivos.
+
+---
+
+## ¿Para qué sirven los defaults?
+
+Si tu integración siempre emite el mismo tipo de factura desde el mismo punto de venta, podés configurar esos valores como default:
+
+- **Tipo de comprobante** (Factura A, B, C, E, etc.)
+- **Punto de venta** predeterminado
+- **Concepto** por defecto (Productos, Servicios, Productos y Servicios)
+- **Moneda** (para facturas de exportación)
+- **Alícuota de IVA** por defecto
+
+---
+
+## Cómo configurar defaults vía API
+
+### PATCH /cuits/{cuit}/defaults
+
+```bash
+curl -X PATCH https://api.facturear.com/cuits/20123456789/defaults \
+  -H "x-api-key: tu_api_key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "punto_venta": 1,
+    "tipo_comprobante": "C",
+    "concepto": 2,
+    "moneda": "PES",
+    "alicuota_iva": 21
+  }'
+```
+
+### Respuesta exitosa
+
+```json
+{
+  "cuit": "20123456789",
+  "defaults": {
+    "punto_venta": 1,
+    "tipo_comprobante": "C",
+    "concepto": 2,
+    "moneda": "PES",
+    "alicuota_iva": 21
+  },
+  "updated_at": "2025-08-15T10:30:00Z"
+}
+```
+
+---
+
+## Cómo ver los defaults actuales
+
+### GET /cuits/{cuit}/defaults
+
+```bash
+curl https://api.facturear.com/cuits/20123456789/defaults \
+  -H "x-api-key: tu_api_key"
+```
+
+---
+
+## Parámetros configurables
+
+| Parámetro | Tipo | Descripción |
+|---|---|---|
+| `punto_venta` | integer | Número de punto de venta (1–9999) |
+| `tipo_comprobante` | string | "A", "B", "C", "E", "M", etc. |
+| `concepto` | integer | 1=Productos, 2=Servicios, 3=Ambos |
+| `moneda` | string | "PES" (pesos), "DOL" (dólares), etc. |
+| `alicuota_iva` | number | 0, 10.5, 21, 27 |
+
+---
+
+## Sobrescribir defaults en una factura específica
+
+Los defaults son solo valores predeterminados. Podés sobrescribirlos en cualquier factura individual incluyendo el campo en la request:
+
+```json
+{
+  "concepto": 1,
+  "items": [...]
+}
+```
+
+Si enviás `concepto: 1` en la request, ese valor se usa en lugar del default configurado.
+
+---
+
+## Defaults y múltiples puntos de venta
+
+Si tu empresa tiene múltiples puntos de venta, podés:
+
+1. Configurar un punto de venta como default
+2. Sobreescribirlo en las facturas que correspondan a otro punto de venta
+
+O alternativamente, no configurar un default de punto de venta y enviarlo explícitamente en cada request.
+
+---
+
+## Ejemplo: configuración para monotributista simple
+
+```json
+{
+  "punto_venta": 1,
+  "tipo_comprobante": "C",
+  "concepto": 2,
+  "moneda": "PES"
+}
+```
+
+Con esta configuración, una request mínima de facturación sería:
+
+```json
+{
+  "receptor": {
+    "razon_social": "Cliente SA",
+    "cuit": "30987654321"
+  },
+  "items": [
+    {
+      "descripcion": "Servicio de consultoría",
+      "cantidad": 1,
+      "precio_unitario": 50000
+    }
+  ]
+}
+```
+
+---
+
+## Recursos relacionados
+
+- [Gestión de múltiples CUITs](/es/guides/multiples-cuits)
+- [Puntos de venta en Facturear](/es/guides/puntos-de-venta)
+- [API Keys y autenticación](/es/guides/api-keys)
+- [Parámetros de ARCA para facturación](/es/guides/parametros-arca)

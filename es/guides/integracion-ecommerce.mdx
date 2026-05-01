@@ -1,0 +1,159 @@
+---
+title: 'Integrar Facturear con tu e-commerce'
+description: 'Cómo conectar Facturear con tu tienda online para emitir facturas electrónicas automáticamente en cada venta: WooCommerce, Tiendanube, Shopify y API REST.'
+---
+
+# Integrar Facturear con tu e-commerce
+
+Si tenés una tienda online, podés automatizar completamente la emisión de facturas electrónicas conectando tu plataforma de e-commerce con Facturear. Cada vez que se confirma una venta, la factura se emite automáticamente sin intervención manual.
+
+---
+
+## Beneficios de la integración
+
+- **Automatización total**: factura emitida al segundo del pago confirmado
+- **Sin errores manuales**: los datos de la factura vienen directamente de la orden
+- **Cumplimiento fiscal garantizado**: toda venta queda facturada con CAE
+- **Mejor experiencia del cliente**: recibe la factura por email automáticamente
+
+---
+
+## Opciones de integración
+
+### Opción 1: API REST directa
+
+La forma más flexible. Tu plataforma de e-commerce llama a la API de Facturear cuando se confirma cada venta.
+
+**Flujo típico:**
+
+```javascript
+// Webhook handler para nueva venta confirmada
+app.post('/webhook/nueva-venta', async (req, res) => {
+  const orden = req.body
+  
+  // Determinar tipo de factura según el cliente
+  const tipoFactura = orden.cliente.cuit && orden.cliente.condicionIva === 'RI'
+    ? 1    // Factura A
+    : 6    // Factura B (default para consumidores)
+  
+  // Emitir factura en Facturear
+  const factura = await fetch('https://api.facturear.com/invoices', {
+    method: 'POST',
+    headers: {
+      'x-api-key': process.env.FACTUREAR_API_KEY,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      cuitId: process.env.FACTUREAR_CUIT_ID,
+      comprobante: {
+        tipo: tipoFactura,
+        puntoVenta: 1,
+        receptor: {
+          razonSocial: orden.cliente.nombre || 'Consumidor Final',
+          cuit: orden.cliente.cuit || null,
+          condicionIva: orden.cliente.condicionIva || 'CF'
+        },
+        items: orden.productos.map(p => ({
+          descripcion: p.nombre,
+          cantidad: p.cantidad,
+          precioUnitario: p.precioUnitario,
+          alicuotaIva: 21
+        }))
+      }
+    })
+  }).then(r => r.json())
+  
+  // Guardar el ID de la factura en la orden
+  await actualizarOrden(orden.id, { facturaId: factura.id, cae: factura.cae })
+  
+  res.json({ ok: true })
+})
+```
+
+### Opción 2: Tiendanube
+
+Para tiendas en Tiendanube, podés usar la API de Tiendanube en combinación con webhooks:
+
+1. Configurá un webhook en Tiendanube para el evento "Pago aprobado"
+2. Tu servidor recibe el webhook con los datos de la orden
+3. Llamá a la API de Facturear para emitir la factura
+4. Guardá el resultado en los metadatos de la orden
+
+### Opción 3: WooCommerce (WordPress)
+
+Para WooCommerce, podés desarrollar un plugin que:
+1. Se enganche al hook `woocommerce_payment_complete`
+2. Llame a la API de Facturear con los datos del pedido
+3. Guarde el número de factura en el pedido
+
+### Opción 4: Shopify
+
+Similar a Tiendanube, usando los webhooks de Shopify para el evento `orders/paid`.
+
+---
+
+## Manejo de datos del cliente para determinar la factura
+
+Una buena integración de e-commerce le pide al cliente sus datos fiscales al hacer el checkout:
+
+```html
+<!-- Formulario de checkout - datos fiscales opcionales -->
+<div class="datos-fiscales">
+  <h4>Datos para factura (opcional)</h4>
+  
+  <label>Condición frente al IVA:</label>
+  <select name="condicion_iva">
+    <option value="CF">Consumidor Final</option>
+    <option value="RI">Responsable Inscripto</option>
+    <option value="MT">Monotributista</option>
+    <option value="EX">Exento</option>
+  </select>
+  
+  <!-- Se muestra solo si selecciona RI o MT -->
+  <div id="datos-empresa" style="display:none">
+    <label>CUIT:</label>
+    <input type="text" name="cuit" placeholder="XX-XXXXXXXX-X">
+    <label>Razón Social:</label>
+    <input type="text" name="razon_social">
+  </div>
+</div>
+```
+
+---
+
+## Manejo de errores en producción
+
+Las integraciones de e-commerce deben manejar los casos donde la facturación falla:
+
+```javascript
+try {
+  const factura = await emitirFactura(orden)
+} catch (error) {
+  // Log del error
+  console.error('Error al emitir factura:', error)
+  
+  // Guardar la orden en cola para reintentar
+  await encolarParaReintentar(orden.id, error)
+  
+  // Notificar al equipo (Slack, email, etc.)
+  await notificarError(error, orden)
+  
+  // La venta igual fue exitosa — no bloquear al cliente
+  res.json({ ok: true, advertencia: 'Factura pendiente de emisión' })
+}
+```
+
+---
+
+## Facturación en lotes para reconciliación
+
+Si tu e-commerce tiene alto volumen y no querés facturar en tiempo real, podés usar la [API de lotes](/es/guides/facturacion-lotes) para emitir facturas en batch una vez al día o por hora.
+
+---
+
+## Recursos relacionados
+
+- [Facturación en lotes](/es/guides/facturacion-lotes)
+- [API Reference completa](/es/api-reference)
+- [Emitir tu primera factura](/es/guides/primera-factura)
+- [Entorno de testing](/es/guides/entorno-testing)
