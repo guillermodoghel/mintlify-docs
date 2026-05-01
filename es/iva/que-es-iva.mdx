@@ -1,0 +1,129 @@
+---
+title: 'Qué es el IVA en Argentina: guía completa'
+description: 'Todo sobre el Impuesto al Valor Agregado en Argentina: cómo funciona, quiénes lo pagan, alícuotas vigentes y cómo impacta en la facturación electrónica.'
+---
+
+# Qué es el IVA en Argentina
+
+El **IVA (Impuesto al Valor Agregado)** es el impuesto indirecto más importante del sistema tributario argentino. Grava cada etapa de la cadena de producción y comercialización, pero en la práctica lo paga el **consumidor final**.
+
+---
+
+## Cómo funciona el IVA: el mecanismo de crédito y débito
+
+El IVA no es un impuesto que paga solo el vendedor. Funciona por diferencia entre:
+
+- **Débito fiscal**: el IVA que cobrás a tus clientes en tus ventas
+- **Crédito fiscal**: el IVA que pagaste a tus proveedores en tus compras
+
+```
+Saldo a pagar = Débito fiscal - Crédito fiscal
+```
+
+Si el crédito supera al débito, tenés **saldo a favor** (que se aplica en períodos futuros).
+
+### Ejemplo práctico
+
+| | Monto | IVA 21% |
+|---|---|---|
+| Comprás insumos a un proveedor | $100.000 | $21.000 (crédito fiscal) |
+| Vendés el producto terminado | $200.000 | $42.000 (débito fiscal) |
+| **Lo que pagás a ARCA** | | **$21.000** |
+
+---
+
+## Quiénes pagan IVA
+
+| Categoría | ¿Paga IVA por separado? |
+|---|---|
+| **Responsable Inscripto en IVA** | Sí — presenta DDJJ mensual |
+| **Monotributista** | No — incluido en cuota única |
+| **Exento en IVA** | No cobra IVA a sus clientes, tampoco recupera crédito |
+| **Consumidor Final** | Paga IVA incluido en el precio (no lo recupera) |
+| **No categorizado** | Dependiendo de la situación |
+
+---
+
+## Alícuotas de IVA vigentes
+
+| Alícuota | Actividades |
+|---|---|
+| **21%** (general) | La mayoría de bienes y servicios |
+| **10,5%** (reducida) | Bienes de capital, obras civiles, medicamentos, servicios médicos privados, transporte de pasajeros, turismo, ciertos alimentos |
+| **27%** (incrementada) | Servicios de telecomunicaciones, gas, electricidad y agua prestados a Responsables Inscriptos |
+| **0%** (tasa cero) | Exportaciones (bienes y servicios) |
+| **Exento** | Libros, medicamentos esenciales, servicios educativos, alquileres de vivienda, leche |
+
+---
+
+## El IVA en las facturas electrónicas
+
+El tratamiento del IVA varía según el tipo de comprobante:
+
+- **Factura A**: IVA discriminado (desglosado por alícuota)
+- **Factura B**: IVA incluido en el precio (no discriminado visualmente, pero ARCA lo registra)
+- **Factura C**: Sin IVA (Monotributistas no son RI en IVA)
+- **Factura E**: Tasa 0% (exportaciones)
+
+Facturear calcula automáticamente el IVA correspondiente según el tipo de factura y las alícuotas seleccionadas.
+
+---
+
+## DDJJ mensual de IVA
+
+Los Responsables Inscriptos deben presentar la **Declaración Jurada de IVA** mensualmente:
+
+- **Formulario**: F731 (via aplicativo SIAP o web)
+- **Vencimiento**: entre el 12 y 22 del mes siguiente, según el último dígito del CUIT
+- **Contenido**: ventas (débito) y compras (crédito) del mes
+
+Para preparar la DDJJ necesitás:
+- Lista de facturas emitidas (débito fiscal)
+- Lista de facturas recibidas (crédito fiscal)
+- Retenciones y percepciones sufridas
+
+Facturear exporta el listado de facturas emitidas con todos los datos necesarios para la DDJJ.
+
+---
+
+## Percepciones y retenciones de IVA
+
+Además del IVA estándar, existen regímenes especiales:
+
+- **Percepciones de IVA**: ciertos vendedores están obligados a percibir IVA adicional (actúan como agentes de percepción)
+- **Retenciones de IVA**: ciertos compradores están obligados a retener parte del IVA antes de pagar
+
+Estos mecanismos sirven a ARCA como método de recaudación anticipada.
+
+---
+
+## IVA y el sistema de Registración Electrónica de Operaciones (REO)
+
+Desde la RG 3685/2014 y sucesivas, los Responsables Inscriptos deben registrar electrónicamente sus compras y ventas en el **Registro de Comprobantes de Compras y Ventas** de ARCA.
+
+Facturear integra automáticamente con este sistema para las facturas emitidas.
+
+---
+
+## Preguntas frecuentes
+
+<AccordionGroup>
+  <Accordion title="¿El IVA que cobro a mis clientes es un ingreso mío?">
+    No. El IVA que cobrás en tus facturas no es un ingreso tuyo: es un impuesto que recaudás en nombre del Estado y que debés transferir a ARCA (menos el crédito fiscal de tus compras).
+  </Accordion>
+  <Accordion title="¿Puedo deducir el IVA de mis gastos personales?">
+    Solo podés usar como crédito fiscal el IVA de las compras vinculadas a tu actividad gravada. Los gastos personales no generan crédito fiscal.
+  </Accordion>
+  <Accordion title="¿Qué pasa si tengo saldo a favor de IVA por muchos meses?">
+    Podés acumularlo para períodos futuros, transferirlo a otros impuestos (en ciertos casos), o solicitar la devolución (proceso administrativo ante ARCA).
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Recursos relacionados
+
+- [Crédito y débito fiscal: cómo funciona](/es/iva/credito-debito-fiscal)
+- [Alícuotas de IVA: tabla completa](/es/iva/alicuotas)
+- [Cómo presentar la DDJJ de IVA](/es/iva/ddjj-mensual)
+- [Facturar siendo Responsable Inscripto](/es/fundamentos/responsable-inscripto)

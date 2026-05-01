@@ -1,0 +1,123 @@
+---
+title: 'Crédito y débito fiscal del IVA: cómo funciona'
+description: 'Explicación clara del mecanismo de crédito y débito fiscal del IVA en Argentina: qué es cada uno, cómo se calcula el saldo y ejemplos prácticos.'
+---
+
+# Crédito y débito fiscal del IVA
+
+El sistema del IVA en Argentina funciona por **diferencia entre lo que cobrás y lo que pagás**. Entender bien el crédito y el débito fiscal es fundamental para calcular correctamente lo que tenés que pagar a ARCA cada mes.
+
+---
+
+## Débito fiscal: el IVA de tus ventas
+
+El **débito fiscal** es el IVA que incluís en las facturas que emitís a tus clientes. Es el IVA que **recaudás** en nombre del Estado.
+
+### Cómo se calcula
+
+```
+Débito fiscal = Suma del IVA de todas las facturas emitidas del mes
+```
+
+Ejemplo para una empresa que emite facturas con alícuota 21%:
+
+| Factura | Neto gravado | IVA 21% |
+|---|---|---|
+| F0001-001 | $50.000 | $10.500 |
+| F0001-002 | $120.000 | $25.200 |
+| F0001-003 | $80.000 | $16.800 |
+| **Total** | **$250.000** | **$52.500** |
+
+El débito fiscal del mes es **$52.500**.
+
+---
+
+## Crédito fiscal: el IVA de tus compras
+
+El **crédito fiscal** es el IVA que pagaste a tus proveedores en las facturas de compra que recibiste. Es el IVA que el Estado "te devuelve" (en forma de deducción) por las compras vinculadas a tu actividad.
+
+### Qué genera crédito fiscal
+
+- Facturas A que recibís de proveedores RI en IVA
+- Facturas por servicios (alquiler de oficina, honorarios profesionales, etc.)
+- Facturas de compra de mercadería o materias primas
+- Facturas de servicios públicos (luz, gas, internet) vinculados a la actividad
+
+### Qué NO genera crédito fiscal
+
+- Gastos personales sin relación con la actividad
+- Facturas B o C (no discriminan IVA)
+- Compras a monotributistas (no hay IVA discriminado)
+- Facturas de exentos
+
+---
+
+## El saldo del período
+
+```
+Saldo del período = Débito fiscal - Crédito fiscal
+```
+
+**Saldo a pagar (deudor)**: cuando el débito > crédito. Este importe lo pagás a ARCA.
+
+**Saldo a favor (acreedor)**: cuando el crédito > débito. Se acumula y se usa en períodos futuros.
+
+---
+
+## Ejemplo completo mensual
+
+| Concepto | Monto |
+|---|---|
+| Débito fiscal (ventas del mes) | $52.500 |
+| Crédito fiscal (compras del mes) | $-28.350 |
+| **Saldo a pagar a ARCA** | **$24.150** |
+
+---
+
+## Proporcionalidad del crédito fiscal
+
+Si tenés actividades **gravadas y exentas simultáneamente**, no podés computar el 100% del crédito fiscal. Debés aplicar una **prorrata** basada en la proporción de ventas gravadas sobre el total.
+
+Ver: [Prorrata de IVA para actividades mixtas](/es/iva/prorata)
+
+---
+
+## Crédito fiscal de importaciones
+
+Cuando importás bienes o servicios, el IVA pagado en la Aduana también genera crédito fiscal, siempre que los bienes importados estén vinculados a tu actividad gravada.
+
+---
+
+## Cómo registrar el crédito en tu DDJJ
+
+En la DDJJ mensual de IVA (F731) debés declarar:
+
+- **Ventas** (base del débito fiscal por alícuota)
+- **Compras** (base del crédito fiscal por alícuota)
+- **Retenciones sufridas** (reducen el saldo a pagar)
+- **Percepciones sufridas** (reducen el saldo a pagar)
+- **Saldo a favor del período anterior** (se descuenta del saldo actual)
+
+---
+
+## Trazabilidad del crédito fiscal: comprobantes necesarios
+
+Para computar el crédito fiscal, los comprobantes deben:
+
+- Ser **Facturas A** (con IVA discriminado)
+- Estar a **nombre de tu empresa** (CUIT correcto)
+- Estar **vinculados a la actividad gravada**
+- Tener **CAE válido** (podés verificar en ARCA)
+
+<Warning>
+  ARCA cruza la información de crédito fiscal de los compradores con los débitos de los vendedores. Si una factura que querés usar como crédito no coincide con lo que declaró el emisor, ARCA puede rechazarla o iniciar una fiscalización.
+</Warning>
+
+---
+
+## Recursos relacionados
+
+- [Qué es el IVA en Argentina](/es/iva/que-es-iva)
+- [Alícuotas de IVA vigentes](/es/iva/alicuotas)
+- [Cómo presentar la DDJJ de IVA](/es/iva/ddjj-mensual)
+- [Prorrata de IVA](/es/iva/prorata)

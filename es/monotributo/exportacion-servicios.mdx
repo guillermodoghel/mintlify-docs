@@ -1,0 +1,134 @@
+---
+title: 'Monotributista que exporta servicios: guía completa'
+description: 'Cómo puede un Monotributista argentino exportar servicios, qué factura emitir, cómo cobrar en dólares y cuáles son los beneficios fiscales.'
+---
+
+# Monotributista que exporta servicios
+
+Argentina tiene un ecosistema creciente de freelancers y profesionales independientes que prestan servicios al exterior: programadores, diseñadores, traductores, consultores y más. Si sos Monotributista y trabajás para clientes en el exterior, tenés particularidades importantes que conocer.
+
+---
+
+## ¿Qué se considera "exportación de servicios"?
+
+La exportación de servicios ocurre cuando:
+- El **prestador está en Argentina**
+- El **receptor está en el exterior** (domiciliado fuera del país)
+- El servicio se **utiliza fuera del territorio argentino**
+
+Ejemplos comunes:
+- Desarrollo de software para empresa extranjera
+- Diseño gráfico para clientes de otro país
+- Consultoría de marketing digital
+- Traducción de documentos
+- Servicios de atención al cliente remoto
+- Creación de contenido para marcas internacionales
+
+---
+
+## ¿Qué factura emite el Monotributista por exportación?
+
+Si sos Monotributista y exportás servicios, emitís una **Factura E** (tipo 19 en ARCA).
+
+<Info>
+  La **Factura E** tiene tasa 0% de IVA (no exenta, sino tasa cero). Esto significa que aunque el IVA no se aplica, la operación está en el sistema y podés eventualmente recuperar crédito fiscal si pasás al Régimen General.
+</Info>
+
+### Cómo emitir Factura E con Facturear
+
+```javascript
+{
+  "tipo": 19,  // Factura E
+  "puntoVenta": 1,
+  "receptor": {
+    "razonSocial": "Client Company LLC",
+    "paisCodigo": 212,  // Estados Unidos (código ARCA)
+    "identificacion": "EIN-123456789"  // Identificación fiscal del país del cliente
+  },
+  "moneda": "DOL",  // Dólares (o la moneda del contrato)
+  "tipoCambio": 1000.50,  // Tipo de cambio oficial del día
+  "items": [
+    {
+      "descripcion": "Web development services - March 2025",
+      "cantidad": 1,
+      "precioUnitario": 2500
+    }
+  ]
+}
+```
+
+---
+
+## Límites de ingresos para el Monotributo con exportaciones
+
+Una de las dudas más frecuentes: **¿las exportaciones de servicios cuentan para el tope de categoría?**
+
+**Respuesta**: Sí, los ingresos por exportación de servicios **suman al total de ingresos brutos** para determinar la categoría del Monotributo.
+
+Sin embargo, existe un beneficio especial: a partir de la **RG 5008/2021 y modificatorias**, los Monotributistas que exportan servicios pueden tener un **incremento del tope de ingresos** hasta 2 veces el máximo de la categoría K.
+
+---
+
+## Cómo cobrar en dólares siendo Monotributista
+
+### Cuenta especial para exportadores de servicios
+
+ARCA y el BCRA regulan el cobro de divisas por exportación de servicios. Las opciones principales son:
+
+1. **Cuenta en dólares en banco argentino**: depositás los dólares y podés liquidar al tipo de cambio oficial cuando necesitás pesos
+2. **Cuenta Corriente Especial (CCE)**: cuenta en dólares habilitada para el cobro de exportaciones
+3. **Plataformas de cobro del exterior**: Wise, Payoneer, etc. (con posterior liquidación según normativa BCRA)
+
+<Warning>
+  La normativa cambiaria es muy dinámica en Argentina. Consultá con tu contador o banco sobre las opciones vigentes al momento de cobrar, ya que los plazos de liquidación y las cuentas habilitadas cambian con frecuencia.
+</Warning>
+
+---
+
+## Beneficios del "dólar exportador" para servicios
+
+Periódicamente, el Gobierno establece tipos de cambio diferenciales para la liquidación de exportaciones de servicios. Estos beneficios permiten obtener más pesos por cada dólar liquidado.
+
+Facturear registra tus facturas E con el tipo de cambio del día de emisión, lo que facilita la documentación ante el banco y ARCA.
+
+---
+
+## Padrón de exportadores de servicios
+
+Para acceder a los beneficios de exportadores, puede ser necesario inscribirse en el **Padrón de Exportadores de Servicios** de ARCA. Consultá en arca.gob.ar si esta inscripción está vigente y aplica a tu caso.
+
+---
+
+## Facturación en moneda extranjera: aspectos prácticos
+
+Cuando emitís una Factura E en dólares:
+- El importe en la factura puede estar en USD u otra divisa
+- Debés indicar el **tipo de cambio oficial** del día de emisión
+- ARCA valida el tipo de cambio contra la tabla del BCRA
+
+Facturear obtiene automáticamente el tipo de cambio oficial vigente al momento de la emisión.
+
+---
+
+## Preguntas frecuentes
+
+<AccordionGroup>
+  <Accordion title="¿Necesito un punto de venta especial para exportaciones?">
+    No necesariamente. El mismo punto de venta que usás para facturas C puede usarse para facturas E. Sin embargo, algunas empresas prefieren tener puntos de venta separados para mejor organización.
+  </Accordion>
+  <Accordion title="¿Tengo que presentar alguna declaración especial por exportar servicios?">
+    Además de las facturas E, puede haber obligaciones de información ante el BCRA y el INDEC (Instituto Nacional de Estadística). Consultá con tu contador.
+  </Accordion>
+  <Accordion title="¿Puedo seguir en el Monotributo si tengo muchos clientes del exterior?">
+    Sí, siempre que no superes los topes del régimen. Recordá que hay un beneficio de hasta 2x el tope para exportadores de servicios.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Recursos relacionados
+
+- [Tipos de comprobantes AFIP/ARCA](/es/fundamentos/tipos-de-comprobantes)
+- [Factura E: exportación con Facturear](/es/guides/factura-exportacion)
+- [Tabla de categorías Monotributo 2025](/es/monotributo/categorias-tabla)
+- [Cobro en divisas por exportación](/es/exportacion/cobro-en-divisas)

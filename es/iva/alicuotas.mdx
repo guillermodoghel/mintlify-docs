@@ -1,0 +1,170 @@
+---
+title: 'Alícuotas de IVA en Argentina: tabla completa 2025'
+description: 'Tabla completa de alícuotas del IVA en Argentina: qué productos y servicios tributan al 21%, 10,5%, 27% y cuáles están exentos.'
+---
+
+# Alícuotas de IVA en Argentina
+
+El IVA en Argentina no tiene una única alícuota: existen tres alícuotas positivas y una categoría de exentos. Conocer qué alícuota aplica a tus productos o servicios es crucial para facturar correctamente.
+
+---
+
+## Resumen de alícuotas
+
+| Alícuota | Tipo | Aplicación general |
+|---|---|---|
+| **21%** | General | La mayoría de bienes y servicios |
+| **10,5%** | Reducida | Bienes de capital, salud, alimentos básicos, transporte |
+| **27%** | Incrementada | Servicios públicos a RI (luz, gas, teléfono) |
+| **0%** | Tasa cero | Exportaciones |
+| **Exento** | Sin IVA | Educación, ciertos alimentos, libros |
+
+---
+
+## Alícuota general: 21%
+
+La alícuota del **21%** aplica a todos los bienes y servicios que no tienen una alícuota diferencial específica. Es la regla general del sistema.
+
+Ejemplos de bienes y servicios al 21%:
+- Ropa y calzado
+- Muebles y decoración
+- Electrónica y tecnología
+- Servicios profesionales (contabilidad, abogacía, consultoría)
+- Publicidad y marketing
+- Software y desarrollo de sistemas
+- Servicios de diseño
+- Comida y bebida (excepto los que tienen tasa reducida)
+- Mayoría de servicios en general
+
+---
+
+## Alícuota reducida: 10,5%
+
+La alícuota del **10,5%** aplica a bienes y servicios específicamente listados en la ley:
+
+### Alimentos
+- Pan, galletas, facturas y masas secas (de panadería)
+- Carne, pollo, cerdo, pescado (frescos o congelados)
+- Frutas, verduras y legumbres frescas
+- Leche fluida y en polvo (cuando no está gravada al 0%)
+- Queso de pasta dura, semidura y blanda
+- Aceites comestibles
+- Yerba mate, té y café
+- Azúcar, sal y vinagre
+- Aderezos y salsas
+
+### Salud
+- Medicamentos (excepto los exentos)
+- Prótesis
+- Servicios médicos y paramédicos prestados por obras sociales y mutuales
+- Consultas médicas privadas (en ciertos casos)
+
+### Transporte
+- Transporte público de pasajeros (trenes, colectivos, subtes)
+- Transporte de cargas
+
+### Construcción y bienes de capital
+- Obras sobre inmuebles de terceros (construcción, refacción, mantenimiento)
+- Bienes de capital (maquinaria, equipos industriales)
+- Semillas y fertilizantes para uso agropecuario
+
+### Turismo
+- Servicios de alojamiento turístico
+- Servicios de agencias de viaje para turismo nacional
+
+---
+
+## Alícuota incrementada: 27%
+
+La alícuota del **27%** aplica exclusivamente cuando el prestatario es un **Responsable Inscripto en IVA** y el servicio es uno de los siguientes:
+
+- Servicios de telecomunicaciones (teléfono, internet, cable)
+- Gas (cuando la factura va a nombre de un RI)
+- Energía eléctrica (idem)
+- Agua corriente (idem)
+
+<Info>
+  Esta alícuota del 27% solo aplica en las facturas a **Responsables Inscriptos**. Si sos Consumidor Final o Monotributista, los servicios públicos te facturan al 21%.
+</Info>
+
+---
+
+## Tasa cero (0%): exportaciones
+
+Las exportaciones están gravadas al **0%** (no están exentas). La diferencia es importante:
+- **Tasa 0%**: podés recuperar el crédito fiscal de las compras vinculadas
+- **Exento**: no podés recuperar el crédito fiscal
+
+Aplica a exportaciones de bienes y servicios al exterior.
+
+---
+
+## Exenciones del IVA
+
+Están **exentos de IVA** (y no generan crédito fiscal):
+
+### Educación
+- Servicios educativos privados habilitados (jardines, colegios, universidades)
+- Clases particulares de materias del plan de estudios
+
+### Libros y publicaciones
+- Libros, folletos e impresos similares
+- Periódicos y revistas
+- Edición de libros
+
+### Alimentación básica
+- Leche sin aditivos (tipo A, B o C)
+- Agua natural envasada en ciertos casos
+- Harina de trigo
+
+### Salud
+- Medicamentos para uso humano (los de uso veterinario pagan 21%)
+- Sangre y plasma humano
+
+### Servicios
+- Alquileres de vivienda (inmuebles destinados a habitación)
+- Servicios de la seguridad social y obras sociales
+- Servicios de transporte internacional de carga
+- Transporte escolar
+- Intereses bancarios sobre depósitos
+
+---
+
+## Cómo aplica esto en Facturear
+
+Al crear una factura en Facturear podés especificar la alícuota para cada ítem:
+
+```javascript
+items: [
+  {
+    descripcion: 'Servicio de consultoría',
+    cantidad: 1,
+    precioUnitario: 100000,
+    alicuotaIva: 21  // 21%
+  },
+  {
+    descripcion: 'Medicamento recetado',
+    cantidad: 10,
+    precioUnitario: 5000,
+    alicuotaIva: 10.5  // 10,5%
+  },
+  {
+    descripcion: 'Manual de instrucciones (libro)',
+    cantidad: 1,
+    precioUnitario: 8000,
+    alicuotaIva: 0,
+    condicion: 'exento'
+  }
+]
+```
+
+Una misma factura puede tener ítems con diferentes alícuotas. Facturear discrimina cada base imponible automáticamente.
+
+---
+
+## Recursos relacionados
+
+- [Qué es el IVA en Argentina](/es/iva/que-es-iva)
+- [Crédito y débito fiscal](/es/iva/credito-debito-fiscal)
+- [Exenciones de IVA](/es/iva/exenciones)
+- [Tipos de comprobantes AFIP/ARCA](/es/fundamentos/tipos-de-comprobantes)
