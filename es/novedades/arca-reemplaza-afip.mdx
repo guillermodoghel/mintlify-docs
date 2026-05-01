@@ -1,0 +1,158 @@
+---
+title: 'ARCA reemplaza a AFIP: todo lo que necesitás saber'
+description: 'En 2024, AFIP pasó a llamarse ARCA. Qué cambió, qué sigue igual, y cómo afecta a tu facturación electrónica y a la integración con Facturear.'
+---
+
+# ARCA reemplaza a AFIP: todo lo que necesitás saber
+
+En septiembre de 2024, el Gobierno Nacional cambió el nombre y la estructura del organismo recaudador federal. **AFIP (Administración Federal de Ingresos Públicos) pasó a llamarse ARCA (Agencia de Recaudación y Control Aduanero)**.
+
+Este cambio generó muchas dudas entre contribuyentes, contadores y desarrolladores. Acá respondemos las preguntas más frecuentes.
+
+---
+
+## ¿Por qué ARCA? ¿Qué cambió?
+
+El cambio fue dispuesto por el **Decreto 953/2024** y forma parte de una reorganización del Estado. El objetivo declarado fue:
+
+- Separar la recaudación impositiva de las funciones de Seguridad Social (que quedan en otros organismos)
+- Simplificar la estructura
+- Mejorar la eficiencia del organismo
+
+<Info>
+  A efectos prácticos, **ARCA hace exactamente lo mismo que hacía AFIP**. Recauda IVA, Ganancias, gestiona los webservices de facturación electrónica, administra las claves fiscales, etc.
+</Info>
+
+---
+
+## ¿Qué cambió concretamente?
+
+### Lo que cambió
+
+| Antes (AFIP) | Ahora (ARCA) |
+|---|---|
+| Portal: afip.gob.ar | Portal: arca.gob.ar (redirecciona desde afip.gob.ar) |
+| Nombre del organismo | "ARCA" en documentación oficial |
+| Algunas denominaciones internas | Renombradas en la interfaz |
+
+### Lo que NO cambió
+
+- **Todos los webservices** de facturación electrónica siguen funcionando igual
+- **El WSFE** (Web Service de Facturación Electrónica) — sin cambios
+- **Las claves fiscales** — siguen siendo las mismas, mismo acceso
+- **El CUIT** — no cambia nada
+- **Los certificados digitales** existentes — siguen vigentes
+- **Los puntos de venta** configurados — sin cambios
+- **Los tipos de comprobantes** — sin cambios
+- **Las obligaciones fiscales** — sin cambios
+
+---
+
+## Impacto en la facturación electrónica
+
+El cambio de nombre **no afecta en nada al proceso de facturación electrónica**. Los webservices que usa Facturear para emitir comprobantes:
+
+- **WSFE** (Facturación Electrónica)
+- **WSFEX** (Facturación de Exportaciones)
+- **WSASS** (Autogestión de Certificados)
+
+...siguen funcionando exactamente igual, con las mismas URLs, los mismos formatos de request/response y las mismas credenciales.
+
+<Info>
+  Facturear actualiza automáticamente cualquier cambio en los endpoints o configuraciones de ARCA. No necesitás hacer nada por tu parte.
+</Info>
+
+---
+
+## Impacto en los certificados digitales
+
+Los **certificados digitales existentes siguen siendo válidos**. No tenés que renovarlos ni hacer ningún trámite por el cambio de nombre.
+
+Si necesitás generar un nuevo certificado (por vencimiento o por ser un nuevo usuario), el proceso en el portal de ARCA es el mismo que antes en AFIP. Ver la [guía completa de configuración de certificado digital](/es/guides/certificado-digital).
+
+---
+
+## ¿Cómo accedo al portal ahora?
+
+Podés acceder de cualquiera de estas formas:
+
+- **afip.gob.ar** — redirige automáticamente a ARCA
+- **arca.gob.ar** — el nuevo dominio oficial
+- **La clave fiscal funciona igual** — el usuario y contraseña no cambian
+
+---
+
+## ¿Cambió algo en la nomenclatura de los servicios?
+
+Sí, algunos nombres de servicios dentro del portal cambiaron. Los más relevantes para la facturación:
+
+| Nombre anterior (AFIP) | Nombre actual (ARCA) |
+|---|---|
+| WSASS - Autogestión Certificados Homologación | Sin cambios (puede variar en alguna sección) |
+| Administración de Certificados Digitales | Sin cambios |
+| Administrador de Relaciones de Clave Fiscal | Sin cambios |
+| A/B/M de Puntos de Venta | Sin cambios |
+
+<Warning>
+  Si la guía de Facturear menciona alguna sección del portal que no encontrás, es posible que haya cambiado de nombre o de ubicación en el menú de ARCA. El proceso en sí es el mismo.
+</Warning>
+
+---
+
+## ARCA y la integración via API
+
+Para desarrolladores e integradores, no hay ningún cambio en:
+
+- Las **URLs de los webservices** (endpoints)
+- El **formato de los requests** (XML/SOAP para WSFE, JSON para APIs modernas)
+- Los **certificados y tokens** de autenticación
+- Los **códigos de respuesta** y manejo de errores
+
+Si usás Facturear como intermediario (que es lo recomendado), ni siquiera necesitás preocuparte por esto: Facturear maneja toda la comunicación con ARCA.
+
+---
+
+## Preguntas frecuentes sobre el cambio
+
+<AccordionGroup>
+  <Accordion title="¿Tengo que renovar mi clave fiscal?">
+    No. Las claves fiscales existentes siguen siendo las mismas. No hay ningún trámite de renovación por el cambio de nombre.
+  </Accordion>
+  <Accordion title="¿Los comprobantes emitidos por AFIP siguen siendo válidos?">
+    Sí, absolutamente. Todos los comprobantes con CAE emitidos antes del cambio tienen plena validez fiscal.
+  </Accordion>
+  <Accordion title="¿Los certificados digitales generados con AFIP siguen funcionando?">
+    Sí. Los certificados digitales tienen su propio período de vigencia y no se ven afectados por el cambio institucional.
+  </Accordion>
+  <Accordion title="¿Debo cambiar algo en mis sistemas de facturación?">
+    Si usás Facturear, no. Facturear maneja la comunicación con ARCA transparentemente. Si tenés integración directa con los webservices, las URLs y credenciales son las mismas.
+  </Accordion>
+  <Accordion title="¿ARCA cambió la normativa de facturación electrónica?">
+    El cambio fue institucional, no normativo. Las resoluciones vigentes (RG de AFIP) siguen teniendo validez y ARCA puede emitir nuevas resoluciones en el futuro.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Resoluciones generales vigentes más importantes
+
+Estas son las principales resoluciones que regulan la facturación electrónica en Argentina:
+
+| RG | Tema |
+|---|---|
+| RG 2485/2008 | Régimen de emisión de comprobantes electrónicos (base) |
+| RG 2758/2010 | Modificaciones al régimen de factura electrónica |
+| RG 3067/2011 | Factura electrónica para exportaciones |
+| RG 3571/2013 | Régimen Especial de Almacenamiento Electrónico |
+| RG 4290/2018 | Obligatoriedad general de factura electrónica |
+| RG 4367/2018 | Facturación electrónica para monotributistas |
+| RG 4804/2020 | Código QR obligatorio en facturas electrónicas |
+| RG 5616/2024 | Actualizaciones recientes de ARCA |
+
+---
+
+## Recursos relacionados
+
+- [Qué es la factura electrónica en Argentina](/es/fundamentos/que-es-factura-electronica)
+- [Configurar certificado digital en ARCA](/es/guides/certificado-digital)
+- [Obligatoriedad de la factura electrónica](/es/novedades/obligatoriedad-factura-electronica)

@@ -1,0 +1,301 @@
+---
+title: 'Cómo emitir tu primera factura electrónica con Facturear'
+description: 'Guía paso a paso para emitir tu primera factura electrónica desde Facturear: dashboard, API y casos de uso más comunes.'
+---
+
+# Cómo emitir tu primera factura electrónica con Facturear
+
+Una vez que configuraste tu CUIT y certificado digital (o delegación), estás listo para emitir tu primera factura electrónica. Esta guía cubre los dos caminos: desde el **dashboard** y via **API**.
+
+---
+
+## Antes de empezar
+
+Asegurate de tener completado:
+
+- ✅ [Cuenta activa en Facturear](https://facturear.com)
+- ✅ [CUIT configurado y validado](/es/getting-started)
+- ✅ [Certificado digital activo](/es/guides/certificado-digital) o [delegación aprobada](/es/guides/delegacion)
+- ✅ Al menos un punto de venta creado en ARCA
+
+Si no completaste alguno de estos pasos, seguí primero la [guía de inicio](/es/getting-started).
+
+---
+
+## Opción 1: Emitir desde el Dashboard
+
+### Paso 1: Nueva factura
+
+1. Iniciá sesión en [facturear.com](https://facturear.com)
+2. En el menú lateral, hacé clic en **"Facturas"**
+3. Presioná el botón **"Nueva Factura"**
+
+### Paso 2: Datos del comprobante
+
+Completá los campos principales:
+
+**Tipo de comprobante**
+
+| Si sos... | Y tu cliente es... | Elegí... |
+|---|---|---|
+| Responsable Inscripto | Responsable Inscripto | Factura A |
+| Responsable Inscripto | Consumidor Final / Monotributista | Factura B |
+| Monotributista | Cualquier cliente | Factura C |
+
+Ver la guía completa de [tipos de comprobantes](/es/fundamentos/tipos-de-comprobantes) si tenés dudas.
+
+**Punto de venta**: seleccioná el punto de venta que configuraste en ARCA.
+
+**Fecha**: por defecto es la fecha actual. En algunos casos podés retroactuar (consultá los límites en la normativa vigente).
+
+### Paso 3: Datos del receptor
+
+Según el tipo de comprobante y el monto:
+
+- **Factura A**: CUIT obligatorio + razón social
+- **Factura B/C (montos bajos)**: podés dejar "Consumidor Final"
+- **Factura B/C (montos altos)**: nombre/razón social (y CUIT si el cliente lo requiere)
+
+Facturear valida el CUIT en tiempo real contra la base de ARCA.
+
+### Paso 4: Detalle de la factura
+
+Agregá uno o más ítems:
+
+1. Hacé clic en **"Agregar ítem"**
+2. Completá:
+   - Descripción del producto/servicio
+   - Cantidad
+   - Precio unitario
+   - Alícuota de IVA (solo para Facturas A y B)
+3. Repetí para cada ítem
+
+Facturear calcula automáticamente:
+- Subtotal neto
+- IVA por alícuota
+- Total
+
+### Paso 5: Emitir
+
+1. Revisá el resumen de la factura
+2. Hacé clic en **"Emitir Factura"**
+3. Facturear envía los datos a ARCA y espera la respuesta
+
+En segundos, tu factura tendrá:
+- **CAE** (Código de Autorización Electrónico)
+- **Fecha de vencimiento del CAE**
+- **PDF listo para descargar o enviar**
+
+### Paso 6: Entregar al cliente
+
+Desde la pantalla de confirmación podés:
+- **Descargar PDF** para enviar por tu cuenta
+- **Enviar por email** directamente desde Facturear
+- **Compartir link** de descarga
+
+---
+
+## Opción 2: Emitir via API
+
+La API de Facturear es RESTful. Para emitir una factura necesitás:
+
+### Autenticación
+
+Incluí tu API key en el header de cada request:
+
+```
+x-api-key: tu_api_key_aqui
+```
+
+Encontrá tu API key en **Configuración → API** en el dashboard de Facturear.
+
+### Emitir una Factura C (Monotributista)
+
+```bash
+curl -X POST https://api.facturear.com/invoices \
+  -H "x-api-key: tu_api_key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "cuitId": "id-de-tu-cuit",
+    "comprobante": {
+      "tipo": 11,
+      "puntoVenta": 1,
+      "receptor": {
+        "razonSocial": "Consumidor Final",
+        "condicionIva": "CF"
+      },
+      "items": [
+        {
+          "descripcion": "Consultoría de marketing digital",
+          "cantidad": 1,
+          "precioUnitario": 75000
+        }
+      ]
+    }
+  }'
+```
+
+### Emitir una Factura A (Responsable Inscripto a Responsable Inscripto)
+
+```javascript
+const response = await fetch('https://api.facturear.com/invoices', {
+  method: 'POST',
+  headers: {
+    'x-api-key': 'tu_api_key',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    cuitId: 'id-de-tu-cuit',
+    comprobante: {
+      tipo: 1,   // Factura A
+      puntoVenta: 1,
+      receptor: {
+        razonSocial: 'Cliente Empresa S.R.L.',
+        cuit: '30-12345678-9',
+        condicionIva: 'RI'
+      },
+      items: [
+        {
+          descripcion: 'Desarrollo de software - Fase 1',
+          cantidad: 1,
+          precioUnitario: 500000,
+          alicuotaIva: 21    // 21%
+        },
+        {
+          descripcion: 'Licencia anual',
+          cantidad: 1,
+          precioUnitario: 120000,
+          alicuotaIva: 21
+        }
+      ]
+    }
+  })
+})
+
+const factura = await response.json()
+console.log('CAE:', factura.cae)
+console.log('PDF:', factura.pdfUrl)
+```
+
+### Respuesta exitosa
+
+```json
+{
+  "id": "inv_abc123",
+  "numero": "0001-00000042",
+  "tipo": 1,
+  "cae": "71234567890123",
+  "caeFechaVto": "2025-06-12",
+  "fechaEmision": "2025-06-02",
+  "total": 847000,
+  "pdfUrl": "https://api.facturear.com/pdf/inv_abc123",
+  "estado": "aprobada"
+}
+```
+
+Ver la [documentación completa de la API](/es/api-reference) para todos los parámetros disponibles.
+
+---
+
+## Casos de uso comunes
+
+### Factura con múltiples alícuotas de IVA
+
+Cuando una factura tiene ítems con diferentes alícuotas (21% y 10.5%):
+
+```javascript
+items: [
+  {
+    descripcion: 'Servicio de catering',
+    cantidad: 1,
+    precioUnitario: 200000,
+    alicuotaIva: 21
+  },
+  {
+    descripcion: 'Transporte incluido',
+    cantidad: 1,
+    precioUnitario: 30000,
+    alicuotaIva: 10.5
+  }
+]
+```
+
+### Factura con productos exentos e IVA
+
+```javascript
+items: [
+  {
+    descripcion: 'Libro técnico',
+    cantidad: 5,
+    precioUnitario: 8000,
+    alicuotaIva: 0,
+    condicion: 'exento'
+  },
+  {
+    descripcion: 'Envío',
+    cantidad: 1,
+    precioUnitario: 3500,
+    alicuotaIva: 21
+  }
+]
+```
+
+### Factura B a cliente identificado
+
+Para montos altos donde el cliente quiere quedar identificado:
+
+```javascript
+receptor: {
+  nombre: 'Juan Carlos Pérez',
+  cuit: '20-12345678-9',
+  condicionIva: 'CF'  // Sigue siendo Consumidor Final pero con CUIT
+}
+```
+
+---
+
+## Descargar el PDF de una factura
+
+Podés obtener el PDF de cualquier factura emitida:
+
+```bash
+GET https://api.facturear.com/pdf/{invoiceId}
+```
+
+El PDF incluye:
+- Todos los datos fiscales
+- CAE y fecha de vencimiento
+- Código QR (obligatorio según RG 4804/2020)
+- Formato profesional personalizable
+
+---
+
+## ¿Qué pasa si ARCA devuelve un error?
+
+Los errores más comunes al emitir:
+
+| Código | Descripción | Solución |
+|---|---|---|
+| 10013 | CUIT receptor no existe en ARCA | Verificá el CUIT del cliente |
+| 10015 | Punto de venta no habilitado | Habilitá el POS en ARCA |
+| 10043 | Fecha inválida | La fecha no puede ser retroactiva más de 5 días |
+| 10044 | CAE vencido | Reintentá la emisión |
+| 10067 | Error en alícuota de IVA | Verificá el código de alícuota |
+
+Si encontrás errores persistentes, consultá la [documentación de la API](/es/api-reference) o contactá a [support@facture.ar](mailto:support@facture.ar).
+
+---
+
+## Siguiente paso: Facturación en lotes
+
+Si necesitás emitir muchas facturas al mismo tiempo (fin de mes, facturación recurrente, e-commerce), usá la [funcionalidad de lotes](/es/guides/facturacion-lotes).
+
+---
+
+## Recursos relacionados
+
+- [Tipos de comprobantes AFIP/ARCA](/es/fundamentos/tipos-de-comprobantes)
+- [Facturar siendo monotributista](/es/fundamentos/monotributo)
+- [Facturar siendo responsable inscripto](/es/fundamentos/responsable-inscripto)
+- [Facturación en lotes](/es/guides/facturacion-lotes)
+- [Documentación de la API](/es/api-reference)

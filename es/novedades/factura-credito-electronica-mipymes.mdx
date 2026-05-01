@@ -1,0 +1,219 @@
+---
+title: 'Factura de Crédito Electrónica MiPyMEs (FCE)'
+description: 'Qué es la Factura de Crédito Electrónica para MiPyMEs, cómo funciona, quiénes están obligados a emitirla y cómo hacerlo con Facturear.'
+---
+
+# Factura de Crédito Electrónica MiPyMEs (FCE)
+
+La **Factura de Crédito Electrónica (FCE)** es un instrumento financiero creado por la Ley 27.440 de Financiamiento Productivo para mejorar el acceso al crédito de las pequeñas y medianas empresas.
+
+No es simplemente una factura: es un **título de crédito ejecutivo** que puede cederse a bancos o fondos de inversión para obtener financiamiento anticipado.
+
+---
+
+## ¿Qué es exactamente la FCE?
+
+Cuando una MiPyME le vende a una gran empresa, el plazo de cobro suele ser largo (30, 60, 90 días). La FCE permite que la MiPyME:
+
+1. Emita la factura normalmente
+2. La factura quede registrada en el **Sistema de Circulación Abierta (SCA)** de ARCA
+3. La MiPyME pueda **cederla a un banco o fondo** para cobrar anticipadamente (con un pequeño descuento)
+4. El banco cobra directamente al deudor (la gran empresa) al vencimiento
+
+Esto mejora el flujo de caja de las MiPyMEs sin necesidad de tomar deuda tradicional.
+
+---
+
+## ¿Quiénes pueden emitir FCE?
+
+Para emitir una Factura de Crédito Electrónica necesitás:
+
+1. **Ser MiPyME certificada** — tener el "Certificado MiPyME" vigente emitido por la Secretaría de la Pequeña y Mediana Empresa
+2. **Ser Responsable Inscripto en IVA**
+3. **El receptor debe ser una gran empresa** (o empresa que no tiene categoría MiPyME)
+4. **El monto mínimo** de la operación debe superar cierto umbral (actualizable por resolución)
+
+<Info>
+  Los Monotributistas **no pueden emitir FCE**, ya que requiere ser Responsable Inscripto. Si sos monotributista con ingresos importantes, consultá con tu contador si conviene pasarte al Régimen General.
+</Info>
+
+---
+
+## ¿Cuándo es obligatorio emitir FCE?
+
+Existe una **obligatoriedad** de emitir FCE en lugar de facturas comunes cuando se cumplen todas estas condiciones:
+
+1. El emisor es una **MiPyME certificada**
+2. El receptor **no es MiPyME** (es una gran empresa)
+3. El monto de la operación supera el **umbral establecido por ARCA** (se actualiza periódicamente)
+4. La operación es a **plazo** (no es de contado)
+
+<Warning>
+  Si estás obligado a emitir FCE y emitís una factura común (tipo A), ARCA puede considerarlo una irregularidad. Verificá con tu contador si tu empresa está alcanzada por esta obligatoriedad.
+</Warning>
+
+---
+
+## Tipos de comprobantes FCE
+
+La FCE tiene sus propios códigos de tipo de comprobante en ARCA:
+
+| Código | Descripción |
+|---|---|
+| 201 | Factura de Crédito Electrónica MiPyMEs (A) |
+| 202 | Nota de Débito Electrónica MiPyMEs (A) |
+| 203 | Nota de Crédito Electrónica MiPyMEs (A) |
+| 206 | Factura de Crédito Electrónica MiPyMEs (B) |
+| 207 | Nota de Débito Electrónica MiPyMEs (B) |
+| 208 | Nota de Crédito Electrónica MiPyMEs (B) |
+| 211 | Factura de Crédito Electrónica MiPyMEs (C) |
+| 212 | Nota de Débito Electrónica MiPyMEs (C) |
+| 213 | Nota de Crédito Electrónica MiPyMEs (C) |
+
+---
+
+## Cómo funciona el flujo de una FCE
+
+<Steps>
+  La MiPyME (emisora) emite la FCE en ARCA con los datos de la operación, incluida la **fecha de vencimiento del pago**
+
+  ARCA asigna el CAE y registra el comprobante en el **Sistema de Circulación Abierta (SCA)**
+
+  El receptor (gran empresa) tiene un plazo para **aceptar o rechazar** la FCE
+
+  Si la acepta (o no la rechaza en el plazo), queda **aceptada tácitamente** y adquiere fuerza ejecutiva
+
+  La MiPyME puede **ceder el crédito** a una entidad financiera (banco, sociedad de garantía recíproca, fondo de inversión)
+
+  La entidad financiera **acredita el importe** a la MiPyME (menos el descuento financiero)
+
+  Al vencimiento, la entidad financiera cobra al receptor original
+</Steps>
+
+---
+
+## Aceptación y rechazo de la FCE
+
+### Aceptación tácita
+
+El receptor tiene **15 días corridos** desde la recepción para aceptar o rechazar la FCE. Si no hace nada, queda **aceptada tácitamente**.
+
+### Causales válidas de rechazo
+
+Solo se puede rechazar por causas específicas:
+- El bien o servicio no fue entregado/prestado
+- El bien o servicio no cumple con las especificaciones pactadas
+- Existe una nota de crédito que cancela total o parcialmente la operación
+
+El rechazo debe ser **justificado y documentado**. Un rechazo sin causa válida puede tener consecuencias legales.
+
+---
+
+## Datos adicionales requeridos en la FCE
+
+Además de los campos de una factura A/B/C normal, la FCE requiere:
+
+- **CBU del emisor** (cuenta bancaria donde se acreditará el pago)
+- **Fecha de vencimiento del pago** (plazo acordado)
+- **Código de operación**: indica si es una FCE cancelable en SCA o no
+
+---
+
+## Emitir una FCE con Facturear
+
+Facturear soporta la emisión de Facturas de Crédito Electrónica. El proceso es similar al de una factura común, pero seleccionando el tipo correcto (201, 206 o 211 según corresponda):
+
+### Via Dashboard
+
+1. Ir a **Nueva Factura**
+2. Seleccionar tipo **"FCE MiPyMEs A"** (o B o C)
+3. Completar los campos adicionales (CBU, fecha de vencimiento del pago)
+4. Emitir normalmente
+
+### Via API
+
+```javascript
+const response = await fetch('https://api.facturear.com/invoices', {
+  method: 'POST',
+  headers: {
+    'x-api-key': 'tu_api_key',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    cuitId: 'tu-cuit-id',
+    comprobante: {
+      tipo: 201,  // Factura de Crédito Electrónica MiPyMEs A
+      puntoVenta: 1,
+      receptor: {
+        razonSocial: 'Gran Empresa S.A.',
+        cuit: '30-71234567-8',
+        condicionIva: 'RI'
+      },
+      fechaVtoPago: '2025-08-30',  // Fecha de vencimiento del pago
+      cbu: '0000000000000000000000',  // CBU del emisor
+      items: [
+        {
+          descripcion: 'Provisión de insumos industriales',
+          cantidad: 100,
+          precioUnitario: 15000,
+          alicuotaIva: 21
+        }
+      ]
+    }
+  })
+})
+```
+
+Ver la [documentación completa de la API](/es/api-reference).
+
+---
+
+## ¿Cómo obtener el Certificado MiPyME?
+
+Para emitir FCE necesitás el **Certificado MiPyME** vigente. Para obtenerlo:
+
+1. Entrá a [tramites.produccion.gob.ar](https://tramites.produccion.gob.ar)
+2. Buscá "Certificado MiPyME"
+3. Ingresá con clave fiscal y completá los datos de facturación
+4. El sistema determina automáticamente si calificás como MiPyME
+5. Descargá el certificado (tiene vigencia anual, se renueva automáticamente si seguís calificando)
+
+---
+
+## Ventajas de usar FCE para tu MiPyME
+
+- **Acceso a financiamiento** sin necesitar garantías reales
+- **Tasas menores** a las del descubierto bancario tradicional
+- **Previsibilidad del flujo de caja** aunque vendas a 90 días
+- **El deudor no puede rechazar sin causa** — más seguridad jurídica
+- **Fuerza ejecutiva**: si la gran empresa no paga, podés ejecutar el título directamente
+
+---
+
+## Preguntas frecuentes
+
+<AccordionGroup>
+  <Accordion title="¿La FCE sirve para ventas al contado?">
+    No. La FCE está diseñada para operaciones con pago diferido. Para ventas al contado, emitís una factura común A o B.
+  </Accordion>
+  <Accordion title="¿Qué pasa si la gran empresa rechaza la FCE?">
+    Si el rechazo es válido (no entrega del bien/servicio), debés emitir una Nota de Crédito. Si el rechazo no tiene causa válida, podés iniciar acciones legales ya que la FCE es un título ejecutivo.
+  </Accordion>
+  <Accordion title="¿Cuánto cobra el banco por descontar la FCE?">
+    Las tasas varían según el banco y el plazo, pero generalmente son menores a las de un descubierto bancario tradicional, ya que el riesgo de crédito es el de la gran empresa receptora (no el de la MiPyME).
+  </Accordion>
+  <Accordion title="¿Puedo emitir FCE si soy Monotributista?">
+    No. La FCE requiere ser Responsable Inscripto en IVA. Los tipos de comprobante 201, 206 y 211 no están disponibles para Monotributistas.
+  </Accordion>
+  <Accordion title="¿La FCE tiene algún costo para el emisor?">
+    La emisión en sí no tiene costo adicional (es parte del sistema de facturación de ARCA). El costo aparece si elegís descontar el crédito en una entidad financiera (que cobra una tasa por adelantarte el dinero).
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Recursos relacionados
+
+- [Tipos de comprobantes AFIP/ARCA](/es/fundamentos/tipos-de-comprobantes)
+- [Facturar siendo responsable inscripto](/es/fundamentos/responsable-inscripto)
+- [ARCA reemplaza a AFIP](/es/novedades/arca-reemplaza-afip)

@@ -1,0 +1,159 @@
+---
+title: 'Qué es la factura electrónica en Argentina'
+description: 'Todo lo que necesitás saber sobre la facturación electrónica en Argentina: qué es, cómo funciona, quiénes están obligados y cuáles son sus ventajas.'
+---
+
+# Qué es la factura electrónica en Argentina
+
+La **factura electrónica** es el comprobante fiscal digital que reemplaza a la factura en papel. En Argentina, es emitida y gestionada a través del sistema de **ARCA** (ex AFIP) y tiene la misma validez legal que una factura tradicional.
+
+A diferencia del papel, la factura electrónica se genera, transmite y almacena digitalmente, con un código de autorización oficial llamado **CAE** (Código de Autorización Electrónico) o **CAEA** (Código de Autorización Electrónico Anticipado).
+
+---
+
+## Cómo funciona el sistema
+
+Cuando emitís una factura electrónica en Argentina, el flujo es el siguiente:
+
+<Steps>
+  Tu sistema (o Facturear) envía los datos de la factura al webservice de ARCA
+
+  ARCA valida los datos (CUIT emisor, receptor, importes, tipo de comprobante, etc.)
+
+  Si todo es correcto, ARCA devuelve un **CAE** y una fecha de vencimiento
+
+  La factura queda autorizada y podés entregarla al cliente (PDF, email, QR)
+</Steps>
+
+Sin el CAE, una factura **no tiene validez fiscal**. Facturear gestiona todo este proceso de forma automática.
+
+---
+
+## Quiénes están obligados a facturar electrónicamente
+
+En Argentina, la obligatoriedad se fue ampliando progresivamente. Hoy en día aplica a:
+
+| Categoría | Obligación |
+|---|---|
+| Responsables Inscriptos en IVA | Obligatorio (desde 2012/2015 según actividad) |
+| Monotributistas (todas las categorías) | Obligatorio desde 2019 |
+| Exentos en IVA con ingresos significativos | Obligatorio |
+| Profesionales (médicos, abogados, contadores, etc.) | Obligatorio |
+| Pequeños contribuyentes del Régimen Simplificado | Obligatorio |
+
+<Info>
+  Desde la Resolución General 4290/2018 y sus modificatorias, prácticamente **todos los contribuyentes** están obligados a emitir comprobantes electrónicos. Las excepciones son muy puntuales (zonas sin conectividad, actividades específicas).
+</Info>
+
+---
+
+## Tipos de comprobantes electrónicos
+
+Los principales comprobantes que podés emitir son:
+
+- **Factura A** — Para ventas a Responsables Inscriptos en IVA (discrimina IVA)
+- **Factura B** — Para ventas a Consumidores Finales o Monotributistas
+- **Factura C** — Para emisores Monotributistas o Exentos (sin discriminar IVA)
+- **Factura E** — Para exportaciones
+- **Factura M** — Para operaciones de alto riesgo fiscal (aplica en casos específicos)
+- **Notas de Crédito y Débito** — Para ajustes sobre facturas ya emitidas
+
+Ver la guía completa de [tipos de comprobantes AFIP/ARCA](/es/fundamentos/tipos-de-comprobantes).
+
+---
+
+## Diferencias entre factura electrónica y ticket fiscal
+
+| | Factura Electrónica | Ticket Fiscal (controlador fiscal) |
+|---|---|---|
+| Soporte | Digital (PDF, email) | Papel (rollo térmico) |
+| Ideal para | B2B, montos altos, servicios | Comercios minoristas con alto volumen |
+| Identificación del receptor | Puede identificar o no al comprador | Generalmente no identifica |
+| Integración con sistemas | Via API (fácil) | Requiere hardware fiscal |
+| Validez legal | Idéntica | Idéntica |
+
+---
+
+## Qué información debe tener una factura electrónica
+
+Para ser válida, una factura electrónica en Argentina debe incluir:
+
+- **CUIT del emisor** y datos del negocio
+- **Número de comprobante** (punto de venta + número correlativo)
+- **Fecha de emisión**
+- **Tipo de comprobante** (A, B, C, etc.)
+- **Datos del receptor** (nombre/razón social, CUIT/DNI según el caso)
+- **Detalle de productos o servicios** con cantidades e importes
+- **Importes** (neto gravado, IVA discriminado si aplica, total)
+- **CAE y fecha de vencimiento del CAE**
+- **Código QR** con la información del comprobante (obligatorio desde 2021)
+
+---
+
+## Ventajas de la factura electrónica
+
+### Para tu negocio
+
+- **Cero costo de papel e impresión**: todo digital
+- **Envío inmediato**: por email o descarga de PDF
+- **Historial centralizado**: todas tus facturas en un solo lugar
+- **Reducción de errores**: validación automática antes de emitir
+- **Integración con sistemas**: conectá tu ERP, CRM o e-commerce via API
+
+### Para el fisco
+
+- Control automático de consistencia entre comprador y vendedor
+- Cruce de información en tiempo real
+- Reducción de la evasión fiscal
+
+---
+
+## Cómo empezar a facturar electrónicamente con Facturear
+
+Facturear simplifica todo el proceso. Solo necesitás:
+
+<CardGroup cols={2}>
+  <Card title="Crear tu cuenta" icon="user-plus" href="https://facturear.com">
+    Registrate en Facturear y configurá tu perfil
+  </Card>
+  <Card title="Configurar tu CUIT" icon="building" href="/es/getting-started">
+    Agregá tu CUIT y configurá la integración con ARCA
+  </Card>
+  <Card title="Certificado Digital" icon="shield-check" href="/es/guides/certificado-digital">
+    Configurá el certificado para conectarte con ARCA
+  </Card>
+  <Card title="Emitir facturas" icon="file-invoice" href="/es/guides/primera-factura">
+    Empezá a emitir facturas desde el dashboard o la API
+  </Card>
+</CardGroup>
+
+---
+
+## Preguntas frecuentes
+
+<AccordionGroup>
+  <Accordion title="¿Puedo emitir facturas sin internet?">
+    No directamente. Para obtener el CAE necesitás conectividad con ARCA. Sin embargo, existe el sistema **CAEA** (Código de Autorización Electrónico Anticipado) para situaciones donde la conectividad no está garantizada (por ejemplo, domicilios en zonas rurales o ventas a domicilio). Facturear soporta ambos modos.
+  </Accordion>
+  <Accordion title="¿Cuánto tiempo tengo para entregar la factura al cliente?">
+    Técnicamente el CAE puede tener hasta 5 días de vencimiento desde la fecha de emisión. Sin embargo, es buena práctica emitir y entregar la factura el mismo día de la operación.
+  </Accordion>
+  <Accordion title="¿Qué pasa si me equivoco en una factura?">
+    Una vez emitida y autorizada por ARCA, una factura **no puede eliminarse ni modificarse**. Para corregir errores, debés emitir una **Nota de Crédito** que anule total o parcialmente la factura original.
+  </Accordion>
+  <Accordion title="¿La factura electrónica tiene la misma validez que la en papel?">
+    Sí, tiene exactamente la misma validez legal. El comprobante con CAE es el respaldo fiscal oficial ante cualquier auditoría de ARCA.
+  </Accordion>
+  <Accordion title="¿Puedo facturar en moneda extranjera?">
+    Sí. Para operaciones de exportación (Factura E) y en algunos casos de operaciones locales, podés emitir facturas en dólares u otras divisas. El importe se convierte al tipo de cambio oficial según la normativa vigente.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Recursos relacionados
+
+- [Tipos de comprobantes AFIP/ARCA](/es/fundamentos/tipos-de-comprobantes)
+- [Cómo facturar siendo monotributista](/es/fundamentos/monotributo)
+- [Cómo facturar siendo responsable inscripto](/es/fundamentos/responsable-inscripto)
+- [ARCA: todo lo que cambió respecto a AFIP](/es/novedades/arca-reemplaza-afip)

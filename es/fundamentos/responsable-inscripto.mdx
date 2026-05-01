@@ -1,0 +1,235 @@
+---
+title: 'Facturación electrónica para Responsables Inscriptos'
+description: 'Guía completa para Responsables Inscriptos en IVA: cuándo emitir Factura A o B, discriminación de IVA, alícuotas y obligaciones en ARCA.'
+---
+
+# Facturación electrónica para Responsables Inscriptos
+
+Si sos **Responsable Inscripto en IVA**, tu esquema de facturación es más complejo que el de un Monotributista: necesitás determinar qué tipo de factura emitir según la condición del receptor, discriminar el IVA correctamente y cumplir con las alícuotas vigentes.
+
+---
+
+## Lo esencial: Factura A vs Factura B
+
+La decisión más importante es qué tipo de comprobante emitís:
+
+| Condición del receptor | Tipo de factura |
+|---|---|
+| **Responsable Inscripto en IVA** | **Factura A** (discrimina IVA) |
+| **Monotributista** | **Factura B** (IVA incluido) |
+| **Consumidor Final** | **Factura B** (IVA incluido) |
+| **Exento en IVA** | **Factura B** (IVA incluido) |
+| **No categorizado / sin CUIT** | **Factura B** (IVA incluido) |
+| **Exterior** | **Factura E** (exportación) |
+
+<Info>
+  La regla es simple: **Factura A solo para quien puede computar crédito fiscal de IVA**, es decir, para otros Responsables Inscriptos.
+</Info>
+
+---
+
+## Alícuotas de IVA en Argentina
+
+Las principales alícuotas vigentes son:
+
+| Alícuota | Bienes y servicios |
+|---|---|
+| **21%** (alícuota general) | La mayoría de bienes y servicios |
+| **10,5%** (alícuota reducida) | Bienes de capital, obras, algunos alimentos, medicamentos, transporte de pasajeros, servicios médicos y educativos privados |
+| **27%** (alícuota incrementada) | Servicios de telecomunicaciones, gas, electricidad y agua a responsables inscriptos |
+| **0%** | Exportaciones (tasa cero, no exentas) |
+| **Exento** | Libros, medicamentos esenciales, servicios educativos, alquileres de vivienda, algunos servicios de salud |
+
+<Warning>
+  Las alícuotas pueden cambiar por decreto o resolución. Siempre verificá los valores vigentes en el portal de ARCA o consultá con tu contador.
+</Warning>
+
+---
+
+## Factura A: todo lo que necesitás saber
+
+### Qué debe incluir
+
+- **Datos del emisor**: razón social, CUIT, domicilio, condición frente a IVA ("Responsable Inscripto")
+- **Datos del receptor**: razón social/nombre, CUIT (obligatorio), condición frente a IVA
+- **Detalle de productos/servicios**
+- **Subtotal gravado** (base imponible del IVA)
+- **Monto de IVA discriminado** por alícuota
+- **Otros impuestos** si corresponde (percepciones, retenciones, etc.)
+- **Total**
+- **CAE y fecha de vencimiento**
+- **Código QR**
+
+### El receptor puede computar el IVA
+
+Cuando tu cliente recibe una Factura A, el monto de IVA que pagó se convierte en su **crédito fiscal**. Puede descontarlo del IVA que él mismo cobra (débito fiscal), reduciendo su saldo a pagar a ARCA.
+
+---
+
+## Factura B: todo lo que necesitás saber
+
+### Qué debe incluir
+
+- **Datos del emisor**: razón social, CUIT, domicilio, condición frente a IVA
+- **Datos del receptor**: según el monto de la operación (ver abajo)
+- **Detalle de productos/servicios**
+- **Total** (el IVA está incluido pero no discriminado visualmente... aunque internamente ARCA lo registra)
+- **CAE y fecha de vencimiento**
+- **Código QR**
+
+### Cuándo identificar al receptor en Factura B
+
+| Monto | Identificación requerida |
+|---|---|
+| Hasta $27.000 aprox. | "Consumidor Final" — sin datos |
+| Entre $27.000 y $108.000 aprox. | Nombre/Razón Social del receptor |
+| Más de $108.000 aprox. | CUIT/CUIL + Nombre/Razón Social |
+
+<Info>
+  Los umbrales de identificación se actualizan por ARCA. Facturear aplica automáticamente los valores vigentes al momento de la emisión.
+</Info>
+
+---
+
+## Declaración jurada de IVA (DDJJ)
+
+Como Responsable Inscripto tenés que presentar mensualmente la **Declaración Jurada de IVA** (formulario F731):
+
+- **Débito fiscal**: IVA de las ventas que realizaste (Facturas A que emitiste + Facturas B con IVA embebido)
+- **Crédito fiscal**: IVA de las compras que realizaste (Facturas A que recibiste)
+- **Saldo**: Débito - Crédito = lo que tenés que pagar (o saldo a favor)
+
+Facturear registra todas tus facturas emitidas, lo que facilita el cálculo del débito fiscal para tu contador.
+
+---
+
+## Percepciones y retenciones en facturas
+
+Como Responsable Inscripto, podés ser **agente de percepción** o estar sujeto a **retenciones**:
+
+### Percepciones de IVA
+Ciertos contribuyentes (grandes empresas habilitadas por ARCA) deben actuar como agentes de percepción e incluir una percepción de IVA adicional en sus facturas.
+
+### Retenciones de IVA e IIGG
+Cuando tu cliente es un gran comprador habilitado, puede retenerte parte del pago como anticipo de tus impuestos. En la factura se indica el importe bruto; la retención se documenta por separado con una "Constancia de Retención".
+
+### Percepciones de Ingresos Brutos (IIBB)
+Las provincias tienen sus propios sistemas de percepciones de IIBB. Si operás en varias provincias, puede ser relevante.
+
+---
+
+## Configuración en ARCA para Responsables Inscriptos
+
+### Tipo de punto de venta
+
+Los Responsables Inscriptos deben crear un punto de venta del tipo:
+
+**"RECE para aplicativo y Web Service"**
+
+Esto es diferente al de Monotributistas ("Factura Electrónica - Monotributo - Web Service").
+
+### Certificado Digital
+
+El proceso de configuración del certificado digital es el mismo para monotributistas y responsables inscriptos. Ver la [guía completa de certificado digital](/es/guides/certificado-digital).
+
+---
+
+## Emitir Factura A y B con Facturear
+
+<Steps>
+  Configurá tu CUIT y certificado digital siguiendo la [guía de inicio](/es/getting-started)
+
+  Desde el dashboard, hacé clic en **"Nueva Factura"**
+
+  Seleccioná el tipo según el receptor (A para Responsable Inscripto, B para los demás)
+
+  Completá los datos del receptor — si es Factura A, el CUIT es obligatorio
+
+  Seleccioná la alícuota de IVA correcta para cada ítem
+
+  Facturear calcula los importes automáticamente y solicita el CAE a ARCA
+
+  Descargá el PDF o envíalo por email
+</Steps>
+
+### Vía API
+
+```javascript
+// Factura A — entre responsables inscriptos
+const facturaA = await fetch('https://api.facturear.com/invoices', {
+  method: 'POST',
+  headers: {
+    'x-api-key': 'tu_api_key',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    cuitId: 'tu-cuit-id',
+    comprobante: {
+      tipo: 1,  // Factura A
+      puntoVenta: 1,
+      receptor: {
+        razonSocial: 'Empresa Receptora S.A.',
+        cuit: '30-71234567-8',
+        condicionIva: 'RI'  // Responsable Inscripto
+      },
+      items: [
+        {
+          descripcion: 'Servicio de desarrollo web',
+          cantidad: 1,
+          precioUnitario: 100000,
+          alicuotaIva: 21
+        }
+      ]
+    }
+  })
+})
+```
+
+Ver la [documentación completa de la API](/es/api-reference).
+
+---
+
+## Casos especiales
+
+### Factura a sujetos del exterior (exportación de servicios)
+
+Si prestás servicios a clientes extranjeros y cobrás en divisas, podés emitir **Factura E**. Ver [tipos de comprobantes](/es/fundamentos/tipos-de-comprobantes#facturas-del-tipo-e-exportaci%C3%B3n).
+
+### Factura de Crédito Electrónica para MiPyMEs
+
+Si sos una MiPyME y vendés a grandes empresas, podés emitir una **Factura de Crédito Electrónica** que funciona como un instrumento financiero negociable. Ver la [guía de Factura de Crédito Electrónica](/es/novedades/factura-credito-electronica-mipymes).
+
+### Operaciones con IVA diferencial o exentas
+
+Si vendés productos exentos o con alícuota reducida, en la Factura A debés desglosar correctamente cada base imponible con su alícuota correspondiente. Facturear permite incluir múltiples alícuotas en una misma factura.
+
+---
+
+## Preguntas frecuentes
+
+<AccordionGroup>
+  <Accordion title="¿Cómo sé si mi cliente es Responsable Inscripto?">
+    Podés consultarlo en el portal de ARCA (Constancia de Inscripción) ingresando el CUIT del cliente. Facturear también valida el CUIT en tiempo real al momento de emitir.
+  </Accordion>
+  <Accordion title="¿Qué pasa si emito Factura B a un Responsable Inscripto?">
+    Es un error. El receptor no podrá computar el IVA como crédito fiscal. Debés emitir una Nota de Crédito B por el total y luego emitir la Factura A correcta.
+  </Accordion>
+  <Accordion title="¿Puedo emitir Factura A sin CUIT del receptor?">
+    No. La Factura A siempre requiere el CUIT del receptor. Si no lo tenés, es señal de que probablemente no debés emitir Factura A.
+  </Accordion>
+  <Accordion title="¿Cuándo tengo que presentar la DDJJ de IVA?">
+    Mensualmente, en la fecha que corresponda según los últimos dígitos de tu CUIT (calendario de vencimientos de ARCA). Las facturas de Facturear quedan registradas con todos los datos necesarios para que tu contador prepare la DDJJ.
+  </Accordion>
+  <Accordion title="¿Puedo cambiar de Responsable Inscripto a Monotributista?">
+    Sí, pero solo si tus ingresos son menores al tope del Monotributo y cumplís los requisitos. Implicaría dejar de emitir Facturas A y pasar a emitir Facturas C. Consultá con tu contador.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Recursos relacionados
+
+- [Qué es la factura electrónica en Argentina](/es/fundamentos/que-es-factura-electronica)
+- [Tipos de comprobantes AFIP/ARCA](/es/fundamentos/tipos-de-comprobantes)
+- [Facturar siendo monotributista](/es/fundamentos/monotributo)
+- [Factura de Crédito Electrónica MiPyMEs](/es/novedades/factura-credito-electronica-mipymes)

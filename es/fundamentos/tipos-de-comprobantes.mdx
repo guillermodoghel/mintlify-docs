@@ -1,0 +1,228 @@
+---
+title: 'Tipos de comprobantes AFIP/ARCA en Argentina'
+description: 'Guía completa de todos los tipos de facturas y comprobantes electrónicos en Argentina: A, B, C, E, M, Notas de Crédito, Notas de Débito y más.'
+---
+
+# Tipos de comprobantes AFIP/ARCA en Argentina
+
+En Argentina, el tipo de comprobante que debés emitir depende de tu **condición frente al IVA** y de la **condición del receptor**. Elegir el tipo incorrecto puede generar problemas ante ARCA (ex AFIP) e inconvenientes con tu cliente.
+
+Esta guía cubre todos los tipos de comprobantes electrónicos vigentes.
+
+---
+
+## Resumen rápido: ¿qué tipo de factura emito?
+
+| Soy emisor... | Mi cliente es... | Emito... |
+|---|---|---|
+| Responsable Inscripto | Responsable Inscripto | **Factura A** |
+| Responsable Inscripto | Consumidor Final / Monotributista / Exento | **Factura B** |
+| Monotributista | Cualquier destinatario | **Factura C** |
+| Exento en IVA | Cualquier destinatario | **Factura B** o **Factura C** según el caso |
+| Cualquier categoría | Exportación al exterior | **Factura E** |
+
+---
+
+## Facturas del Tipo A
+
+La **Factura A** es el comprobante utilizado en transacciones **entre Responsables Inscriptos en IVA**.
+
+### Características
+- Discrimina el IVA (el monto de IVA aparece desglosado)
+- El receptor puede computar el IVA como crédito fiscal
+- Requiere CUIT del receptor obligatoriamente
+- Aplica a servicios y bienes gravados, exentos o a tasa diferencial
+
+### Cuándo usarla
+- Vendés a una empresa que es Responsable Inscripto
+- Prestás servicios profesionales a una sociedad inscripta en IVA
+- Realizás una operación B2B con discriminación de impuesto
+
+<Warning>
+  Si emitís Factura A a alguien que **no es Responsable Inscripto**, estás cometiendo un error fiscal que puede traer problemas ante ARCA.
+</Warning>
+
+---
+
+## Facturas del Tipo B
+
+La **Factura B** es emitida por **Responsables Inscriptos** cuando su cliente es:
+- Consumidor Final
+- Monotributista
+- Exento en IVA
+- Sujeto no categorizado
+
+### Características
+- El IVA está **incluido** en el precio (no discriminado)
+- No requiere CUIT del receptor para montos pequeños (hasta cierto umbral)
+- Para montos altos o por pedido del cliente, puede identificarse el receptor
+
+### Requisito de identificación del receptor
+
+| Monto de la operación | Identificación del receptor |
+|---|---|
+| Hasta $27.000 (aprox.) | No requerida |
+| Más de $27.000 | Nombre y apellido (o razón social) requeridos |
+| Más de $27.000 con pedido expreso | CUIT/DNI del receptor requerido |
+
+<Info>
+  El umbral de identificación se actualiza periódicamente por resolución de ARCA. Facturear aplica automáticamente los valores vigentes.
+</Info>
+
+---
+
+## Facturas del Tipo C
+
+La **Factura C** es emitida por **Monotributistas** y **contribuyentes Exentos en IVA**.
+
+### Características
+- No discrimina IVA (los monotributistas no son responsables de IVA)
+- El precio incluye todos los impuestos
+- Puede emitirse a cualquier tipo de receptor
+- Requiere CUIT del receptor para operaciones entre empresas
+
+### Quiénes emiten Factura C
+- **Monotributistas** (todas las categorías A a K)
+- **Exentos en IVA** por actividad (educación, salud, etc.)
+- **Entidades sin fines de lucro** en sus actividades exentas
+
+---
+
+## Facturas del Tipo E (Exportación)
+
+La **Factura E** es el comprobante para **exportaciones de bienes y servicios al exterior**.
+
+### Características
+- Se emite cuando el receptor está domiciliado fuera de Argentina
+- Las exportaciones están **gravadas a tasa 0%** de IVA (no exentas, sino tasa cero)
+- Permite recuperar el IVA de las compras vinculadas (crédito fiscal)
+- Requiere datos del importador extranjero
+
+### Tipos de exportación cubiertos
+- Exportación definitiva de bienes
+- Exportación de servicios
+- Exportaciones temporarias
+
+### Documentación adicional
+Para exportaciones de bienes, la Factura E generalmente se complementa con:
+- **Permiso de embarque** (despacho de aduana)
+- **Certificado de origen** (si aplica)
+
+---
+
+## Facturas del Tipo M
+
+La **Factura M** es una variante de la Factura A para operaciones con **potencial riesgo fiscal**.
+
+### Características
+- Similar a la Factura A pero con retención de IVA obligatoria para el receptor
+- ARCA la asigna automáticamente a contribuyentes con ciertos perfiles de riesgo
+- El receptor debe retener el 100% del IVA facturado
+
+### Cuándo aplica
+ARCA puede requerir la emisión de Facturas M cuando detecta inconsistencias en el perfil fiscal del contribuyente. No es una elección del emisor, sino una categorización automática del sistema.
+
+<Warning>
+  Si tu empresa debe emitir Facturas M y no cumple con el régimen, puede ser sancionada por ARCA. Consultá con tu contador si te aparece esta opción.
+</Warning>
+
+---
+
+## Notas de Crédito y Notas de Débito
+
+Las Notas de Crédito y Débito son comprobantes de **ajuste** sobre facturas ya emitidas. Siguen el mismo tipo que la factura original (A, B, C, E o M).
+
+### Nota de Crédito
+Se emite para **reducir** el importe de una factura original:
+- Devolución total o parcial de mercadería
+- Descuento otorgado a posteriori
+- Error en la factura original (monto mayor al correcto)
+- Rescisión parcial de un servicio
+
+### Nota de Débito
+Se emite para **aumentar** el importe de una factura original:
+- Intereses por mora en el pago
+- Gastos adicionales no incluidos en la factura
+- Error en la factura original (monto menor al correcto)
+
+<Info>
+  Una Nota de Crédito **no anula** la factura original. Simplemente ajusta el saldo. Para anular completamente una factura, debés emitir una Nota de Crédito por el importe total.
+</Info>
+
+---
+
+## Factura de Crédito Electrónica (FCE) para MiPyMEs
+
+La **Factura de Crédito Electrónica** es un comprobante especial creado para facilitar el financiamiento de pequeñas y medianas empresas.
+
+Ver la guía completa: [Factura de Crédito Electrónica MiPyMEs](/es/novedades/factura-credito-electronica-mipymes)
+
+---
+
+## Tabla completa de tipos de comprobante
+
+| Código ARCA | Descripción |
+|---|---|
+| 01 | Facturas A |
+| 02 | Notas de Débito A |
+| 03 | Notas de Crédito A |
+| 06 | Facturas B |
+| 07 | Notas de Débito B |
+| 08 | Notas de Crédito B |
+| 11 | Facturas C |
+| 12 | Notas de Débito C |
+| 13 | Notas de Crédito C |
+| 19 | Facturas E |
+| 20 | Notas de Débito E |
+| 21 | Notas de Crédito E |
+| 51 | Facturas M |
+| 52 | Notas de Débito M |
+| 53 | Notas de Crédito M |
+| 201 | Facturas de Crédito Electrónica MiPyMEs A |
+| 202 | Notas de Débito Electrónica MiPyMEs A |
+| 203 | Notas de Crédito Electrónica MiPyMEs A |
+| 206 | Facturas de Crédito Electrónica MiPyMEs B |
+| 211 | Facturas de Crédito Electrónica MiPyMEs C |
+
+---
+
+## Consultar tipos de comprobante vía API
+
+Facturear expone los parámetros de ARCA (incluyendo todos los tipos de comprobante vigentes) a través del endpoint de parámetros:
+
+```bash
+GET /arca-parameters
+```
+
+También podés consultar un parámetro específico:
+
+```bash
+GET /arca/Cbte_Tipo
+```
+
+Esto devuelve la lista actualizada de tipos de comprobante directamente desde ARCA, sin necesidad de mantener tablas hardcodeadas en tu sistema.
+
+---
+
+## Errores comunes al elegir tipo de comprobante
+
+<AccordionGroup>
+  <Accordion title="Emití Factura A a un Monotributista — ¿qué hago?">
+    Debés emitir una **Nota de Crédito A** para anular el importe y luego emitir la **Factura B** correcta. No podés modificar una factura ya emitida.
+  </Accordion>
+  <Accordion title="Mi cliente me pide Factura A pero soy Monotributista — ¿puedo?">
+    No. Los Monotributistas **solo pueden emitir Facturas C**, independientemente de la condición del receptor. Si tu cliente necesita crédito fiscal de IVA, deberías evaluar si te conviene inscribirte como Responsable Inscripto.
+  </Accordion>
+  <Accordion title="¿Cuándo uso Nota de Crédito vs simplemente no emitir la factura?">
+    Si la factura **ya fue emitida y tiene CAE**, no podés "borrarla". La única forma de anularla es con una Nota de Crédito. Si todavía no la emitiste, simplemente no la generés.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Recursos relacionados
+
+- [Qué es la factura electrónica en Argentina](/es/fundamentos/que-es-factura-electronica)
+- [Facturar siendo monotributista](/es/fundamentos/monotributo)
+- [Facturar siendo responsable inscripto](/es/fundamentos/responsable-inscripto)
+- [Factura de Crédito Electrónica MiPyMEs](/es/novedades/factura-credito-electronica-mipymes)
