@@ -1,0 +1,42 @@
+name: Daily Tax News
+
+on:
+  schedule:
+    # 8:00 AM Argentina time (ART = UTC-3) → 11:00 AM UTC
+    - cron: "0 11 * * *"
+  workflow_dispatch: # allow manual runs from GitHub UI
+
+jobs:
+  generate-article:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install anthropic feedparser
+
+      - name: Run news aggregator
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python scripts/daily_tax_news.py
+
+      - name: Commit and push if article was created
+        run: |
+          git config user.name "Tax News Bot"
+          git config user.email "bot@facture.ar"
+          git add es/novedades/ docs.json
+          if git diff --staged --quiet; then
+            echo "No new article today — nothing to commit."
+          else
+            git commit -m "novedades: artículo impositivo del $(TZ=America/Argentina/Buenos_Aires date '+%Y-%m-%d')"
+            git push
+          fi
