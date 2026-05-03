@@ -49,17 +49,26 @@ RSS_FEEDS = {
     ],
 }
 
+# Keywords that must appear to consider an article tax-related.
+# Kept specific to avoid false positives from agro/finance articles.
 TAX_KEYWORDS = [
-    "afip", "arca", "impuesto", "impositivo", "tributario", "tributo",
-    "iva", "ganancias", "bienes personales", "monotributo",
-    "retención", "percepción", "blanqueo", "moratoria", "vencimiento fiscal",
-    "declaración jurada", "resolución general", " rg ", "fisco",
-    "ingresos brutos", "agip", "arba", "contribución impositiva",
-    "exención impositiva", "alícuota", "base imponible",
+    "afip", "arca ", "arca:", "arca-",
+    "impuesto a las ganancias", "impuesto al valor agregado",
+    "impositivo", "tributario", "régimen tributario",
+    " iva ", "iva:", "iva,",
+    "bienes personales", "monotributo", "monotributista",
+    "blanqueo", "moratoria impositiva", "moratoria fiscal",
+    "vencimiento impositivo", "vencimiento fiscal", "vence el plazo",
+    "declaración jurada", "resolución general afip", "resolución general arca",
+    " rg afip", " rg arca", "rg n°", "rg nro",
+    "ingresos brutos", "agip", "arba",
     "crédito fiscal", "débito fiscal", "deducción impositiva",
     "mínimo no imponible", "plan de pago afip", "plan de pago arca",
-    "régimen simplificado", "responsable inscripto", "factura electrónica",
-    "comprobante electrónico", "cae ", "caea",
+    "régimen simplificado", "responsable inscripto",
+    "factura electrónica", "comprobante electrónico",
+    "clave fiscal", "cuit", "cuil",
+    "retención impositiva", "retención de ganancias", "retención de iva",
+    "percepción de iva", "percepción de ingresos",
 ]
 
 
