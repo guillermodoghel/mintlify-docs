@@ -42,7 +42,12 @@
               "es/fundamentos/monotributo",
               "es/fundamentos/responsable-inscripto"
             ]
-          },
+          }
+        ]
+      },
+      {
+        "tab": "Novedades",
+        "groups": [
           {
             "group": "Novedades Impositivas",
             "pages": [
