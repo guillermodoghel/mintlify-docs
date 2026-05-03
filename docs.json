@@ -15,11 +15,15 @@
         "groups": [
           {
             "group": "Inicio",
-            "pages": ["index"]
+            "pages": [
+              "index"
+            ]
           },
           {
             "group": "Comenzar",
-            "pages": ["es/getting-started/index"]
+            "pages": [
+              "es/getting-started/index"
+            ]
           },
           {
             "group": "Configuración",
@@ -42,6 +46,8 @@
           {
             "group": "Novedades Impositivas",
             "pages": [
+              "es/novedades/declaracion-jurada-ganancias-2026-paso-a-paso-2026-05-03",
+              "es/novedades/monotributo-mayo-2026-cuanto-pagar-2026-05-03",
               "es/novedades/arca-reemplaza-afip",
               "es/novedades/factura-credito-electronica-mipymes",
               "es/novedades/obligatoriedad-factura-electronica"
@@ -54,7 +60,10 @@
         "groups": [
           {
             "group": "Overview",
-            "pages": ["es/api-reference/index", "es/api-reference/playground"]
+            "pages": [
+              "es/api-reference/index",
+              "es/api-reference/playground"
+            ]
           },
           {
             "group": "API Endpoints",
@@ -92,7 +101,16 @@
     }
   },
   "contextual": {
-    "options": ["copy", "view", "chatgpt", "claude", "perplexity", "mcp", "cursor", "vscode"]
+    "options": [
+      "copy",
+      "view",
+      "chatgpt",
+      "claude",
+      "perplexity",
+      "mcp",
+      "cursor",
+      "vscode"
+    ]
   },
   "api": {
     "playground": {
@@ -100,7 +118,12 @@
       "proxy": true
     },
     "examples": {
-      "languages": ["curl", "javascript", "python", "php"],
+      "languages": [
+        "curl",
+        "javascript",
+        "python",
+        "php"
+      ],
       "defaults": "required"
     }
   },
