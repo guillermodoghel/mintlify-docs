@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "luma",
+  "theme": "mint",
   "name": "Facturear — Facturación Electrónica Argentina",
   "description": "Facturear es la plataforma de facturación electrónica más simple de Argentina. Emitá facturas con CAE de ARCA/AFIP vía API o dashboard, sin complicaciones.",
   "colors": {
