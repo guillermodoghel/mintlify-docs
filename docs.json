@@ -12,6 +12,24 @@
   "navigation": {
     "tabs": [
       {
+        "tab": "Novedades",
+        "groups": [
+          {
+            "group": "Novedades Impositivas",
+            "pages": [
+              "es/novedades/monotributo-mayo-2026-valores-categorias-arca-2026-05-04",
+              "es/novedades/vencimientos-ganancias-bienes-personales-2026-arca-2026-05-04",
+              "es/novedades/bloomberg-desconfianza-dolares-fuera-sistema-2026-05-04",
+              "es/novedades/declaracion-jurada-ganancias-2026-paso-a-paso-2026-05-03",
+              "es/novedades/monotributo-mayo-2026-cuanto-pagar-2026-05-03",
+              "es/novedades/arca-reemplaza-afip",
+              "es/novedades/factura-credito-electronica-mipymes",
+              "es/novedades/obligatoriedad-factura-electronica"
+            ]
+          }
+        ]
+      },
+      {
         "tab": "Guías",
         "groups": [
           {
@@ -52,24 +70,6 @@
               "es/funcionalidades/factura-detallada",
               "es/funcionalidades/facturacion-excel",
               "es/funcionalidades/facturacion-por-lotes"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "Novedades",
-        "groups": [
-          {
-            "group": "Novedades Impositivas",
-            "pages": [
-              "es/novedades/monotributo-mayo-2026-valores-categorias-arca-2026-05-04",
-              "es/novedades/vencimientos-ganancias-bienes-personales-2026-arca-2026-05-04",
-              "es/novedades/bloomberg-desconfianza-dolares-fuera-sistema-2026-05-04",
-              "es/novedades/declaracion-jurada-ganancias-2026-paso-a-paso-2026-05-03",
-              "es/novedades/monotributo-mayo-2026-cuanto-pagar-2026-05-03",
-              "es/novedades/arca-reemplaza-afip",
-              "es/novedades/factura-credito-electronica-mipymes",
-              "es/novedades/obligatoriedad-factura-electronica"
             ]
           }
         ]
