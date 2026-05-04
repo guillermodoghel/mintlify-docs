@@ -43,6 +43,16 @@
               "es/fundamentos/monotributo",
               "es/fundamentos/responsable-inscripto"
             ]
+          },
+          {
+            "group": "Funcionalidades",
+            "pages": [
+              "es/funcionalidades/index",
+              "es/funcionalidades/facturador-rapido",
+              "es/funcionalidades/factura-detallada",
+              "es/funcionalidades/facturacion-excel",
+              "es/funcionalidades/facturacion-por-lotes"
+            ]
           }
         ]
       },

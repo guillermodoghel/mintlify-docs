@@ -1,0 +1,235 @@
+---
+title: 'Facturación desde Excel'
+description: 'Procesa múltiples facturas electrónicas importando datos desde hojas de cálculo Excel'
+---
+
+# 📊 Facturación desde Excel
+
+La Facturación desde Excel te permite procesar múltiples facturas electrónicas de forma masiva, importando datos desde hojas de cálculo. Ideal para empresas que manejan grandes volúmenes de facturación y ya tienen sus datos organizados en Excel.
+
+## 🎯 ¿Qué es la Facturación desde Excel?
+
+La Facturación desde Excel es una funcionalidad avanzada que permite:
+
+- ✅ **Procesamiento masivo**: Crear cientos de facturas de una vez
+- ✅ **Importación desde Excel**: Usar datos existentes en hojas de cálculo
+- ✅ **Validación automática**: Verificación de datos antes del procesamiento
+- ✅ **Procesamiento en lotes**: Gestión eficiente de grandes volúmenes
+- ✅ **Seguimiento detallado**: Monitoreo del progreso y resultados
+
+## 🚀 Características Principales
+
+### 📊 Importación de Datos
+- **Formatos soportados**: Excel (.xlsx, .xls), CSV
+- **Plantillas predefinidas**: Estructuras listas para usar
+- **Validación automática**: Verificación de datos antes del procesamiento
+- **Mapeo de campos**: Asignación flexible de columnas
+
+### ⚡ Procesamiento Masivo
+- **Lotes inteligentes**: Procesamiento en grupos optimizados
+- **Procesamiento asíncrono**: No bloquea la interfaz
+- **Reintentos automáticos**: Manejo de errores temporales
+- **Progreso en tiempo real**: Seguimiento del avance
+
+### 📋 Gestión de Resultados
+- **Reportes detallados**: Resumen de procesamiento
+- **Descarga masiva**: PDFs en lote
+- **Historial completo**: Registro de todas las operaciones
+- **Exportación de resultados**: Datos procesados en Excel
+
+## 📋 Cómo Usar la Facturación desde Excel
+
+### Paso 1: Preparar tu Archivo Excel
+
+**Estructura básica requerida:**
+
+| Campo | Descripción | Ejemplo |
+|-------|-------------|---------|
+| CUIT_Cliente | CUIT del cliente | 20-12345678-9 |
+| Razon_Social | Razón social | Empresa ABC S.A. |
+| Direccion | Dirección del cliente | Av. Corrientes 1234 |
+| Producto | Descripción del producto | Consultoría IT |
+| Cantidad | Cantidad | 1 |
+| Precio_Unitario | Precio por unidad | 10000 |
+| IVA | Tipo de IVA | 21 |
+
+**Campos opcionales:**
+- Email del cliente
+- Teléfono
+- Observaciones
+- Descuentos
+- Tributos adicionales
+
+### Paso 2: Descargar Plantilla
+
+1. **Accede** a "Facturación desde Excel"
+2. **Descarga** la plantilla oficial
+3. **Completa** con tus datos
+4. **Valida** el formato antes de subir
+
+### Paso 3: Subir y Validar Archivo
+
+<Steps>
+  <Step title="Subir Archivo">
+    - **Selecciona** tu archivo Excel o CSV
+    - **Confirma** el formato y estructura
+    - **Inicia** el proceso de validación
+  </Step>
+  <Step title="Validación Automática">
+    El sistema valida:
+    - ✅ Formato de CUITs
+    - ✅ Existencia en AFIP
+    - ✅ Estructura de datos
+    - ✅ Cálculos matemáticos
+  </Step>
+  <Step title="Revisar Errores">
+    - **Corrige** errores identificados
+    - **Re-sube** el archivo corregido
+    - **Confirma** que no hay errores
+  </Step>
+</Steps>
+
+### Paso 4: Configurar Procesamiento
+
+**Opciones de configuración:**
+
+- **Tipo de comprobante**: A, B, C según corresponda
+- **Punto de venta**: POS específico
+- **Fecha de emisión**: Fecha única o por fila
+- **Condición de pago**: Efectivo, transferencia, etc.
+- **Moneda**: ARS, USD, EUR
+
+**Configuración de lotes:**
+- **Tamaño de lote**: Número de facturas por lote
+- **Intervalo entre lotes**: Tiempo de espera
+- **Reintentos**: Número de intentos en caso de error
+
+### Paso 5: Procesar Facturas
+
+1. **Inicia el procesamiento**: Haz clic en "Procesar Facturas"
+2. **Monitorea el progreso**: Sigue el avance en tiempo real
+3. **Revisa resultados**: Consulta el reporte de procesamiento
+4. **Descarga PDFs**: Obtén todas las facturas generadas
+
+## 💡 Consejos y Mejores Prácticas
+
+### ✅ Preparación del Archivo
+- **Formato consistente**: Usa la plantilla oficial
+- **Datos limpios**: Sin espacios extra o caracteres especiales
+- **CUITs válidos**: Verifica formato y existencia en AFIP
+- **Precios correctos**: Números válidos, sin símbolos de moneda
+
+### ✅ Organización de Datos
+- **Una fila por factura**: Cada fila representa una factura
+- **Productos múltiples**: Usa filas separadas para cada producto
+- **Códigos consistentes**: Usa códigos de producto únicos
+- **Descripciones claras**: Evita abreviaciones confusas
+
+### ✅ Validación Previa
+- **Prueba con pocas filas**: Comienza con un archivo pequeño
+- **Verifica cálculos**: Confirma totales y subtotales
+- **Revisa CUITs**: Valida que todos los CUITs sean correctos
+- **Confirma tributos**: Verifica tipos de IVA y otros impuestos
+
+## 🔧 Configuración Avanzada
+
+### Plantillas Personalizadas
+Crea plantillas específicas para tu negocio:
+
+1. **Ve a Configuración** → "Plantillas Excel"
+2. **Crea nueva plantilla**:
+   - Nombre descriptivo
+   - Campos específicos de tu industria
+   - Validaciones personalizadas
+   - Cálculos automáticos
+
+### Mapeo de Campos
+Personaliza la asignación de columnas:
+
+1. **Configuración flexible**: Asigna columnas según tu estructura
+2. **Campos opcionales**: Marca campos no obligatorios
+3. **Validaciones personalizadas**: Establece reglas específicas
+4. **Transformaciones**: Convierte datos automáticamente
+
+### Procesamiento en Lotes
+Optimiza el procesamiento masivo:
+
+1. **Tamaño de lote**: Ajusta según tu volumen
+2. **Intervalos**: Establece tiempos de espera
+3. **Reintentos**: Configura manejo de errores
+4. **Notificaciones**: Recibe avisos de progreso
+
+## 📊 Casos de Uso Comunes
+
+### 🏢 Facturación Mensual
+- **Clientes recurrentes**: Facturas mensuales por servicios
+- **Productos estándar**: Items con precios fijos
+- **Procesamiento programado**: Automatización mensual
+- **Reportes consolidados**: Resumen de facturación
+
+### 🛒 Ventas al Por Mayor
+- **Múltiples productos**: Varios items por cliente
+- **Descuentos por volumen**: Precios diferenciados
+- **Clientes frecuentes**: Base de datos establecida
+- **Procesamiento diario**: Facturación diaria masiva
+
+### 🏭 Facturación Industrial
+- **Productos técnicos**: Especificaciones detalladas
+- **Tributos específicos**: Impuestos especiales
+- **Certificaciones**: Cumplimiento de normativas
+- **Trazabilidad**: Códigos de lote o serie
+
+## ❓ Solución de Problemas
+
+### Errores Comunes
+
+<error>
+  **Error de formato de archivo** - Verifica que sea Excel (.xlsx) o CSV - Confirma que no esté corrupto - Revisa que tenga la estructura correcta
+</error>
+
+**Error de validación de datos** - Verifica formato de CUITs - Confirma que los precios sean números válidos - Revisa que no haya campos vacíos obligatorios
+
+**Error de procesamiento** - Asegúrate de tener certificados activos - Verifica que tu CUIT esté configurado - Confirma que el punto de venta sea válido
+
+### Validaciones Importantes
+- **CUITs válidos**: Formato correcto y activo en AFIP
+- **Precios positivos**: Todos los valores deben ser positivos
+- **Cantidades válidas**: Números enteros o decimales válidos
+- **Estructura correcta**: Columnas en el orden correcto
+
+## 📈 Reportes y Seguimiento
+
+### Reporte de Procesamiento
+Después del procesamiento obtienes:
+
+- **Resumen general**: Total de facturas procesadas
+- **Facturas exitosas**: Número y detalles
+- **Errores encontrados**: Lista de problemas
+- **Tiempo de procesamiento**: Duración total
+
+### Descarga de Resultados
+- **PDFs individuales**: Cada factura por separado
+- **ZIP con todas**: Archivo comprimido con todas las facturas
+- **Excel con resultados**: Datos procesados con números de factura
+- **Reporte de errores**: Detalle de problemas encontrados
+
+## 🎉 Próximos Pasos
+
+Una vez que domines la Facturación desde Excel:
+
+1. **[Explora el Facturador Rápido](/es/funcionalidades/facturador-rapido)** - Para facturas simples
+2. **[Descubre la Factura Detallada](/es/funcionalidades/factura-detallada)** - Para facturas complejas
+3. **[Configura automatizaciones](/es/guides/automatizacion)** - Para procesamiento programado
+
+## 🆘 Soporte
+
+Si necesitas ayuda con la Facturación desde Excel:
+
+- 📧 **Email**: support@facture.ar
+- 💬 **Chat**: Disponible en la plataforma
+- 📚 **Documentación**: Explora nuestras guías detalladas
+- 🎥 **Videollamada**: Para asistencia personalizada
+
+
+
+

@@ -1,0 +1,90 @@
+---
+title: 'Facturación por lotes (app)'
+description: 'Creá varios comprobantes a la vez desde la web: tabla manual o archivo CSV, validación y seguimiento del lote.'
+---
+
+# Facturación por lotes desde la app
+
+Desde Facturear podés generar **varios comprobantes en un solo lote** sin usar la API: cargás las filas en la web (a mano o con un CSV), validás, creás el lote y seguís el estado en la pantalla de lotes. Cada fila es una factura distinta (CUIT emisor, punto de venta, monto, receptor, etc.).
+
+## Dónde está en la aplicación
+
+1. Iniciá sesión en [Facturear](https://facture.ar).
+2. En el menú, entrá a **Facturación**.
+3. Elegí **Comprobantes por Lote** (o abrí directamente [Lotes](https://facture.ar/app/facturacion/lotes)).
+4. Para armar un lote nuevo, usá **Nuevo lote** / la opción que te lleve a [Nuevo lote de facturas](https://facture.ar/app/facturacion/nueva/lote).
+
+En la parte superior podés ver si estás en **Testing** u **Producción**; los lotes se crean en el entorno que tengas seleccionado.
+
+## Dos formas de cargar datos
+
+### 1. Archivo CSV
+
+- Descargá el **CSV de ejemplo** desde la misma pantalla (botón “Descargar ejemplo”) para ver el orden de columnas y datos válidos.
+- El archivo debe tener **una fila de encabezado** y al menos una fila de datos.
+- Subilo con **Cargar CSV**; las filas se convierten en líneas de la tabla para revisar o editar antes de validar.
+
+### 2. Entrada manual
+
+- Agregá filas con **Agregar fila** y completá cada comprobante en la tabla.
+- Los campos visibles (por ejemplo IVA desglosado) dependen del tipo de CUIT (por ejemplo responsable inscripto vs monotributo).
+
+## Flujo: validar y crear el lote
+
+<Steps>
+  <Step title="Completar las filas">
+    Por cada comprobante: CUIT emisor, punto de venta, concepto, monto, tipo y número de documento del receptor, condición IVA del receptor, y opcionalmente **descripción** del comprobante. Si dejás la descripción vacía, se usa el texto por defecto del sistema (igual que si no enviás ese dato).
+  </Step>
+  <Step title="Continuar">
+    Pulsá **Continuar** para validar todas las filas. Corregí los errores que marque la tabla (CUIT, POS, monto, etc.).
+  </Step>
+  <Step title="Crear lote">
+    Con la validación OK, pulsá **Crear lote**. El sistema encola las facturas y te redirige al **detalle del lote**, donde ves el progreso y el resultado de cada ítem.
+  </Step>
+</Steps>
+
+Podés usar **Continuar editando** si necesitás volver atrás antes de crear el lote.
+
+## Formato del CSV (columnas)
+
+Orden fijo de las primeras columnas:
+
+| Columna | Descripción |
+| --- | --- |
+| `cuit` | CUIT emisor (como lo tenés dado de alta en Facturear) |
+| `punto_venta_id` | Punto de venta numérico |
+| `concepto_id` | Concepto AFIP (1 productos, 2 servicios, 3 productos y servicios) |
+| `monto` | Importe |
+| `iva_rate` | Tasa de IVA (por ejemplo `21`); si está vacío puede tomarse un valor por defecto según el CUIT |
+| `include_iva` | `true` / `false`, `1` / `0` o `si` / `no` según corresponda |
+| `doc_tipo` | Tipo de documento del receptor (`80` CUIT, `96` DNI, `0` sin documento, etc.) |
+| `doc_nro` | Número de documento del receptor |
+| `condicion_iva_receptor_id` | Código de condición IVA del receptor |
+
+Después de esas columnas:
+
+- **`descripcion`** (opcional): texto del comprobante. Si la celda va vacía, aplica el mismo comportamiento que en la app al dejar el campo vacío.
+- **Tributos** (opcional): grupos de **cuatro** columnas repetibles: `tributo_id`, `tributo_alic`, `tributo_base`, `tributo_desc`. Si usás tributos en el CSV, conviene incluir la columna `descripcion` (aunque esté vacía) para que el orden de columnas coincida con el archivo de ejemplo.
+
+Los CSV antiguos **sin** la columna `descripcion` pero con tributos siguen siendo compatibles: el sistema detecta el formato según la cantidad de columnas.
+
+Usá **coma** como separador. Evitá comas dentro del texto de una celda, o exportá desde Excel/Sheets de forma que no rompa las columnas.
+
+## Límites y buenas prácticas
+
+- El lote tiene un tope de **500** comprobantes por envío (validación del backend).
+- Los CUITs del CSV tienen que existir en tu cuenta y el punto de venta debe ser válido para ese CUIT.
+- Tras crear el lote, el procesamiento es **asíncrono**: el detalle del lote es el lugar para ver éxitos, errores y reintentos si aplica.
+
+## Relación con otros métodos
+
+- **Facturador rápido / factura detallada**: un comprobante por vez (también pueden terminar en un lote de un ítem para el procesamiento en cola).
+- **Facturación desde Excel** (otra guía): enfoque masivo desde planillas con otro flujo de importación.
+- **API**: podés crear lotes vía API si integrás sistemas propios; esta guía es solo el flujo desde la interfaz web.
+
+## Próximos pasos
+
+- [Funcionalidades](/es/funcionalidades): comparar con facturador rápido, detallada y Excel.
+- [API: lotes](/es/api-reference/get-batches): consulta de lotes por integración.
+
+Si necesitás ayuda: [support@facture.ar](mailto:support@facture.ar).
