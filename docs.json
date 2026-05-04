@@ -75,6 +75,17 @@
         ]
       },
       {
+        "tab": "Glosario",
+        "groups": [
+          {
+            "group": "Glosario Impositivo",
+            "pages": [
+              "es/glosario/index"
+            ]
+          }
+        ]
+      },
+      {
         "tab": "API Reference",
         "groups": [
           {
