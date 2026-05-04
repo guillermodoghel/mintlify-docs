@@ -48,6 +48,9 @@ RSS_FEEDS = {
         "https://www.iprofesional.com/rss/impuestos",
         "https://www.iprofesional.com/feeds/impuestos.xml",
     ],
+    "Ignacio Online": [
+        "https://www.ignacioonline.com.ar/feed/",
+    ],
     "Clarín": [
         "https://www.clarin.com/rss/economia/",
     ],
