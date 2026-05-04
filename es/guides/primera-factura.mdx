@@ -13,7 +13,7 @@ Una vez que configuraste tu CUIT y certificado digital (o delegación), estás l
 
 Asegurate de tener completado:
 
-- ✅ [Cuenta activa en Facturear](https://facturear.com)
+- ✅ [Cuenta activa en Facturear](https://facture.ar)
 - ✅ [CUIT configurado y validado](/es/getting-started)
 - ✅ [Certificado digital activo](/es/guides/certificado-digital) o [delegación aprobada](/es/guides/delegacion)
 - ✅ Al menos un punto de venta creado en ARCA
@@ -26,7 +26,7 @@ Si no completaste alguno de estos pasos, seguí primero la [guía de inicio](/es
 
 ### Paso 1: Nueva factura
 
-1. Iniciá sesión en [facturear.com](https://facturear.com)
+1. Iniciá sesión en [facture.ar](https://facture.ar)
 2. En el menú lateral, hacé clic en **"Facturas"**
 3. Presioná el botón **"Nueva Factura"**
 
@@ -112,7 +112,7 @@ Encontrá tu API key en **Configuración → API** en el dashboard de Facturear.
 ### Emitir una Factura C (Monotributista)
 
 ```bash
-curl -X POST https://api.facturear.com/invoices \
+curl -X POST https://api.facture.ar/invoices \
   -H "x-api-key: tu_api_key" \
   -H "Content-Type: application/json" \
   -d '{
@@ -138,7 +138,7 @@ curl -X POST https://api.facturear.com/invoices \
 ### Emitir una Factura A (Responsable Inscripto a Responsable Inscripto)
 
 ```javascript
-const response = await fetch('https://api.facturear.com/invoices', {
+const response = await fetch('https://api.facture.ar/invoices', {
   method: 'POST',
   headers: {
     'x-api-key': 'tu_api_key',
@@ -188,7 +188,7 @@ console.log('PDF:', factura.pdfUrl)
   "caeFechaVto": "2025-06-12",
   "fechaEmision": "2025-06-02",
   "total": 847000,
-  "pdfUrl": "https://api.facturear.com/pdf/inv_abc123",
+  "pdfUrl": "https://api.facture.ar/pdf/inv_abc123",
   "estado": "aprobada"
 }
 ```
@@ -259,7 +259,7 @@ receptor: {
 Podés obtener el PDF de cualquier factura emitida:
 
 ```bash
-GET https://api.facturear.com/pdf/{invoiceId}
+GET https://api.facture.ar/pdf/{invoiceId}
 ```
 
 El PDF incluye:
@@ -299,3 +299,9 @@ Si necesitás emitir muchas facturas al mismo tiempo (fin de mes, facturación r
 - [Facturar siendo responsable inscripto](/es/fundamentos/responsable-inscripto)
 - [Facturación en lotes](/es/guides/facturacion-lotes)
 - [Documentación de la API](/es/api-reference)
+
+---
+
+<Card title="Seguí estos pasos directamente en Facturear" icon="arrow-right" href="https://facture.ar">
+  Ir al dashboard de Facturear y emitir tu primera factura ahora.
+</Card>

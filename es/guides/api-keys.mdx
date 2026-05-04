@@ -22,7 +22,7 @@ Una API Key es un token secreto que identifica y autentica a tu aplicación cuan
 ## Cómo obtener tu API Key
 
 <Steps>
-  Registrá tu cuenta en **facturear.com**
+  Registrá tu cuenta en **facture.ar**
 
   Ingresá al panel de control
 
@@ -46,14 +46,14 @@ Incluí la API Key en el header `x-api-key` de todas las requests:
 ### curl
 
 ```bash
-curl https://api.facturear.com/cuits/20123456789/facturas \
+curl https://api.facture.ar/cuits/20123456789/facturas \
   -H "x-api-key: fct_live_abc123xyz..."
 ```
 
 ### JavaScript (fetch)
 
 ```javascript
-const response = await fetch('https://api.facturear.com/cuits/20123456789/facturas', {
+const response = await fetch('https://api.facture.ar/cuits/20123456789/facturas', {
   method: 'POST',
   headers: {
     'x-api-key': process.env.FACTUREAR_API_KEY,
@@ -73,7 +73,7 @@ headers = {
     "Content-Type": "application/json"
 }
 response = requests.post(
-    "https://api.facturear.com/cuits/20123456789/facturas",
+    "https://api.facture.ar/cuits/20123456789/facturas",
     headers=headers,
     json=factura_data
 )
@@ -153,3 +153,9 @@ Si una key se comprometió o ya no la necesitás:
 - [Configurar defaults por CUIT](/es/guides/configurar-defaults-cuit)
 - [Primera factura con Facturear](/es/guides/primera-factura)
 - [Gestión de múltiples CUITs](/es/guides/multiples-cuits)
+
+---
+
+<Card title="Emití facturas electrónicas con Facturear" icon="rocket" href="https://facture.ar">
+  Conectate a ARCA en minutos y empezá a facturar sin complicaciones.
+</Card>

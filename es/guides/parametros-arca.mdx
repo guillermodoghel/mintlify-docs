@@ -131,16 +131,16 @@ Tipos de documento para identificar al receptor (DNI, CUIT, pasaporte, etc.)
 // Al inicializar tu app, cacheá los parámetros
 async function cargarParametrosARCA() {
   const [tiposComprobante, alicuotas, paises, monedas] = await Promise.all([
-    fetch('https://api.facturear.com/arca/Cbte_Tipo', {
+    fetch('https://api.facture.ar/arca/Cbte_Tipo', {
       headers: { 'x-api-key': API_KEY }
     }).then(r => r.json()),
-    fetch('https://api.facturear.com/arca/Iva_Tipo', {
+    fetch('https://api.facture.ar/arca/Iva_Tipo', {
       headers: { 'x-api-key': API_KEY }
     }).then(r => r.json()),
-    fetch('https://api.facturear.com/arca/Pais_Tipo', {
+    fetch('https://api.facture.ar/arca/Pais_Tipo', {
       headers: { 'x-api-key': API_KEY }
     }).then(r => r.json()),
-    fetch('https://api.facturear.com/arca/Mon_Tipo', {
+    fetch('https://api.facture.ar/arca/Mon_Tipo', {
       headers: { 'x-api-key': API_KEY }
     }).then(r => r.json())
   ])
@@ -172,3 +172,9 @@ async function cargarParametrosARCA() {
 - [API Reference completa](/es/api-reference)
 - [Emitir tu primera factura](/es/guides/primera-factura)
 - [Tipos de comprobantes AFIP/ARCA](/es/fundamentos/tipos-de-comprobantes)
+
+---
+
+<Card title="Emití facturas electrónicas con Facturear" icon="rocket" href="https://facture.ar">
+  Conectate a ARCA en minutos y empezá a facturar sin complicaciones.
+</Card>

@@ -92,7 +92,7 @@ class AccountMove(models.Model):
     def _emitir_con_facturear(self):
         payload = self._build_facturear_payload()
         response = requests.post(
-            f"https://api.facturear.com/cuits/{self.company_id.vat}/facturas",
+            f"https://api.facture.ar/cuits/{self.company_id.vat}/facturas",
             json=payload,
             headers={"x-api-key": self.company_id.facturear_api_key}
         )
@@ -124,7 +124,7 @@ Para SAP (B1 o S/4HANA), la integración se implementa mediante:
 async function emitirFactura(facturaData) {
   try {
     const response = await fetch(
-      `https://api.facturear.com/cuits/${cuit}/facturas`,
+      `https://api.facture.ar/cuits/${cuit}/facturas`,
       {
         method: 'POST',
         headers: { 'x-api-key': apiKey, 'Content-Type': 'application/json' },
@@ -177,3 +177,9 @@ Ver: [Integración con webhooks](/es/guides/webhook-integracion)
 - [Integración con e-commerce](/es/guides/integracion-ecommerce)
 - [Webhooks en Facturear](/es/guides/webhook-integracion)
 - [Facturación en lotes](/es/guides/facturacion-lotes)
+
+---
+
+<Card title="Integrá tu ERP con Facturear" icon="rocket" href="https://facture.ar">
+  Conectá tu sistema de gestión a la API de Facturear y automatizá la facturación electrónica desde tu ERP.
+</Card>

@@ -52,7 +52,7 @@ El CAEA se solicita **por quincena**:
 ### GET /cuits/{cuit}/caea
 
 ```bash
-curl "https://api.facturear.com/cuits/20123456789/caea?periodo=202501&orden=1" \
+curl "https://api.facture.ar/cuits/20123456789/caea?periodo=202501&orden=1" \
   -H "x-api-key: tu_api_key"
 ```
 
@@ -99,7 +99,7 @@ Las facturas emitidas en modo CAEA se acumulan en Facturear hasta que las inform
 ### POST /cuits/{cuit}/caea/{caea}/informar
 
 ```bash
-curl -X POST "https://api.facturear.com/cuits/20123456789/caea/12345678901234/informar" \
+curl -X POST "https://api.facture.ar/cuits/20123456789/caea/12345678901234/informar" \
   -H "x-api-key: tu_api_key"
 ```
 
@@ -112,7 +112,7 @@ Facturear envía a ARCA todos los comprobantes emitidos con ese CAEA durante la 
 Si obtuviste un CAEA pero no emitiste ningún comprobante, igual debés informarlo:
 
 ```bash
-curl -X POST "https://api.facturear.com/cuits/20123456789/caea/12345678901234/sin-movimiento" \
+curl -X POST "https://api.facture.ar/cuits/20123456789/caea/12345678901234/sin-movimiento" \
   -H "x-api-key: tu_api_key" \
   -d '{"punto_venta": 5}'
 ```
@@ -137,3 +137,9 @@ curl -X POST "https://api.facturear.com/cuits/20123456789/caea/12345678901234/si
 - [Facturación en lotes](/es/guides/facturacion-lotes)
 - [Puntos de venta](/es/guides/puntos-de-venta)
 - [Parámetros de ARCA](/es/guides/parametros-arca)
+
+---
+
+<Card title="Emití facturas electrónicas con Facturear" icon="rocket" href="https://facture.ar">
+  Conectate a ARCA en minutos y empezá a facturar sin complicaciones, con soporte para CAE y CAEA.
+</Card>

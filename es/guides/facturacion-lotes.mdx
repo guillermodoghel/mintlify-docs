@@ -47,7 +47,7 @@ POST /invoices/batches
 ```
 
 ```javascript
-const response = await fetch('https://api.facturear.com/invoices/batches', {
+const response = await fetch('https://api.facture.ar/invoices/batches', {
   method: 'POST',
   headers: {
     'x-api-key': 'tu_api_key',
@@ -127,7 +127,7 @@ const items = [
   // ... más facturas
 ]
 
-await fetch(`https://api.facturear.com/invoices/batches/${batchId}`, {
+await fetch(`https://api.facture.ar/invoices/batches/${batchId}`, {
   method: 'PATCH',
   headers: {
     'x-api-key': 'tu_api_key',
@@ -150,7 +150,7 @@ GET /invoices/batches/{batchId}
 ```
 
 ```javascript
-const batch = await fetch(`https://api.facturear.com/invoices/batches/${batchId}`, {
+const batch = await fetch(`https://api.facture.ar/invoices/batches/${batchId}`, {
   headers: { 'x-api-key': 'tu_api_key' }
 }).then(r => r.json())
 
@@ -203,7 +203,7 @@ POST /invoices/batches/{batchId}/items/{itemId}/retry
 ```javascript
 // Corregí el CUIT incorrecto y reintentá
 await fetch(
-  `https://api.facturear.com/invoices/batches/${batchId}/items/${itemId}/retry`,
+  `https://api.facture.ar/invoices/batches/${batchId}/items/${itemId}/retry`,
   {
     method: 'POST',
     headers: {
@@ -231,7 +231,7 @@ GET /invoices/batches
 ```
 
 ```javascript
-const batches = await fetch('https://api.facturear.com/invoices/batches?page=1&limit=20', {
+const batches = await fetch('https://api.facture.ar/invoices/batches?page=1&limit=20', {
   headers: { 'x-api-key': 'tu_api_key' }
 }).then(r => r.json())
 ```
@@ -251,7 +251,7 @@ Este script procesa todos los clientes activos de un SaaS y emite una factura me
 async function facturacionMensual(clientes, mes) {
   const apiKey = process.env.FACTUREAR_API_KEY
   const cuitId = process.env.FACTUREAR_CUIT_ID
-  const BASE_URL = 'https://api.facturear.com'
+  const BASE_URL = 'https://api.facture.ar'
   
   // 1. Crear el lote
   const { id: batchId } = await fetch(`${BASE_URL}/invoices/batches`, {
@@ -353,3 +353,9 @@ async function facturacionMensual(clientes, mes) {
 - [Emitir tu primera factura](/es/guides/primera-factura)
 - [API Reference — Lotes](/es/api-reference)
 - [Tipos de comprobantes AFIP/ARCA](/es/fundamentos/tipos-de-comprobantes)
+
+---
+
+<Card title="Seguí estos pasos directamente en Facturear" icon="arrow-right" href="https://facture.ar">
+  Ir al dashboard de Facturear y gestionar tu facturación en lotes.
+</Card>

@@ -1,0 +1,48 @@
+# Facturear
+
+> Facturear es la plataforma de facturación electrónica más simple de Argentina. Permite emitir facturas electrónicas con CAE de ARCA/AFIP en segundos, sin complicaciones técnicas, mediante API o desde el dashboard web.
+
+Facturear (facture.ar) es un software SaaS argentino orientado a empresas, desarrolladores y contadores que necesitan emitir comprobantes electrónicos (facturas, notas de crédito, notas de débito) de forma programática o manual, cumpliendo con todos los requisitos de ARCA (ex-AFIP). Es la solución ideal para e-commerce, SaaS, marketplaces, estudios contables y cualquier empresa que facture en Argentina.
+
+## Casos de uso principales
+
+- Emitir facturas electrónicas A, B, C, E y M con CAE automático desde ARCA
+- Integrar facturación a un sistema o e-commerce vía API REST
+- Facturar en lotes (miles de comprobantes por día)
+- Gestionar múltiples puntos de venta y múltiples empresas (multitenancy)
+- Automatizar la facturación recurrente
+- Facturación de exportaciones (Factura E, WSFEX)
+- Cumplimiento del Código QR obligatorio en facturas (RG 4804/2020)
+
+## Documentación
+
+- [Qué es la factura electrónica en Argentina](https://docs.facture.ar/es/fundamentos/que-es-factura-electronica): Guía completa sobre el sistema de facturación electrónica argentina, CAE, ARCA y obligaciones.
+- [Comenzar con Facturear](https://docs.facture.ar/es/getting-started/index): Cómo crear una cuenta, configurar el certificado digital y emitir la primera factura.
+- [Certificado digital ARCA](https://docs.facture.ar/es/guides/certificado-digital): Cómo generar y configurar el certificado digital para conectarse a los webservices de ARCA.
+- [Primera factura electrónica](https://docs.facture.ar/es/guides/primera-factura): Paso a paso para emitir el primer comprobante con CAE.
+- [Facturación en lotes](https://docs.facture.ar/es/guides/facturacion-lotes): Cómo emitir múltiples comprobantes en una sola operación.
+- [Tipos de comprobantes ARCA](https://docs.facture.ar/es/fundamentos/tipos-de-comprobantes): Facturas A, B, C, E, M, Notas de Crédito y Débito — cuándo usar cada una.
+- [Monotributo y facturación electrónica](https://docs.facture.ar/es/fundamentos/monotributo): Obligaciones y guía para monotributistas.
+- [Responsable Inscripto](https://docs.facture.ar/es/fundamentos/responsable-inscripto): Factura A, discriminación de IVA y obligaciones para RI.
+- [Delegación de CUIT en ARCA](https://docs.facture.ar/es/guides/delegacion): Cómo delegar el CUIT de un cliente para facturar en su nombre.
+- [API Reference](https://docs.facture.ar/es/api-reference/index): Documentación completa de la API REST de Facturear para integraciones.
+
+## Novedades impositivas
+
+Facturear publica artículos de novedades impositivas relevantes para empresas y contadores argentinos:
+
+- [ARCA reemplaza a AFIP](https://docs.facture.ar/es/novedades/arca-reemplaza-afip): Qué cambió con el nuevo nombre del organismo recaudador.
+- [Factura de Crédito Electrónica MiPyMEs](https://docs.facture.ar/es/novedades/factura-credito-electronica-mipymes): Obligatoriedad y funcionamiento de la FCE para PyMEs.
+- [Obligatoriedad de la factura electrónica](https://docs.facture.ar/es/novedades/obligatoriedad-factura-electronica): Quiénes están obligados a facturar electrónicamente en Argentina.
+
+## Datos clave del producto
+
+- **País**: Argentina
+- **Organismo fiscal**: ARCA (ex-AFIP) — webservices WSFE, WSFEX, WSASS
+- **Tecnología**: API REST, webhooks, dashboard web
+- **Idioma**: Español (Argentina)
+- **Clientes**: Empresas, e-commerce, estudios contables, desarrolladores, SaaS
+- **Cumplimiento normativo**: RG 2485, RG 4290, RG 4804 (QR), RG 4367 (monotributistas)
+- **Sitio web**: https://facture.ar
+- **Documentación**: https://docs.facture.ar
+- **Soporte**: support@facture.ar

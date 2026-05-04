@@ -59,7 +59,7 @@ Para integrarse con Facturear, el punto de venta debe ser del tipo **"Factura en
 ### GET /cuits/{cuit}/puntos-de-venta
 
 ```bash
-curl https://api.facturear.com/cuits/20123456789/puntos-de-venta \
+curl https://api.facture.ar/cuits/20123456789/puntos-de-venta \
   -H "x-api-key: tu_api_key"
 ```
 
@@ -94,7 +94,7 @@ Para conocer el último número emitido y saber cuál será el próximo:
 ### GET /cuits/{cuit}/ultimo-comprobante
 
 ```bash
-curl "https://api.facturear.com/cuits/20123456789/ultimo-comprobante?punto_venta=1&tipo_comprobante=B" \
+curl "https://api.facture.ar/cuits/20123456789/ultimo-comprobante?punto_venta=1&tipo_comprobante=B" \
   -H "x-api-key: tu_api_key"
 ```
 
@@ -157,3 +157,9 @@ Si necesitás dar de baja un punto de venta:
 - [Gestión de múltiples CUITs](/es/guides/multiples-cuits)
 - [Primera factura con Facturear](/es/guides/primera-factura)
 - [Parámetros de ARCA](/es/guides/parametros-arca)
+
+---
+
+<Card title="Emití facturas electrónicas con Facturear" icon="rocket" href="https://facture.ar">
+  Conectate a ARCA en minutos y empezá a facturar sin complicaciones.
+</Card>

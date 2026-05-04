@@ -37,7 +37,7 @@ Facturear emite factura → obtiene CAE de ARCA → POST a tu URL webhook
 ### POST /webhooks
 
 ```bash
-curl -X POST https://api.facturear.com/webhooks \
+curl -X POST https://api.facture.ar/webhooks \
   -H "x-api-key: tu_api_key" \
   -H "Content-Type: application/json" \
   -d '{
@@ -168,7 +168,7 @@ Después del 5to intento fallido, el webhook se marca como fallido.
 ## Consultar webhooks fallidos
 
 ```bash
-curl "https://api.facturear.com/webhooks/wh_abc123/entregas?estado=fallido" \
+curl "https://api.facture.ar/webhooks/wh_abc123/entregas?estado=fallido" \
   -H "x-api-key: tu_api_key"
 ```
 
@@ -180,3 +180,9 @@ curl "https://api.facturear.com/webhooks/wh_abc123/entregas?estado=fallido" \
 - [Integración con ERP](/es/guides/integracion-erp)
 - [Integración con e-commerce](/es/guides/integracion-ecommerce)
 - [Facturación en lotes](/es/guides/facturacion-lotes)
+
+---
+
+<Card title="Emití facturas electrónicas con Facturear" icon="rocket" href="https://facture.ar">
+  Conectate a ARCA en minutos y empezá a facturar sin complicaciones.
+</Card>

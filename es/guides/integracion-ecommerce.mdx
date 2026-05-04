@@ -37,7 +37,7 @@ app.post('/webhook/nueva-venta', async (req, res) => {
     : 6    // Factura B (default para consumidores)
   
   // Emitir factura en Facturear
-  const factura = await fetch('https://api.facturear.com/invoices', {
+  const factura = await fetch('https://api.facture.ar/invoices', {
     method: 'POST',
     headers: {
       'x-api-key': process.env.FACTUREAR_API_KEY,
@@ -157,3 +157,9 @@ Si tu e-commerce tiene alto volumen y no querés facturar en tiempo real, podés
 - [API Reference completa](/es/api-reference)
 - [Emitir tu primera factura](/es/guides/primera-factura)
 - [Entorno de testing](/es/guides/entorno-testing)
+
+---
+
+<Card title="Integrá tu e-commerce con Facturear" icon="rocket" href="https://facture.ar">
+  Conectá tu tienda a la API de Facturear y automatizá la emisión de facturas en cada venta.
+</Card>
