@@ -80,7 +80,22 @@
           {
             "group": "Glosario Impositivo",
             "pages": [
-              "es/glosario/index"
+              "es/glosario/a",
+              "es/glosario/b",
+              "es/glosario/c",
+              "es/glosario/d",
+              "es/glosario/e",
+              "es/glosario/f",
+              "es/glosario/g",
+              "es/glosario/h",
+              "es/glosario/i",
+              "es/glosario/m",
+              "es/glosario/n",
+              "es/glosario/o",
+              "es/glosario/p",
+              "es/glosario/r",
+              "es/glosario/s",
+              "es/glosario/v"
             ]
           }
         ]
