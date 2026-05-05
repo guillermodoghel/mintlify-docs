@@ -9,6 +9,25 @@ La **facturación en lotes** te permite emitir múltiples facturas electrónicas
 
 ---
 
+## Lotes desde el dashboard (CSV)
+
+Si cargás comprobantes con **archivo CSV** desde la web (sin armar integración propia), el flujo, las columnas y el archivo de ejemplo están detallados en **[Facturación por lotes desde la app](/es/funcionalidades/facturacion-por-lotes)**. Incluye la columna opcional **`cbte_fch`**, correlatividad de fechas dentro del lote y contra ARCA.
+
+---
+
+## Fecha del comprobante (`cbteFch`) en la API
+
+En cada ítem que envíes al batch (mismo cuerpo que una factura suelta en `/api/invoices`), podés incluir el campo opcional **`cbteFch`** en formato **`YYYYMMDD`**. Si no lo enviás, Facturear usa la **fecha actual** al ejecutar el trabajo contra ARCA.
+
+Reglas que aplican igual que en ARCA:
+
+- Por **CUIT + punto de venta + tipo de comprobante**, la fecha del nuevo comprobante **no puede ser menor** que la del último comprobante autorizado en ese circuito.
+- **Orden dentro del lote**: para el mismo circuito, las fechas efectivas deben ser **no decrecientes** en el orden en que se procesan los ítems.
+
+Para facturación retroactiva (por ejemplo cerrar un mes anterior), solo es coherente si **no emitiste** después con fechas más nuevas en ese mismo punto de venta y tipo.
+
+---
+
 ## ¿Cuándo usar lotes?
 
 | Caso de uso | Sin lotes | Con lotes |
@@ -99,6 +118,7 @@ const items = [
     },
     tipo: 1,  // Factura A
     puntoVenta: 1,
+    cbteFch: '20260505', // opcional, YYYYMMDD; si omitís, fecha del día al procesar
     items: [
       {
         descripcion: 'Suscripción Pro - Mayo 2025',
@@ -344,12 +364,16 @@ async function facturacionMensual(clientes, mes) {
   <Accordion title="¿Puedo agregar ítems a un lote que ya está procesando?">
     Sí, mientras el lote esté en estado "procesando" o "creado" podés seguir agregando ítems. Los nuevos ítems se encolan y se procesan.
   </Accordion>
+  <Accordion title="¿Puedo enviar la fecha del comprobante (cbteFch / cbte_fch)?">
+    Sí: en API usá **`cbteFch`** (`YYYYMMDD`) por ítem; en CSV del dashboard usá la columna **`cbte_fch`** (`YYYYMMDD` o `YYYY-MM-DD`). Si no lo definís, se usa la fecha actual al procesar. ARCA no permite fechas anteriores al último comprobante de ese punto de venta y tipo; dentro del lote, las fechas no pueden ir hacia atrás para el mismo circuito.
+  </Accordion>
 </AccordionGroup>
 
 ---
 
 ## Recursos relacionados
 
+- [Facturación por lotes desde la app (CSV)](/es/funcionalidades/facturacion-por-lotes)
 - [Emitir tu primera factura](/es/guides/primera-factura)
 - [API Reference — Lotes](/es/api-reference)
 - [Tipos de comprobantes AFIP/ARCA](/es/fundamentos/tipos-de-comprobantes)

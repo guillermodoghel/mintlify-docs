@@ -60,15 +60,30 @@ Orden fijo de las primeras columnas:
 | `doc_tipo` | Tipo de documento del receptor (`80` CUIT, `96` DNI, `0` sin documento, etc.) |
 | `doc_nro` | Número de documento del receptor |
 | `condicion_iva_receptor_id` | Código de condición IVA del receptor |
+| `cbte_fch` | **Opcional.** Fecha del comprobante en **YYYYMMDD** o **YYYY-MM-DD**. Si va vacía u omitís la columna, se usa la **fecha actual** al procesar cada ítem. |
 
 Después de esas columnas:
 
 - **`descripcion`** (opcional): texto del comprobante. Si la celda va vacía, aplica el mismo comportamiento que en la app al dejar el campo vacío.
 - **Tributos** (opcional): grupos de **cuatro** columnas repetibles: `tributo_id`, `tributo_alic`, `tributo_base`, `tributo_desc`. Si usás tributos en el CSV, conviene incluir la columna `descripcion` (aunque esté vacía) para que el orden de columnas coincida con el archivo de ejemplo.
 
-Los CSV antiguos **sin** la columna `descripcion` pero con tributos siguen siendo compatibles: el sistema detecta el formato según la cantidad de columnas.
+Los CSV antiguos **sin** la columna `cbte_fch` o **sin** `descripcion` pero con tributos siguen siendo compatibles: el sistema detecta el formato según la cantidad de columnas.
 
 Usá **coma** como separador. Evitá comas dentro del texto de una celda, o exportá desde Excel/Sheets de forma que no rompa las columnas.
+
+## Fechas y correlatividad (ARCA)
+
+Facturear valida la fecha del comprobante contra las reglas de **correlatividad** de ARCA:
+
+- Por cada circuito **CUIT emisor + punto de venta + tipo de comprobante**, el nuevo comprobante debe seguir la **numeración correlativa** y su fecha (**`cbte_fch` efectiva** o la fecha del día si no la definís) **no puede ser anterior** a la del último comprobante ya autorizado en ARCA para ese mismo circuito.
+- Si ya emitiste con una fecha más nueva en ese talonario, **no podés volver atrás** en fechas.
+- **Dentro del mismo lote**, las fechas efectivas deben ir **en orden no decreciente** fila a fila para ese mismo circuito (si una fila tendría fecha menor que la anterior del mismo CUIT/PV/tipo, el lote se rechaza en validación).
+
+La fecha efectiva de cada fila es `cbte_fch` si la cargaste; si no, la fecha en que se procesa el trabajo en cola.
+
+<Info>
+  Facturar **meses atrasados** solo es viable si en ese circuito **no tenés** comprobantes ARCA con fecha posterior ya autorizados. Para altos volúmenes vía integración, revisá también la guía [Facturación masiva en lotes (API)](/es/guides/facturacion-lotes).
+</Info>
 
 ## Límites y buenas prácticas
 
