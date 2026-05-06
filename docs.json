@@ -37,33 +37,19 @@
         "groups": [
           {
             "group": "Inicio",
-            "pages": [
-              "index"
-            ]
+            "pages": ["index"]
           },
           {
             "group": "Comenzar",
-            "pages": [
-              "es/getting-started/index"
-            ]
+            "pages": ["es/getting-started/index"]
           },
           {
             "group": "Configuración",
-            "pages": [
-              "es/guides/certificado-digital",
-              "es/guides/delegacion",
-              "es/guides/primera-factura",
-              "es/guides/facturacion-lotes"
-            ]
+            "pages": ["es/guides/certificado-digital", "es/guides/delegacion", "es/guides/primera-factura", "es/guides/facturacion-lotes"]
           },
           {
             "group": "Fundamentos",
-            "pages": [
-              "es/fundamentos/que-es-factura-electronica",
-              "es/fundamentos/tipos-de-comprobantes",
-              "es/fundamentos/monotributo",
-              "es/fundamentos/responsable-inscripto"
-            ]
+            "pages": ["es/fundamentos/que-es-factura-electronica", "es/fundamentos/tipos-de-comprobantes", "es/fundamentos/monotributo", "es/fundamentos/responsable-inscripto"]
           },
           {
             "group": "Funcionalidades",
@@ -113,10 +99,7 @@
         "groups": [
           {
             "group": "Overview",
-            "pages": [
-              "es/api-reference/index",
-              "es/api-reference/playground"
-            ]
+            "pages": ["es/api-reference/index", "es/api-reference/playground"]
           },
           {
             "group": "API Endpoints",
@@ -154,16 +137,7 @@
     }
   },
   "contextual": {
-    "options": [
-      "copy",
-      "view",
-      "chatgpt",
-      "claude",
-      "perplexity",
-      "mcp",
-      "cursor",
-      "vscode"
-    ]
+    "options": ["copy", "view", "chatgpt", "claude", "perplexity", "mcp", "cursor", "vscode"]
   },
   "api": {
     "playground": {
@@ -171,12 +145,7 @@
       "proxy": true
     },
     "examples": {
-      "languages": [
-        "curl",
-        "javascript",
-        "python",
-        "php"
-      ],
+      "languages": ["curl", "javascript", "python", "php"],
       "defaults": "required"
     }
   },
