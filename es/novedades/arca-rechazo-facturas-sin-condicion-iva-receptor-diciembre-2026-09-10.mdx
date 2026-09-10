@@ -1,0 +1,86 @@
+---
+title: "Desde diciembre ARCA rechazará facturas sin la condición de IVA del receptor"
+description: "A partir de diciembre, ARCA rechazará automáticamente los comprobantes electrónicos que no informen la condición frente al IVA del cliente. Te contamos cómo adaptar tus procesos de facturación para evitar rechazos."
+---
+
+La Agencia de Recaudación y Control Aduanero (ARCA), continuadora de las funciones de la ex AFIP, endurece los controles sobre la facturación electrónica. Desde diciembre, los comprobantes que no incluyan la condición del receptor frente al IVA serán rechazados automáticamente por los sistemas de emisión.
+
+Se trata de un cambio operativo con impacto directo en todos los contribuyentes que emiten facturas electrónicas: monotributistas, responsables inscriptos, exentos y sujetos no alcanzados. A continuación, repasamos qué significa la medida, a quiénes afecta y cómo prepararse.
+
+## Qué exige ARCA
+
+Hasta ahora, informar la condición frente al IVA del receptor era un campo obligatorio pero cuya omisión, en muchos casos, no generaba el rechazo automático del comprobante. Con la nueva etapa que arranca en diciembre, ARCA aplicará un control estricto: si el campo no está informado o contiene un valor inválido, el CAE no se otorgará y la factura no podrá emitirse.
+
+<Warning>
+**Fecha límite:** desde diciembre de 2026, ARCA rechazará de forma automática los comprobantes electrónicos que no informen la condición del receptor frente al IVA. Adaptá tus procesos antes de esa fecha para evitar cortes en la operación.
+</Warning>
+
+### Condiciones frente al IVA que deben informarse
+
+El emisor debe identificar en qué categoría se encuentra el receptor del comprobante. Las condiciones habituales son:
+
+| Código | Condición del receptor |
+|--------|------------------------|
+| 1 | IVA Responsable Inscripto |
+| 4 | IVA Sujeto Exento |
+| 5 | Consumidor Final |
+| 6 | Responsable Monotributo |
+| 7 | Sujeto No Categorizado |
+| 8 | Proveedor del Exterior |
+| 9 | Cliente del Exterior |
+| 10 | IVA Liberado – Ley 19.640 |
+| 13 | Monotributista Social |
+| 15 | IVA No Alcanzado |
+| 16 | Monotributo Trabajador Independiente Promovido |
+
+<Info>
+Este dato debe ser coherente con el tipo de comprobante emitido (A, B, C, E, etc.) y con la condición del propio emisor. Una inconsistencia entre ambos campos es una de las causas más frecuentes de rechazo.
+</Info>
+
+## A quiénes afecta
+
+La medida alcanza a **todos los emisores de comprobantes electrónicos**, sin importar el régimen tributario ni el volumen de facturación. Incluye:
+
+- Responsables inscriptos que emiten facturas A, B o E.
+- Monotributistas que emiten facturas C o E.
+- Sujetos exentos.
+- Contribuyentes que utilicen el portal web de ARCA, "Comprobantes en línea", el servicio de facturador móvil o sistemas propios vía Web Services.
+
+## Cómo adaptarse antes de diciembre
+
+<Steps>
+  <Step title="Revisá tu padrón de clientes">
+    Verificá que cada cliente tenga cargada correctamente su condición frente al IVA. Los datos desactualizados o incompletos son la principal fuente de rechazos.
+  </Step>
+  <Step title="Consultá el padrón de ARCA">
+    Antes de facturar, corroborá la situación fiscal del receptor con la constancia de inscripción o mediante los servicios de consulta de ARCA. La condición declarada en tu factura debe coincidir con la registrada en el padrón.
+  </Step>
+  <Step title="Actualizá tu sistema o Web Service">
+    Si emitís mediante integración por Web Services (WSFEv1), asegurate de que tu sistema envíe correctamente el campo `Receptor` con la condición de IVA correspondiente. Muchos desarrollos antiguos lo enviaban vacío o con valores por defecto.
+  </Step>
+  <Step title="Capacitá al equipo administrativo">
+    Quienes cargan comprobantes deben conocer las nuevas validaciones y saber cómo actuar ante un rechazo (corregir la condición, actualizar los datos del cliente, reintentar la emisión).
+  </Step>
+  <Step title="Probá antes de diciembre">
+    Emití comprobantes de prueba con distintas condiciones de receptor para asegurarte de que el flujo funciona correctamente en todos los escenarios.
+  </Step>
+</Steps>
+
+## Consecuencias del incumplimiento
+
+Un rechazo del CAE implica que la factura **no existe fiscalmente**. Esto puede generar:
+
+- Retrasos en la cobranza y en la entrega de bienes o servicios.
+- Problemas para el cliente, que no podrá computar el crédito fiscal correspondiente.
+- Riesgo de inconsistencias entre lo declarado en el Libro IVA Digital y lo efectivamente emitido.
+- Reclamos comerciales y administrativos evitables.
+
+<Info>
+La condición frente al IVA del receptor ya era exigible en el marco de las resoluciones que reglamentan el régimen de factura electrónica. Lo nuevo es el **rechazo automático**: hasta ahora, en muchos casos, el comprobante se emitía igualmente y la inconsistencia quedaba latente.
+</Info>
+
+## ¿Qué cambia en Facturear?
+
+En **facture.ar** el campo "Condición frente al IVA del receptor" ya se envía en todos los comprobantes electrónicos que emitís desde la plataforma, por lo que **no necesitás hacer cambios técnicos** para cumplir con la nueva validación de ARCA.
+
+Lo que sí te recomendamos es aprovechar estas semanas para **revisar y actualizar tu listado de clientes**: verificá que cada uno tenga cargada la condición frente al IVA correcta y coherente con su CUIT. Desde el panel de clientes podés hacer esta revisión en pocos minutos y evitarte rechazos a partir de diciembre.
