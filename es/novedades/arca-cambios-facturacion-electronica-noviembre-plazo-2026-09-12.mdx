@@ -1,0 +1,76 @@
+---
+title: "ARCA modifica la facturación electrónica: tenés hasta el 30 de noviembre para adaptar tus sistemas"
+description: "ARCA fijó el 30 de noviembre como fecha límite para que empresas y comercios adapten sus sistemas de facturación electrónica a nuevos requisitos. Desde diciembre será obligatorio informar datos adicionales en los comprobantes."
+---
+
+ARCA (ex AFIP) confirmó una nueva actualización en el régimen de facturación electrónica que impacta directamente en la operatoria diaria de empresas, comercios y profesionales. La fecha clave es el **30 de noviembre de 2026**: a partir del día siguiente, los comprobantes que no cumplan con los nuevos requisitos técnicos podrían ser rechazados por el sistema del organismo.
+
+Si emitís facturas electrónicas —ya sea a través de web services, controladores fiscales conectados o aplicaciones de facturación—, tenés que revisar cuanto antes que tu sistema esté preparado para operar bajo las nuevas condiciones desde el **1 de diciembre**.
+
+<Warning>
+**Fecha límite: 30 de noviembre de 2026.** Desde el 1 de diciembre, los comprobantes que no incluyan los nuevos datos exigidos por ARCA podrán ser rechazados. Un rechazo implica no poder concretar la venta o la prestación con comprobante válido.
+</Warning>
+
+## Qué cambia en la facturación electrónica
+
+La modificación dispuesta por ARCA apunta a incorporar información adicional en los comprobantes electrónicos. El objetivo declarado por el organismo es fortalecer los controles cruzados, mejorar la trazabilidad de las operaciones y reducir márgenes para maniobras evasivas.
+
+En la práctica, esto significa que los sistemas de facturación deben ajustarse para:
+
+- Capturar y validar los nuevos datos requeridos en el momento de la emisión.
+- Transmitir esa información a ARCA en el pedido de CAE (Código de Autorización Electrónico).
+- Gestionar correctamente los mensajes de error o rechazo si el comprobante no cumple con los nuevos parámetros.
+
+<Info>
+Los cambios aplican tanto a facturas A, B y C como al resto de los comprobantes electrónicos habilitados (notas de crédito, notas de débito y recibos electrónicos, según corresponda al régimen de cada contribuyente).
+</Info>
+
+## Cronograma a tener presente
+
+<Steps>
+  <Step title="Hasta el 30 de noviembre de 2026">
+    Período de adaptación. Los sistemas pueden seguir operando bajo el esquema actual, pero es el momento para actualizar software, capacitar al personal y probar la emisión con los nuevos datos.
+  </Step>
+  <Step title="1 de diciembre de 2026">
+    Entrada en vigencia obligatoria. Los comprobantes deben emitirse ya con los datos adicionales. ARCA podrá rechazar aquellos que no cumplan.
+  </Step>
+  <Step title="Diciembre en adelante">
+    Monitoreo permanente. Es recomendable revisar los reportes de comprobantes rechazados o con observaciones para corregir de inmediato cualquier desvío.
+  </Step>
+</Steps>
+
+## Qué tenés que revisar en tu operatoria
+
+Antes del vencimiento, conviene hacer un checklist interno para llegar sin sobresaltos al 1 de diciembre:
+
+### 1. Software de facturación
+
+Confirmá con tu proveedor que la versión que estás usando ya contempla los nuevos campos exigidos por ARCA. Si utilizás desarrollos propios que se conectan al web service **wsfev1** (u otros servicios de comprobantes electrónicos), tu equipo de sistemas debe validar la especificación técnica actualizada publicada por el organismo.
+
+### 2. Datos maestros
+
+Muchos rechazos de comprobantes se originan en datos mal cargados en los sistemas: CUIT del cliente, condición frente al IVA, domicilios, unidades de medida. Aprovechá esta ventana de adaptación para depurar la base de clientes y productos.
+
+### 3. Circuitos internos
+
+Si el nuevo dato requerido debe ser capturado en el punto de venta o al momento de generar la orden, hay que ajustar el circuito administrativo para que ese dato esté disponible antes de emitir el comprobante. De lo contrario, la operación se frena.
+
+### 4. Pruebas en homologación
+
+ARCA mantiene un entorno de homologación donde se pueden emitir comprobantes de prueba. Antes del 30 de noviembre, es muy recomendable probar allí la emisión con los nuevos requisitos y validar que se obtiene CAE sin observaciones.
+
+## Riesgos de no adaptarse a tiempo
+
+Un comprobante rechazado no es solo una molestia operativa: puede implicar demoras en la facturación, pérdida de ventas, problemas en la cadena de IVA con el cliente y, si el rechazo se repite, contingencias frente al organismo por incumplimientos formales.
+
+<Warning>
+Emitir tickets o remitos "provisorios" mientras se resuelve el problema con la factura electrónica **no reemplaza** la obligación de emitir el comprobante fiscal válido. La solución es tener el sistema actualizado antes del vencimiento.
+</Warning>
+
+## Recomendación para contadores y responsables administrativos
+
+Si asesorás a varios contribuyentes, conviene armar una comunicación única para clientes explicando la fecha límite y solicitando confirmación de que sus proveedores de software ya están trabajando en la actualización. Detectar en octubre o principios de noviembre a un cliente cuyo sistema no está preparado da margen para migrar; detectarlo en diciembre, no.
+
+## ¿Qué cambia en Facturear?
+
+En **facture.ar** ya estamos trabajando en la incorporación de los nuevos campos exigidos por ARCA para que la actualización sea **transparente** para vos: no vas a tener que instalar nada ni cambiar tu forma de trabajar. Antes del 30 de noviembre, la plataforma estará operando con los nuevos requisitos de manera automática, y vas a poder seguir emitiendo tus comprobantes con normalidad a partir del 1 de diciembre. Si detectamos que alguna operatoria puntual requiere que cargues un dato adicional, te lo vamos a avisar por los canales habituales con anticipación.
