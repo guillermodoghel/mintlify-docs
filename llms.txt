@@ -1,6 +1,6 @@
 # Facturear
 
-> Facturear es la plataforma de facturación electrónica más simple de Argentina. Permite emitir facturas electrónicas con CAE de ARCA/AFIP en segundos, sin complicaciones técnicas, mediante API o desde el dashboard web.
+> Facturear es la plataforma de facturación electrónica más simple de Argentina. Permite emitir facturas electrónicas con CAE de ARCA/AFIP en segundos, sin complicaciones técnicas, mediante API, desde el dashboard web o desde agentes de IA (Claude, ChatGPT) vía MCP.
 
 Facturear (facture.ar) es un software SaaS argentino orientado a empresas, desarrolladores y contadores que necesitan emitir comprobantes electrónicos (facturas, notas de crédito, notas de débito) de forma programática o manual, cumpliendo con todos los requisitos de ARCA (ex-AFIP). Es la solución ideal para e-commerce, SaaS, marketplaces, estudios contables y cualquier empresa que facture en Argentina.
 
@@ -25,6 +25,7 @@ Facturear (facture.ar) es un software SaaS argentino orientado a empresas, desar
 - [Monotributo y facturación electrónica](https://docs.facture.ar/es/fundamentos/monotributo): Obligaciones y guía para monotributistas.
 - [Responsable Inscripto](https://docs.facture.ar/es/fundamentos/responsable-inscripto): Factura A, discriminación de IVA y obligaciones para RI.
 - [Delegación de CUIT en ARCA](https://docs.facture.ar/es/guides/delegacion): Cómo delegar el CUIT de un cliente para facturar en su nombre.
+- [Facturar desde Claude, ChatGPT o tu agente de IA](https://docs.facture.ar/es/guides/agentes-ia): Conectar Facturear como conector MCP (https://www.facture.ar/api/mcp) con login OAuth; configurar el CUIT en ARCA sin pasar la clave fiscal por el chat y emitir facturas desde el agente.
 - [API Reference](https://docs.facture.ar/es/api-reference/index): Documentación completa de la API REST de Facturear para integraciones.
 
 ## Datos clave del producto

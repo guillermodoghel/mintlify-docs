@@ -1,0 +1,154 @@
+---
+title: 'Facturar desde Claude, ChatGPT o tu agente de IA'
+description: 'Conectá Facturear a Claude, ChatGPT, Cursor o cualquier agente compatible con MCP: creá tu cuenta, configurá tu CUIT en ARCA y emití facturas electrónicas desde el chat.'
+---
+
+# Facturar desde tu agente de IA
+
+Facturear se usa también desde el chat. Lo conectás una vez a Claude, ChatGPT, Cursor o cualquier agente compatible con **MCP** (Model Context Protocol) y después le pedís cosas como:
+
+- "Dame de alta el CUIT 20-12345678-9 y configuralo en ARCA"
+- "Haceme una factura C de $85.000 a Juan Pérez, DNI 30123456, por el servicio de septiembre"
+- "¿Cuántas facturas emití este mes y cuánto me queda del plan?"
+
+No hace falta tener cuenta de antemano: si no tenés, la creás en el mismo paso en que conectás el agente.
+
+<Info>
+  **URL del conector:** `https://www.facture.ar/api/mcp`
+</Info>
+
+---
+
+## Cómo funciona el login
+
+No le das tu contraseña ni tu API Key al agente. La conexión usa **OAuth**, el mismo mecanismo que "Iniciar sesión con Google":
+
+<Steps>
+  <Step title="Agregás Facturear como conector">
+    Pegás la URL del conector en tu agente (los pasos para cada uno están abajo).
+  </Step>
+  <Step title="El agente te manda a Facturear">
+    Se abre facture.ar en tu navegador. Entrás con Google o con un link a tu email. Si no tenías cuenta, se crea en ese momento, con el plan Free.
+  </Step>
+  <Step title="Aprobás el acceso">
+    Facturear te muestra qué agente pide acceso y qué va a poder hacer. Tocás **Permitir** y volvés al chat.
+  </Step>
+</Steps>
+
+Podés ver y desconectar los agentes conectados cuando quieras desde **Cuenta → Agentes conectados** o **Guía IA** en el panel.
+
+---
+
+## Conectarlo, paso a paso
+
+<Tabs>
+  <Tab title="Claude">
+    Funciona en claude.ai, Claude Desktop y Cowork, en cualquier plan (el plan gratuito admite un conector personalizado).
+
+    <Steps>
+      <Step title="Abrí los conectores">
+        Andá a **Personalizar → Conectores** (Customize → Connectors).
+      </Step>
+      <Step title="Agregá uno personalizado">
+        Tocá **+** y elegí **Agregar conector personalizado** (Add custom connector).
+      </Step>
+      <Step title="Pegá la URL">
+        Nombre: `Facturear`. URL: `https://www.facture.ar/api/mcp`. No completes Client ID ni Client Secret: no hacen falta.
+      </Step>
+      <Step title="Conectá">
+        Tocá **Conectar**, iniciá sesión en Facturear y aprobá el acceso.
+      </Step>
+    </Steps>
+
+    En planes Team o Enterprise, primero un Owner agrega el conector en **Configuración de la organización → Conectores**, y después cada persona lo conecta con su cuenta.
+  </Tab>
+  <Tab title="ChatGPT">
+    <Steps>
+      <Step title="Activá el modo desarrollador">
+        Tu foto de perfil → **Configuración → Seguridad e inicio de sesión** → activá **Modo desarrollador** (Developer mode).
+      </Step>
+      <Step title="Creá el conector">
+        En **Configuración → Plugins** (antes "Conectores"), agregá uno personalizado. Nombre: `Facturear`. URL: `https://www.facture.ar/api/mcp`. Autenticación: **OAuth**.
+      </Step>
+      <Step title="Conectá">
+        Iniciá sesión en Facturear, aprobá el acceso y activá Facturear en el chat.
+      </Step>
+    </Steps>
+  </Tab>
+  <Tab title="Claude Code">
+    ```bash
+    claude mcp add --transport http facturear https://www.facture.ar/api/mcp
+    ```
+
+    Después, dentro de Claude Code, corré `/mcp`, elegí **facturear** y autenticá: se abre el navegador para iniciar sesión y aprobar.
+  </Tab>
+  <Tab title="Cursor y otros">
+    Cualquier cliente MCP con transporte HTTP y OAuth sirve. En Cursor, en `~/.cursor/mcp.json`:
+
+    ```json
+    {
+      "mcpServers": {
+        "facturear": { "url": "https://www.facture.ar/api/mcp" }
+      }
+    }
+    ```
+
+    Al primer uso te pide iniciar sesión en Facturear.
+
+    **Sin navegador (scripts, servidores):** usá tu [API Key](/es/guides/api-keys) como token: header `Authorization: Bearer TU_API_KEY`. La key de test opera en homologación y la de producción en producción.
+  </Tab>
+</Tabs>
+
+---
+
+## Tu clave fiscal nunca pasa por el chat
+
+Para configurar un CUIT, Facturear hace por vos los trámites en ARCA (certificados, autorización del web service y punto de venta) y para eso necesita tu **clave fiscal**. Esa clave **no se escribe en el chat**:
+
+1. Le pedís al agente que configure tu CUIT.
+2. El agente te da un **link de un solo uso** a una página de Facturear.
+3. Escribís la clave ahí. Va directo a Facturear, cifrada; el agente y el modelo de IA nunca la ven.
+4. El agente sigue el progreso y te avisa cuando el CUIT está listo para facturar.
+
+El link vence a los 30 minutos y sirve una sola vez. Si usás un agente en la terminal, también te puede dar un comando que pide la clave sin mostrarla en pantalla y la envía directo a Facturear.
+
+<Warning>
+  Si por error escribiste tu clave fiscal en un chat, cambiala desde el sitio de ARCA. Facturear nunca te la va a pedir por chat.
+</Warning>
+
+---
+
+## Qué puede hacer el agente
+
+| Herramienta | Para qué |
+| --- | --- |
+| `get_account` | Plan, uso del mes y estado de cada CUIT |
+| `add_cuit` | Dar de alta un CUIT (lo valida con el padrón de ARCA) |
+| `setup_cuit` | Configurarlo en ARCA con el link seguro para la clave fiscal |
+| `get_cuit_setup_status` | Ver en qué paso está la configuración |
+| `create_invoice` | Emitir una factura, en homologación o en producción |
+| `get_invoice_batch` | Ver si ARCA la autorizó (CAE) o por qué la rechazó |
+| `list_invoices` / `get_invoice` | Buscar facturas y obtener el PDF |
+
+<Tip>
+  Probá primero en **homologación**: el agente emite facturas de prueba, sin valor fiscal. En producción, el agente te confirma importe, receptor y tipo de comprobante antes de emitir.
+</Tip>
+
+---
+
+## Preguntas frecuentes
+
+<AccordionGroup>
+  <Accordion title="¿Necesito pagar Claude o ChatGPT?">
+    No necesariamente: el plan gratuito de Claude admite un conector personalizado. En ChatGPT, los conectores personalizados dependen del plan y del modo desarrollador.
+  </Accordion>
+  <Accordion title="¿Qué ve el agente de mi cuenta?">
+    Tus CUITs, tu plan y uso, y tus facturas. Nunca tu clave fiscal ni las claves privadas de tus certificados.
+  </Accordion>
+  <Accordion title="¿Cómo lo desconecto?">
+    Desde el panel, en **Guía IA** o **Cuenta → Agentes conectados**, tocá **Desconectar**. El agente pierde el acceso en su próxima llamada. También podés quitarlo desde la configuración de conectores de tu agente.
+  </Accordion>
+  <Accordion title="Me aparece un error al conectar">
+    Revisá que la URL sea exactamente `https://www.facture.ar/api/mcp` (con `www`) y que no hayas cargado un Client ID o Client Secret. Si sigue fallando, escribinos desde el chat de soporte del panel.
+  </Accordion>
+</AccordionGroup>

@@ -22,6 +22,12 @@
             ]
           },
           {
+            "group": "Con IA",
+            "pages": [
+              "es/guides/agentes-ia"
+            ]
+          },
+          {
             "group": "Configuración",
             "pages": [
               "es/guides/delegacion",
