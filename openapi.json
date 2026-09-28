@@ -1922,11 +1922,9 @@
           "accentColor": { "type": ["string", "null"], "pattern": "^#[0-9a-fA-F]{6}$", "description": "Color de acento #rrggbb. null usa el de la plantilla" },
           "logo": { "type": ["string", "null"], "description": "Logo como data URL (data:image/png|jpeg|webp;base64,...), hasta 512 KB" },
           "tradeName": { "type": ["string", "null"], "maxLength": 120, "description": "Nombre de fantasía" },
-          "iibb": { "type": ["string", "null"], "maxLength": 60, "description": "Número de Ingresos Brutos, Exento o Convenio Multilateral" },
           "activityStart": { "type": ["string", "null"], "format": "date", "description": "Fecha de inicio de actividades (AAAA-MM-DD)" },
           "address": { "type": ["string", "null"], "maxLength": 200, "description": "Domicilio comercial, si difiere del domicilio fiscal del padrón" },
-          "footerNote": { "type": ["string", "null"], "maxLength": 500, "description": "Texto libre al pie de la factura" },
-          "iibbRate": { "type": ["number", "null"], "minimum": 0, "maximum": 100, "description": "Alícuota de Ingresos Brutos en %. Se usa para las leyendas de transparencia de CABA y Mendoza, que se deducen del domicilio fiscal y se imprimen desde 2027-01-01" }
+          "footerNote": { "type": ["string", "null"], "maxLength": 500, "description": "Texto libre al pie de la factura" }
         }
       },
       "Error": {
