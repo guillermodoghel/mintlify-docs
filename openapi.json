@@ -434,6 +434,35 @@
         }
       }
     },
+    "/invoices/{invoiceId}/email": {
+      "post": {
+        "summary": "Enviar la factura por email",
+        "description": "Envía el PDF de una factura autorizada desde noreply@facture.ar, con el mail del usuario como Reply-To. Hasta 5 destinatarios y 200 envíos cada 24 horas.",
+        "tags": ["Facturas"],
+        "parameters": [{ "name": "invoiceId", "in": "path", "description": "ID de la factura", "required": true, "schema": { "type": "string" } }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["to"],
+                "properties": {
+                  "to": { "oneOf": [{ "type": "array", "items": { "type": "string", "format": "email" }, "minItems": 1, "maxItems": 5 }, { "type": "string", "description": "Direcciones separadas por coma" }] },
+                  "message": { "type": "string", "maxLength": 2000, "description": "Mensaje opcional para el cliente" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Enviada", "content": { "application/json": { "schema": { "type": "object", "properties": { "sent": { "type": "boolean" }, "to": { "type": "array", "items": { "type": "string" } } } } } } },
+          "400": { "description": "Destinatarios inválidos o factura no autorizada", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "404": { "description": "Factura no encontrada", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "429": { "description": "Límite diario de envíos alcanzado", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
+        }
+      }
+    },
     "/invoices": {
       "get": {
         "summary": "Listar facturas",
@@ -1889,6 +1918,7 @@
         "type": "object",
         "properties": {
           "template": { "type": "string", "enum": ["clasico", "moderno", "minimalista", "elegante"], "description": "Plantilla visual. Por defecto clasico" },
+          "paperSize": { "type": "string", "enum": ["A4", "LETTER", "LEGAL"], "description": "Tipo de hoja: A4 (por defecto), carta u oficio" },
           "accentColor": { "type": ["string", "null"], "pattern": "^#[0-9a-fA-F]{6}$", "description": "Color de acento #rrggbb. null usa el de la plantilla" },
           "logo": { "type": ["string", "null"], "description": "Logo como data URL (data:image/png|jpeg|webp;base64,...), hasta 512 KB" },
           "tradeName": { "type": ["string", "null"], "maxLength": 120, "description": "Nombre de fantasía" },

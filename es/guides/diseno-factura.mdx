@@ -31,6 +31,10 @@ La factura ocupa una hoja A4 completa, con el código QR y el CAE al pie.
 
 Todas imprimen el mismo contenido fiscal en el mismo lugar; solo cambian tipografía, color y marco.
 
+### Tipo de hoja
+
+A4 (por defecto), Carta (216 × 279 mm) u Oficio (216 × 356 mm). La factura ocupa la hoja completa en la vista y en el PDF.
+
 ### Logo
 
 - PNG, JPG o WebP, hasta 512 KB. Si la imagen es muy grande, el dashboard la reduce antes de subirla.
@@ -43,8 +47,8 @@ La razón social, el domicilio fiscal y la condición frente al IVA salen del pa
 | Campo | Para qué |
 |---|---|
 | Nombre de fantasía | Se imprime arriba, con la razón social debajo |
-| Ingresos Brutos | Número, "Exento" o "Convenio Multilateral …". La RG 1415 lo exige en todo comprobante |
-| Inicio de actividades | Fecha que exige la RG 1415. Si no la cargás, imprimimos el primer período que figura en el padrón, que es aproximado |
+| Ingresos Brutos | Por defecto imprimimos el CUIT, que es el número de Ingresos Brutos en CABA, Provincia de Buenos Aires y el monotributo unificado. Cambialo si tu número es otro ("Convenio Multilateral 901-…", "Exento") |
+| Inicio de actividades | Por defecto, el primer período que figura en el padrón de ARCA (mes y año). Cargá la fecha exacta si querés que salga con el día |
 | Domicilio comercial | Solo si emitís desde un lugar distinto al domicilio fiscal |
 | Nota al pie | Texto libre: datos para transferir, condiciones de pago, un agradecimiento |
 
@@ -62,6 +66,7 @@ curl https://www.facture.ar/api/cuits/cmg0a1b2c0000abc/invoice-branding \
 ```json
 {
   "template": "clasico",
+  "paperSize": "A4",
   "accentColor": null,
   "logo": null,
   "tradeName": null,
@@ -94,6 +99,7 @@ curl -X PUT https://www.facture.ar/api/cuits/cmg0a1b2c0000abc/invoice-branding \
 | Campo | Tipo | Valores |
 |---|---|---|
 | `template` | string | `clasico`, `moderno`, `minimalista`, `elegante` |
+| `paperSize` | string | `A4` (por defecto), `LETTER` (carta) o `LEGAL` (oficio) |
 | `accentColor` | string \| null | Color `#rrggbb`. `null` usa el de la plantilla |
 | `logo` | string \| null | Data URL `data:image/png;base64,…` (PNG, JPG o WebP, hasta 512 KB) |
 | `tradeName` | string \| null | Hasta 120 caracteres |

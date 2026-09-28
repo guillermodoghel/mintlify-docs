@@ -1,0 +1,60 @@
+---
+title: 'Enviar una factura por email'
+description: 'Cómo enviarle la factura en PDF a tu cliente por email desde Facturear: desde el dashboard, con la API o desde un agente de IA. Sale desde noreply@facture.ar y las respuestas te llegan a vos.'
+---
+
+# Enviar una factura por email
+
+Facturear le envía a tu cliente el PDF de la factura por email. El mail sale desde **noreply@facture.ar**, firmado con tu nombre de fantasía o tu razón social, y lleva tu dirección como respuesta: si tu cliente contesta, el mail te llega a vos.
+
+---
+
+## Desde el dashboard
+
+En **Facturación**, abrí la factura y tocá **Enviar por email**. Cargá hasta 5 direcciones separadas por coma y, si querés, un mensaje. El PDF va adjunto con el diseño de tu CUIT (ver [Diseño de la factura](/es/guides/diseno-factura)).
+
+Solo se pueden enviar facturas autorizadas por ARCA. Las de homologación salen con **[PRUEBA]** en el asunto.
+
+---
+
+## Con la API
+
+```bash
+curl -X POST https://www.facture.ar/api/invoices/cmuikenv10007kz045cbmekr0/email \
+  -H "x-api-key: tu_api_key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "to": ["cliente@ejemplo.com"],
+    "message": "¡Gracias por tu compra!"
+  }'
+```
+
+| Campo | Tipo | Qué es |
+|---|---|---|
+| `to` | string[] o string | Hasta 5 destinatarios. También acepta un string con direcciones separadas por coma |
+| `message` | string | Opcional, hasta 2000 caracteres. Reemplaza el texto de saludo del mail |
+
+### Respuesta
+
+```json
+{ "sent": true, "to": ["cliente@ejemplo.com"] }
+```
+
+| Estado | Cuándo |
+|---|---|
+| `400` | Un email inválido, más de 5 destinatarios, o la factura no está autorizada por ARCA |
+| `404` | La factura no existe o no es tuya |
+| `429` | Llegaste al límite de 200 envíos cada 24 horas |
+
+---
+
+## Desde un agente de IA
+
+El [conector MCP](/es/guides/agentes-ia) tiene la herramienta `send_invoice_email` (`invoiceId`, `to`, `message`). El agente te confirma la dirección antes de enviar.
+
+---
+
+## Recursos relacionados
+
+- [Diseño de la factura](/es/guides/diseno-factura)
+- [Descarga masiva de PDFs](/es/guides/descarga-pdf-masiva)
