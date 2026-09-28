@@ -22,7 +22,7 @@ Facturear (facture.ar) es un software SaaS argentino orientado a empresas, desar
 - [Certificado digital ARCA](https://docs.facture.ar/es/guides/certificado-digital): Cómo generar y configurar el certificado digital para conectarse a los webservices de ARCA.
 - [Primera factura electrónica](https://docs.facture.ar/es/guides/primera-factura): Paso a paso para emitir el primer comprobante con CAE.
 - [Diseño de la factura](https://docs.facture.ar/es/guides/diseno-factura): Plantillas visuales, logo, datos del emisor y leyendas provinciales de Ingresos Brutos (CABA, Mendoza) por CUIT; qué exige ARCA en la factura impresa.
-- [Enviar una factura por email](https://docs.facture.ar/es/guides/enviar-factura-email): Enviarle el PDF al cliente desde noreply@facture.ar (dashboard, POST /api/invoices/{id}/email o la herramienta MCP send_invoice_email); las respuestas le llegan al emisor.
+- [Enviar una factura por email](https://docs.facture.ar/es/guides/enviar-factura-email): Enviarle el PDF al cliente desde noreply@facture.ar (dashboard, POST /api/invoices/{id}/email o la herramienta MCP send_invoice_email); solo envío, no recibe respuestas.
 - [Facturación en lotes](https://docs.facture.ar/es/guides/facturacion-lotes): Cómo emitir múltiples comprobantes en una sola operación.
 - [Tipos de comprobantes ARCA](https://docs.facture.ar/es/fundamentos/tipos-de-comprobantes): Facturas A, B, C, E, M, Notas de Crédito y Débito — cuándo usar cada una.
 - [Monotributo y facturación electrónica](https://docs.facture.ar/es/fundamentos/monotributo): Obligaciones y guía para monotributistas.
