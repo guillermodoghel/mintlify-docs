@@ -95,7 +95,7 @@ app.post('/webhook/nueva-venta', async (req, res) => {
 })
 ```
 
-La API encola la factura y responde enseguida con un `batchId`, sin CAE. Para completar la orden con el CAE, el número de comprobante y el PDF, consultá `GET https://www.facture.ar/api/invoices/batches/{batchId}` o recibí el resultado con [webhooks](/es/guides/webhook-integracion). Con el `invoiceId` del resultado descargás el PDF en `GET https://www.facture.ar/api/invoices/{invoiceId}/pdf`.
+La API encola la factura y responde enseguida con un `batchId`, sin CAE. Para completar la orden con el CAE, el número de comprobante y el PDF, consultá el lote en `GET https://www.facture.ar/api/invoices/batches/{batchId}` o suscribite a `invoice.completed`/`invoice.failed` con [webhooks](/es/guides/webhook-integracion): `invoice.completed` trae el CAE, el número y el `invoice.id`. Con el `invoiceId` del resultado descargás el PDF en `GET https://www.facture.ar/api/invoices/{invoiceId}/pdf`.
 
 <Note>
   Si el cliente informa un CUIT y no mandás `condicionIVAReceptorId`, Facturear la toma del padrón de ARCA. Si no corresponde a la clase del comprobante, la API responde `400`. Ver [Condición frente al IVA del receptor](/es/guides/condicion-iva-receptor).

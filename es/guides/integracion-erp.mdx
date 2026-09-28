@@ -194,14 +194,14 @@ Para producción, implementá un sistema de cola:
 1. El ERP encola la factura en lugar de llamar directamente a la API
 2. Un worker procesa la cola y llama a Facturear
 3. Si falla, el worker reintenta con backoff exponencial
-4. El ERP consulta el estado de la factura periódicamente con `GET /api/invoices/batches/{batchId}`
+4. El ERP consulta el lote con `GET /api/invoices/batches/{batchId}` o recibe el resultado por webhook (`invoice.completed`/`invoice.failed`)
 5. Si un ítem falló por un error transitorio (ARCA caído, timeout), reintentalo con `POST /api/invoices/batches/{batchId}/items/{itemId}/retry`
 
 ---
 
 ## Notificaciones asíncronas
 
-Facturear todavía no envía webhooks cuando una factura se aprueba o se rechaza: el resultado se obtiene consultando el lote. Los [webhooks](/es/guides/webhook-integracion) disponibles hoy avisan cuando se completa la delegación de un CUIT.
+Consultá el lote o suscribite a `invoice.completed`/`invoice.failed` con [webhooks](/es/guides/webhook-integracion): el ERP recibe el CAE (o los errores de ARCA) apenas la factura se procesa, sin hacer polling. Con `batch.completed` te enterás cuando termina un lote entero. Verificá la firma de cada envío y usá el `id` del evento para no procesarlo dos veces.
 
 ---
 
