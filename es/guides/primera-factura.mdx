@@ -53,8 +53,9 @@ Ver la guía completa de [tipos de comprobantes](/es/fundamentos/tipos-de-compro
 Según el tipo de comprobante y el monto:
 
 - **Factura A**: CUIT obligatorio + razón social
-- **Factura B/C (montos bajos)**: podés dejar "Consumidor Final"
-- **Factura B/C (montos altos)**: nombre/razón social (y CUIT si el cliente lo requiere)
+- **Factura B/C por menos de $10.000.000**: podés dejar "Consumidor Final" sin identificar
+- **Factura B/C de $10.000.000 o más**: el comprador tiene que quedar identificado con DNI, CUIL o CDI (o pasaporte si es extranjero). Lo exige la RG 1415 (texto RG 5866/2026) y Facturear rechaza la factura antes de pedir el CAE si falta
+- **CUIT del consumidor final**: sin importar el monto, si el comprador lo pide para deducir el gasto en Ganancias
 
 Facturear valida el CUIT en tiempo real contra la base de ARCA.
 
@@ -117,7 +118,7 @@ Encontrá tu API key en **Configuración → API** en el dashboard de Facturear.
 | Campo | Qué es |
 |---|---|
 | `cuitId` o `cuit` | CUIT emisor: el id del CUIT en Facturear o el número (`"20-12345678-9"`). Si no mandás ninguno, se usa tu CUIT por defecto |
-| `invoiceType` | Tipo de comprobante de ARCA: `1` Factura A, `6` Factura B, `11` Factura C, `51` Factura M, etc. Si no lo mandás, se usa el default del CUIT |
+| `invoiceType` | Tipo de comprobante de ARCA: `1` Factura A, `6` Factura B, `11` Factura C, etc. (`51`, la ex Factura M, se imprime como "A" con leyenda desde la RG 5762/2025). Si no lo mandás, se usa el default del CUIT |
 | `ptoVta` | Punto de venta. Default: el del CUIT |
 | `concepto` | `1` productos, `2` servicios, `3` ambos. Default: el del CUIT |
 | `docTipo` / `docNro` | Documento del receptor: `80` CUIT, `86` CUIL, `96` DNI, `99` consumidor final sin identificar (default `99` y `0`) |
@@ -125,7 +126,9 @@ Encontrá tu API key en **Configuración → API** en el dashboard de Facturear.
 | `impTotal`, `impNeto`, `impIVA` | Total, neto gravado e IVA. `impTotal` es obligatorio |
 | `iva` | Detalle de IVA por alícuota: `{ id, baseImp, importe }` (`5` = 21%, `4` = 10,5%, `6` = 27%, `3` = 0%) |
 | `fchServDesde`, `fchServHasta`, `fchVtoPago` | Obligatorios para servicios (`concepto` 2 o 3), en formato `YYYYMMDD` |
-| `clientName`, `description`, `items` | Datos que se muestran en el PDF: razón social del cliente, descripción y detalle de ítems |
+| `clientName`, `clientAddress` | Nombre o razón social y domicilio del receptor, impresos en la factura. `clientName` es obligatorio en la práctica para una Factura A; si el receptor tiene CUIT y no lo mandás, se toma del padrón |
+| `condicionVenta` | Condición de venta impresa en la factura: `contado`, `cuenta_corriente`, `tarjeta_debito`, `tarjeta_credito`, `transferencia`, `cheque` u `otra`. ARCA no la recibe: es un dato del comprobante impreso |
+| `description`, `items` | Descripción y detalle de ítems que se muestran en el PDF |
 
 Los importes tienen que cerrar: `impTotal = impNeto + impIVA + impTrib + impTotConc + impOpEx`.
 
@@ -334,7 +337,7 @@ Lo exento va en `impOpEx` y no entra en el array `iva`:
 
 ### Factura B a cliente identificado
 
-Para montos altos donde el cliente quiere quedar identificado, informá su documento y seguí enviando la condición de Consumidor Final:
+Desde $10.000.000 (y siempre que el cliente quiera quedar identificado), informá su documento y seguí enviando la condición de Consumidor Final. Si falta, la API responde `400` antes de pedir el CAE:
 
 ```javascript
 {
@@ -363,8 +366,8 @@ GET https://www.facture.ar/api/invoices/{invoiceId}/pdf
 El PDF incluye:
 - Todos los datos fiscales
 - CAE y fecha de vencimiento
-- Código QR (obligatorio según RG 4804/2020)
-- Formato profesional personalizable
+- Código QR con la URL de verificación de ARCA (RG 4892/2020)
+- El diseño de tu CUIT: plantilla, logo y color. Ver [Diseño de la factura](/es/guides/diseno-factura)
 
 ---
 
@@ -372,7 +375,7 @@ El PDF incluye:
 
 Hay dos momentos en que una factura puede fallar:
 
-- **Al enviarla**: si el cuerpo no es válido (importes que no cierran, condición frente al IVA que no corresponde a la clase, etc.), la API responde `400` con `{ "error": "...", "details": ... }`. Si superaste el límite de tu plan, responde `403` con `code: "SUBSCRIPTION_LIMIT_EXCEEDED"`.
+- **Al enviarla**: si el cuerpo no es válido (importes que no cierran, condición frente al IVA que no corresponde a la clase, un consumidor final sin identificar en una venta de $10.000.000 o más, etc.), la API responde `400` con `{ "error": "...", "details": ... }`. Si superaste el límite de tu plan, responde `403` con `code: "SUBSCRIPTION_LIMIT_EXCEEDED"`.
 - **Al procesarla**: si ARCA rechaza el comprobante, el ítem queda en `status: "error"` y el `responseBody` trae los mensajes de ARCA.
 
 Los errores de ARCA más comunes al emitir:
@@ -380,7 +383,7 @@ Los errores de ARCA más comunes al emitir:
 | Código | Descripción | Solución |
 |---|---|---|
 | 10013 | CUIT receptor no existe en ARCA | Verificá el CUIT del cliente |
-| 10015 | Punto de venta no habilitado | Habilitá el POS en ARCA |
+| 10015 | Documento del receptor inválido o faltante: en comprobantes B por montos altos (hoy $10.000.000) el consumidor final tiene que estar identificado, y CUIT, CUIL y CDI se validan contra el padrón | Enviá un `docTipo` distinto de `99` y un `docNro` válido |
 | 10043 | Fecha inválida | La fecha no puede ser retroactiva más de 5 días |
 | 10044 | CAE vencido | Reintentá la emisión |
 | 10067 | Error en alícuota de IVA | Verificá el código de alícuota |

@@ -410,6 +410,30 @@
         }
       }
     },
+    "/cuits/{cuitId}/invoice-branding": {
+      "get": {
+        "summary": "Obtener el diseño de factura",
+        "description": "Plantilla, logo, color y datos del emisor con que se imprimen las facturas del CUIT.",
+        "tags": ["CUITs"],
+        "parameters": [{ "name": "cuitId", "in": "path", "description": "ID del CUIT en Facturear", "required": true, "schema": { "type": "string" } }],
+        "responses": {
+          "200": { "description": "Diseño de factura", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/InvoiceBranding" } } } },
+          "404": { "description": "CUIT no encontrado", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
+        }
+      },
+      "put": {
+        "summary": "Cambiar el diseño de factura",
+        "description": "Cambia los campos enviados; los que no se envían quedan como están y null borra un valor. Se aplica también al PDF de las facturas ya emitidas.",
+        "tags": ["CUITs"],
+        "parameters": [{ "name": "cuitId", "in": "path", "description": "ID del CUIT en Facturear", "required": true, "schema": { "type": "string" } }],
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/InvoiceBranding" } } } },
+        "responses": {
+          "200": { "description": "Diseño actualizado", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/InvoiceBranding" } } } },
+          "400": { "description": "Valor inválido", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "404": { "description": "CUIT no encontrado", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
+        }
+      }
+    },
     "/invoices": {
       "get": {
         "summary": "Listar facturas",
@@ -1224,7 +1248,18 @@
           },
           "clientName": {
             "type": "string",
-            "description": "Nombre o razón social del receptor"
+            "maxLength": 200,
+            "description": "Nombre o razón social del receptor, impreso en la factura. Si el receptor tiene CUIT y no se envía, se toma del padrón de ARCA"
+          },
+          "clientAddress": {
+            "type": "string",
+            "maxLength": 250,
+            "description": "Domicilio del receptor, impreso en la factura"
+          },
+          "condicionVenta": {
+            "type": "string",
+            "enum": ["contado", "cuenta_corriente", "tarjeta_debito", "tarjeta_credito", "transferencia", "cheque", "otra"],
+            "description": "Condición de venta impresa en la factura (RG 1415, Anexo II, B). ARCA no la recibe"
           },
           "fchServDesde": {
             "type": "string",
@@ -1848,6 +1883,23 @@
             "type": ["object", "null"],
             "description": "Resultado del procesamiento (la factura emitida o el detalle del error)"
           }
+        }
+      },
+      "InvoiceBranding": {
+        "type": "object",
+        "properties": {
+          "template": { "type": "string", "enum": ["clasico", "moderno", "minimalista", "elegante"], "description": "Plantilla visual. Por defecto clasico" },
+          "accentColor": { "type": ["string", "null"], "pattern": "^#[0-9a-fA-F]{6}$", "description": "Color de acento #rrggbb. null usa el de la plantilla" },
+          "logo": { "type": ["string", "null"], "description": "Logo como data URL (data:image/png|jpeg|webp;base64,...), hasta 512 KB" },
+          "tradeName": { "type": ["string", "null"], "maxLength": 120, "description": "Nombre de fantasía" },
+          "iibb": { "type": ["string", "null"], "maxLength": 60, "description": "Número de Ingresos Brutos, Exento o Convenio Multilateral" },
+          "activityStart": { "type": ["string", "null"], "format": "date", "description": "Fecha de inicio de actividades (AAAA-MM-DD)" },
+          "address": { "type": ["string", "null"], "maxLength": 200, "description": "Domicilio comercial, si difiere del domicilio fiscal del padrón" },
+          "footerNote": { "type": ["string", "null"], "maxLength": 500, "description": "Texto libre al pie de la factura" },
+          "iibbJurisdiction": { "type": ["string", "null"], "enum": ["CABA", "MENDOZA", null], "description": "Régimen provincial de transparencia de Ingresos Brutos (obligatorio desde 2027-01-01)" },
+          "iibbRate": { "type": ["number", "null"], "minimum": 0, "maximum": 100, "description": "Alícuota de Ingresos Brutos en %" },
+          "iibbTreatment": { "type": ["string", "null"], "enum": ["alicuota", "promocion", "exenta", null], "description": "alicuota (por defecto), promocion (CABA: promoción económica; Mendoza: tasa cero) o exenta" },
+          "iibbConvenioMultilateral": { "type": "boolean", "description": "Convenio Multilateral (en CABA agrega el texto correspondiente)" }
         }
       },
       "Error": {

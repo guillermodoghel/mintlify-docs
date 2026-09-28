@@ -1,0 +1,151 @@
+---
+title: 'Diseño de la factura: plantillas, logo y datos del emisor'
+description: 'Cómo personalizar la factura impresa de cada CUIT en Facturear: plantillas visuales, logo, color, Ingresos Brutos, inicio de actividades y leyendas provinciales de CABA y Mendoza. Qué exige ARCA en la representación impresa.'
+---
+
+# Diseño de la factura
+
+Cada CUIT tiene su propio diseño de factura: una plantilla visual, tu logo, un color de acento y los datos del emisor que el padrón de ARCA no informa. El diseño se aplica al PDF y a la vista de la factura en el dashboard, tanto para las facturas nuevas como para las ya emitidas (el CAE y los datos fiscales no cambian: solo la presentación).
+
+---
+
+## Desde el dashboard
+
+1. Entrá a **CUITs** y abrí el CUIT.
+2. Andá a la pestaña **Diseño de factura** (o directo a `https://www.facture.ar/app/cuits/<id>#factura`).
+3. Elegí la plantilla, subí el logo, ajustá el color y completá los datos del emisor. La vista previa de la derecha muestra cómo queda con datos de ejemplo.
+4. Tocá **Guardar diseño**.
+
+### Plantillas
+
+| Plantilla | Estilo |
+|---|---|
+| `clasico` | El formato de ARCA: recuadros, blanco y negro. Es la plantilla por defecto. |
+| `moderno` | Banda de color arriba, tipografía limpia y totales destacados. |
+| `minimalista` | Mucho aire, líneas finas y el color solo en la letra y el total. |
+| `elegante` | Tipografía con serif y filetes dobles. |
+
+Todas imprimen el mismo contenido fiscal en el mismo lugar; solo cambian tipografía, color y marco.
+
+### Logo
+
+- PNG, JPG o WebP, hasta 512 KB. Si la imagen es muy grande, el dashboard la reduce antes de subirla.
+- Mejor con fondo transparente. Se imprime arriba a la izquierda, sobre los datos del emisor.
+
+### Datos del emisor
+
+La razón social, el domicilio fiscal y la condición frente al IVA salen del padrón de ARCA. Lo demás lo completás vos:
+
+| Campo | Para qué |
+|---|---|
+| Nombre de fantasía | Se imprime arriba, con la razón social debajo |
+| Ingresos Brutos | Número, "Exento" o "Convenio Multilateral …". La RG 1415 lo exige en todo comprobante |
+| Inicio de actividades | Fecha que exige la RG 1415. Si no la cargás, imprimimos el primer período que figura en el padrón, que es aproximado |
+| Domicilio comercial | Solo si emitís desde un lugar distinto al domicilio fiscal |
+| Nota al pie | Texto libre: datos para transferir, condiciones de pago, un agradecimiento |
+
+---
+
+## Con la API
+
+### Leer el diseño
+
+```bash
+curl https://www.facture.ar/api/cuits/cmg0a1b2c0000abc/invoice-branding \
+  -H "x-api-key: tu_api_key"
+```
+
+```json
+{
+  "template": "clasico",
+  "accentColor": null,
+  "logo": null,
+  "tradeName": null,
+  "iibb": null,
+  "activityStart": null,
+  "address": null,
+  "footerNote": null,
+  "iibbJurisdiction": null,
+  "iibbRate": null,
+  "iibbTreatment": null,
+  "iibbConvenioMultilateral": false
+}
+```
+
+### Cambiarlo
+
+`PUT` con los campos que querés cambiar: los que no mandás quedan como están, y `null` borra un valor.
+
+```bash
+curl -X PUT https://www.facture.ar/api/cuits/cmg0a1b2c0000abc/invoice-branding \
+  -H "x-api-key: tu_api_key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "template": "moderno",
+    "accentColor": "#0e7490",
+    "tradeName": "Norte Estudio",
+    "iibb": "901-123456-7",
+    "activityStart": "2019-03-01",
+    "footerNote": "Transferencias: Alias NORTE.ESTUDIO"
+  }'
+```
+
+| Campo | Tipo | Valores |
+|---|---|---|
+| `template` | string | `clasico`, `moderno`, `minimalista`, `elegante` |
+| `accentColor` | string \| null | Color `#rrggbb`. `null` usa el de la plantilla |
+| `logo` | string \| null | Data URL `data:image/png;base64,…` (PNG, JPG o WebP, hasta 512 KB) |
+| `tradeName` | string \| null | Hasta 120 caracteres |
+| `iibb` | string \| null | Hasta 60 caracteres |
+| `activityStart` | string \| null | `AAAA-MM-DD` |
+| `address` | string \| null | Hasta 200 caracteres |
+| `footerNote` | string \| null | Hasta 500 caracteres |
+| `iibbJurisdiction` | string \| null | `CABA`, `MENDOZA` o `null` (ver abajo) |
+| `iibbRate` | number \| null | Alícuota de Ingresos Brutos en %, por ejemplo `3` |
+| `iibbTreatment` | string \| null | `alicuota` (por defecto), `promocion` o `exenta` |
+| `iibbConvenioMultilateral` | boolean | Solo CABA |
+
+La respuesta es el diseño completo, igual que el `GET`. Si un valor no es válido, `400` con el motivo; si el CUIT no es tuyo, `404`.
+
+---
+
+## Qué exige ARCA en la factura impresa
+
+El diseño sigue la RG 1415, Anexo II (texto de la RG 5866/2026), la RG 4291 y la RG 4892. Facturear imprime siempre:
+
+- **Arriba al centro**, la letra del comprobante (A, B, C o E) en un recuadro, con "Código N°" debajo. Los ex códigos M (51 a 54) se imprimen como "A" con la leyenda "OPERACIÓN SUJETA A RETENCIÓN" o "PAGO EN CBU INFORMADA" junto a la letra (RG 5762/2025).
+- **Arriba a la izquierda**, nombre de fantasía, razón social, domicilio comercial y condición frente al IVA del emisor.
+- **Arriba a la derecha**, punto de venta y número, fecha de emisión, CUIT, Ingresos Brutos e inicio de actividades.
+- **Debajo**, el receptor (documento, nombre, domicilio y condición frente al IVA con la leyenda de la norma, por ejemplo "A CONSUMIDOR FINAL"), la condición de venta y, en servicios, el período facturado y el vencimiento del pago.
+- **El detalle**, con el IVA discriminado por alícuota en las facturas A.
+- **Abajo a la izquierda**, en las facturas B, el bloque "Régimen de Transparencia Fiscal al Consumidor (Ley 27.743)" con el IVA contenido y los otros impuestos nacionales indirectos.
+- **Abajo a la derecha**, el C.A.E. y su fecha de vencimiento en 12 puntos, junto al código QR con la URL de verificación de ARCA.
+- En las **FCE MiPyME**, la CBU o alias, la opción de transferencia, el importe en letras y el texto de aceptación de la Ley 27.440.
+- En comprobantes de varias hojas, "Hoja x de n".
+
+Para que el receptor salga completo, mandá `clientName` y `clientAddress` al emitir (ver [Primera factura](/es/guides/primera-factura)). Si el receptor tiene CUIT y no mandás el nombre, lo tomamos del padrón.
+
+---
+
+## Leyendas provinciales de Ingresos Brutos
+
+CABA y Mendoza adhirieron al régimen de transparencia fiscal y piden informar la alícuota de Ingresos Brutos en las facturas a consumidor final. Las dos son obligatorias desde el **1 de enero de 2027**. Configurá la jurisdicción en el diseño y la leyenda se imprime sola en las facturas que corresponden:
+
+| Jurisdicción | Alcance | Leyenda |
+|---|---|---|
+| CABA (Res. AGIP 169/2026) | Toda factura a consumidor final, salvo del Régimen Simplificado (monotributo) | `ALÍCUOTA ISIB CABA 3,00%`, y con Convenio Multilateral se agrega `APLICABLE SOBRE INGRESOS BRUTOS ATRIBUIDOS A CABA` |
+| Mendoza (RG ATM 27/2026, Ley 9655) | Solo facturas B a consumidor final | `Alícuota IBMza 3,00% - Ley N° 9655` |
+
+Con `iibbTreatment: "promocion"` se imprime "OPERACIÓN ALCANZADA POR REGÍMENES DE PROMOCIÓN ECONÓMICA CABA" o "Tasa Cero - Ley N° 9655"; con `"exenta"`, "OPERACIÓN EXENTA ISIB CABA" u "Operación exenta IBMza - Ley N° 9655".
+
+<Tip>
+  Si tus operaciones tienen varias alícuotas, las dos normas piden informar la menor.
+</Tip>
+
+---
+
+## Recursos relacionados
+
+- [Primera factura con Facturear](/es/guides/primera-factura)
+- [Descarga masiva de PDFs](/es/guides/descarga-pdf-masiva)
+- [Configurar defaults por CUIT](/es/guides/configurar-defaults-cuit)

@@ -68,16 +68,15 @@ La Factura Detallada es la funcionalidad más completa de Facturear, diseñada p
 
 ### Paso 3: Completar Datos del Cliente
 
-**Información Obligatoria:**
-- **CUIT**: Se valida automáticamente con AFIP
-- **Razón social**: Se completa automáticamente
-- **Domicilio**: Dirección completa del cliente
-- **Condición de IVA**: Consumidor final, responsable inscripto, etc.
+- **Documento**: Consumidor final, CUIT, DNI u otro tipo. Con CUIT se valida contra el padrón de ARCA
+- **Nombre / Razón social**: Con CUIT se completa automáticamente
+- **Domicilio**: Con CUIT se completa con el domicilio fiscal del padrón; lo podés editar. Sale impreso en la factura
+- **Condición de IVA**: Consumidor final, responsable inscripto, etc. Con CUIT se completa del padrón
+- **Condición de venta**: Contado, cuenta corriente, tarjeta, transferencia, cheque u otra. Sale impresa en la factura
 
-**Información Opcional:**
-- **Email**: Para envío automático
-- **Teléfono**: Datos de contacto
-- **Código postal**: Para validación geográfica
+<Note>
+  Una venta a consumidor final de $10.000.000 o más tiene que identificar al comprador con DNI, CUIL o CDI (RG 1415, texto RG 5866/2026). Si no lo cargás, el formulario no deja emitir.
+</Note>
 
 ### Paso 4: Agregar Productos/Servicios
 
