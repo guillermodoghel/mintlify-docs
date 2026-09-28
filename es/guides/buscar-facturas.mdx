@@ -1,11 +1,11 @@
 ---
 title: 'Cómo buscar y consultar facturas emitidas en Facturear'
-description: 'Cómo buscar, filtrar y consultar facturas electrónicas emitidas a través de la API de Facturear: filtros por CUIT emisor, tipo, estado y número de comprobante.'
+description: 'Cómo buscar, filtrar y consultar facturas electrónicas emitidas a través de la API de Facturear: filtros por CUIT emisor, receptor, tipo, estado y número de comprobante.'
 ---
 
 # Buscar y consultar facturas emitidas
 
-La API de Facturear incluye endpoints para **consultar el historial de facturas** emitidas. Podés filtrar por CUIT emisor, tipo de comprobante, número o estado, y obtener los detalles completos incluyendo la respuesta de ARCA con el CAE y el PDF.
+La API de Facturear incluye endpoints para **consultar el historial de facturas** emitidas. Podés filtrar por CUIT emisor, receptor, tipo de comprobante, número o estado, y obtener los detalles completos incluyendo la respuesta de ARCA con el CAE y el PDF.
 
 ---
 
@@ -34,12 +34,24 @@ curl "https://www.facture.ar/api/invoices?cuit=20123456789&tipo=6&status=success
 | Parámetro | Tipo | Descripción | Ejemplo |
 |---|---|---|---|
 | `cuit` | string | CUIT emisor (o parte de él) | `20123456789` |
+| `receptor` | string | Documento del receptor (CUIT, CUIL o DNI, con o sin guiones) o parte de su nombre | `20-12345678-9`, `Acme` |
 | `tipo` | integer | Código de ARCA del tipo de comprobante | `1` (A), `6` (B), `11` (C) |
 | `comprobante` | string | Número de comprobante (se toman solo los dígitos) | `145` |
 | `status` | string | Estado de la factura | `success`, `error`, `processing` |
 | `search` | string | Busca en CUIT emisor, número de comprobante, código de tipo de comprobante y descripción | `consultoría` |
 | `page` | integer | Página (desde `1`) | `1` |
 | `limit` | integer | Resultados por página (default `10`, máx. `100`) | `50` |
+
+Todos los filtros se combinan: si mandás varios, la factura tiene que cumplir con todos.
+
+### Buscar por receptor
+
+`receptor` encuentra las facturas emitidas a un cliente. Si le pasás un número de documento, busca por el `DocNro` exacto de la factura: `20-12345678-9`, `20.123.456.789` y `20123456789` dan lo mismo. Si le pasás texto, busca por el nombre del cliente (`clientName`) sin distinguir mayúsculas, así que solo encuentra las facturas que emitiste con ese campo.
+
+```bash
+curl "https://www.facture.ar/api/invoices?receptor=20-12345678-9&tipo=6" \
+  -H "x-api-key: tu_api_key"
+```
 
 <Note>
   El listado no tiene filtro por fecha ni por punto de venta. Para un período, recorré las páginas y filtrá por `createdAt` (la lista ya viene ordenada por fecha de creación), y por `ptoVta` si lo necesitás.
