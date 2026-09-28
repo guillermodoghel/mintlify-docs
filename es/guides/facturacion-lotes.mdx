@@ -374,7 +374,7 @@ async function facturacionMensual(clientes, mes) {
     No. Cada ítem del lote se procesa de forma independiente. Si un ítem falla por un error de ARCA (CUIT inválido, etc.), el resto sigue procesándose normalmente y el lote termina en `completed_with_errors`.
   </Accordion>
   <Accordion title="¿Cómo sé cuándo terminó el lote?">
-    Podés hacer polling a `GET /api/invoices/batches/{batchId}` hasta que el `status` sea `completed`, `completed_with_errors` o `error`. Facturear todavía no envía webhooks con el resultado de las facturas.
+    Consultá el lote con `GET /api/invoices/batches/{batchId}` hasta que el `status` sea `completed`, `completed_with_errors` o `error`, o suscribite a `invoice.completed`/`invoice.failed` (resultado de cada factura) y `batch.completed` (fin del lote) con [webhooks](/es/guides/webhook-integracion).
   </Accordion>
   <Accordion title="¿Puedo agregar ítems a un lote que ya está procesando?">
     Sí, mientras el lote esté en `pending` o `processing` podés seguir agregando facturas con `PATCH /api/invoices/batches/{batchId}`. Los nuevos ítems se encolan y se procesan. Una vez terminado, ya no acepta ítems nuevos.
