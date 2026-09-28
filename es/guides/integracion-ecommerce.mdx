@@ -27,17 +27,29 @@ La forma más flexible. Tu plataforma de e-commerce llama a la API de Facturear 
 **Flujo típico:**
 
 ```javascript
+const CLASE_A = [1, 6, 13, 16]  // condiciones frente al IVA que reciben Factura A
+
 // Webhook handler para nueva venta confirmada
 app.post('/webhook/nueva-venta', async (req, res) => {
   const orden = req.body
-  
-  // Determinar tipo de factura según el cliente
-  const tipoFactura = orden.cliente.cuit && orden.cliente.condicionIva === 'RI'
+  const cliente = orden.cliente
+
+  // Condición frente al IVA del receptor (ids de ARCA): 5 Consumidor Final si no la informó
+  const condicion = Number(cliente.condicionIVAReceptorId) || 5
+  const conCuit = Boolean(cliente.cuit)
+
+  // Determinar tipo de factura según el cliente (emisor Responsable Inscripto)
+  const invoiceType = conCuit && CLASE_A.includes(condicion)
     ? 1    // Factura A
     : 6    // Factura B (default para consumidores)
-  
-  // Emitir factura en Facturear
-  const factura = await fetch('https://api.facture.ar/invoices', {
+
+  // Los precios de la tienda incluyen IVA 21%: separar neto e IVA
+  const total = orden.productos.reduce((acc, p) => acc + p.cantidad * p.precioUnitario, 0)
+  const neto = Math.round((total / 1.21) * 100) / 100
+  const iva = Math.round((total - neto) * 100) / 100
+
+  // Emitir factura en Facturear (queda encolada)
+  const respuesta = await fetch('https://www.facture.ar/api/invoices', {
     method: 'POST',
     headers: {
       'x-api-key': process.env.FACTUREAR_API_KEY,
@@ -45,30 +57,49 @@ app.post('/webhook/nueva-venta', async (req, res) => {
     },
     body: JSON.stringify({
       cuitId: process.env.FACTUREAR_CUIT_ID,
-      comprobante: {
-        tipo: tipoFactura,
-        puntoVenta: 1,
-        receptor: {
-          razonSocial: orden.cliente.nombre || 'Consumidor Final',
-          cuit: orden.cliente.cuit || null,
-          condicionIva: orden.cliente.condicionIva || 'CF'
-        },
-        items: orden.productos.map(p => ({
-          descripcion: p.nombre,
-          cantidad: p.cantidad,
-          precioUnitario: p.precioUnitario,
-          alicuotaIva: 21
-        }))
-      }
+      invoiceType,
+      ptoVta: 1,
+      concepto: 1,                                   // Productos
+      docTipo: conCuit ? 80 : 99,
+      docNro: conCuit ? Number(cliente.cuit.replace(/-/g, '')) : 0,
+      condicionIVAReceptorId: condicion,
+      clientName: cliente.nombre || 'Consumidor Final',
+      impNeto: neto,
+      impIVA: iva,
+      impTotal: total,
+      iva: [{ id: 5, baseImp: neto, importe: iva }],
+      description: `Orden #${orden.id}`,
+      items: orden.productos.map(p => {
+        const unitarioNeto = Math.round((p.precioUnitario / 1.21) * 100) / 100
+        return {
+          description: p.nombre,
+          quantity: p.cantidad,
+          unitPrice: unitarioNeto,
+          discount: 0,
+          ivaRate: 21,
+          subtotal: Math.round(unitarioNeto * p.cantidad * 100) / 100
+        }
+      })
     })
-  }).then(r => r.json())
-  
-  // Guardar el ID de la factura en la orden
-  await actualizarOrden(orden.id, { facturaId: factura.id, cae: factura.cae })
-  
+  })
+
+  const resultado = await respuesta.json()
+  if (!respuesta.ok) {
+    throw new Error(`${resultado.error}: ${JSON.stringify(resultado.details)}`)
+  }
+
+  // Guardar el batchId en la orden: el CAE llega después
+  await actualizarOrden(orden.id, { facturearBatchId: resultado.batchId })
+
   res.json({ ok: true })
 })
 ```
+
+La API encola la factura y responde enseguida con un `batchId`, sin CAE. Para completar la orden con el CAE, el número de comprobante y el PDF, consultá `GET https://www.facture.ar/api/invoices/batches/{batchId}` o recibí el resultado con [webhooks](/es/guides/webhook-integracion). Con el `invoiceId` del resultado descargás el PDF en `GET https://www.facture.ar/api/invoices/{invoiceId}/pdf`.
+
+<Note>
+  Si el cliente informa un CUIT y no mandás `condicionIVAReceptorId`, Facturear la toma del padrón de ARCA. Si no corresponde a la clase del comprobante, la API responde `400`. Ver [Condición frente al IVA del receptor](/es/guides/condicion-iva-receptor).
+</Note>
 
 ### Opción 2: Tiendanube
 
@@ -102,14 +133,15 @@ Una buena integración de e-commerce le pide al cliente sus datos fiscales al ha
   <h4>Datos para factura (opcional)</h4>
   
   <label>Condición frente al IVA:</label>
+  <!-- Los valores son los ids de ARCA para condicionIVAReceptorId -->
   <select name="condicion_iva">
-    <option value="CF">Consumidor Final</option>
-    <option value="RI">Responsable Inscripto</option>
-    <option value="MT">Monotributista</option>
-    <option value="EX">Exento</option>
+    <option value="5">Consumidor Final</option>
+    <option value="1">Responsable Inscripto</option>
+    <option value="6">Monotributista</option>
+    <option value="4">Exento</option>
   </select>
   
-  <!-- Se muestra solo si selecciona RI o MT -->
+  <!-- Se muestra solo si selecciona Responsable Inscripto, Monotributista o Exento -->
   <div id="datos-empresa" style="display:none">
     <label>CUIT:</label>
     <input type="text" name="cuit" placeholder="XX-XXXXXXXX-X">
@@ -123,7 +155,7 @@ Una buena integración de e-commerce le pide al cliente sus datos fiscales al ha
 
 ## Manejo de errores en producción
 
-Las integraciones de e-commerce deben manejar los casos donde la facturación falla:
+Las integraciones de e-commerce deben manejar los casos donde la facturación falla. Hay dos momentos: la API puede rechazar el pedido al enviarlo (`400` con `error` y `details` si los datos no son válidos, `403` con `SUBSCRIPTION_LIMIT_EXCEEDED` si superaste el límite del plan), o ARCA puede rechazar el comprobante cuando se procesa (el ítem del lote queda en `status: "error"`).
 
 ```javascript
 try {

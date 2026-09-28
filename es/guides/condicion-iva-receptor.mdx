@@ -43,12 +43,12 @@ En todos los casos, antes de pedir el CAE, Facturear verifica que la condición 
 | 15 | IVA No Alcanzado | | ✓ | ✓ |
 | 16 | Monotributo Trabajador Independiente Promovido | ✓ | | ✓ |
 
-La lista vigente, filtrada por clase, está en `GET /arca/FEPARAMGETCONDICIONIVARECEPTOR?claseCmp=A` (ver [Parámetros de ARCA](/es/guides/parametros-arca)).
+La lista vigente, filtrada por clase, está en `GET /api/arca/FEPARAMGETCONDICIONIVARECEPTOR?claseCmp=A` (ver [Parámetros de ARCA](/es/guides/parametros-arca)).
 
 ## Ejemplo
 
 ```bash
-curl -X POST https://api.facture.ar/invoices \
+curl -X POST https://www.facture.ar/api/invoices \
   -H "x-api-key: tu_api_key" \
   -H "Content-Type: application/json" \
   -d '{

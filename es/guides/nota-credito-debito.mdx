@@ -29,6 +29,10 @@ Las notas de crédito/débito siguen el **mismo tipo** que la factura que ajusta
 | Factura C | Nota de Crédito C (tipo 13) | Nota de Débito C (tipo 12) |
 | Factura E | Nota de Crédito E (tipo 21) | Nota de Débito E (tipo 20) |
 
+<Note>
+  Las notas de la Factura E (tipos 20 y 21) todavía no se pueden emitir con la API de Facturear. Ver [Factura E](/es/guides/factura-exportacion).
+</Note>
+
 ---
 
 ## Nota de Crédito: casos de uso comunes
@@ -62,8 +66,10 @@ Las notas de crédito/débito siguen el **mismo tipo** que la factura que ajusta
 
 ### Via API
 
+Una Nota de Crédito se emite con el mismo `POST /api/invoices` que una factura: cambiás `invoiceType` por el de la nota y referenciás la factura original en `cbtesAsoc`. El receptor y su condición frente al IVA tienen que ser los mismos que en la factura original.
+
 ```javascript
-const response = await fetch('https://api.facture.ar/invoices', {
+const response = await fetch('https://www.facture.ar/api/invoices', {
   method: 'POST',
   headers: {
     'x-api-key': 'tu_api_key',
@@ -71,33 +77,44 @@ const response = await fetch('https://api.facture.ar/invoices', {
   },
   body: JSON.stringify({
     cuitId: 'id-de-tu-cuit',
-    comprobante: {
-      tipo: 3,        // Nota de Crédito A
-      puntoVenta: 1,
-      comprobanteAsociado: {  // Referencia a la factura original
-        tipo: 1,              // Factura A
-        puntoVenta: 1,
-        numero: 42,
-        cuit: '20-12345678-9',
-        fecha: '2025-05-01'
-      },
-      receptor: {
-        razonSocial: 'Cliente S.A.',
-        cuit: '30-12345678-9',
-        condicionIva: 'RI'
-      },
-      items: [
-        {
-          descripcion: 'Devolución parcial - productos defectuosos',
-          cantidad: 5,
-          precioUnitario: 10000,
-          alicuotaIva: 21
-        }
-      ]
-    }
+    invoiceType: 3,               // Nota de Crédito A
+    ptoVta: 1,
+    concepto: 1,                  // Productos
+    docTipo: 80,                  // CUIT del receptor
+    docNro: 30712345678,
+    condicionIVAReceptorId: 1,    // IVA Responsable Inscripto
+    clientName: 'Cliente S.A.',
+    cbtesAsoc: [                  // Referencia a la factura original
+      {
+        tipo: 1,                  // Factura A
+        ptoVta: 1,
+        nro: 42,
+        cuit: '20123456789',      // CUIT emisor de la factura original
+        cbteFch: '20260901'
+      }
+    ],
+    impNeto: 50000,
+    impIVA: 10500,
+    impTotal: 60500,
+    iva: [{ id: 5, baseImp: 50000, importe: 10500 }],
+    description: 'Devolución parcial - productos defectuosos',
+    items: [
+      {
+        description: 'Devolución parcial - productos defectuosos',
+        quantity: 5,
+        unitPrice: 10000,
+        discount: 0,
+        ivaRate: 21,
+        subtotal: 50000
+      }
+    ]
   })
 })
+
+const { batchId } = await response.json()
 ```
+
+Como toda emisión por API, la nota queda **encolada**: la respuesta trae un `batchId` y el CAE se obtiene después con `GET /api/invoices/batches/{batchId}` o por [webhook](/es/guides/webhook-integracion). Ver [Emitir tu primera factura](/es/guides/primera-factura#obtener-el-cae).
 
 ---
 
@@ -112,6 +129,27 @@ const response = await fetch('https://api.facture.ar/invoices', {
 ## Cómo emitir una Nota de Débito en Facturear
 
 El proceso es idéntico al de la Nota de Crédito, pero seleccionando "Emitir Nota de Débito" y el tipo de comprobante correspondiente (ND).
+
+Via API, usás el mismo cuerpo con `invoiceType` de la nota de débito (`2` ND A, `7` ND B, `12` ND C) y la factura original en `cbtesAsoc`. Por ejemplo, intereses por mora sobre una Factura C:
+
+```javascript
+{
+  cuitId: 'id-de-tu-cuit',
+  invoiceType: 12,              // Nota de Débito C
+  ptoVta: 1,
+  concepto: 2,
+  docTipo: 99,
+  docNro: 0,
+  condicionIVAReceptorId: 5,
+  cbtesAsoc: [{ tipo: 11, ptoVta: 1, nro: 128 }],
+  impNeto: 3000,
+  impTotal: 3000,
+  fchServDesde: '20260901',
+  fchServHasta: '20260930',
+  fchVtoPago: '20261010',
+  description: 'Intereses por mora - Factura C 0001-00000128'
+}
+```
 
 ---
 

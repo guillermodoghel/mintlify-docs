@@ -41,39 +41,46 @@ El entorno de testing requiere su propio certificado, diferente al de producció
 | CAE generado | Sin validez fiscal | Válido legalmente |
 | CUIT necesario | Tu CUIT real | Tu CUIT real |
 | Certificado | Certificado de testing | Certificado de producción |
+| API key de Facturear | Key de testing | Key de producción |
 | Facturear configura | Automáticamente según el cert | Automáticamente según el cert |
 
 ---
 
 ## Cómo testear con la API de Facturear
 
-Al crear una factura via API, podés indicar el entorno:
+El entorno lo define la **API key** que usás: tu cuenta tiene una key de testing y una de producción (en **Configuración → API**). Con la key de testing, todas las llamadas operan en homologación; el cuerpo de la factura y los endpoints son exactamente los mismos que en producción, así que pasar a producción es solo cambiar la key.
 
 ```javascript
-const response = await fetch('https://api.facture.ar/invoices', {
+const response = await fetch('https://www.facture.ar/api/invoices', {
   method: 'POST',
   headers: {
-    'x-api-key': 'tu_api_key',
+    'x-api-key': process.env.FACTUREAR_API_KEY_TEST,  // key de testing → homologación
     'Content-Type': 'application/json'
   },
   body: JSON.stringify({
-    cuitId: 'id-de-tu-cuit-testing',  // CUIT configurado con cert de testing
-    comprobante: {
-      tipo: 11,
-      puntoVenta: 1,
-      receptor: {
-        razonSocial: 'Cliente de Prueba',
-        condicionIva: 'CF'
-      },
-      items: [{
-        descripcion: 'Producto de prueba',
-        cantidad: 1,
-        precioUnitario: 1000
-      }]
-    }
+    cuitId: 'id-de-tu-cuit',      // el mismo CUIT, con su certificado de testing
+    invoiceType: 11,              // Factura C
+    ptoVta: 1,
+    concepto: 1,                  // Productos
+    docTipo: 99,                  // Consumidor final sin identificar
+    docNro: 0,
+    condicionIVAReceptorId: 5,    // Consumidor Final
+    clientName: 'Cliente de Prueba',
+    impNeto: 1000,
+    impTotal: 1000,
+    description: 'Producto de prueba'
   })
 })
+
+const { batchId } = await response.json()
+
+// Consultá el resultado: en homologación el lote informa "environment": "homologation"
+const lote = await fetch(`https://www.facture.ar/api/invoices/batches/${batchId}`, {
+  headers: { 'x-api-key': process.env.FACTUREAR_API_KEY_TEST }
+}).then(r => r.json())
 ```
+
+Como en producción, la factura queda **encolada** y el CAE de prueba aparece en el `responseBody` de cada ítem del lote. Ver [Emitir tu primera factura](/es/guides/primera-factura#obtener-el-cae).
 
 ---
 
@@ -86,10 +93,10 @@ Antes de pasar a producción, testeá al menos estos escenarios:
 - Factura B con datos del receptor
 - Nota de Crédito sobre una factura existente
 - Factura con múltiples ítems y alícuotas diferentes
-- Factura E (exportación)
 - Error intencional (CUIT receptor inválido) — verificar manejo de errores
 - Lote con múltiples facturas
 - Lote con algún ítem que falla
+- Condición frente al IVA del receptor que no corresponde a la clase (por ejemplo, Factura A con `condicionIVAReceptorId: 5`) — debe responder `400`. Ver [Condición frente al IVA del receptor](/es/guides/condicion-iva-receptor)
 
 ---
 
