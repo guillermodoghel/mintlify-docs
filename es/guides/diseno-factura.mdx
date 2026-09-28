@@ -31,6 +31,10 @@ La factura ocupa una hoja A4 completa, con el código QR y el CAE al pie.
 
 Todas imprimen el mismo contenido fiscal en el mismo lugar; solo cambian tipografía, color y marco.
 
+### Tipo de hoja
+
+A4 (por defecto), Carta (216 × 279 mm) u Oficio (216 × 356 mm). La factura ocupa la hoja completa en la vista y en el PDF.
+
 ### Logo
 
 - PNG, JPG o WebP, hasta 512 KB. Si la imagen es muy grande, el dashboard la reduce antes de subirla.
@@ -43,10 +47,15 @@ La razón social, el domicilio fiscal y la condición frente al IVA salen del pa
 | Campo | Para qué |
 |---|---|
 | Nombre de fantasía | Se imprime arriba, con la razón social debajo |
-| Ingresos Brutos | Número, "Exento" o "Convenio Multilateral …". La RG 1415 lo exige en todo comprobante |
-| Inicio de actividades | Fecha que exige la RG 1415. Si no la cargás, imprimimos el primer período que figura en el padrón, que es aproximado |
+| Inicio de actividades | Por defecto, el primer período que figura en el padrón de ARCA (mes y año). Cargá la fecha exacta si querés que salga con el día |
 | Domicilio comercial | Solo si emitís desde un lugar distinto al domicilio fiscal |
 | Nota al pie | Texto libre: datos para transferir, condiciones de pago, un agradecimiento |
+
+---
+
+### Ingresos Brutos
+
+El número de Ingresos Brutos no se carga en el diseño: sale del **tributo Ingresos Brutos** del CUIT (pestaña **Tributos**, código 5). Su descripción es el número que se imprime ("901-123456-7", "Exento", "Convenio Multilateral …") y su alícuota se usa para las leyendas provinciales. Si el CUIT no tiene ese tributo configurado, la factura no lleva la línea de Ingresos Brutos.
 
 ---
 
@@ -62,14 +71,13 @@ curl https://www.facture.ar/api/cuits/cmg0a1b2c0000abc/invoice-branding \
 ```json
 {
   "template": "clasico",
+  "paperSize": "A4",
   "accentColor": null,
   "logo": null,
   "tradeName": null,
-  "iibb": null,
   "activityStart": null,
   "address": null,
-  "footerNote": null,
-  "iibbRate": null
+  "footerNote": null
 }
 ```
 
@@ -85,7 +93,6 @@ curl -X PUT https://www.facture.ar/api/cuits/cmg0a1b2c0000abc/invoice-branding \
     "template": "moderno",
     "accentColor": "#0e7490",
     "tradeName": "Norte Estudio",
-    "iibb": "901-123456-7",
     "activityStart": "2019-03-01",
     "footerNote": "Transferencias: Alias NORTE.ESTUDIO"
   }'
@@ -94,14 +101,13 @@ curl -X PUT https://www.facture.ar/api/cuits/cmg0a1b2c0000abc/invoice-branding \
 | Campo | Tipo | Valores |
 |---|---|---|
 | `template` | string | `clasico`, `moderno`, `minimalista`, `elegante` |
+| `paperSize` | string | `A4` (por defecto), `LETTER` (carta) o `LEGAL` (oficio) |
 | `accentColor` | string \| null | Color `#rrggbb`. `null` usa el de la plantilla |
 | `logo` | string \| null | Data URL `data:image/png;base64,…` (PNG, JPG o WebP, hasta 512 KB) |
 | `tradeName` | string \| null | Hasta 120 caracteres |
-| `iibb` | string \| null | Hasta 60 caracteres |
 | `activityStart` | string \| null | `AAAA-MM-DD` |
 | `address` | string \| null | Hasta 200 caracteres |
 | `footerNote` | string \| null | Hasta 500 caracteres |
-| `iibbRate` | number \| null | Alícuota de Ingresos Brutos en %, por ejemplo `3`. Solo se usa en CUITs de CABA o Mendoza (ver abajo) |
 
 La respuesta es el diseño completo, igual que el `GET`. Si un valor no es válido, `400` con el motivo; si el CUIT no es tuyo, `404`.
 
@@ -130,8 +136,8 @@ Para que el receptor salga completo, mandá `clientName` y `clientAddress` al em
 CABA y Mendoza adhirieron al régimen de transparencia fiscal y piden informar la alícuota de Ingresos Brutos en las facturas a consumidor final desde el **1 de enero de 2027**. Facturear lo resuelve solo:
 
 - **La jurisdicción** sale del domicilio fiscal del CUIT en el padrón de ARCA.
-- **Convenio Multilateral** y **exención** se detectan de lo que cargaste en Ingresos Brutos (un número `90x-…` o el texto "Convenio Multilateral"; "Exento").
-- **La alícuota** es lo único que tenés que cargar: si tu CUIT está en CABA o Mendoza, aparece el campo junto a Ingresos Brutos. Si tenés varias, las dos normas piden la menor.
+- **Convenio Multilateral** y **exención** se detectan de la descripción del tributo Ingresos Brutos (un número `90x-…` o el texto "Convenio Multilateral"; "Exento").
+- **La alícuota** es la del tributo Ingresos Brutos del CUIT. Si tenés varias, las dos normas piden la menor.
 
 | Jurisdicción | Alcance | Leyenda |
 |---|---|---|
@@ -139,12 +145,6 @@ CABA y Mendoza adhirieron al régimen de transparencia fiscal y piden informar l
 | Mendoza (RG ATM 27/2026, Ley 9655) | Solo facturas B a consumidor final | `Alícuota IBMza 3,00% - Ley N° 9655`, y exento `Operación exenta IBMza - Ley N° 9655` |
 
 Las leyendas se imprimen en las facturas con fecha desde el 01/01/2027.
-
----|---|---|
-| CABA (Res. AGIP 169/2026) | Toda factura a consumidor final, salvo del Régimen Simplificado (monotributo) | `ALÍCUOTA ISIB CABA 3,00%`, y con Convenio Multilateral se agrega `APLICABLE SOBRE INGRESOS BRUTOS ATRIBUIDOS A CABA` |
-| Mendoza (RG ATM 27/2026, Ley 9655) | Solo facturas B a consumidor final | `Alícuota IBMza 3,00% - Ley N° 9655` |
-
-Con `iibbTreatment: "promocion"` se imprime "OPERACIÓN ALCANZADA POR REGÍMENES DE PROMOCIÓN ECONÓMICA CABA" o "Tasa Cero - Ley N° 9655"; con `"exenta"`, "OPERACIÓN EXENTA ISIB CABA" u "Operación exenta IBMza - Ley N° 9655".
 
 <Tip>
   Si tus operaciones tienen varias alícuotas, las dos normas piden informar la menor.

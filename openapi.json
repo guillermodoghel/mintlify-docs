@@ -434,6 +434,35 @@
         }
       }
     },
+    "/invoices/{invoiceId}/email": {
+      "post": {
+        "summary": "Enviar la factura por email",
+        "description": "Envía el PDF de una factura autorizada desde noreply@facture.ar, con el mail del usuario como Reply-To. Hasta 5 destinatarios y 200 envíos cada 24 horas.",
+        "tags": ["Facturas"],
+        "parameters": [{ "name": "invoiceId", "in": "path", "description": "ID de la factura", "required": true, "schema": { "type": "string" } }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["to"],
+                "properties": {
+                  "to": { "oneOf": [{ "type": "array", "items": { "type": "string", "format": "email" }, "minItems": 1, "maxItems": 5 }, { "type": "string", "description": "Direcciones separadas por coma" }] },
+                  "message": { "type": "string", "maxLength": 2000, "description": "Mensaje opcional para el cliente" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Enviada", "content": { "application/json": { "schema": { "type": "object", "properties": { "sent": { "type": "boolean" }, "to": { "type": "array", "items": { "type": "string" } } } } } } },
+          "400": { "description": "Destinatarios inválidos o factura no autorizada", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "404": { "description": "Factura no encontrada", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "429": { "description": "Límite diario de envíos alcanzado", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
+        }
+      }
+    },
     "/invoices": {
       "get": {
         "summary": "Listar facturas",
@@ -1889,14 +1918,13 @@
         "type": "object",
         "properties": {
           "template": { "type": "string", "enum": ["clasico", "moderno", "minimalista", "elegante"], "description": "Plantilla visual. Por defecto clasico" },
+          "paperSize": { "type": "string", "enum": ["A4", "LETTER", "LEGAL"], "description": "Tipo de hoja: A4 (por defecto), carta u oficio" },
           "accentColor": { "type": ["string", "null"], "pattern": "^#[0-9a-fA-F]{6}$", "description": "Color de acento #rrggbb. null usa el de la plantilla" },
           "logo": { "type": ["string", "null"], "description": "Logo como data URL (data:image/png|jpeg|webp;base64,...), hasta 512 KB" },
           "tradeName": { "type": ["string", "null"], "maxLength": 120, "description": "Nombre de fantasía" },
-          "iibb": { "type": ["string", "null"], "maxLength": 60, "description": "Número de Ingresos Brutos, Exento o Convenio Multilateral" },
           "activityStart": { "type": ["string", "null"], "format": "date", "description": "Fecha de inicio de actividades (AAAA-MM-DD)" },
           "address": { "type": ["string", "null"], "maxLength": 200, "description": "Domicilio comercial, si difiere del domicilio fiscal del padrón" },
-          "footerNote": { "type": ["string", "null"], "maxLength": 500, "description": "Texto libre al pie de la factura" },
-          "iibbRate": { "type": ["number", "null"], "minimum": 0, "maximum": 100, "description": "Alícuota de Ingresos Brutos en %. Se usa para las leyendas de transparencia de CABA y Mendoza, que se deducen del domicilio fiscal y se imprimen desde 2027-01-01" }
+          "footerNote": { "type": ["string", "null"], "maxLength": 500, "description": "Texto libre al pie de la factura" }
         }
       },
       "Error": {
