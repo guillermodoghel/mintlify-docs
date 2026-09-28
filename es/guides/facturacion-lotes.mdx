@@ -46,15 +46,15 @@ Para facturación retroactiva (por ejemplo cerrar un mes anterior), solo es cohe
 ## Flujo de trabajo con lotes
 
 <Steps>
-  **Crear el lote**: POST /invoices/batches — inicializa un lote vacío
+  **Crear el lote**: `POST /api/invoices` con un **array** de facturas (hasta 500) — el lote se crea y se encola en una sola llamada
 
-  **Agregar facturas**: PATCH /invoices/batches/{batchId} — agregá facturas al lote
+  **Agregar facturas** (opcional): `PATCH /api/invoices/batches/{batchId}` con otro array, mientras el lote no haya terminado
 
-  **Procesar**: el lote se procesa automáticamente (o podés forzar el procesamiento)
+  **Procesar**: Facturear procesa cada factura con ARCA automáticamente
 
-  **Consultar estado**: GET /invoices/batches/{batchId} — verificá el progreso
+  **Consultar estado**: `GET /api/invoices/batches/{batchId}` — verificá el progreso y el CAE de cada ítem
 
-  **Manejar errores**: reintentá los ítems fallidos con POST /invoices/batches/{batchId}/items/{itemId}/retry
+  **Manejar errores**: reintentá los ítems fallidos con `POST /api/invoices/batches/{batchId}/items/{itemId}/retry`
 </Steps>
 
 ---
@@ -62,103 +62,103 @@ Para facturación retroactiva (por ejemplo cerrar un mes anterior), solo es cohe
 ## Crear un lote
 
 ```bash
-POST /invoices/batches
+POST https://www.facture.ar/api/invoices
 ```
 
+El cuerpo es un array donde cada elemento tiene **el mismo formato que una factura suelta** (ver [Emitir tu primera factura](/es/guides/primera-factura)). Cada ítem puede tener su propio `cuitId`, tipo de comprobante, receptor e importes:
+
 ```javascript
-const response = await fetch('https://api.facture.ar/invoices/batches', {
+const facturas = [
+  {
+    cuitId: 'id-de-tu-cuit',
+    invoiceType: 1,               // Factura A
+    ptoVta: 1,
+    concepto: 2,
+    docTipo: 80,
+    docNro: 30711111111,
+    condicionIVAReceptorId: 1,    // IVA Responsable Inscripto
+    clientName: 'Cliente Uno S.A.',
+    cbteFch: '20260930',          // opcional, YYYYMMDD; si omitís, fecha del día al procesar
+    fchServDesde: '20260901',
+    fchServHasta: '20260930',
+    fchVtoPago: '20261010',
+    impNeto: 25000,
+    impIVA: 5250,
+    impTotal: 30250,
+    iva: [{ id: 5, baseImp: 25000, importe: 5250 }],
+    description: 'Suscripción Pro - Septiembre 2026'
+  },
+  {
+    cuitId: 'id-de-tu-cuit',
+    invoiceType: 6,               // Factura B
+    ptoVta: 1,
+    concepto: 2,
+    docTipo: 99,                  // Consumidor final sin identificar
+    docNro: 0,
+    condicionIVAReceptorId: 5,    // Consumidor Final
+    fchServDesde: '20260901',
+    fchServHasta: '20260930',
+    fchVtoPago: '20261010',
+    impNeto: 8000,
+    impIVA: 1680,
+    impTotal: 9680,
+    iva: [{ id: 5, baseImp: 8000, importe: 1680 }],
+    description: 'Suscripción Basic - Septiembre 2026'
+  }
+  // ... más facturas (hasta 500 por request)
+]
+
+const response = await fetch('https://www.facture.ar/api/invoices', {
   method: 'POST',
   headers: {
     'x-api-key': 'tu_api_key',
     'Content-Type': 'application/json'
   },
-  body: JSON.stringify({
-    cuitId: 'id-de-tu-cuit',
-    descripcion: 'Facturación mensual Mayo 2025'
-  })
+  body: JSON.stringify(facturas)
 })
 
-const batch = await response.json()
-console.log('Batch ID:', batch.id)  // "batch_xyz789"
+const lote = await response.json()
+console.log('Batch ID:', lote.batchId)
 ```
 
 Respuesta:
 
 ```json
 {
-  "id": "batch_xyz789",
-  "estado": "creado",
-  "cuitId": "id-de-tu-cuit",
-  "descripcion": "Facturación mensual Mayo 2025",
-  "createdAt": "2025-05-01T10:00:00Z",
-  "totalItems": 0,
-  "procesados": 0,
-  "exitosos": 0,
-  "fallidos": 0
+  "batch": true,
+  "message": "Lote de facturas encolado para procesamiento",
+  "count": 2,
+  "status": "processing",
+  "batchId": "cmg1a2b3c0000xyz",
+  "queueIdentifiers": ["..."]
 }
 ```
+
+Antes de encolar, Facturear valida **todos** los ítems. Si alguno tiene datos inválidos, la API responde `400` con `{ "error": "Datos inválidos en el lote", "details": [...] }` y no encola ninguno.
 
 ---
 
 ## Agregar facturas al lote
 
 ```bash
-PATCH /invoices/batches/{batchId}
+PATCH https://www.facture.ar/api/invoices/batches/{batchId}
 ```
 
-Podés agregar facturas de a una o en grupos:
+El cuerpo es directamente un array de facturas, con el mismo formato que al crear el lote (hasta 500 por llamada):
 
 ```javascript
-const items = [
-  {
-    receptor: {
-      razonSocial: 'Cliente Uno S.A.',
-      cuit: '30-11111111-1',
-      condicionIva: 'RI'
-    },
-    tipo: 1,  // Factura A
-    puntoVenta: 1,
-    cbteFch: '20260505', // opcional, YYYYMMDD; si omitís, fecha del día al procesar
-    items: [
-      {
-        descripcion: 'Suscripción Pro - Mayo 2025',
-        cantidad: 1,
-        precioUnitario: 25000,
-        alicuotaIva: 21
-      }
-    ]
-  },
-  {
-    receptor: {
-      razonSocial: 'Consumidor Final',
-      condicionIva: 'CF'
-    },
-    tipo: 6,  // Factura B
-    puntoVenta: 1,
-    items: [
-      {
-        descripcion: 'Suscripción Basic - Mayo 2025',
-        cantidad: 1,
-        precioUnitario: 8000,
-        alicuotaIva: 21
-      }
-    ]
-  }
-  // ... más facturas
-]
-
-await fetch(`https://api.facture.ar/invoices/batches/${batchId}`, {
+await fetch(`https://www.facture.ar/api/invoices/batches/${batchId}`, {
   method: 'PATCH',
   headers: {
     'x-api-key': 'tu_api_key',
     'Content-Type': 'application/json'
   },
-  body: JSON.stringify({ items })
+  body: JSON.stringify(masFacturas)
 })
 ```
 
 <Info>
-  Podés agregar ítems en múltiples llamadas al mismo batch. Esto es útil si tenés que armar el lote de forma incremental o si querés agregar facturas desde diferentes partes de tu sistema.
+  Podés agregar facturas en múltiples llamadas al mismo lote mientras no haya terminado. Si el lote ya está en `completed`, `completed_with_errors` o `error`, la API responde `400`: en ese caso creá un lote nuevo con `POST /api/invoices`.
 </Info>
 
 ---
@@ -166,169 +166,185 @@ await fetch(`https://api.facture.ar/invoices/batches/${batchId}`, {
 ## Consultar el estado del lote
 
 ```bash
-GET /invoices/batches/{batchId}
+GET https://www.facture.ar/api/invoices/batches/{batchId}
 ```
 
 ```javascript
-const batch = await fetch(`https://api.facture.ar/invoices/batches/${batchId}`, {
+const batch = await fetch(`https://www.facture.ar/api/invoices/batches/${batchId}`, {
   headers: { 'x-api-key': 'tu_api_key' }
 }).then(r => r.json())
 
 console.log(`Total: ${batch.totalItems}`)
-console.log(`Procesados: ${batch.procesados}`)
-console.log(`Exitosos: ${batch.exitosos}`)
-console.log(`Fallidos: ${batch.fallidos}`)
+console.log(`Procesados: ${batch.processedItems}`)
+console.log(`Exitosos: ${batch.successfulItems}`)
+console.log(`Fallidos: ${batch.failedItems}`)
 ```
 
 Respuesta:
 
 ```json
 {
-  "id": "batch_xyz789",
-  "estado": "procesando",
+  "id": "cmg1a2b3c0000xyz",
+  "status": "processing",
   "totalItems": 150,
-  "procesados": 87,
-  "exitosos": 85,
-  "fallidos": 2,
+  "processedItems": 87,
+  "successfulItems": 85,
+  "failedItems": 2,
+  "environment": "production",
   "items": [
     {
-      "id": "item_001",
-      "estado": "exitoso",
-      "invoiceId": "inv_abc123",
-      "cae": "71234567890123"
+      "id": "cmg1a2b3d0001xyz",
+      "status": "completed",
+      "requestBody": { "invoiceType": 1, "docNro": 30711111111, "impTotal": 30250 },
+      "responseBody": {
+        "success": true,
+        "invoiceId": "cmg1a2b3e0002xyz",
+        "voucherNumber": 42,
+        "fecaesolicitarResult": {
+          "FeDetResp": {
+            "FECAEDetResponse": [
+              { "Resultado": "A", "CAE": "76123456789012", "CAEFchVto": "20261010" }
+            ]
+          }
+        }
+      },
+      "cuit": { "id": "id-de-tu-cuit", "number": "20123456789" }
     },
     {
-      "id": "item_002",
-      "estado": "fallido",
-      "error": {
-        "codigo": "10013",
-        "descripcion": "CUIT receptor no válido"
-      }
+      "id": "cmg1a2b3d0002xyz",
+      "status": "error",
+      "requestBody": { "invoiceType": 1, "docNro": 30722222222, "impTotal": 12100 },
+      "responseBody": {
+        "success": false,
+        "errorMessages": ["..."]
+      },
+      "cuit": { "id": "id-de-tu-cuit", "number": "20123456789" }
     }
     // ...
   ]
 }
 ```
 
+El `status` del lote pasa por `pending` y `processing` y termina en `completed`, `completed_with_errors` o `error`. Cada ítem queda en `completed` (con el CAE en `responseBody`) o en `error` (con los mensajes de ARCA o de validación).
+
 ---
 
 ## Manejar errores y reintentos
 
-Los ítems fallidos se pueden reintentar individualmente después de corregir el problema:
+Los ítems en estado `error` se pueden reintentar individualmente:
 
 ```bash
-POST /invoices/batches/{batchId}/items/{itemId}/retry
+POST https://www.facture.ar/api/invoices/batches/{batchId}/items/{itemId}/retry
 ```
 
 ```javascript
-// Corregí el CUIT incorrecto y reintentá
 await fetch(
-  `https://api.facture.ar/invoices/batches/${batchId}/items/${itemId}/retry`,
+  `https://www.facture.ar/api/invoices/batches/${batchId}/items/${itemId}/retry`,
   {
     method: 'POST',
-    headers: {
-      'x-api-key': 'tu_api_key',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      // Datos corregidos del ítem
-      receptor: {
-        cuit: '30-22222222-2',  // CUIT corregido
-        razonSocial: 'Cliente Corregido S.A.',
-        condicionIva: 'RI'
-      }
-    })
+    headers: { 'x-api-key': 'tu_api_key' }
   }
 )
 ```
+
+El reintento vuelve a encolar el ítem **con los mismos datos**: sirve para errores transitorios (ARCA caído, timeouts, un certificado que ya corregiste). Cada ítem admite hasta 5 reintentos manuales.
+
+Si el error está en los datos (por ejemplo, un CUIT de receptor equivocado), emití una factura nueva con los datos corregidos con `POST /api/invoices`.
 
 ---
 
 ## Listar todos los lotes
 
 ```bash
-GET /invoices/batches
+GET https://www.facture.ar/api/invoices/batches
 ```
 
 ```javascript
-const batches = await fetch('https://api.facture.ar/invoices/batches?page=1&limit=20', {
+const { batches, pagination } = await fetch('https://www.facture.ar/api/invoices/batches?page=1&limit=20', {
   headers: { 'x-api-key': 'tu_api_key' }
 }).then(r => r.json())
 ```
 
-Parámetros de filtrado disponibles:
-- `estado`: creado, procesando, completado, con_errores
-- `desde` / `hasta`: filtro por fecha de creación
-- `page` / `limit`: paginación
+Parámetros disponibles:
+- `page` / `limit`: paginación (máximo 100 por página)
+
+La lista incluye los lotes del entorno de tu API key (producción u homologación).
 
 ---
 
 ## Ejemplo completo: facturación mensual de un SaaS
 
-Este script procesa todos los clientes activos de un SaaS y emite una factura mensual para cada uno:
+Este script procesa todos los clientes activos de un SaaS y emite una factura mensual para cada uno, en lotes de hasta 500:
 
 ```javascript
+const BASE_URL = 'https://www.facture.ar/api'
+const CLASE_A = [1, 6, 13, 16]  // condiciones frente al IVA que reciben Factura A
+
+function armarFactura(cliente, mes, cuitId) {
+  const neto = cliente.montoPlan
+  const iva = Math.round(neto * 0.21 * 100) / 100
+  const conCuit = Boolean(cliente.cuit)
+  // cliente.condicionIVAReceptorId: 1 RI, 4 Exento, 5 Consumidor Final, 6 Monotributo...
+  const condicion = cliente.condicionIVAReceptorId ?? 5
+
+  return {
+    cuitId,
+    invoiceType: conCuit && CLASE_A.includes(condicion) ? 1 : 6,  // A o B
+    ptoVta: 1,
+    concepto: 2,
+    docTipo: conCuit ? 80 : 99,
+    docNro: conCuit ? Number(cliente.cuit.replace(/-/g, '')) : 0,
+    condicionIVAReceptorId: condicion,
+    clientName: cliente.razonSocial,
+    fchServDesde: mes.desde,       // 'YYYYMMDD'
+    fchServHasta: mes.hasta,
+    fchVtoPago: mes.vencimiento,
+    impNeto: neto,
+    impIVA: iva,
+    impTotal: Math.round((neto + iva) * 100) / 100,
+    iva: [{ id: 5, baseImp: neto, importe: iva }],
+    description: `Suscripción ${cliente.plan} - ${mes.nombre}`
+  }
+}
+
 async function facturacionMensual(clientes, mes) {
   const apiKey = process.env.FACTUREAR_API_KEY
   const cuitId = process.env.FACTUREAR_CUIT_ID
-  const BASE_URL = 'https://api.facture.ar'
-  
-  // 1. Crear el lote
-  const { id: batchId } = await fetch(`${BASE_URL}/invoices/batches`, {
-    method: 'POST',
-    headers: { 'x-api-key': apiKey, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ cuitId, descripcion: `Facturación ${mes}` })
-  }).then(r => r.json())
+  const headers = { 'x-api-key': apiKey, 'Content-Type': 'application/json' }
 
-  console.log(`Lote creado: ${batchId}`)
-
-  // 2. Agregar facturas en chunks de 50
-  const CHUNK_SIZE = 50
+  // 1. Crear un lote por cada bloque de hasta 500 facturas
+  const CHUNK_SIZE = 500
+  const batchIds = []
   for (let i = 0; i < clientes.length; i += CHUNK_SIZE) {
-    const chunk = clientes.slice(i, i + CHUNK_SIZE)
-    
-    const items = chunk.map(cliente => ({
-      receptor: {
-        razonSocial: cliente.razonSocial,
-        cuit: cliente.cuit,
-        condicionIva: cliente.condicionIva
-      },
-      tipo: cliente.condicionIva === 'RI' ? 1 : 6,  // A o B
-      puntoVenta: 1,
-      items: [{
-        descripcion: `Suscripción ${cliente.plan} - ${mes}`,
-        cantidad: 1,
-        precioUnitario: cliente.montoPlan,
-        alicuotaIva: 21
-      }]
-    }))
+    const facturas = clientes.slice(i, i + CHUNK_SIZE).map(c => armarFactura(c, mes, cuitId))
 
-    await fetch(`${BASE_URL}/invoices/batches/${batchId}`, {
-      method: 'PATCH',
-      headers: { 'x-api-key': apiKey, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ items })
+    const res = await fetch(`${BASE_URL}/invoices`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify(facturas)
     })
+    const body = await res.json()
+    if (!res.ok) throw new Error(`${body.error}: ${JSON.stringify(body.details)}`)
 
-    console.log(`Procesado chunk ${i / CHUNK_SIZE + 1}`)
+    batchIds.push(body.batchId)
+    console.log(`Lote creado: ${body.batchId} (${body.count} facturas)`)
   }
 
-  // 3. Polling hasta que el lote termine
-  let completado = false
-  while (!completado) {
-    await new Promise(r => setTimeout(r, 5000))  // Esperar 5 segundos
-    
-    const batch = await fetch(`${BASE_URL}/invoices/batches/${batchId}`, {
-      headers: { 'x-api-key': apiKey }
-    }).then(r => r.json())
+  // 2. Polling hasta que cada lote termine
+  const TERMINADO = ['completed', 'completed_with_errors', 'error']
+  const resultados = []
+  for (const batchId of batchIds) {
+    let batch
+    do {
+      await new Promise(r => setTimeout(r, 5000))  // Esperar 5 segundos
+      batch = await fetch(`${BASE_URL}/invoices/batches/${batchId}`, { headers }).then(r => r.json())
+      console.log(`${batchId}: ${batch.processedItems}/${batch.totalItems}`)
+    } while (!TERMINADO.includes(batch.status))
 
-    console.log(`Progreso: ${batch.procesados}/${batch.totalItems}`)
-    completado = batch.estado === 'completado' || batch.estado === 'con_errores'
-    
-    if (completado) {
-      console.log(`Exitosos: ${batch.exitosos}, Fallidos: ${batch.fallidos}`)
-      return batch
-    }
+    console.log(`Exitosos: ${batch.successfulItems}, Fallidos: ${batch.failedItems}`)
+    resultados.push(batch)
   }
+  return resultados
 }
 ```
 
@@ -338,10 +354,9 @@ async function facturacionMensual(clientes, mes) {
 
 | Parámetro | Límite |
 |---|---|
-| Ítems por lote | Sin límite (recomendado: máx. 10.000) |
-| Ítems por PATCH | 500 por llamada |
-| Lotes concurrentes | Depende del plan |
-| Tiempo de retención del lote | 30 días |
+| Facturas por request (`POST /api/invoices` o `PATCH`) | 500 |
+| Reintentos manuales por ítem | 5 |
+| Facturas por período | Según tu plan (si lo superás, la API responde `403` con `SUBSCRIPTION_LIMIT_EXCEEDED`) |
 
 <Warning>
   Aunque los lotes son asincrónicos, ARCA puede tener límites de tasa. Si procesás volúmenes muy altos, implementá backoff exponencial en los reintentos de errores de ARCA.
@@ -356,13 +371,13 @@ async function facturacionMensual(clientes, mes) {
     No se puede cancelar un lote que ya está siendo procesado. Los ítems que ya obtuvieron CAE están emitidos y son válidos. Si necesitás anularlos, debés emitir Notas de Crédito.
   </Accordion>
   <Accordion title="¿Los errores de ARCA en un ítem afectan al resto del lote?">
-    No. Cada ítem del lote se procesa de forma independiente. Si un ítem falla por un error de ARCA (CUIT inválido, etc.), el resto sigue procesándose normalmente.
+    No. Cada ítem del lote se procesa de forma independiente. Si un ítem falla por un error de ARCA (CUIT inválido, etc.), el resto sigue procesándose normalmente y el lote termina en `completed_with_errors`.
   </Accordion>
   <Accordion title="¿Cómo sé cuándo terminó el lote?">
-    Podés hacer polling al endpoint GET /invoices/batches/{id} o configurar un webhook para que Facturear te notifique cuando el lote cambia de estado. Ver la documentación de webhooks.
+    Podés hacer polling a `GET /api/invoices/batches/{batchId}` hasta que el `status` sea `completed`, `completed_with_errors` o `error`, o configurar un [webhook](/es/guides/webhook-integracion) para que Facturear te notifique el resultado.
   </Accordion>
   <Accordion title="¿Puedo agregar ítems a un lote que ya está procesando?">
-    Sí, mientras el lote esté en estado "procesando" o "creado" podés seguir agregando ítems. Los nuevos ítems se encolan y se procesan.
+    Sí, mientras el lote esté en `pending` o `processing` podés seguir agregando facturas con `PATCH /api/invoices/batches/{batchId}`. Los nuevos ítems se encolan y se procesan. Una vez terminado, ya no acepta ítems nuevos.
   </Accordion>
   <Accordion title="¿Puedo enviar la fecha del comprobante (cbteFch / cbte_fch)?">
     Sí: en API usá **`cbteFch`** (`YYYYMMDD`) por ítem; en CSV del dashboard usá la columna **`cbte_fch`** (`YYYYMMDD` o `YYYY-MM-DD`). Si no lo definís, se usa la fecha actual al procesar. ARCA no permite fechas anteriores al último comprobante de ese punto de venta y tipo; dentro del lote, las fechas no pueden ir hacia atrás para el mismo circuito.

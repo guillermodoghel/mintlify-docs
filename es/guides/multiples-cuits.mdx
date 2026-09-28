@@ -62,14 +62,31 @@ Cuando tenés múltiples CUITs configurados:
 
 ### Via API
 
-En cada request a la API, especificás el `cuitId` del CUIT para el que querés operar:
+En cada factura indicás el CUIT emisor con `cuitId` (el id del CUIT en Facturear) o con `cuit` (el número, por ejemplo `"20-12345678-9"`). Si no mandás ninguno de los dos, se usa tu CUIT por defecto.
+
+Para obtener los ids de tus CUITs:
+
+```bash
+curl https://www.facture.ar/api/cuits \
+  -H "x-api-key: tu_api_key"
+```
+
+Después, en `POST https://www.facture.ar/api/invoices`:
 
 ```javascript
 {
   "cuitId": "id-del-cuit-especifico",  // ID del CUIT configurado en Facturear
-  "comprobante": { ... }
+  // o bien: "cuit": "30-71234567-8"
+  "invoiceType": 11,
+  "docTipo": 99,
+  "docNro": 0,
+  "condicionIVAReceptorId": 5,
+  "impNeto": 15000,
+  "impTotal": 15000
 }
 ```
+
+En un lote (`POST /api/invoices` con un array), cada factura puede llevar un CUIT distinto, así que podés facturar para varios clientes en una sola llamada. Ver [Facturación en lotes](/es/guides/facturacion-lotes).
 
 ---
 

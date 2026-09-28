@@ -16,7 +16,7 @@
   },
   "servers": [
     {
-      "url": "https://facture.ar/api",
+      "url": "https://www.facture.ar/api",
       "description": "Servidor de producción"
     }
   ],
