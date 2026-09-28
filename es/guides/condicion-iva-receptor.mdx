@@ -1,0 +1,79 @@
+---
+title: 'Condición frente al IVA del receptor (condicionIVAReceptorId)'
+description: 'Desde el 1 de diciembre de 2026 ARCA rechaza los comprobantes sin la condición frente al IVA del receptor o con una que no corresponde a la clase del comprobante. Cómo la informa y la valida la API de Facturear.'
+---
+
+# Condición frente al IVA del receptor
+
+<Warning>
+  **Fecha límite: 30 de noviembre de 2026.** Desde el 1 de diciembre ARCA rechaza el pedido de CAE si falta la condición frente al IVA del receptor o si no corresponde a la clase del comprobante (por ejemplo, una Factura A a un Consumidor Final).
+</Warning>
+
+Cada comprobante informa a ARCA la condición frente al IVA del cliente en el campo `condicionIVAReceptorId`. En la API de Facturear se envía en el mismo cuerpo de `POST /invoices` (y en cada ítem de un lote).
+
+## Cómo lo resuelve Facturear
+
+Si enviás `condicionIVAReceptorId`, Facturear usa ese valor. Si no lo enviás:
+
+| Receptor | Qué hace Facturear |
+| --- | --- |
+| Sin identificar (`docTipo: 99`) o con DNI | Usa `5` (Consumidor Final) |
+| Con CUIT o CUIL (`docTipo: 80` / `86`) | Consulta el padrón de ARCA y usa la condición registrada (Responsable Inscripto, Monotributo, Monotributo Social o Exento) |
+| CUIT sin condición determinable en el padrón | Responde `400` y te pide enviar `condicionIVAReceptorId` |
+
+<Note>
+  Hasta este cambio, la API completaba `5` (Consumidor Final) cuando el campo no venía, también en facturas a un CUIT. Si facturás a empresas sin enviar el campo, a partir de ahora la condición sale del padrón.
+</Note>
+
+En todos los casos, antes de pedir el CAE, Facturear verifica que la condición corresponda a la clase del comprobante y, si no corresponde, responde `400` con los valores permitidos. Así el error aparece en tu integración y no como un rechazo de ARCA.
+
+## Valores y clases de comprobante
+
+| Id | Condición | A / M | B | C |
+| --- | --- | :---: | :---: | :---: |
+| 1 | IVA Responsable Inscripto | ✓ | | ✓ |
+| 4 | IVA Sujeto Exento | | ✓ | ✓ |
+| 5 | Consumidor Final | | ✓ | ✓ |
+| 6 | Responsable Monotributo | ✓ | | ✓ |
+| 7 | Sujeto No Categorizado | | ✓ | ✓ |
+| 8 | Proveedor del Exterior | | ✓ | ✓ |
+| 9 | Cliente del Exterior | | ✓ | ✓ |
+| 10 | IVA Liberado – Ley N° 19.640 | | ✓ | ✓ |
+| 13 | Monotributista Social | ✓ | | ✓ |
+| 15 | IVA No Alcanzado | | ✓ | ✓ |
+| 16 | Monotributo Trabajador Independiente Promovido | ✓ | | ✓ |
+
+La lista vigente, filtrada por clase, está en `GET /arca/FEPARAMGETCONDICIONIVARECEPTOR?claseCmp=A` (ver [Parámetros de ARCA](/es/guides/parametros-arca)).
+
+## Ejemplo
+
+```bash
+curl -X POST https://api.facture.ar/invoices \
+  -H "x-api-key: tu_api_key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "cuitId": "id-de-tu-cuit",
+    "invoiceType": 1,
+    "docTipo": 80,
+    "docNro": 30712345678,
+    "condicionIVAReceptorId": 1,
+    "impNeto": 100000,
+    "impIVA": 21000,
+    "impTotal": 121000,
+    "iva": [{ "id": 5, "baseImp": 100000, "importe": 21000 }]
+  }'
+```
+
+Si la condición no corresponde a la clase:
+
+```json
+{
+  "error": "condicionIVAReceptorId 5 (Consumidor Final) no es válido para un comprobante clase A (tipo 1). Valores permitidos: 1 (IVA Responsable Inscripto), 6 (Responsable Monotributo), 13 (Monotributista Social), 16 (Monotributo Trabajador Independiente Promovido)."
+}
+```
+
+## Qué revisar antes del 30 de noviembre
+
+1. Si guardás la condición de IVA de tus clientes, enviala siempre en `condicionIVAReceptorId`.
+2. Si facturás A a un CUIT, confirmá que el cliente sea Responsable Inscripto o Monotributista.
+3. Probá en [homologación](/es/guides/entorno-testing) las combinaciones que usás (tipo de comprobante y condición).
