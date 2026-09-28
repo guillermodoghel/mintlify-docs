@@ -16,10 +16,7 @@
         "groups": [
           {
             "group": "Inicio",
-            "pages": [
-              "index",
-              "es/getting-started/index"
-            ]
+            "pages": ["index", "es/getting-started/index"]
           },
           {
             "group": "Configuración",
@@ -72,12 +69,7 @@
         "groups": [
           {
             "group": "Factura electrónica",
-            "pages": [
-              "es/fundamentos/que-es-factura-electronica",
-              "es/fundamentos/tipos-de-comprobantes",
-              "es/fundamentos/monotributo",
-              "es/fundamentos/responsable-inscripto"
-            ]
+            "pages": ["es/fundamentos/que-es-factura-electronica", "es/fundamentos/tipos-de-comprobantes", "es/fundamentos/monotributo", "es/fundamentos/responsable-inscripto"]
           },
           {
             "group": "Monotributo",
@@ -148,21 +140,11 @@
           },
           {
             "group": "Retenciones y percepciones",
-            "pages": [
-              "es/retenciones/que-son",
-              "es/retenciones/constancia-retencion",
-              "es/retenciones/mis-retenciones-afip",
-              "es/retenciones/retenciones-ganancias"
-            ]
+            "pages": ["es/retenciones/que-son", "es/retenciones/constancia-retencion", "es/retenciones/mis-retenciones-afip", "es/retenciones/retenciones-ganancias"]
           },
           {
             "group": "Exportación",
-            "pages": [
-              "es/exportacion/factura-e",
-              "es/exportacion/exportacion-bienes",
-              "es/exportacion/beneficios-fiscales",
-              "es/exportacion/cobro-en-divisas"
-            ]
+            "pages": ["es/exportacion/factura-e", "es/exportacion/exportacion-bienes", "es/exportacion/beneficios-fiscales", "es/exportacion/cobro-en-divisas"]
           },
           {
             "group": "Laboral",
@@ -195,11 +177,7 @@
           },
           {
             "group": "Herramientas",
-            "pages": [
-              "es/herramientas/calculadora-iva",
-              "es/herramientas/simulador-monotributo",
-              "es/herramientas/comparador-regimenes"
-            ]
+            "pages": ["es/herramientas/calculadora-iva", "es/herramientas/simulador-monotributo", "es/herramientas/comparador-regimenes"]
           },
           {
             "group": "Glosario A–Z",
@@ -234,10 +212,7 @@
         "groups": [
           {
             "group": "Newsletter Facturear",
-            "pages": [
-              "es/newsletter/index",
-              "es/newsletter/impacto-facturear"
-            ]
+            "pages": ["es/newsletter/index", "es/newsletter/impacto-facturear"]
           },
           {
             "group": "Temas",
@@ -614,10 +589,7 @@
         "groups": [
           {
             "group": "Overview",
-            "pages": [
-              "es/api-reference/index",
-              "es/api-reference/playground"
-            ]
+            "pages": ["es/api-reference/index", "es/api-reference/playground"]
           },
           {
             "group": "API Endpoints",
@@ -659,16 +631,7 @@
     }
   },
   "contextual": {
-    "options": [
-      "copy",
-      "view",
-      "chatgpt",
-      "claude",
-      "perplexity",
-      "mcp",
-      "cursor",
-      "vscode"
-    ]
+    "options": ["copy", "view", "chatgpt", "claude", "perplexity", "mcp", "cursor", "vscode"]
   },
   "api": {
     "playground": {
@@ -676,12 +639,7 @@
       "proxy": true
     },
     "examples": {
-      "languages": [
-        "curl",
-        "javascript",
-        "python",
-        "php"
-      ],
+      "languages": ["curl", "javascript", "python", "php"],
       "defaults": "required"
     }
   },

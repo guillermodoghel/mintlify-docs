@@ -25,29 +25,50 @@
 
   // Storage can throw (private mode, blocked site data): every access degrades to "no value"
   function read(store, key) {
-    try { return window[store].getItem(key); } catch (e) { return null; }
+    try {
+      return window[store].getItem(key);
+    } catch (e) {
+      return null;
+    }
   }
   function write(store, key, value) {
-    try { window[store].setItem(key, value); } catch (e) { /* not persisted, that's fine */ }
+    try {
+      window[store].setItem(key, value);
+    } catch (e) {
+      /* not persisted, that's fine */
+    }
   }
   function state() {
-    try { return (JSON.parse(read('localStorage', STATE_KEY) || '{}') || {}).state || null; } catch (e) { return null; }
+    try {
+      return (JSON.parse(read('localStorage', STATE_KEY) || '{}') || {}).state || null;
+    } catch (e) {
+      return null;
+    }
   }
   function setState(value) {
     write('localStorage', STATE_KEY, JSON.stringify({ state: value, at: new Date().toISOString() }));
   }
   function views() {
-    try { return JSON.parse(read('localStorage', VIEWS_KEY) || '[]') || []; } catch (e) { return []; }
+    try {
+      return JSON.parse(read('localStorage', VIEWS_KEY) || '[]') || [];
+    } catch (e) {
+      return [];
+    }
   }
 
   function el(tag, attrs, children) {
     var node = document.createElement(tag);
     Object.keys(attrs || {}).forEach(function (k) {
       if (k === 'text') node.textContent = attrs[k];
-      else if (k === 'on') Object.keys(attrs.on).forEach(function (ev) { node.addEventListener(ev, attrs.on[ev]); });
+      else if (k === 'on')
+        Object.keys(attrs.on).forEach(function (ev) {
+          node.addEventListener(ev, attrs.on[ev]);
+        });
       else node.setAttribute(k, attrs[k]);
     });
-    (children || []).forEach(function (c) { if (c) node.appendChild(c); });
+    (children || []).forEach(function (c) {
+      if (c) node.appendChild(c);
+    });
     return node;
   }
 
@@ -77,7 +98,14 @@
         body: JSON.stringify({ email: email, source: source, path: location.pathname, website: honeypot.value }),
       })
         .then(function (res) {
-          return res.json().catch(function () { return {}; }).then(function (body) { return { ok: res.ok, body: body }; });
+          return res
+            .json()
+            .catch(function () {
+              return {};
+            })
+            .then(function (body) {
+              return { ok: res.ok, body: body };
+            });
         })
         .then(function (r) {
           if (!r.ok) throw new Error((r.body && r.body.error) || 'error');
@@ -109,13 +137,25 @@
     document.removeEventListener('keydown', onKey);
     renderBanner();
   }
-  function onKey(ev) { if (ev.key === 'Escape') closeModal(true); }
+  function onKey(ev) {
+    if (ev.key === 'Escape') closeModal(true);
+  }
 
   function openModal(source) {
     if (modal || !document.body) return;
     removeBanner();
     var box = el('div', { class: 'fa-modal', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'fa-modal-title' }, [
-      el('button', { class: 'fa-modal-close', type: 'button', 'aria-label': 'Cerrar', text: '×', on: { click: function () { closeModal(true); } } }),
+      el('button', {
+        class: 'fa-modal-close',
+        type: 'button',
+        'aria-label': 'Cerrar',
+        text: '×',
+        on: {
+          click: function () {
+            closeModal(true);
+          },
+        },
+      }),
       el('div', { class: 'fa-modal-kicker', text: 'Newsletter Facturear' }),
       el('h2', { class: 'fa-modal-title', id: 'fa-modal-title', text: 'Las novedades impositivas, en tu mail' }),
       el('p', { class: 'fa-modal-text', text: 'Te avisamos lo que cambia para facturar antes de que te afecte. Leés en dos minutos y seguís con lo tuyo.' }),
@@ -124,21 +164,49 @@
         el('li', { text: 'Vencimientos y topes del Monotributo' }),
         el('li', { text: 'Sin spam: te das de baja con un clic' }),
       ]),
-      form(source, function () { closeModal(false); }),
-      el('button', { class: 'fa-modal-later', type: 'button', text: 'No, gracias', on: { click: function () { closeModal(true); } } }),
+      form(source, function () {
+        closeModal(false);
+      }),
+      el('button', {
+        class: 'fa-modal-later',
+        type: 'button',
+        text: 'No, gracias',
+        on: {
+          click: function () {
+            closeModal(true);
+          },
+        },
+      }),
     ]);
-    modal = el('div', { class: 'fa-modal-backdrop', on: { click: function (ev) { if (ev.target === modal) closeModal(true); } } }, [box]);
+    modal = el(
+      'div',
+      {
+        class: 'fa-modal-backdrop',
+        on: {
+          click: function (ev) {
+            if (ev.target === modal) closeModal(true);
+          },
+        },
+      },
+      [box]
+    );
     document.body.appendChild(modal);
     document.addEventListener('keydown', onKey);
     var input = box.querySelector('input[type=email]');
-    if (input) setTimeout(function () { input.focus(); }, 50);
+    if (input)
+      setTimeout(function () {
+        input.focus();
+      }, 50);
   }
 
   // ── Banner ───────────────────────────────────────────────────────────────
   var banner = null;
 
   function removeBanner() {
-    if (banner) { banner.remove(); banner = null; }
+    if (banner) {
+      banner.remove();
+      banner = null;
+    }
   }
   function bannerAllowed() {
     return state() !== 'subscribed' && read('sessionStorage', BANNER_KEY) !== '1' && !/^\/es\/api-reference/.test(location.pathname);
@@ -147,10 +215,27 @@
     if (!bannerAllowed() || modal) return removeBanner();
     if (banner || !document.body) return;
     banner = el('div', { class: 'fa-banner', role: 'complementary', 'aria-label': 'Suscripción al newsletter' }, [
-      el('button', { class: 'fa-banner-open', type: 'button', text: 'Recibí las novedades impositivas', on: { click: function () { openModal('banner'); } } }),
       el('button', {
-        class: 'fa-banner-x', type: 'button', 'aria-label': 'Ocultar', text: '×',
-        on: { click: function () { write('sessionStorage', BANNER_KEY, '1'); removeBanner(); } },
+        class: 'fa-banner-open',
+        type: 'button',
+        text: 'Recibí las novedades impositivas',
+        on: {
+          click: function () {
+            openModal('banner');
+          },
+        },
+      }),
+      el('button', {
+        class: 'fa-banner-x',
+        type: 'button',
+        'aria-label': 'Ocultar',
+        text: '×',
+        on: {
+          click: function () {
+            write('sessionStorage', BANNER_KEY, '1');
+            removeBanner();
+          },
+        },
       }),
     ]);
     document.body.appendChild(banner);
