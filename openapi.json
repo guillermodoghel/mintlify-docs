@@ -437,7 +437,7 @@
     "/invoices/{invoiceId}/email": {
       "post": {
         "summary": "Enviar la factura por email",
-        "description": "Envía el PDF de una factura autorizada desde noreply@facture.ar, con el mail del usuario como Reply-To. Hasta 5 destinatarios y 200 envíos cada 24 horas.",
+        "description": "Envía el PDF de una factura autorizada desde noreply@facture.ar (solo envío, no recibe respuestas). Hasta 5 destinatarios y 200 envíos cada 24 horas.",
         "tags": ["Facturas"],
         "parameters": [{ "name": "invoiceId", "in": "path", "description": "ID de la factura", "required": true, "schema": { "type": "string" } }],
         "requestBody": {
