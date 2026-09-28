@@ -3,6 +3,28 @@
  "url": "https://docs.facture.ar/es/newsletter/index",
  "notes": [
   {
+   "slug": "arca-recibos-casas-particulares-certificado-articulo-80-2026-09-28",
+   "title": "ARCA aclaró cómo emitir recibos de Casas Particulares y el Certificado del artículo 80",
+   "description": "ARCA actualizó su ABC de consultas frecuentes con precisiones sobre el recibo electrónico F.102/RT del personal de Casas Particulares y el Certificado de Trabajo del art. 80 LCT.",
+   "date": "2026-09-28",
+   "category": "laboral",
+   "category_label": "Laboral y previsional",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/arca-recibos-casas-particulares-certificado-articulo-80-2026-09-28"
+  },
+  {
+   "slug": "tapon-fiscal-inocencia-fiscal-inspecciones-en-curso-2026-09-28",
+   "title": "Tapón fiscal de la Ley de Inocencia Fiscal: cuándo aplica a inspecciones en curso",
+   "description": "Análisis del alcance del tapón fiscal para años no prescriptos del Impuesto a las Ganancias bajo las dos versiones de la Ley de Inocencia Fiscal y su impacto en fiscalizaciones activas de ARCA.",
+   "date": "2026-09-28",
+   "category": "ganancias",
+   "category_label": "Ganancias",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/tapon-fiscal-inocencia-fiscal-inspecciones-en-curso-2026-09-28"
+  },
+  {
    "slug": "deduccion-pagos-monotributistas-fallo-arca-2026-09-26",
    "title": "Pagos a monotributistas: la Justicia avala el límite de ARCA para deducir en Ganancias",
    "description": "Un fallo judicial respaldó la restricción de ARCA para deducir en Ganancias los pagos a monotributistas, admitiendo solo aquellos vinculados a operaciones recurrentes. Qué implica para empresas y contadores.",
@@ -859,28 +881,6 @@
    "impact": "ninguno",
    "impact_note": null,
    "url": "https://docs.facture.ar/es/newsletter/notas/contadores-argentina-vencimientos-web-arca-2026-08-17"
-  },
-  {
-   "slug": "problemas-web-arca-vencimientos-multas-2026-08-16",
-   "title": "Caídas de la web de ARCA en vencimientos: cómo impactan frente al aumento de multas",
-   "description": "Análisis de los problemas recurrentes del portal de ARCA durante vencimientos clave, el efecto combinado con el aumento de sanciones y estrategias prácticas para contadores y empresas.",
-   "date": "2026-08-16",
-   "category": "vencimientos",
-   "category_label": "Vencimientos",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/problemas-web-arca-vencimientos-multas-2026-08-16"
-  },
-  {
-   "slug": "impuesto-vence-antes-de-saber-cuanto-pagar-2026-08-14",
-   "title": "Inocencia fiscal: cuando el impuesto vence antes de saber cuánto pagar",
-   "description": "Analizamos el dilema tributario que enfrentan contadores y empresas cuando deben cumplir obligaciones fiscales sin certeza sobre el monto exacto a ingresar.",
-   "date": "2026-08-14",
-   "category": "vencimientos",
-   "category_label": "Vencimientos",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/impuesto-vence-antes-de-saber-cuanto-pagar-2026-08-14"
   }
  ]
 }
