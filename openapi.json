@@ -501,27 +501,7 @@
                       }
                     },
                     "pagination": {
-                      "type": "object",
-                      "properties": {
-                        "page": {
-                          "type": "integer"
-                        },
-                        "limit": {
-                          "type": "integer"
-                        },
-                        "totalCount": {
-                          "type": "integer"
-                        },
-                        "totalPages": {
-                          "type": "integer"
-                        },
-                        "hasNextPage": {
-                          "type": "boolean"
-                        },
-                        "hasPrevPage": {
-                          "type": "boolean"
-                        }
-                      }
+                      "$ref": "#/components/schemas/Meta"
                     }
                   }
                 }
@@ -547,7 +527,8 @@
                     "type": "array",
                     "items": {
                       "$ref": "#/components/schemas/InvoiceRequest"
-                    }
+                    },
+                    "maxItems": 500
                   }
                 ]
               }
@@ -555,28 +536,28 @@
           }
         },
         "responses": {
-          "202": {
+          "200": {
             "description": "Factura(s) aceptada(s) para procesamiento",
             "content": {
               "application/json": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/InvoiceResponse"
-                    },
-                    {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/InvoiceResponse"
-                      }
-                    }
-                  ]
+                  "$ref": "#/components/schemas/InvoiceResponse"
                 }
               }
             }
           },
           "400": {
             "description": "Datos de factura inválidos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Límite de facturas del plan alcanzado",
             "content": {
               "application/json": {
                 "schema": {
@@ -600,8 +581,7 @@
             "description": "ID de la factura",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "uuid"
+              "type": "string"
             }
           }
         ],
@@ -739,7 +719,7 @@
               "type": "integer",
               "minimum": 1,
               "maximum": 100,
-              "default": 20
+              "default": 10
             }
           }
         ],
@@ -751,13 +731,13 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "data": {
+                    "batches": {
                       "type": "array",
                       "items": {
                         "$ref": "#/components/schemas/Batch"
                       }
                     },
-                    "meta": {
+                    "pagination": {
                       "$ref": "#/components/schemas/Meta"
                     }
                   }
@@ -780,8 +760,7 @@
             "description": "ID del lote",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "uuid"
+              "type": "string"
             }
           }
         ],
@@ -819,8 +798,7 @@
             "description": "ID del lote",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "uuid"
+              "type": "string"
             }
           }
         ],
@@ -829,17 +807,13 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "required": ["invoices"],
-                "properties": {
-                  "invoices": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/InvoiceRequest"
-                    },
-                    "description": "Array de facturas a agregar al lote"
-                  }
-                }
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 500,
+                "items": {
+                  "$ref": "#/components/schemas/InvoiceRequest"
+                },
+                "description": "Facturas a agregar al lote"
               }
             }
           }
@@ -850,7 +824,29 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BatchDetail"
+                  "type": "object",
+                  "properties": {
+                    "batch": {
+                      "type": "boolean"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "count": {
+                      "type": "integer",
+                      "description": "Cantidad de facturas agregadas"
+                    },
+                    "status": {
+                      "type": "string",
+                      "enum": ["processing"]
+                    },
+                    "batchId": {
+                      "type": "string"
+                    },
+                    "addedToExistingBatch": {
+                      "type": "boolean"
+                    }
+                  }
                 }
               }
             }
@@ -880,8 +876,7 @@
             "description": "ID del lote",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "uuid"
+              "type": "string"
             }
           },
           {
@@ -890,8 +885,7 @@
             "description": "ID del item del lote",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "uuid"
+              "type": "string"
             }
           }
         ],
@@ -903,12 +897,25 @@
                 "schema": {
                   "type": "object",
                   "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
                     "message": {
                       "type": "string",
                       "description": "Mensaje de confirmación"
                     },
-                    "item": {
-                      "$ref": "#/components/schemas/BatchItem"
+                    "itemId": {
+                      "type": "string",
+                      "description": "ID del item"
+                    },
+                    "newStatus": {
+                      "type": "string",
+                      "enum": ["pending"],
+                      "description": "Nuevo estado del item"
+                    },
+                    "manualRetryCount": {
+                      "type": "integer",
+                      "description": "Reintentos manuales hechos (máximo 5)"
                     }
                   }
                 }
@@ -1004,35 +1011,144 @@
     "schemas": {
       "Cuit": {
         "type": "object",
-        "required": ["id", "cuit", "businessName", "status"],
+        "description": "CUIT de tu cuenta. Nunca incluye certificados, claves privadas ni tickets de acceso.",
+        "required": [
+          "id",
+          "number",
+          "testing_certificate_valid",
+          "production_certificate_valid",
+          "testing_afip_connection_valid",
+          "production_afip_connection_valid",
+          "is_default",
+          "setupStatus",
+          "userId",
+          "createdAt",
+          "updatedAt"
+        ],
         "properties": {
           "id": {
             "type": "string",
-            "format": "uuid",
-            "description": "ID único del CUIT"
+            "example": "cm1a2b3c4d5e6f7g8h9i0j",
+            "description": "ID del CUIT"
           },
-          "cuit": {
+          "number": {
             "type": "string",
             "pattern": "^[0-9]{2}-[0-9]{8}-[0-9]{1}$",
+            "example": "20-12345678-9",
             "description": "Número de CUIT en formato XX-XXXXXXXX-X"
           },
-          "businessName": {
-            "type": "string",
-            "description": "Razón social de la empresa"
+          "persona": {
+            "type": ["object", "null"],
+            "description": "Datos del padrón de ARCA (datosGenerales, datosMonotributo o datosRegimenGeneral, etc.) tal como los devuelve ARCA"
           },
-          "status": {
-            "type": "string",
-            "enum": ["active", "inactive", "pending"],
-            "description": "Estado del CUIT"
+          "personaLastUpdated": {
+            "type": ["string", "null"],
+            "format": "date-time",
+            "description": "Última actualización de los datos del padrón"
           },
-          "type": {
-            "type": "string",
-            "enum": ["monotributo", "responsable_inscripto", "exento"],
-            "description": "Tipo de CUIT"
+          "pos": {
+            "type": ["object", "null"],
+            "description": "Puntos de venta tal como los devuelve ARCA (FEParamGetPtosVenta). La lista está en ResultGet.PtoVenta"
           },
-          "category": {
+          "posLastUpdated": {
+            "type": ["string", "null"],
+            "format": "date-time",
+            "description": "Última actualización de los puntos de venta"
+          },
+          "default_pos": {
+            "type": ["integer", "null"],
+            "description": "Punto de venta por defecto",
+            "example": 1
+          },
+          "default_concept": {
+            "type": ["integer", "null"],
+            "description": "Concepto por defecto (1 productos, 2 servicios, 3 productos y servicios)",
+            "example": 2
+          },
+          "default_invoice_type": {
+            "type": ["integer", "null"],
+            "description": "Tipo de comprobante por defecto (código de ARCA)",
+            "example": 11
+          },
+          "default_iva": {
+            "type": ["integer", "null"],
+            "description": "Alícuota de IVA por defecto (código de ARCA)",
+            "example": 5
+          },
+          "production_certificate_expiration": {
+            "type": ["string", "null"],
+            "format": "date-time",
+            "description": "Vencimiento del certificado de producción"
+          },
+          "production_ta_expiration": {
+            "type": ["string", "null"],
+            "format": "date-time",
+            "description": "Vencimiento del ticket de acceso de producción"
+          },
+          "testing_certificate_expiration": {
+            "type": ["string", "null"],
+            "format": "date-time",
+            "description": "Vencimiento del certificado de homologación"
+          },
+          "testing_ta_expiration": {
+            "type": ["string", "null"],
+            "format": "date-time",
+            "description": "Vencimiento del ticket de acceso de homologación"
+          },
+          "testing_certificate_valid": {
+            "type": "boolean",
+            "description": "El certificado de homologación es válido"
+          },
+          "production_certificate_valid": {
+            "type": "boolean",
+            "description": "El certificado de producción es válido"
+          },
+          "testing_afip_connection_valid": {
+            "type": "boolean",
+            "description": "La conexión con ARCA en homologación funciona"
+          },
+          "production_afip_connection_valid": {
+            "type": "boolean",
+            "description": "La conexión con ARCA en producción funciona"
+          },
+          "is_default": {
+            "type": "boolean",
+            "description": "Es el CUIT por defecto de la cuenta"
+          },
+          "setupStatus": {
             "type": "string",
-            "description": "Categoría del monotributo (si aplica)"
+            "enum": [
+              "INITIALIZED",
+              "IN_PROGRESS",
+              "TEST_CERTIFICATE_COMPLETE",
+              "PROD_CERTIFICATE_COMPLETE",
+              "AWAITING_DELEGATION",
+              "DELEGATION_COMPLETE",
+              "AUTOMATION_IN_PROGRESS",
+              "AUTOMATION_FAILED",
+              "COMPLETED",
+              "SKIPPED"
+            ],
+            "description": "Estado de la configuración del CUIT"
+          },
+          "integrationMode": {
+            "type": ["string", "null"],
+            "enum": ["DELEGATION", "CERTIFICATE", null],
+            "description": "Modo de conexión con ARCA"
+          },
+          "testingSetupState": {
+            "type": ["string", "null"],
+            "enum": ["REQUESTED", "COMPLETED", null],
+            "description": "Estado de la configuración de homologación. Solo viene en GET /cuits"
+          },
+          "productionSetupState": {
+            "type": ["string", "null"],
+            "enum": ["REQUESTED", "COMPLETED", null],
+            "description": "Estado de la configuración de producción. Solo viene en GET /cuits"
+          },
+          "userId": {
+            "type": "string",
+            "description": "ID del usuario dueño del CUIT"
           },
           "createdAt": {
             "type": "string",
@@ -1046,167 +1162,405 @@
           }
         }
       },
-      "CuitDefaults": {
-        "type": "object",
-        "properties": {
-          "cuitId": {
-            "type": "string",
-            "format": "uuid",
-            "description": "ID del CUIT"
-          },
-          "defaultInvoiceType": {
-            "type": "integer",
-            "description": "Tipo de factura por defecto"
-          },
-          "defaultDocTipo": {
-            "type": "integer",
-            "description": "Tipo de documento por defecto"
-          },
-          "defaultDocNro": {
-            "type": "integer",
-            "description": "Número de documento por defecto"
-          },
-          "defaultIvaType": {
-            "type": "integer",
-            "description": "Tipo de IVA por defecto"
-          },
-          "defaultCurrency": {
-            "type": "string",
-            "enum": ["ARS", "USD"],
-            "default": "ARS",
-            "description": "Moneda por defecto"
-          }
-        }
-      },
-      "CuitDefaultsUpdate": {
-        "type": "object",
-        "properties": {
-          "defaultInvoiceType": {
-            "type": "integer",
-            "description": "Tipo de factura por defecto"
-          },
-          "defaultDocTipo": {
-            "type": "integer",
-            "description": "Tipo de documento por defecto"
-          },
-          "defaultDocNro": {
-            "type": "integer",
-            "description": "Número de documento por defecto"
-          },
-          "defaultIvaType": {
-            "type": "integer",
-            "description": "Tipo de IVA por defecto"
-          },
-          "defaultCurrency": {
-            "type": "string",
-            "enum": ["ARS", "USD"],
-            "description": "Moneda por defecto"
-          }
-        }
-      },
       "InvoiceRequest": {
         "type": "object",
-        "required": ["cuitId", "amount", "description", "docTipo", "docNro", "invoiceType"],
+        "description": "Una factura. Todos los campos son opcionales salvo el importe: enviá impTotal (o amount, deprecado). Si no enviás cuitId ni cuit se usa el CUIT por defecto de la cuenta; lo que no envíes se completa con los valores por defecto del CUIT.",
         "properties": {
           "cuitId": {
             "type": "string",
-            "format": "uuid",
-            "description": "ID del CUIT emisor"
+            "description": "ID del CUIT emisor. Alternativa a cuit"
           },
-          "amount": {
-            "type": "number",
-            "format": "float",
-            "minimum": 0.01,
-            "description": "Monto de la factura"
-          },
-          "description": {
+          "cuit": {
             "type": "string",
-            "maxLength": 500,
-            "description": "Descripción de la factura"
+            "example": "20-12345678-9",
+            "description": "Número de CUIT emisor, con o sin guiones. Alternativa a cuitId"
+          },
+          "invoiceType": {
+            "type": "integer",
+            "description": "Tipo de comprobante (código de ARCA, por ejemplo 1 Factura A, 6 Factura B, 11 Factura C). Por defecto, el del CUIT; si no tiene, 11 para monotributistas y 6 para responsables inscriptos",
+            "example": 11
+          },
+          "ptoVta": {
+            "type": "integer",
+            "description": "Punto de venta. Por defecto, el del CUIT (o 1)",
+            "example": 1
+          },
+          "concepto": {
+            "type": "integer",
+            "enum": [1, 2, 3],
+            "description": "Concepto: 1 productos, 2 servicios, 3 productos y servicios. Por defecto, el del CUIT (o 2 para monotributistas y 1 para el resto)"
           },
           "docTipo": {
             "type": "integer",
-            "description": "Tipo de documento del cliente"
+            "default": 99,
+            "description": "Tipo de documento del receptor (código de ARCA: 80 CUIT, 86 CUIL, 96 DNI, 99 consumidor final)"
           },
           "docNro": {
             "type": "integer",
-            "description": "Número de documento del cliente"
+            "minimum": 0,
+            "default": 0,
+            "description": "Número de documento del receptor (0 para consumidor final)"
           },
           "condicionIVAReceptorId": {
             "type": "integer",
             "enum": [1, 4, 5, 6, 7, 8, 9, 10, 13, 15, 16],
             "description": "Condición frente al IVA del receptor (obligatoria para ARCA desde el 1/12/2026). Si no se envía: 5 (Consumidor Final) para receptores sin identificar o con DNI; para CUIT/CUIL se toma del padrón de ARCA, y si no se puede determinar la API responde 400. Debe corresponder a la clase del comprobante (A/M: 1, 6, 13, 16; B: 4, 5, 7, 8, 9, 10, 15; C: todas). Ver /es/guides/condicion-iva-receptor."
           },
-          "invoiceType": {
-            "type": "integer",
-            "description": "Tipo de factura"
-          },
-          "ivaType": {
-            "type": "integer",
-            "description": "Tipo de IVA"
-          },
-          "currency": {
+          "monId": {
             "type": "string",
-            "enum": ["ARS", "USD"],
-            "default": "ARS",
-            "description": "Moneda de la factura"
+            "default": "PES",
+            "description": "Moneda (código de ARCA, por ejemplo PES o DOL)"
           },
-          "dueDate": {
+          "monCotiz": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "default": 1,
+            "description": "Cotización de la moneda"
+          },
+          "description": {
             "type": "string",
-            "format": "date",
-            "description": "Fecha de vencimiento"
+            "default": "Venta de servicios",
+            "description": "Descripción de la factura"
+          },
+          "clientName": {
+            "type": "string",
+            "description": "Nombre o razón social del receptor"
+          },
+          "fchServDesde": {
+            "type": "string",
+            "description": "Inicio del período facturado (servicios). Fecha en formato YYYYMMDD"
+          },
+          "fchServHasta": {
+            "type": "string",
+            "description": "Fin del período facturado (servicios). Fecha en formato YYYYMMDD"
+          },
+          "fchVtoPago": {
+            "type": "string",
+            "description": "Vencimiento del pago (servicios). Fecha en formato YYYYMMDD"
+          },
+          "cbteFch": {
+            "type": "string",
+            "pattern": "^[0-9]{8}$",
+            "description": "Fecha del comprobante. Fecha en formato YYYYMMDD. Por defecto, hoy",
+            "example": "20260928"
+          },
+          "impNeto": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "maximum": 10000000,
+            "description": "Importe neto gravado"
+          },
+          "impTotal": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "maximum": 10000000,
+            "description": "Importe total. Requerido si no enviás amount",
+            "example": 1210
+          },
+          "impTotConc": {
+            "type": "number",
+            "minimum": 0,
+            "default": 0,
+            "description": "Importe neto no gravado"
+          },
+          "impOpEx": {
+            "type": "number",
+            "minimum": 0,
+            "default": 0,
+            "description": "Importe exento"
+          },
+          "impTrib": {
+            "type": "number",
+            "minimum": 0,
+            "default": 0,
+            "description": "Suma de los tributos"
+          },
+          "impIVA": {
+            "type": "number",
+            "minimum": 0,
+            "default": 0,
+            "description": "Suma del IVA"
+          },
+          "amount": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "maximum": 10000000,
+            "deprecated": true,
+            "description": "Importe total. Deprecado: usá impTotal"
+          },
+          "cbtesAsoc": {
+            "type": "array",
+            "description": "Comprobantes asociados (notas de crédito y débito)",
+            "items": {
+              "type": "object",
+              "required": ["tipo", "ptoVta", "nro"],
+              "properties": {
+                "tipo": {
+                  "type": "integer",
+                  "description": "Tipo de comprobante asociado"
+                },
+                "ptoVta": {
+                  "type": "integer",
+                  "description": "Punto de venta del comprobante asociado"
+                },
+                "nro": {
+                  "type": "integer",
+                  "description": "Número del comprobante asociado"
+                },
+                "cuit": {
+                  "type": "string",
+                  "description": "CUIT emisor del comprobante asociado"
+                },
+                "cbteFch": {
+                  "type": "string",
+                  "description": "Fecha del comprobante asociado. Fecha en formato YYYYMMDD"
+                }
+              }
+            }
+          },
+          "tributos": {
+            "type": "array",
+            "description": "Tributos (percepciones, impuestos internos, etc.)",
+            "items": {
+              "type": "object",
+              "required": ["id", "desc", "baseImp", "alic", "importe"],
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "description": "Código del tributo (FEPARAMGETTIPOSTRIBUTOS)"
+                },
+                "desc": {
+                  "type": "string",
+                  "description": "Descripción del tributo"
+                },
+                "baseImp": {
+                  "type": "number",
+                  "minimum": 0,
+                  "description": "Base imponible"
+                },
+                "alic": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 100,
+                  "description": "Alícuota en porcentaje"
+                },
+                "importe": {
+                  "type": "number",
+                  "minimum": 0,
+                  "description": "Importe del tributo"
+                }
+              }
+            }
+          },
+          "iva": {
+            "type": "array",
+            "description": "Alícuotas de IVA",
+            "items": {
+              "type": "object",
+              "required": ["id", "baseImp", "importe"],
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "description": "Código de la alícuota (FEPARAMGETTIPOSIVA, por ejemplo 5 = 21%)"
+                },
+                "baseImp": {
+                  "type": "number",
+                  "minimum": 0,
+                  "description": "Base imponible"
+                },
+                "importe": {
+                  "type": "number",
+                  "minimum": 0,
+                  "description": "Importe de IVA"
+                }
+              }
+            }
+          },
+          "opcionales": {
+            "type": "array",
+            "description": "Datos opcionales de ARCA",
+            "items": {
+              "type": "object",
+              "required": ["id", "valor"],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "Código del opcional"
+                },
+                "valor": {
+                  "type": "string",
+                  "description": "Valor"
+                }
+              }
+            }
+          },
+          "compradores": {
+            "type": "array",
+            "description": "Compradores (operaciones con varios compradores)",
+            "items": {
+              "type": "object",
+              "required": ["docTipo", "docNro", "porcentaje"],
+              "properties": {
+                "docTipo": {
+                  "type": "integer",
+                  "description": "Tipo de documento del comprador"
+                },
+                "docNro": {
+                  "type": "integer",
+                  "description": "Número de documento del comprador"
+                },
+                "porcentaje": {
+                  "type": "number",
+                  "description": "Porcentaje de titularidad"
+                }
+              }
+            }
+          },
+          "periodoAsoc": {
+            "type": "object",
+            "description": "Período asociado (notas de crédito y débito)",
+            "required": ["fchDesde", "fchHasta"],
+            "properties": {
+              "fchDesde": {
+                "type": "string",
+                "description": "Desde. Fecha en formato YYYYMMDD"
+              },
+              "fchHasta": {
+                "type": "string",
+                "description": "Hasta. Fecha en formato YYYYMMDD"
+              }
+            }
+          },
+          "actividades": {
+            "type": "array",
+            "description": "Actividades del emisor",
+            "items": {
+              "type": "object",
+              "required": ["id"],
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "description": "Código de actividad"
+                }
+              }
+            }
+          },
+          "items": {
+            "type": "array",
+            "maxItems": 500,
+            "description": "Ítems de la factura (se muestran en el PDF)",
+            "items": {
+              "type": "object",
+              "required": ["description", "quantity", "unitPrice", "discount", "ivaRate", "subtotal"],
+              "properties": {
+                "description": {
+                  "type": "string",
+                  "description": "Descripción del ítem"
+                },
+                "quantity": {
+                  "type": "number",
+                  "exclusiveMinimum": 0,
+                  "description": "Cantidad"
+                },
+                "unitPrice": {
+                  "type": "number",
+                  "exclusiveMinimum": 0,
+                  "description": "Precio unitario"
+                },
+                "discount": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 100,
+                  "description": "Descuento en porcentaje"
+                },
+                "ivaRate": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 100,
+                  "description": "Alícuota de IVA en porcentaje"
+                },
+                "subtotal": {
+                  "type": "number",
+                  "exclusiveMinimum": 0,
+                  "description": "Subtotal del ítem"
+                }
+              }
+            }
           }
         }
       },
       "Invoice": {
         "type": "object",
-        "required": ["id", "cuitId", "amount", "status", "createdAt"],
+        "required": [
+          "id",
+          "userId",
+          "cuitId",
+          "environment",
+          "amount",
+          "voucherNumber",
+          "feCAEReq",
+          "status",
+          "createdAt",
+          "updatedAt"
+        ],
         "properties": {
           "id": {
             "type": "string",
-            "format": "uuid",
-            "description": "ID único de la factura"
+            "description": "ID de la factura"
+          },
+          "userId": {
+            "type": "string",
+            "description": "ID del usuario"
           },
           "cuitId": {
             "type": "string",
-            "format": "uuid",
             "description": "ID del CUIT emisor"
+          },
+          "environment": {
+            "type": "string",
+            "enum": ["production", "homologation"],
+            "description": "Entorno en el que se emitió"
           },
           "amount": {
             "type": "number",
-            "format": "float",
-            "description": "Monto de la factura"
+            "example": 1210,
+            "description": "Importe total"
           },
-          "description": {
-            "type": "string",
-            "description": "Descripción de la factura"
+          "voucherNumber": {
+            "type": "integer",
+            "example": 145,
+            "description": "Número de comprobante"
+          },
+          "ptoVta": {
+            "type": ["integer", "null"],
+            "description": "Punto de venta",
+            "example": 1
+          },
+          "invoiceType": {
+            "type": ["integer", "null"],
+            "description": "Tipo de comprobante (código de ARCA)",
+            "example": 11
+          },
+          "feCAEReq": {
+            "type": "object",
+            "description": "Solicitud enviada a ARCA (FeCAEReq con FeCabReq y FeDetReq), más items, tributos y clientName"
+          },
+          "feCabResp": {
+            "type": ["object", "null"],
+            "description": "Respuesta de ARCA tal cual (FeCabResp y FeDetResp; el CAE y su vencimiento están en FeDetResp.FECAEDetResponse)"
           },
           "status": {
             "type": "string",
-            "enum": ["pending", "processing", "completed", "failed"],
+            "enum": ["processing", "success", "error"],
             "description": "Estado de la factura"
           },
-          "invoiceNumber": {
-            "type": "string",
-            "description": "Número de factura generado por AFIP"
+          "errorMessage": {
+            "type": ["string", "null"],
+            "description": "Motivo del error, si status es error"
           },
-          "cae": {
-            "type": "string",
-            "description": "Código de Autorización Electrónica"
-          },
-          "caeExpirationDate": {
-            "type": "string",
-            "format": "date",
-            "description": "Fecha de vencimiento del CAE"
-          },
-          "qrCode": {
-            "type": "string",
-            "description": "Código QR de la factura"
-          },
-          "pdfUrl": {
-            "type": "string",
-            "format": "uri",
-            "description": "URL del PDF de la factura"
+          "description": {
+            "type": ["string", "null"],
+            "description": "Descripción de la factura"
           },
           "createdAt": {
             "type": "string",
@@ -1217,124 +1571,126 @@
             "type": "string",
             "format": "date-time",
             "description": "Fecha de última actualización"
+          },
+          "cuit": {
+            "type": "object",
+            "description": "CUIT emisor. persona solo viene en GET /invoices/{invoiceId}",
+            "properties": {
+              "number": {
+                "type": "string",
+                "description": "Número de CUIT",
+                "example": "20-12345678-9"
+              },
+              "persona": {
+                "type": ["object", "null"],
+                "description": "Datos del padrón de ARCA del emisor"
+              }
+            }
           }
         }
       },
       "InvoiceResponse": {
         "type": "object",
-        "required": ["id", "status"],
+        "description": "Las facturas quedan encoladas en un lote; consultá su resultado con GET /invoices/batches/{batchId}.",
+        "required": ["batch", "message", "count", "status", "batchId", "queueIdentifiers"],
         "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid",
-            "description": "ID único de la factura"
-          },
-          "status": {
-            "type": "string",
-            "enum": ["pending", "processing"],
-            "description": "Estado inicial de la factura"
+          "batch": {
+            "type": "boolean",
+            "description": "false si se encoló una sola factura, true si fueron varias"
           },
           "message": {
             "type": "string",
-            "description": "Mensaje de confirmación"
-          }
-        }
-      },
-      "ArcaParameters": {
-        "type": "object",
-        "properties": {
-          "invoiceTypes": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "code": {
-                  "type": "integer",
-                  "description": "Código del tipo de factura"
-                },
-                "name": {
-                  "type": "string",
-                  "description": "Nombre del tipo de factura"
-                },
-                "description": {
-                  "type": "string",
-                  "description": "Descripción del tipo de factura"
-                }
-              }
-            }
+            "description": "Mensaje de confirmación",
+            "example": "Factura encolada para procesamiento"
           },
-          "docTypes": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "code": {
-                  "type": "integer",
-                  "description": "Código del tipo de documento"
-                },
-                "name": {
-                  "type": "string",
-                  "description": "Nombre del tipo de documento"
-                }
-              }
-            }
+          "count": {
+            "type": "integer",
+            "description": "Cantidad de facturas encoladas",
+            "example": 1
           },
-          "ivaTypes": {
+          "status": {
+            "type": "string",
+            "enum": ["processing"],
+            "description": "Estado del lote"
+          },
+          "batchId": {
+            "type": "string",
+            "description": "ID del lote creado"
+          },
+          "queueIdentifiers": {
             "type": "array",
             "items": {
-              "type": "object",
-              "properties": {
-                "code": {
-                  "type": "integer",
-                  "description": "Código del tipo de IVA"
-                },
-                "name": {
-                  "type": "string",
-                  "description": "Nombre del tipo de IVA"
-                },
-                "rate": {
-                  "type": "number",
-                  "format": "float",
-                  "description": "Tasa de IVA"
-                }
-              }
-            }
+              "type": "string"
+            },
+            "description": "Colas en las que se encolaron las facturas (una por entorno, CUIT, punto de venta y tipo de comprobante)"
           }
         }
       },
       "Meta": {
         "type": "object",
+        "required": ["page", "limit", "totalCount", "totalPages", "hasNextPage", "hasPrevPage"],
         "properties": {
           "page": {
             "type": "integer",
+            "example": 1,
             "description": "Página actual"
           },
           "limit": {
             "type": "integer",
+            "example": 10,
             "description": "Elementos por página"
           },
-          "total": {
+          "totalCount": {
             "type": "integer",
+            "example": 42,
             "description": "Total de elementos"
           },
           "totalPages": {
             "type": "integer",
+            "example": 5,
             "description": "Total de páginas"
+          },
+          "hasNextPage": {
+            "type": "boolean",
+            "description": "Hay una página siguiente"
+          },
+          "hasPrevPage": {
+            "type": "boolean",
+            "description": "Hay una página anterior"
           }
         }
       },
       "Batch": {
         "type": "object",
-        "required": ["id", "status", "createdAt"],
+        "required": [
+          "id",
+          "userId",
+          "environment",
+          "status",
+          "totalItems",
+          "processedItems",
+          "successfulItems",
+          "failedItems",
+          "createdAt",
+          "updatedAt"
+        ],
         "properties": {
           "id": {
             "type": "string",
-            "format": "uuid",
-            "description": "ID único del lote"
+            "description": "ID del lote"
+          },
+          "userId": {
+            "type": "string",
+            "description": "ID del usuario"
+          },
+          "environment": {
+            "type": "string",
+            "enum": ["production", "homologation"],
+            "description": "Entorno"
           },
           "status": {
             "type": "string",
-            "enum": ["pending", "processing", "completed", "failed"],
+            "enum": ["pending", "processing", "completed", "completed_with_errors", "error"],
             "description": "Estado del lote"
           },
           "totalItems": {
@@ -1343,7 +1699,11 @@
           },
           "processedItems": {
             "type": "integer",
-            "description": "Items procesados exitosamente"
+            "description": "Items procesados (con éxito o con error)"
+          },
+          "successfulItems": {
+            "type": "integer",
+            "description": "Items procesados con éxito"
           },
           "failedItems": {
             "type": "integer",
@@ -1358,58 +1718,60 @@
             "type": "string",
             "format": "date-time",
             "description": "Fecha de última actualización"
+          },
+          "jobs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BatchItem"
+            },
+            "description": "Items del lote"
           }
         }
       },
       "BatchDetail": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Batch"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "items": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/BatchItem"
-                },
-                "description": "Items del lote"
-              }
-            }
-          }
-        ]
-      },
-      "BatchItem": {
         "type": "object",
-        "required": ["id", "status", "invoiceData"],
+        "required": [
+          "id",
+          "status",
+          "totalItems",
+          "processedItems",
+          "successfulItems",
+          "failedItems",
+          "environment",
+          "createdAt",
+          "updatedAt",
+          "items"
+        ],
         "properties": {
           "id": {
             "type": "string",
-            "format": "uuid",
-            "description": "ID único del item"
+            "description": "ID del lote"
           },
           "status": {
             "type": "string",
-            "enum": ["pending", "processing", "completed", "failed"],
-            "description": "Estado del item"
+            "enum": ["pending", "processing", "completed", "completed_with_errors", "error"],
+            "description": "Estado del lote"
           },
-          "invoiceData": {
-            "$ref": "#/components/schemas/InvoiceRequest",
-            "description": "Datos de la factura"
-          },
-          "invoiceId": {
-            "type": "string",
-            "format": "uuid",
-            "description": "ID de la factura creada (si fue exitosa)"
-          },
-          "error": {
-            "type": "string",
-            "description": "Mensaje de error (si falló)"
-          },
-          "retryCount": {
+          "totalItems": {
             "type": "integer",
-            "description": "Número de reintentos"
+            "description": "Total de items en el lote"
+          },
+          "processedItems": {
+            "type": "integer",
+            "description": "Items procesados (con éxito o con error)"
+          },
+          "successfulItems": {
+            "type": "integer",
+            "description": "Items procesados con éxito"
+          },
+          "failedItems": {
+            "type": "integer",
+            "description": "Items que fallaron"
+          },
+          "environment": {
+            "type": "string",
+            "enum": ["production", "homologation"],
+            "description": "Entorno"
           },
           "createdAt": {
             "type": "string",
@@ -1420,24 +1782,88 @@
             "type": "string",
             "format": "date-time",
             "description": "Fecha de última actualización"
+          },
+          "items": {
+            "type": "array",
+            "description": "Items del lote",
+            "items": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/BatchItem"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "cuit": {
+                      "type": ["object", "null"],
+                      "description": "CUIT emisor del item",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "number": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "BatchItem": {
+        "type": "object",
+        "required": ["id", "status", "order", "createdAt", "updatedAt", "requestBody"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID del item"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["pending", "processing", "completed", "error"],
+            "description": "Estado del item"
+          },
+          "order": {
+            "type": "integer",
+            "description": "Posición del item en su cola"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Fecha de creación"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Fecha de última actualización"
+          },
+          "requestBody": {
+            "type": "object",
+            "description": "Factura encolada: los campos de InvoiceRequest ya completados con los valores por defecto del CUIT"
+          },
+          "responseBody": {
+            "type": ["object", "null"],
+            "description": "Resultado del procesamiento (la factura emitida o el detalle del error)"
           }
         }
       },
       "Error": {
         "type": "object",
-        "required": ["error", "message"],
+        "required": ["error"],
         "properties": {
           "error": {
             "type": "string",
-            "description": "Código de error"
-          },
-          "message": {
-            "type": "string",
-            "description": "Mensaje de error descriptivo"
+            "description": "Mensaje de error"
           },
           "details": {
-            "type": "object",
-            "description": "Detalles adicionales del error"
+            "description": "Detalle del error: un texto, o la lista de errores de validación"
+          },
+          "code": {
+            "type": "string",
+            "description": "Código de error, por ejemplo SUBSCRIPTION_LIMIT_EXCEEDED"
           }
         }
       }
