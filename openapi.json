@@ -899,6 +899,11 @@
             "type": "integer",
             "description": "Número de documento del cliente"
           },
+          "condicionIVAReceptorId": {
+            "type": "integer",
+            "enum": [1, 4, 5, 6, 7, 8, 9, 10, 13, 15, 16],
+            "description": "Condición frente al IVA del receptor (obligatoria para ARCA desde el 1/12/2026). Si no se envía: 5 (Consumidor Final) para receptores sin identificar o con DNI; para CUIT/CUIL se toma del padrón de ARCA, y si no se puede determinar la API responde 400. Debe corresponder a la clase del comprobante (A/M: 1, 6, 13, 16; B: 4, 5, 7, 8, 9, 10, 15; C: todas). Ver /es/guides/condicion-iva-receptor."
+          },
           "invoiceType": {
             "type": "integer",
             "description": "Tipo de factura"
