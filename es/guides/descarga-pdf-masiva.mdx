@@ -1,162 +1,137 @@
 ---
 title: 'Descarga masiva de PDFs de facturas en Facturear'
-description: 'Cómo descargar PDFs de facturas en lote desde la API de Facturear: descarga individual, por período y exportación masiva para auditorías o envío a clientes.'
+description: 'Cómo descargar PDFs de facturas desde Facturear: descarga individual desde el dashboard o la API, y cómo armar una descarga masiva por período para auditorías o envío a clientes.'
 ---
 
 # Descarga masiva de PDFs de facturas
 
-Facturear permite descargar los PDFs de las facturas emitidas, tanto de forma individual como en lote. Esta guía cubre las opciones disponibles para descargar facturas en forma masiva.
+Facturear permite descargar el PDF de cada factura emitida, desde el dashboard o con la API. Esta guía cubre cómo descargar una factura y cómo armar una descarga masiva recorriendo tus facturas con la API.
+
+<Note>
+  Facturear no tiene un endpoint de exportación masiva (un ZIP por período). La descarga masiva se arma pidiendo el PDF de cada factura, como se muestra más abajo.
+</Note>
 
 ---
 
 ## Descarga de un PDF individual
 
-Para descargar el PDF de una factura específica:
+### Desde el dashboard
+
+En **Facturación**, abrí la factura y usá **"Descargar PDF"**. Desde la misma pantalla, **"Compartir PDF"** te permite enviarla por email o WhatsApp.
+
+### Con la API
+
+Con el id de la factura en Facturear (el `invoiceId` que devuelve el resultado del lote, o el `id` de cada factura en `GET /api/invoices`), pedí el PDF con `?download=true` para recibir el archivo directamente:
 
 ```bash
-curl "https://api.facture.ar/cuits/20123456789/facturas/fct_abc123/pdf" \
+curl "https://www.facture.ar/api/invoices/cmg1a2b3e0002xyz/pdf?download=true" \
   -H "x-api-key: tu_api_key" \
-  --output factura-001.pdf
+  --output factura.pdf
 ```
 
-O solicitar la URL temporal del PDF:
+El archivo viene con `Content-Type: application/pdf` y un nombre del tipo `factura-0001-00000145-production.pdf` en el header `Content-Disposition`.
+
+Sin `download=true`, la API te devuelve una URL para descargar el PDF:
 
 ```bash
-curl "https://api.facture.ar/cuits/20123456789/facturas/fct_abc123/pdf-url" \
+curl "https://www.facture.ar/api/invoices/cmg1a2b3e0002xyz/pdf" \
   -H "x-api-key: tu_api_key"
 ```
 
 ```json
 {
-  "url": "https://cdn.facture.ar/pdfs/fct_abc123.pdf",
-  "expires_at": "2025-01-16T10:00:00Z"
+  "download_url": "https://...",
+  "invoice_id": "cmg1a2b3e0002xyz",
+  "invoice_number": "0001-00000145",
+  "environment": "production"
 }
 ```
+
+Si la factura no existe o no es tuya, la respuesta es `404`.
 
 ---
 
 ## Descarga masiva por período
 
-Para descargar todos los PDFs de un mes en un archivo ZIP:
+Para descargar todas las facturas de un período:
 
-### POST /cuits/{cuit}/facturas/export-pdf
+1. Listá tus facturas con `GET https://www.facture.ar/api/invoices`, filtrando por `status=success` y, si tenés varios CUITs, por `cuit`. La lista viene ordenada de la más nueva a la más vieja, hasta 100 por página
+2. Quedate con las que caen en el período según su fecha de creación (`createdAt`)
+3. Pedí el PDF de cada una con `GET /api/invoices/{id}/pdf?download=true`
 
-```bash
-curl -X POST "https://api.facture.ar/cuits/20123456789/facturas/export-pdf" \
-  -H "x-api-key: tu_api_key" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "desde": "2025-01-01",
-    "hasta": "2025-01-31",
-    "tipo": "B"
-  }'
-```
-
-### Respuesta (exportación asíncrona)
-
-```json
-{
-  "export_id": "exp_abc123",
-  "estado": "procesando",
-  "total_facturas": 145
-}
-```
-
----
-
-## Consultar el estado de la exportación
-
-Como la exportación puede tardar para lotes grandes, usá polling o webhook:
-
-```bash
-curl "https://api.facture.ar/exports/exp_abc123" \
-  -H "x-api-key: tu_api_key"
-```
-
-```json
-{
-  "export_id": "exp_abc123",
-  "estado": "completado",
-  "total_facturas": 145,
-  "url_descarga": "https://cdn.facture.ar/exports/exp_abc123.zip",
-  "expires_at": "2025-01-17T10:00:00Z"
-}
-```
+Ver [Buscar y consultar facturas](/es/guides/buscar-facturas) para todos los filtros del listado.
 
 ---
 
 ## Descarga masiva en Node.js
 
 ```javascript
+const fs = require('fs');
+const path = require('path');
+
+const API = 'https://www.facture.ar/api';
+const headers = { 'x-api-key': process.env.FACTUREAR_API_KEY };
+
 async function descargarFacturasMes(cuit, mes, anio) {
-  const desde = `${anio}-${String(mes).padStart(2, '0')}-01`;
-  const hasta = new Date(anio, mes, 0).toISOString().split('T')[0];
-  
-  // Iniciar exportación
-  const exportResponse = await fetch(
-    `https://api.facture.ar/cuits/${cuit}/facturas/export-pdf`,
-    {
-      method: 'POST',
-      headers: { 'x-api-key': apiKey, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ desde, hasta })
+  const desde = new Date(anio, mes - 1, 1);
+  const hasta = new Date(anio, mes, 1);
+  const carpeta = `facturas-${anio}-${String(mes).padStart(2, '0')}`;
+  fs.mkdirSync(carpeta, { recursive: true });
+
+  let page = 1;
+  let descargadas = 0;
+
+  while (true) {
+    const params = new URLSearchParams({ status: 'success', cuit, page, limit: 100 });
+    const res = await fetch(`${API}/invoices?${params}`, { headers });
+    const { invoices, pagination } = await res.json();
+
+    for (const factura of invoices) {
+      const creada = new Date(factura.createdAt);
+      if (creada >= hasta) continue;   // más nueva que el período
+      if (creada < desde) return descargadas; // ya pasamos el período
+
+      const pdf = await fetch(`${API}/invoices/${factura.id}/pdf?download=true`, { headers });
+      if (!pdf.ok) {
+        console.error(`No se pudo descargar ${factura.id}: ${pdf.status}`);
+        continue;
+      }
+      const nombre = `${String(factura.ptoVta ?? 0).padStart(4, '0')}-${String(factura.voucherNumber).padStart(8, '0')}.pdf`;
+      fs.writeFileSync(path.join(carpeta, nombre), Buffer.from(await pdf.arrayBuffer()));
+      descargadas++;
     }
-  );
-  const { export_id } = await exportResponse.json();
-  
-  // Esperar a que termine
-  let exportData;
-  do {
-    await new Promise(r => setTimeout(r, 5000)); // esperar 5s
-    const statusResponse = await fetch(
-      `https://api.facture.ar/exports/${export_id}`,
-      { headers: { 'x-api-key': apiKey } }
-    );
-    exportData = await statusResponse.json();
-  } while (exportData.estado === 'procesando');
-  
-  if (exportData.estado === 'completado') {
-    // Descargar el ZIP
-    const zipResponse = await fetch(exportData.url_descarga);
-    const buffer = await zipResponse.arrayBuffer();
-    fs.writeFileSync(`facturas-${anio}-${mes}.zip`, Buffer.from(buffer));
-    console.log(`Descargadas ${exportData.total_facturas} facturas`);
+
+    if (!pagination.hasNextPage) return descargadas;
+    page++;
   }
 }
 ```
 
----
-
-## Envío automático de facturas por e-mail
-
-Para enviar cada factura por e-mail al receptor automáticamente:
-
-```bash
-curl -X POST "https://api.facture.ar/cuits/20123456789/facturas/fct_abc123/enviar-email" \
-  -H "x-api-key: tu_api_key" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "email": "cliente@empresa.com",
-    "asunto": "Factura B 0001-00000145",
-    "mensaje": "Adjuntamos la factura correspondiente al servicio del mes de enero."
-  }'
-```
+<Tip>
+  Cada PDF se genera al momento de pedirlo. Para lotes grandes, descargalos de a uno o con poca concurrencia.
+</Tip>
 
 ---
 
-## Estructura del ZIP descargado
+## Envío de facturas por e-mail
 
-El archivo ZIP contiene:
+Facturear no envía facturas por e-mail desde la API. Desde el dashboard, en el detalle de la factura, **"Compartir PDF"** te permite compartirla por email o WhatsApp. Si necesitás automatizar el envío, descargá el PDF con la API y mandalo desde tu propio sistema de correo.
+
+---
+
+## Estructura de la carpeta descargada
+
+El script de ejemplo deja los PDFs en una carpeta por mes, nombrados por punto de venta y número:
 
 ```
-facturas-2025-01.zip
+facturas-2026-09/
 ├── 0001-00000001.pdf
 ├── 0001-00000002.pdf
 ├── ...
-├── 0001-00000145.pdf
-└── resumen.csv
+└── 0001-00000145.pdf
 ```
 
-El `resumen.csv` incluye el listado de todas las facturas con sus datos (número, receptor, total, CAE).
+Si necesitás un resumen, armalo con los datos del listado (`voucherNumber`, `amount`, `invoiceType`, y la respuesta de ARCA en `feCabResp`) y comprimí la carpeta en un ZIP con la herramienta que prefieras.
 
 ---
 

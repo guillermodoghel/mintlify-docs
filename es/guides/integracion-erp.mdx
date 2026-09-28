@@ -19,7 +19,7 @@ Integrar Facturear a tu sistema ERP permite emitir facturas electrónicas direct
 └────────────────┘
 ```
 
-Tu sistema envía los datos de la factura a Facturear, que se comunica con ARCA, obtiene el CAE y te devuelve la factura aprobada.
+Tu sistema envía los datos de la factura a `POST https://www.facture.ar/api/invoices`. Facturear la encola, se comunica con ARCA y obtiene el CAE; tu sistema consulta el resultado con el `batchId` que recibió al enviarla.
 
 ---
 
@@ -30,9 +30,11 @@ Tu sistema envía los datos de la factura a Facturear, que se comunica con ARCA,
 
   El ERP llama a la API de Facturear con los datos del comprobante
 
-  Facturear valida los datos, contacta a ARCA y obtiene el CAE
+  Facturear valida los datos, encola la factura y responde con un `batchId`
 
-  Facturear devuelve el comprobante aprobado con CAE, vencimiento y número
+  Facturear contacta a ARCA y obtiene el CAE
+
+  El ERP consulta `GET /api/invoices/batches/{batchId}` y obtiene el CAE, su vencimiento y el número de comprobante
 
   El ERP almacena el CAE y actualiza el registro de la factura
 
@@ -43,30 +45,41 @@ Tu sistema envía los datos de la factura a Facturear, que se comunica con ARCA,
 
 ## Datos mínimos para la integración
 
-Tu ERP debe proveer estos datos para cada factura:
+Tu ERP debe proveer estos datos para cada factura. Van todos en el primer nivel, con los nombres que usa ARCA (ver [Primera factura con Facturear](/es/guides/primera-factura) para el detalle de cada campo):
 
 ```json
 {
-  "cuit_emisor": "20123456789",
-  "punto_venta": 1,
-  "tipo_comprobante": "B",
+  "cuit": "20123456789",
+  "ptoVta": 1,
+  "invoiceType": 6,
   "concepto": 2,
-  "receptor": {
-    "tipo_documento": 99,
-    "numero_documento": "0",
-    "razon_social": "Consumidor Final",
-    "iva_condition": "consumidor_final"
-  },
+  "docTipo": 99,
+  "docNro": 0,
+  "condicionIVAReceptorId": 5,
+  "clientName": "Consumidor Final",
+  "impNeto": 100000,
+  "impIVA": 21000,
+  "impTotal": 121000,
+  "iva": [
+    { "id": 5, "baseImp": 100000, "importe": 21000 }
+  ],
+  "fchServDesde": "20260901",
+  "fchServHasta": "20260930",
+  "fchVtoPago": "20261010",
   "items": [
     {
-      "descripcion": "Producto o servicio",
-      "cantidad": 1,
-      "precio_unitario": 100000,
-      "alicuota_iva": 21
+      "description": "Producto o servicio",
+      "quantity": 1,
+      "unitPrice": 100000,
+      "discount": 0,
+      "ivaRate": 21,
+      "subtotal": 100000
     }
   ]
 }
 ```
+
+`ptoVta`, `invoiceType` y `concepto` pueden salir de los [defaults del CUIT](/es/guides/configurar-defaults-cuit), y si mandás un array de hasta 500 facturas se procesan como un [lote](/es/guides/facturacion-lotes).
 
 ---
 
@@ -78,30 +91,50 @@ Odoo tiene un módulo de facturación electrónica argentina. Podés usar la API
 
 ```python
 # Ejemplo simplificado de módulo Odoo
+import time
 import requests
+
+API = "https://www.facture.ar/api"
 
 class AccountMove(models.Model):
     _inherit = 'account.move'
-    
+
     def action_post(self):
         result = super().action_post()
         if self._es_factura_electronica():
             self._emitir_con_facturear()
         return result
-    
+
     def _emitir_con_facturear(self):
-        payload = self._build_facturear_payload()
-        response = requests.post(
-            f"https://api.facture.ar/cuits/{self.company_id.vat}/facturas",
-            json=payload,
-            headers={"x-api-key": self.company_id.facturear_api_key}
-        )
-        data = response.json()
+        headers = {"x-api-key": self.company_id.facturear_api_key}
+        payload = self._build_facturear_payload()  # campos como en el ejemplo de arriba
+
+        response = requests.post(f"{API}/invoices", json=payload, headers=headers)
+        response.raise_for_status()
+        batch_id = response.json()["batchId"]
+
+        # La emisión es asincrónica: consultar el lote hasta que termine
+        while True:
+            batch = requests.get(f"{API}/invoices/batches/{batch_id}", headers=headers).json()
+            if batch["status"] in ("completed", "completed_with_errors", "error"):
+                break
+            time.sleep(2)
+
+        item = batch["items"][0]
+        if item["status"] != "completed":
+            raise UserError(f"ARCA rechazó la factura: {item['responseBody']}")
+
+        body = item["responseBody"]
+        det = body["fecaesolicitarResult"]["FeDetResp"]["FECAEDetResponse"][0]
         self.write({
-            'l10n_ar_afip_auth_code': data['cae'],
-            'l10n_ar_afip_auth_code_due': data['cae_vencimiento']
+            'l10n_ar_afip_auth_code': det['CAE'],
+            'l10n_ar_afip_auth_code_due': det['CAEFchVto'],  # YYYYMMDD
         })
 ```
+
+<Tip>
+  En producción, no bloquees la confirmación de la factura esperando a ARCA: guardá el `batchId` y consultalo desde una tarea programada (ver [Cola de trabajo](#cola-de-trabajo-para-alta-disponibilidad)).
+</Tip>
 
 ### Tango Gestión
 
@@ -120,28 +153,30 @@ Para SAP (B1 o S/4HANA), la integración se implementa mediante:
 
 ## Manejo de errores en la integración
 
+Hay dos momentos en que una factura puede fallar: al enviarla (la API responde `400` si los datos no son válidos, o `403` con `code: "SUBSCRIPTION_LIMIT_EXCEEDED"` si superaste el límite de tu plan) y al procesarla (el ítem del lote queda en `error` con los mensajes de ARCA en `responseBody`).
+
 ```javascript
+const API = 'https://www.facture.ar/api';
+
 async function emitirFactura(facturaData) {
   try {
-    const response = await fetch(
-      `https://api.facture.ar/cuits/${cuit}/facturas`,
-      {
-        method: 'POST',
-        headers: { 'x-api-key': apiKey, 'Content-Type': 'application/json' },
-        body: JSON.stringify(facturaData)
-      }
-    );
-    
+    const response = await fetch(`${API}/invoices`, {
+      method: 'POST',
+      headers: { 'x-api-key': apiKey, 'Content-Type': 'application/json' },
+      body: JSON.stringify(facturaData)
+    });
+
     if (!response.ok) {
       const error = await response.json();
       // Registrar el error para revisión manual
       await registrarErrorFacturacion(facturaData, error);
-      throw new Error(`Error ARCA: ${error.message}`);
+      throw new Error(`Factura rechazada (${response.status}): ${error.error}`);
     }
-    
-    const factura = await response.json();
-    return factura;
-    
+
+    // La factura quedó encolada: guardá el batchId para consultar el CAE
+    const { batchId } = await response.json();
+    return batchId;
+
   } catch (err) {
     // No dejar facturas sin CAE sin registrar
     console.error('Error al emitir factura:', err);
@@ -159,15 +194,14 @@ Para producción, implementá un sistema de cola:
 1. El ERP encola la factura en lugar de llamar directamente a la API
 2. Un worker procesa la cola y llama a Facturear
 3. Si falla, el worker reintenta con backoff exponencial
-4. El ERP consulta el estado de la factura periódicamente
+4. El ERP consulta el estado de la factura periódicamente con `GET /api/invoices/batches/{batchId}`
+5. Si un ítem falló por un error transitorio (ARCA caído, timeout), reintentalo con `POST /api/invoices/batches/{batchId}/items/{itemId}/retry`
 
 ---
 
-## Webhook para notificaciones asíncronas
+## Notificaciones asíncronas
 
-Si configurás webhooks en Facturear, tu ERP puede recibir notificaciones cuando una factura es aprobada:
-
-Ver: [Integración con webhooks](/es/guides/webhook-integracion)
+Facturear todavía no envía webhooks cuando una factura se aprueba o se rechaza: el resultado se obtiene consultando el lote. Los [webhooks](/es/guides/webhook-integracion) disponibles hoy avisan cuando se completa la delegación de un CUIT.
 
 ---
 

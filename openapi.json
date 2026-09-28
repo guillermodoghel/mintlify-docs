@@ -29,57 +29,17 @@
     "/cuits": {
       "get": {
         "summary": "Obtener CUITs",
-        "description": "Obtiene la lista de CUITs asociados a tu cuenta y gestiona su información.",
+        "description": "Obtiene la lista de CUITs asociados a tu cuenta, con sus valores por defecto (default_pos, default_invoice_type, default_concept, default_iva, is_default).",
         "tags": ["CUITs"],
-        "parameters": [
-          {
-            "name": "status",
-            "in": "query",
-            "description": "Filtrar por estado del CUIT",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "enum": ["active", "inactive", "pending"]
-            }
-          },
-          {
-            "name": "type",
-            "in": "query",
-            "description": "Filtrar por tipo de CUIT",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "enum": ["monotributo", "responsable_inscripto", "exento"]
-            }
-          },
-          {
-            "name": "includeDefaults",
-            "in": "query",
-            "description": "Incluir valores por defecto",
-            "required": false,
-            "schema": {
-              "type": "boolean",
-              "default": false
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Lista de CUITs obtenida exitosamente",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Cuit"
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/Meta"
-                    }
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Cuit"
                   }
                 }
               }
@@ -96,32 +56,131 @@
             }
           }
         }
+      },
+      "post": {
+        "summary": "Agregar un CUIT",
+        "description": "Registra un CUIT en tu cuenta.",
+        "tags": ["CUITs"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["number"],
+                "properties": {
+                  "number": {
+                    "type": "string",
+                    "description": "Número de CUIT"
+                  },
+                  "integrationMode": {
+                    "type": "string",
+                    "description": "Modo de conexión con ARCA"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "CUIT creado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Cuit"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Datos inválidos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Límite de CUITs del plan alcanzado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "El CUIT ya está registrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
       }
     },
-    "/cuits/{cuitId}/defaults": {
-      "get": {
-        "summary": "Obtener valores por defecto de CUIT",
-        "description": "Obtiene los valores por defecto configurados para un CUIT específico.",
+    "/cuits/{cuitId}/default-pos": {
+      "post": {
+        "summary": "Configurar punto de venta por defecto",
+        "description": "Configura el punto de venta que se usa cuando una factura no trae ptoVta.",
         "tags": ["CUITs"],
         "parameters": [
           {
             "name": "cuitId",
             "in": "path",
-            "description": "ID del CUIT",
+            "description": "ID del CUIT en Facturear",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "uuid"
+              "type": "string"
             }
           }
         ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["defaultPos"],
+                "properties": {
+                  "defaultPos": {
+                    "type": "integer",
+                    "minimum": 1
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
-            "description": "Valores por defecto obtenidos exitosamente",
+            "description": "Valor por defecto actualizado",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CuitDefaults"
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Valor inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -137,20 +196,21 @@
             }
           }
         }
-      },
-      "put": {
-        "summary": "Actualizar valores por defecto de CUIT",
-        "description": "Actualiza los valores por defecto para un CUIT específico.",
+      }
+    },
+    "/cuits/{cuitId}/default-invoice-type": {
+      "post": {
+        "summary": "Configurar tipo de comprobante por defecto",
+        "description": "Configura el tipo de comprobante (código de ARCA) que se usa cuando una factura no trae invoiceType.",
         "tags": ["CUITs"],
         "parameters": [
           {
             "name": "cuitId",
             "in": "path",
-            "description": "ID del CUIT",
+            "description": "ID del CUIT en Facturear",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "uuid"
+              "type": "string"
             }
           }
         ],
@@ -159,24 +219,186 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CuitDefaultsUpdate"
+                "type": "object",
+                "required": ["defaultInvoiceType"],
+                "properties": {
+                  "defaultInvoiceType": {
+                    "type": "integer",
+                    "minimum": 1
+                  }
+                }
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Valores por defecto actualizados exitosamente",
+            "description": "Valor por defecto actualizado",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CuitDefaults"
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
                 }
               }
             }
           },
           "400": {
-            "description": "Datos inválidos",
+            "description": "Valor inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "CUIT no encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cuits/{cuitId}/default-concept": {
+      "post": {
+        "summary": "Configurar concepto por defecto",
+        "description": "Configura el concepto (1 productos, 2 servicios, 3 ambos) que se usa cuando una factura no trae concepto.",
+        "tags": ["CUITs"],
+        "parameters": [
+          {
+            "name": "cuitId",
+            "in": "path",
+            "description": "ID del CUIT en Facturear",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["defaultConcept"],
+                "properties": {
+                  "defaultConcept": {
+                    "type": "integer",
+                    "minimum": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Valor por defecto actualizado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Valor inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "CUIT no encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cuits/{cuitId}/default-iva": {
+      "post": {
+        "summary": "Configurar alícuota de IVA por defecto",
+        "description": "Configura la alícuota de IVA (código de ARCA) preseleccionada en los formularios del dashboard.",
+        "tags": ["CUITs"],
+        "parameters": [
+          {
+            "name": "cuitId",
+            "in": "path",
+            "description": "ID del CUIT en Facturear",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["defaultIva"],
+                "properties": {
+                  "defaultIva": {
+                    "type": "integer",
+                    "minimum": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Valor por defecto actualizado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "CUIT actualizado"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Valor inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "CUIT no encontrado",
             "content": {
               "application/json": {
                 "schema": {
@@ -189,6 +411,125 @@
       }
     },
     "/invoices": {
+      "get": {
+        "summary": "Listar facturas",
+        "description": "Lista las facturas del entorno de la API key, de la más nueva a la más vieja, con filtros y paginación.",
+        "tags": ["Facturas"],
+        "parameters": [
+          {
+            "name": "cuit",
+            "in": "query",
+            "description": "CUIT emisor (o parte de él)",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tipo",
+            "in": "query",
+            "description": "Código de ARCA del tipo de comprobante",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "comprobante",
+            "in": "query",
+            "description": "Número de comprobante",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Estado de la factura",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["success", "error", "processing"]
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "description": "Busca en CUIT emisor, número de comprobante, código de tipo de comprobante y descripción",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Número de página",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Elementos por página",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Facturas obtenidas exitosamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "invoices": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Invoice"
+                      }
+                    },
+                    "pagination": {
+                      "type": "object",
+                      "properties": {
+                        "page": {
+                          "type": "integer"
+                        },
+                        "limit": {
+                          "type": "integer"
+                        },
+                        "totalCount": {
+                          "type": "integer"
+                        },
+                        "totalPages": {
+                          "type": "integer"
+                        },
+                        "hasNextPage": {
+                          "type": "boolean"
+                        },
+                        "hasPrevPage": {
+                          "type": "boolean"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
       "post": {
         "summary": "Crear facturas",
         "description": "Crea facturas electrónicas individuales o en lote. El sistema procesa las solicitudes de forma asíncrona a través de un sistema de colas.",
@@ -288,120 +629,6 @@
         }
       }
     },
-    "/invoices/search": {
-      "get": {
-        "summary": "Buscar facturas",
-        "description": "Busca facturas con filtros específicos como fecha, CUIT, estado, etc.",
-        "tags": ["Facturas"],
-        "parameters": [
-          {
-            "name": "cuitId",
-            "in": "query",
-            "description": "ID del CUIT",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          {
-            "name": "status",
-            "in": "query",
-            "description": "Estado de la factura",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "enum": ["pending", "processing", "completed", "failed"]
-            }
-          },
-          {
-            "name": "dateFrom",
-            "in": "query",
-            "description": "Fecha desde (ISO 8601)",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "format": "date"
-            }
-          },
-          {
-            "name": "dateTo",
-            "in": "query",
-            "description": "Fecha hasta (ISO 8601)",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "format": "date"
-            }
-          },
-          {
-            "name": "page",
-            "in": "query",
-            "description": "Número de página",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "minimum": 1,
-              "default": 1
-            }
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "Elementos por página",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "minimum": 1,
-              "maximum": 100,
-              "default": 20
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Búsqueda realizada exitosamente",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Invoice"
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/Meta"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/arca-parameters": {
-      "get": {
-        "summary": "Obtener parámetros ARCA",
-        "description": "Obtiene los parámetros necesarios para la integración con ARCA (AFIP).",
-        "tags": ["Utilidades"],
-        "responses": {
-          "200": {
-            "description": "Parámetros ARCA obtenidos exitosamente",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ArcaParameters"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/arca/{name}": {
       "get": {
         "summary": "Obtener parámetro ARCA específico",
@@ -417,24 +644,32 @@
               "type": "string",
               "enum": [
                 "FEPARAMGETTIPOSDOC",
-                "FEPARAMGETTIPOSCBTES",
+                "FEPARAMGETTIPOSCBTE",
                 "FEPARAMGETTIPOSCONCEPTO",
                 "FEPARAMGETTIPOSIVA",
                 "FEPARAMGETTIPOSMONEDAS",
-                "FEPARAMGETTIPOSOPCIONALES",
                 "FEPARAMGETTIPOSTRIBUTOS",
-                "FEPARAMGETCOTIZACION"
+                "FEPARAMGETCOTIZACION",
+                "FEPARAMGETCONDICIONIVARECEPTOR"
               ]
             }
           },
           {
             "name": "codId",
             "in": "query",
-            "description": "ID de moneda (requerido para FEPARAMGETCOTIZACION)",
+            "description": "ID de moneda de ARCA, por ejemplo DOL (requerido para FEPARAMGETCOTIZACION)",
             "required": false,
             "schema": {
-              "type": "string",
-              "enum": ["USD", "EUR", "BRL"]
+              "type": "string"
+            }
+          },
+          {
+            "name": "claseCmp",
+            "in": "query",
+            "description": "Clase de comprobante (A, B, C, M) para filtrar FEPARAMGETCONDICIONIVARECEPTOR",
+            "required": false,
+            "schema": {
+              "type": "string"
             }
           }
         ],
@@ -445,41 +680,10 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "description": "Respuesta de ARCA tal cual. La lista viene dentro de ResultGet (por ejemplo ResultGet.IvaTipo o ResultGet.CbteTipo)",
                   "properties": {
-                    "name": {
-                      "type": "string",
-                      "description": "Nombre del parámetro"
-                    },
-                    "data": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "id": {
-                            "type": "integer",
-                            "description": "ID del parámetro"
-                          },
-                          "desc": {
-                            "type": "string",
-                            "description": "Descripción del parámetro"
-                          },
-                          "fchDesde": {
-                            "type": "string",
-                            "format": "date",
-                            "description": "Fecha desde"
-                          },
-                          "fchHasta": {
-                            "type": "string",
-                            "format": "date",
-                            "description": "Fecha hasta"
-                          }
-                        }
-                      }
-                    },
-                    "cachedAt": {
-                      "type": "string",
-                      "format": "date-time",
-                      "description": "Fecha de cache"
+                    "ResultGet": {
+                      "type": "object"
                     }
                   }
                 }
@@ -488,6 +692,16 @@
           },
           "400": {
             "description": "Parámetro inválido o faltante",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "ARCA no disponible",
             "content": {
               "application/json": {
                 "schema": {
@@ -505,16 +719,6 @@
         "description": "Obtiene la lista de lotes de facturas con paginación.",
         "tags": ["Lotes"],
         "parameters": [
-          {
-            "name": "status",
-            "in": "query",
-            "description": "Filtrar por estado del lote",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "enum": ["pending", "processing", "completed", "failed"]
-            }
-          },
           {
             "name": "page",
             "in": "query",
@@ -724,11 +928,11 @@
         }
       }
     },
-    "/pdf/{invoiceId}": {
+    "/invoices/{invoiceId}/pdf": {
       "get": {
-        "summary": "Descargar PDF de factura",
-        "description": "Descarga el PDF de una factura específica.",
-        "tags": ["Utilidades"],
+        "summary": "Obtener PDF de factura",
+        "description": "Genera el PDF de una factura. Por defecto devuelve una URL de descarga; con download=true devuelve el archivo.",
+        "tags": ["Facturas"],
         "parameters": [
           {
             "name": "invoiceId",
@@ -736,15 +940,44 @@
             "description": "ID de la factura",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "uuid"
+              "type": "string"
+            }
+          },
+          {
+            "name": "download",
+            "in": "query",
+            "description": "true para recibir el PDF en lugar de la URL",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "PDF descargado exitosamente",
+            "description": "URL de descarga del PDF, o el PDF si download=true",
             "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "download_url": {
+                      "type": "string"
+                    },
+                    "invoice_id": {
+                      "type": "string"
+                    },
+                    "invoice_number": {
+                      "type": "string",
+                      "description": "Punto de venta y número, por ejemplo 0001-00000145"
+                    },
+                    "environment": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
               "application/pdf": {
                 "schema": {
                   "type": "string",
