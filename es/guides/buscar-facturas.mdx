@@ -1,27 +1,29 @@
 ---
 title: 'Cómo buscar y consultar facturas emitidas en Facturear'
-description: 'Cómo buscar, filtrar y consultar facturas electrónicas emitidas a través de la API de Facturear: filtros por fecha, CUIT receptor, estado y número de comprobante.'
+description: 'Cómo buscar, filtrar y consultar facturas electrónicas emitidas a través de la API de Facturear: filtros por CUIT emisor, tipo, estado y número de comprobante.'
 ---
 
 # Buscar y consultar facturas emitidas
 
-La API de Facturear incluye endpoints para **consultar el historial de facturas** emitidas. Podés buscar por fecha, receptor, tipo de comprobante o número, y obtener los detalles completos incluyendo el CAE y el PDF.
+La API de Facturear incluye endpoints para **consultar el historial de facturas** emitidas. Podés filtrar por CUIT emisor, tipo de comprobante, número o estado, y obtener los detalles completos incluyendo la respuesta de ARCA con el CAE y el PDF.
 
 ---
 
-## Listar facturas de un CUIT
+## Listar facturas
 
-### GET /cuits/{cuit}/facturas
+### GET /api/invoices
+
+Lista las facturas de tu cuenta, de la más nueva a la más vieja. Con la key de producción ves las facturas de producción; con la de testing, las de homologación.
 
 ```bash
-curl "https://api.facture.ar/cuits/20123456789/facturas" \
+curl "https://www.facture.ar/api/invoices" \
   -H "x-api-key: tu_api_key"
 ```
 
 ### Con filtros
 
 ```bash
-curl "https://api.facture.ar/cuits/20123456789/facturas?desde=2025-01-01&hasta=2025-01-31&tipo=B" \
+curl "https://www.facture.ar/api/invoices?cuit=20123456789&tipo=6&status=success&limit=50" \
   -H "x-api-key: tu_api_key"
 ```
 
@@ -31,43 +33,52 @@ curl "https://api.facture.ar/cuits/20123456789/facturas?desde=2025-01-01&hasta=2
 
 | Parámetro | Tipo | Descripción | Ejemplo |
 |---|---|---|---|
-| `desde` | date | Fecha desde (inclusiva) | `2025-01-01` |
-| `hasta` | date | Fecha hasta (inclusiva) | `2025-01-31` |
-| `tipo` | string | Tipo de comprobante | `A`, `B`, `C`, `E` |
-| `punto_venta` | integer | Número de punto de venta | `1` |
-| `receptor_cuit` | string | CUIT del receptor | `30987654321` |
-| `estado` | string | Estado del comprobante | `emitida`, `error` |
-| `page` | integer | Página para paginación | `1` |
-| `per_page` | integer | Resultados por página (máx. 100) | `50` |
+| `cuit` | string | CUIT emisor (o parte de él) | `20123456789` |
+| `tipo` | integer | Código de ARCA del tipo de comprobante | `1` (A), `6` (B), `11` (C) |
+| `comprobante` | string | Número de comprobante (se toman solo los dígitos) | `145` |
+| `status` | string | Estado de la factura | `success`, `error`, `processing` |
+| `search` | string | Busca en CUIT emisor, número de comprobante, código de tipo de comprobante y descripción | `consultoría` |
+| `page` | integer | Página (desde `1`) | `1` |
+| `limit` | integer | Resultados por página (default `10`, máx. `100`) | `50` |
+
+<Note>
+  El listado no tiene filtro por fecha ni por punto de venta. Para un período, recorré las páginas y filtrá por `createdAt` (la lista ya viene ordenada por fecha de creación), y por `ptoVta` si lo necesitás.
+</Note>
 
 ---
 
 ## Respuesta de listado
 
+Cada factura trae sus datos en Facturear, el pedido enviado a ARCA (`feCAEReq`) y la respuesta de ARCA (`feCabResp`), donde está el CAE:
+
 ```json
 {
-  "facturas": [
+  "invoices": [
     {
-      "id": "fct_abc123",
-      "tipo": "B",
-      "punto_venta": 1,
-      "numero": 145,
-      "fecha": "2025-01-15",
-      "receptor": {
-        "razon_social": "Juan Pérez",
-        "cuit": "20111222333"
-      },
-      "total": 121000,
-      "cae": "71234567890123",
-      "cae_vencimiento": "2025-01-25",
-      "estado": "emitida"
+      "id": "cmg1a2b3e0002xyz",
+      "cuitId": "cmg0a1b2c0000abc",
+      "environment": "production",
+      "amount": 121000,
+      "voucherNumber": 145,
+      "ptoVta": 1,
+      "invoiceType": 6,
+      "status": "success",
+      "description": "Servicio de mantenimiento",
+      "errorMessage": null,
+      "feCAEReq": { "FeCAEReq": { "FeCabReq": { "CbteTipo": 6, "PtoVta": 1 }, "FeDetReq": { "FECAEDetRequest": [ { "DocTipo": 96, "DocNro": 30111222 } ] } } },
+      "feCabResp": { "FeCabResp": { "Resultado": "A" }, "FeDetResp": { "FECAEDetResponse": [ { "Resultado": "A", "CAE": "76123456789012", "CAEFchVto": "20260925" } ] } },
+      "createdAt": "2026-09-15T13:30:00.000Z",
+      "updatedAt": "2026-09-15T13:30:05.000Z",
+      "cuit": { "number": "20123456789" }
     }
   ],
   "pagination": {
-    "total": 145,
     "page": 1,
-    "per_page": 50,
-    "pages": 3
+    "limit": 50,
+    "totalCount": 145,
+    "totalPages": 3,
+    "hasNextPage": true,
+    "hasPrevPage": false
   }
 }
 ```
@@ -76,43 +87,51 @@ curl "https://api.facture.ar/cuits/20123456789/facturas?desde=2025-01-01&hasta=2
 
 ## Consultar una factura específica
 
-### GET /cuits/{cuit}/facturas/{id}
+### GET /api/invoices/{id}
 
 ```bash
-curl "https://api.facture.ar/cuits/20123456789/facturas/fct_abc123" \
+curl "https://www.facture.ar/api/invoices/cmg1a2b3e0002xyz" \
   -H "x-api-key: tu_api_key"
 ```
+
+Devuelve la factura con los mismos campos que el listado, o `404` si no existe o no es tuya.
 
 O por número de comprobante:
 
 ```bash
-curl "https://api.facture.ar/cuits/20123456789/facturas?punto_venta=1&tipo=B&numero=145" \
+curl "https://www.facture.ar/api/invoices?cuit=20123456789&tipo=6&comprobante=145" \
   -H "x-api-key: tu_api_key"
 ```
+
+Si emitís con varios puntos de venta, el mismo número puede repetirse: revisá `ptoVta` en el resultado.
 
 ---
 
 ## Obtener el PDF de una factura
 
 ```bash
-curl "https://api.facture.ar/cuits/20123456789/facturas/fct_abc123/pdf" \
+curl "https://www.facture.ar/api/invoices/cmg1a2b3e0002xyz/pdf?download=true" \
   -H "x-api-key: tu_api_key" \
   --output factura.pdf
 ```
 
-O como URL de descarga:
+O como URL de descarga (sin `download=true`):
 
 ```bash
-curl "https://api.facture.ar/cuits/20123456789/facturas/fct_abc123/pdf-url" \
+curl "https://www.facture.ar/api/invoices/cmg1a2b3e0002xyz/pdf" \
   -H "x-api-key: tu_api_key"
 ```
 
 ```json
 {
-  "url": "https://cdn.facture.ar/pdfs/fct_abc123.pdf",
-  "expires_at": "2025-01-16T10:00:00Z"
+  "download_url": "https://...",
+  "invoice_id": "cmg1a2b3e0002xyz",
+  "invoice_number": "0001-00000145",
+  "environment": "production"
 }
 ```
+
+También podés obtener la respuesta de ARCA en XML con `GET /api/invoices/{id}/xml`. Ver [Descarga masiva de PDFs](/es/guides/descarga-pdf-masiva).
 
 ---
 
@@ -122,33 +141,47 @@ Las facturas pueden tener estos estados:
 
 | Estado | Descripción |
 |---|---|
-| `emitida` | Factura emitida exitosamente con CAE |
-| `error` | Hubo un error al emitir (ARCA rechazó) |
-| `pendiente` | En cola de procesamiento |
+| `success` | Factura emitida exitosamente con CAE |
+| `error` | Hubo un error al emitir (por ejemplo, ARCA la rechazó). El motivo está en `errorMessage` |
+| `processing` | Se está pidiendo el CAE a ARCA |
+
+Las facturas en error también se listan con `GET /api/invoices/pending` (misma paginación), y `GET /api/invoices/stats` devuelve el resumen: `totalInvoices`, `successInvoices`, `errorInvoices`, `totalAmount` (de las exitosas) y `pendingJobs` (en cola).
 
 ---
 
 ## Exportar facturas a CSV
 
-Para descargar el listado en CSV:
-
-```bash
-curl "https://api.facture.ar/cuits/20123456789/facturas/export?format=csv&desde=2025-01-01&hasta=2025-01-31" \
-  -H "x-api-key: tu_api_key" \
-  --output facturas-enero-2025.csv
-```
+Facturear no tiene un endpoint de exportación a CSV. Podés armarlo recorriendo `GET /api/invoices` página por página y escribiendo los campos que necesites (`voucherNumber`, `ptoVta`, `invoiceType`, `amount`, `createdAt`, etc.).
 
 ---
 
-## Ejemplo: buscar facturas a un cliente
+## Ejemplo: buscar las facturas de un mes
 
 ```javascript
-const response = await fetch(
-  `https://api.facture.ar/cuits/${miCuit}/facturas?receptor_cuit=30987654321`,
-  { headers: { 'x-api-key': apiKey } }
-);
-const { facturas } = await response.json();
-console.log(`Facturas al cliente: ${facturas.length}`);
+async function facturasDelMes(miCuit, mes, anio) {
+  const desde = new Date(anio, mes - 1, 1);
+  const hasta = new Date(anio, mes, 1);
+  const resultado = [];
+
+  for (let page = 1; ; page++) {
+    const params = new URLSearchParams({ cuit: miCuit, status: 'success', page, limit: 100 });
+    const response = await fetch(`https://www.facture.ar/api/invoices?${params}`, {
+      headers: { 'x-api-key': apiKey }
+    });
+    const { invoices, pagination } = await response.json();
+
+    for (const factura of invoices) {
+      const creada = new Date(factura.createdAt);
+      if (creada >= desde && creada < hasta) resultado.push(factura);
+    }
+
+    const ultima = invoices[invoices.length - 1];
+    if (!pagination.hasNextPage || (ultima && new Date(ultima.createdAt) < desde)) break;
+  }
+
+  console.log(`Facturas del mes: ${resultado.length}`);
+  return resultado;
+}
 ```
 
 ---

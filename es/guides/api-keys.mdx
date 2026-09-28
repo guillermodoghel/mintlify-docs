@@ -1,6 +1,6 @@
 ---
 title: 'API Keys en Facturear: cómo obtenerlas y usarlas'
-description: 'Cómo obtener, rotar y usar las API Keys de Facturear para autenticar llamadas a la API de facturación electrónica en Argentina.'
+description: 'Cómo obtener, regenerar y usar las API Keys de Facturear para autenticar llamadas a la API de facturación electrónica en Argentina.'
 ---
 
 # API Keys en Facturear
@@ -21,39 +21,39 @@ Una API Key es un token secreto que identifica y autentica a tu aplicación cuan
 
 ## Cómo obtener tu API Key
 
+Cada cuenta tiene **dos API Keys**: una de producción y una de testing. Las generás desde el dashboard:
+
 <Steps>
   Registrá tu cuenta en **facture.ar**
 
   Ingresá al panel de control
 
-  Navegá a **Configuración → API Keys**
+  En el menú lateral, entrá a **Claves API**
 
-  Hacé clic en **"Nueva API Key"**
+  En la tarjeta **Production** o **Testing**, hacé clic en **"Generate Key"**
 
-  Ponele un nombre descriptivo (ej: "Producción", "Test", "ERP Integración")
-
-  Copiá la API Key generada y guardala en un lugar seguro. **No se puede ver de nuevo** después de cerrar la ventana
-
-  Configurá permisos si el panel lo permite (lectura, emisión, administración)
+  Copiá la API Key con **"Copy"** y guardala en un lugar seguro (por ejemplo, en las variables de entorno de tu servidor)
 </Steps>
+
+La key queda visible en esa misma pantalla, así que podés volver a copiarla cuando la necesites.
 
 ---
 
 ## Cómo usar la API Key
 
-Incluí la API Key en el header `x-api-key` de todas las requests:
+La URL base de la API es `https://www.facture.ar/api`. Incluí la API Key en el header `x-api-key` de todas las requests:
 
 ### curl
 
 ```bash
-curl https://api.facture.ar/cuits/20123456789/facturas \
-  -H "x-api-key: fct_live_abc123xyz..."
+curl https://www.facture.ar/api/invoices \
+  -H "x-api-key: prod_sk_abc123..."
 ```
 
 ### JavaScript (fetch)
 
 ```javascript
-const response = await fetch('https://api.facture.ar/cuits/20123456789/facturas', {
+const response = await fetch('https://www.facture.ar/api/invoices', {
   method: 'POST',
   headers: {
     'x-api-key': process.env.FACTUREAR_API_KEY,
@@ -66,6 +66,7 @@ const response = await fetch('https://api.facture.ar/cuits/20123456789/facturas'
 ### Python
 
 ```python
+import os
 import requests
 
 headers = {
@@ -73,11 +74,13 @@ headers = {
     "Content-Type": "application/json"
 }
 response = requests.post(
-    "https://api.facture.ar/cuits/20123456789/facturas",
+    "https://www.facture.ar/api/invoices",
     headers=headers,
     json=factura_data
 )
 ```
+
+Ver [Primera factura con Facturear](/es/guides/primera-factura) para el cuerpo de `facturaData`.
 
 ---
 
@@ -87,8 +90,10 @@ Las API Keys de Facturear usan prefijos para identificar el entorno:
 
 | Prefijo | Entorno | Descripción |
 |---|---|---|
-| `fct_live_` | Producción | Emite facturas reales con CAE de ARCA |
-| `fct_test_` | Testing | Entorno de pruebas, sin efectos reales |
+| `prod_sk_` | Producción | Emite facturas reales con CAE de ARCA |
+| `test_sk_` | Testing | Opera contra la [homologación de ARCA](/es/guides/entorno-testing), sin validez fiscal |
+
+El entorno lo define **la key que usás**: no hace falta (ni se tiene en cuenta) ningún header adicional para elegirlo.
 
 ---
 
@@ -100,7 +105,7 @@ Nunca hardcodees la API Key en el código. Usá variables de entorno:
 
 ```bash
 # .env (no subir al repositorio)
-FACTUREAR_API_KEY=fct_live_abc123xyz...
+FACTUREAR_API_KEY=prod_sk_abc123...
 ```
 
 ```javascript
@@ -110,30 +115,28 @@ const apiKey = process.env.FACTUREAR_API_KEY;
 
 ### Rotación periódica
 
-Rotá las API Keys periódicamente:
+Rotá las API Keys periódicamente. Como hay una sola key por entorno, al regenerarla la anterior deja de funcionar en el acto:
 
-1. Creá una nueva API Key
-2. Actualizá tu aplicación para usar la nueva key
-3. Verificá que todo funciona con la nueva key
-4. Revocá la key anterior
+1. Ingresá a **Claves API** y hacé clic en **"Regenerate"** en la tarjeta del entorno
+2. Copiá la nueva key
+3. Actualizá tu aplicación para usar la nueva key lo antes posible
+4. Verificá que todo funciona con la nueva key
 
 ### Usar keys distintas por entorno
 
-Tenés que tener API Keys separadas para:
-- **Producción**: la key que usa tu sistema real
-- **Testing/Staging**: para pruebas internas
-- **Desarrollo local**: para que cada developer tenga su propia key
+Usá cada key en su lugar:
+- **Producción** (`prod_sk_`): solo en tu sistema real
+- **Testing** (`test_sk_`): en desarrollo, staging y pruebas, para no emitir comprobantes con validez fiscal por error
 
 ---
 
 ## Revocar una API Key
 
-Si una key se comprometió o ya no la necesitás:
+Si una key se comprometió, regenerala:
 
-1. Ingresá al panel de Facturear → **Configuración → API Keys**
-2. Encontrá la key que querés revocar
-3. Hacé clic en **"Revocar"** o **"Eliminar"**
-4. La key queda inválida inmediatamente; todas las requests con esa key empezarán a fallar con error 401
+1. Ingresá al panel de Facturear → **Claves API**
+2. En la tarjeta del entorno afectado (Production o Testing), hacé clic en **"Regenerate"**
+3. La key anterior queda inválida inmediatamente; todas las requests con esa key empiezan a fallar con error 401
 
 ---
 
@@ -141,9 +144,12 @@ Si una key se comprometió o ya no la necesitás:
 
 | Error HTTP | Significado | Solución |
 |---|---|---|
-| `401 Unauthorized` | API Key inválida o no enviada | Verificá que enviás el header `x-api-key` correctamente |
-| `403 Forbidden` | API Key válida pero sin permisos | Verificá los permisos de la key en el panel |
-| `429 Too Many Requests` | Rate limit excedido | Esperá y reducí la frecuencia de llamadas |
+| `401 Unauthorized` | API Key inválida, regenerada o no enviada | Verificá que enviás el header `x-api-key` con la key vigente |
+| `403 Forbidden` al emitir, con `code: "SUBSCRIPTION_LIMIT_EXCEEDED"` | Superaste el límite de facturas de tu plan | Revisá tu plan en el dashboard |
+
+<Note>
+  Algunas funciones se manejan solo desde el dashboard y no aceptan API Key: generar y regenerar keys, configurar webhooks y cargar tributos por CUIT.
+</Note>
 
 ---
 

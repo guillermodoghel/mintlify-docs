@@ -156,7 +156,7 @@ El proceso de configuración del certificado digital es el mismo para monotribut
 
 ```javascript
 // Factura A — entre responsables inscriptos
-const facturaA = await fetch('https://api.facture.ar/invoices', {
+const facturaA = await fetch('https://www.facture.ar/api/invoices', {
   method: 'POST',
   headers: {
     'x-api-key': 'tu_api_key',
@@ -164,26 +164,26 @@ const facturaA = await fetch('https://api.facture.ar/invoices', {
   },
   body: JSON.stringify({
     cuitId: 'tu-cuit-id',
-    comprobante: {
-      tipo: 1,  // Factura A
-      puntoVenta: 1,
-      receptor: {
-        razonSocial: 'Empresa Receptora S.A.',
-        cuit: '30-71234567-8',
-        condicionIva: 'RI'  // Responsable Inscripto
-      },
-      items: [
-        {
-          descripcion: 'Servicio de desarrollo web',
-          cantidad: 1,
-          precioUnitario: 100000,
-          alicuotaIva: 21
-        }
-      ]
-    }
+    invoiceType: 1,             // Factura A
+    ptoVta: 1,
+    concepto: 2,                // Servicios
+    docTipo: 80,                // CUIT
+    docNro: 30712345678,
+    condicionIVAReceptorId: 1,  // IVA Responsable Inscripto
+    clientName: 'Empresa Receptora S.A.',
+    impNeto: 100000,
+    impIVA: 21000,
+    impTotal: 121000,
+    iva: [{ id: 5, baseImp: 100000, importe: 21000 }],  // 21%
+    fchServDesde: '20260901',
+    fchServHasta: '20260930',
+    fchVtoPago: '20261010',
+    description: 'Servicio de desarrollo web'
   })
 })
 ```
+
+La factura queda encolada: la respuesta trae un `batchId` y el CAE se obtiene con `GET https://www.facture.ar/api/invoices/batches/{batchId}`. Ver [Emitir tu primera factura](/es/guides/primera-factura) y [Condición frente al IVA del receptor](/es/guides/condicion-iva-receptor).
 
 Ver la [documentación completa de la API](/es/api-reference).
 

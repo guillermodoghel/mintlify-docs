@@ -182,7 +182,7 @@ Si superás el tope de categoría K del Monotributo o lo preferís por convenien
 Si tenés un sistema propio (e-commerce, ERP, sistema de gestión), podés integrar Facturear via API REST:
 
 ```javascript
-const response = await fetch('https://api.facture.ar/invoices', {
+const response = await fetch('https://www.facture.ar/api/invoices', {
   method: 'POST',
   headers: {
     'x-api-key': 'tu_api_key',
@@ -190,24 +190,23 @@ const response = await fetch('https://api.facture.ar/invoices', {
   },
   body: JSON.stringify({
     cuitId: 'tu-cuit-id',
-    comprobante: {
-      tipo: 11,  // Factura C
-      puntoVenta: 1,
-      receptor: {
-        razonSocial: 'Consumidor Final',
-        condicionIva: 'CF'
-      },
-      items: [
-        {
-          descripcion: 'Servicio de consultoría',
-          cantidad: 1,
-          precio: 50000
-        }
-      ]
-    }
+    invoiceType: 11,            // Factura C
+    ptoVta: 1,
+    concepto: 2,                // Servicios
+    docTipo: 99,                // Consumidor Final sin identificar
+    docNro: 0,
+    condicionIVAReceptorId: 5,  // Consumidor Final
+    impNeto: 50000,
+    impTotal: 50000,
+    fchServDesde: '20260901',
+    fchServHasta: '20260930',
+    fchVtoPago: '20261010',
+    description: 'Servicio de consultoría'
   })
 })
 ```
+
+La factura queda encolada: la respuesta trae un `batchId` y el CAE se obtiene con `GET https://www.facture.ar/api/invoices/batches/{batchId}`. Ver [Emitir tu primera factura](/es/guides/primera-factura).
 
 Ver la [documentación completa de la API](/es/api-reference).
 

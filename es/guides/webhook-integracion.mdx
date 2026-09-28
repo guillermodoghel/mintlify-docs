@@ -1,23 +1,27 @@
 ---
 title: 'Webhooks en Facturear: notificaciones en tiempo real'
-description: 'Cómo configurar y usar webhooks de Facturear para recibir notificaciones cuando se emiten, aprueban o rechazan facturas electrónicas en Argentina.'
+description: 'Cómo configurar y usar webhooks de Facturear para recibir notificaciones en tiempo real: eventos disponibles, payload, autenticación y reintentos.'
 ---
 
 # Webhooks en Facturear
 
-Los **webhooks** te permiten recibir notificaciones en tiempo real cuando ocurren eventos en Facturear (factura emitida, error, etc.), sin necesidad de hacer polling a la API. Tu sistema recibe un POST automático cuando algo sucede.
+Los **webhooks** te permiten recibir notificaciones en tiempo real cuando ocurren eventos en Facturear, sin necesidad de hacer polling a la API. Tu sistema recibe un POST automático cuando algo sucede.
+
+<Note>
+  Hoy Facturear envía un único evento por webhook: `delegation.completed`, cuando termina la delegación de un CUIT. **Todavía no hay webhooks para facturas** (emitidas, rechazadas o lotes terminados). Para saber el resultado de una factura, consultá `GET https://www.facture.ar/api/invoices/batches/{batchId}` con el `batchId` que te devuelve `POST /api/invoices` (ver [Facturación en lotes](/es/guides/facturacion-lotes)).
+</Note>
 
 ---
 
 ## ¿Cómo funcionan los webhooks?
 
 ```
-Facturear emite factura → obtiene CAE de ARCA → POST a tu URL webhook
+ARCA confirma la delegación del CUIT → Facturear la registra → POST a tu URL webhook
 ```
 
 1. Registrás una URL de tu sistema en Facturear
-2. Cuando se emite (o falla) una factura, Facturear hace un HTTP POST a esa URL
-3. Tu sistema recibe el evento y actúa (actualiza la base de datos, envía el PDF al cliente, etc.)
+2. Cuando la delegación de uno de tus CUITs queda completa en un entorno, Facturear hace un HTTP POST a esa URL
+3. Tu sistema recibe el evento y actúa (habilita la facturación para ese cliente, le avisa, etc.)
 
 ---
 
@@ -25,100 +29,82 @@ Facturear emite factura → obtiene CAE de ARCA → POST a tu URL webhook
 
 | Evento | Cuándo se dispara |
 |---|---|
-| `factura.emitida` | Factura aprobada exitosamente con CAE |
-| `factura.error` | ARCA rechazó la factura |
-| `factura.anulada` | Nota de crédito que anula una factura |
-| `lote.completado` | Lote de facturas procesado completamente |
+| `delegation.completed` | La delegación de un CUIT quedó completa en homologación o en producción. Se envía una vez por cada entorno |
 
 ---
 
 ## Configurar un webhook
 
-### POST /webhooks
+Los webhooks se configuran desde el **dashboard**, no con la API key:
 
-```bash
-curl -X POST https://api.facture.ar/webhooks \
-  -H "x-api-key: tu_api_key" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "url": "https://tusistema.com/webhooks/facturear",
-    "eventos": ["factura.emitida", "factura.error"],
-    "secret": "tu_secret_para_verificacion"
-  }'
-```
+1. Iniciá sesión en [facture.ar](https://facture.ar)
+2. En el menú lateral, entrá a **Webhooks**
+3. Presioná **"Add Webhook"**
+4. Completá:
+   - **URL**: la dirección de tu sistema que va a recibir el POST
+   - **Events**: `delegation.completed`
+   - **Headers** (opcional): headers propios que Facturear agrega a cada envío, por ejemplo un token para autenticar el pedido
+5. Guardá
 
-### Respuesta
-
-```json
-{
-  "id": "wh_abc123",
-  "url": "https://tusistema.com/webhooks/facturear",
-  "eventos": ["factura.emitida", "factura.error"],
-  "activo": true,
-  "created_at": "2025-01-01T00:00:00Z"
-}
-```
+Desde la misma pantalla podés editar el webhook, pausarlo y reactivarlo, eliminarlo y ver el historial de envíos.
 
 ---
 
 ## Payload del evento
 
-Cuando se dispara un evento, Facturear envía un POST con este body:
+Cuando se dispara el evento, Facturear envía un POST con `Content-Type: application/json`, `User-Agent: Facturear-Webhook/1.0` y los headers que configuraste. El body es:
 
 ```json
 {
-  "evento": "factura.emitida",
-  "timestamp": "2025-01-15T10:30:00Z",
-  "data": {
-    "id": "fct_abc123",
-    "cuit_emisor": "20123456789",
-    "tipo": "B",
-    "punto_venta": 1,
-    "numero": 145,
-    "fecha": "2025-01-15",
-    "cae": "71234567890123",
-    "cae_vencimiento": "2025-01-25",
-    "total": 121000,
-    "receptor": {
-      "razon_social": "Juan Pérez",
-      "cuit": "20111222333"
-    }
-  }
+  "event": "delegation.completed",
+  "cuit": {
+    "id": "cmg1a2b3c0000xyz",
+    "number": "20123456789",
+    "userId": "cmg0z9y8x0000abc"
+  },
+  "status": {
+    "setupStatus": "DELEGATION_COMPLETE",
+    "testingSetupState": "COMPLETED",
+    "productionSetupState": "COMPLETED"
+  },
+  "environment": "production",
+  "timestamp": "2026-09-28T13:30:00.000Z"
 }
 ```
+
+| Campo | Qué es |
+|---|---|
+| `event` | Nombre del evento |
+| `cuit.id` / `cuit.number` | Id del CUIT en Facturear y su número |
+| `status.testingSetupState` / `status.productionSetupState` | Estado de la configuración en cada entorno |
+| `status.setupStatus` | Pasa a `DELEGATION_COMPLETE` cuando ambos entornos quedaron completos |
+| `environment` | Entorno que se acaba de completar: `homologation` o `production` |
+| `timestamp` | Momento del envío, en ISO 8601 |
 
 ---
 
 ## Verificar la autenticidad del webhook
 
-Facturear firma cada webhook con un HMAC-SHA256 usando el `secret` que configuraste:
+Facturear **no firma** los webhooks. Para verificar que el pedido viene de Facturear, configurá un header propio con un valor secreto (por ejemplo `Authorization: Bearer <token>` o `X-Webhook-Token: <token>`) y validalo en tu endpoint:
 
 ```javascript
 const crypto = require('crypto');
 
-function verificarWebhook(body, signature, secret) {
-  const hmac = crypto.createHmac('sha256', secret);
-  hmac.update(body);
-  const expectedSignature = hmac.digest('hex');
-  return crypto.timingSafeEqual(
-    Buffer.from(signature),
-    Buffer.from(expectedSignature)
-  );
+function tokenValido(recibido, esperado) {
+  if (typeof recibido !== 'string') return false;
+  const a = Buffer.from(recibido);
+  const b = Buffer.from(esperado);
+  return a.length === b.length && crypto.timingSafeEqual(a, b);
 }
 
 // En tu endpoint
 app.post('/webhooks/facturear', (req, res) => {
-  const signature = req.headers['x-facturear-signature'];
-  const isValid = verificarWebhook(
-    JSON.stringify(req.body),
-    signature,
-    process.env.WEBHOOK_SECRET
-  );
-  
-  if (!isValid) {
-    return res.status(401).json({ error: 'Firma inválida' });
+  const token = req.headers['x-webhook-token'];
+
+  if (!tokenValido(token, process.env.FACTUREAR_WEBHOOK_TOKEN)) {
+    return res.status(401).json({ error: 'Token inválido' });
   }
-  
+
   // Procesar el evento
   procesarEvento(req.body);
   res.status(200).json({ received: true });
@@ -131,15 +117,15 @@ app.post('/webhooks/facturear', (req, res) => {
 
 Tu endpoint debe:
 
-1. Responder con **HTTP 200** lo antes posible
+1. Responder con **HTTP 2xx** lo antes posible (Facturear corta cada intento a los 10 segundos)
 2. Procesar el evento en background si es operación lenta
-3. Si respondés con cualquier código que no sea 2xx, Facturear reintentará el webhook
+3. Si respondés con cualquier código que no sea 2xx, o no respondés a tiempo, Facturear reintenta el webhook
 
 ```javascript
 app.post('/webhooks/facturear', async (req, res) => {
   // Responder primero para evitar timeout
   res.status(200).json({ received: true });
-  
+
   // Procesar en background
   setImmediate(() => {
     procesarEventoFacturear(req.body).catch(console.error);
@@ -156,21 +142,16 @@ Si tu endpoint no responde con 2xx, Facturear reintenta:
 | Intento | Delay |
 |---|---|
 | 1 (original) | Inmediato |
-| 2 | 1 minuto |
-| 3 | 5 minutos |
-| 4 | 30 minutos |
-| 5 | 2 horas |
+| 2 | 1 segundo |
+| 3 | 2 segundos |
 
-Después del 5to intento fallido, el webhook se marca como fallido.
+Después del 3er intento fallido, el envío queda registrado como fallido.
 
 ---
 
 ## Consultar webhooks fallidos
 
-```bash
-curl "https://api.facture.ar/webhooks/wh_abc123/entregas?estado=fallido" \
-  -H "x-api-key: tu_api_key"
-```
+Cada envío (exitoso o fallido) queda en el historial del webhook, con el payload, los headers, el código y el body de tu respuesta, y el error si lo hubo. Lo ves desde **Webhooks** en el dashboard, y desde ahí podés **reintentar** un envío fallido.
 
 ---
 

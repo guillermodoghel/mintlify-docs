@@ -1,6 +1,6 @@
 ---
 title: 'Puntos de venta en Facturear: configuración y gestión'
-description: 'Cómo crear y gestionar puntos de venta en la API de Facturear para emitir facturas electrónicas en Argentina: alta en ARCA, tipos de punto de venta y uso en la API.'
+description: 'Cómo crear y gestionar puntos de venta para emitir facturas electrónicas con Facturear en Argentina: alta en ARCA, tipos de punto de venta y cómo consultarlos con la API.'
 ---
 
 # Puntos de venta en Facturear
@@ -48,7 +48,7 @@ ARCA define diferentes tipos de PDV:
 | **Factura en línea** | Facturación a través de web service (Facturear, sistemas ERP) |
 | **Controlador fiscal** | Facturas emitidas desde controlador fiscal homologado |
 | **Manual** | Talonario en papel (excepcional) |
-| **CAEA** | Para contribuyentes con Código de Autorización Electrónico Anticipado |
+| **CAEA** | Para contribuyentes con Código de Autorización Electrónico Anticipado (Facturear todavía no lo soporta, ver [CAEA](/es/guides/factura-caea)) |
 
 Para integrarse con Facturear, el punto de venta debe ser del tipo **"Factura en línea"**.
 
@@ -56,61 +56,70 @@ Para integrarse con Facturear, el punto de venta debe ser del tipo **"Factura en
 
 ## Listar puntos de venta en Facturear
 
-### GET /cuits/{cuit}/puntos-de-venta
+Facturear guarda los puntos de venta que ARCA informa para cada CUIT. Se consultan con el **id del CUIT en Facturear** (lo obtenés con `GET https://www.facture.ar/api/cuits`).
+
+### GET /api/cuits/{id}/pos
 
 ```bash
-curl https://api.facture.ar/cuits/20123456789/puntos-de-venta \
+curl https://www.facture.ar/api/cuits/cmg0a1b2c0000abc/pos \
   -H "x-api-key: tu_api_key"
 ```
 
 ### Respuesta
 
+Devuelve la última lista obtenida de ARCA, cuándo se actualizó y el punto de venta por defecto del CUIT:
+
 ```json
 {
-  "cuit": "20123456789",
-  "puntos_de_venta": [
-    {
-      "numero": 1,
-      "tipo": "factura_en_linea",
-      "bloqueado": false,
-      "fecha_baja": null
+  "pos": {
+    "pos": {
+      "ResultGet": {
+        "PtoVenta": [
+          { "Nro": 1, "EmisionTipo": "CAE", "Bloqueado": "N", "FchBaja": "NULL" },
+          { "Nro": 2, "EmisionTipo": "CAE", "Bloqueado": "N", "FchBaja": "NULL" }
+        ]
+      }
     },
-    {
-      "numero": 2,
-      "tipo": "factura_en_linea",
-      "bloqueado": false,
-      "fecha_baja": null
-    }
-  ]
+    "posLastUpdated": "2026-09-15T13:30:00.000Z",
+    "default_pos": 1
+  }
 }
 ```
+
+### Actualizar la lista desde ARCA
+
+Si diste de alta un punto de venta nuevo en ARCA, pedile a Facturear que vuelva a consultarlos:
+
+### POST /api/cuits/{id}/pos
+
+```bash
+curl -X POST https://www.facture.ar/api/cuits/cmg0a1b2c0000abc/pos \
+  -H "x-api-key: tu_api_key"
+```
+
+```json
+{
+  "message": "Points of sale fetched and updated successfully",
+  "pos": {
+    "ResultGet": {
+      "PtoVenta": [
+        { "Nro": 1, "EmisionTipo": "CAE", "Bloqueado": "N", "FchBaja": "NULL" }
+      ]
+    }
+  }
+}
+```
+
+La consulta se hace siempre contra ARCA **producción**. Si ARCA no devuelve ningún punto de venta, la respuesta es `400`: primero tenés que dar de alta uno en ARCA. La primera vez que se cargan, el primero de la lista queda como punto de venta por defecto; lo podés cambiar con `POST /api/cuits/{id}/default-pos` (ver [Configurar defaults por CUIT](/es/guides/configurar-defaults-cuit)).
+
+Desde el dashboard, lo mismo está en **CUITs** → tu CUIT → **Puntos de Venta**, con el botón **"Actualizar"**.
 
 ---
 
-## Consultar el último número de comprobante
-
-Para conocer el último número emitido y saber cuál será el próximo:
-
-### GET /cuits/{cuit}/ultimo-comprobante
-
-```bash
-curl "https://api.facture.ar/cuits/20123456789/ultimo-comprobante?punto_venta=1&tipo_comprobante=B" \
-  -H "x-api-key: tu_api_key"
-```
-
-### Respuesta
-
-```json
-{
-  "punto_venta": 1,
-  "tipo_comprobante": "B",
-  "ultimo_numero": 145,
-  "proximo_numero": 146
-}
-```
+## Número de comprobante
 
 <Info>
-  Facturear maneja automáticamente el incremento del número de comprobante. No necesitás controlar la numeración manualmente; el sistema consulta a ARCA y asigna el número correcto.
+  Facturear maneja automáticamente el incremento del número de comprobante. No necesitás controlar la numeración manualmente; el sistema consulta a ARCA y asigna el número correcto. El número asignado vuelve en `voucherNumber`, en el resultado del lote y en `GET /api/invoices`.
 </Info>
 
 ---

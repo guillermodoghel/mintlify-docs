@@ -1,6 +1,6 @@
 ---
 title: 'Configurar defaults por CUIT en la API de Facturear'
-description: 'Cómo configurar valores por defecto (defaults) para un CUIT en la API de Facturear: tipo de comprobante, punto de venta, conceptos y tributos predeterminados.'
+description: 'Cómo configurar valores por defecto (defaults) para un CUIT en la API de Facturear: tipo de comprobante, punto de venta, concepto, alícuota de IVA y CUIT por defecto.'
 ---
 
 # Configurar defaults por CUIT en Facturear
@@ -13,56 +13,73 @@ La **API de Facturear** permite configurar valores predeterminados para cada CUI
 
 Si tu integración siempre emite el mismo tipo de factura desde el mismo punto de venta, podés configurar esos valores como default:
 
-- **Tipo de comprobante** (Factura A, B, C, E, etc.)
+- **Tipo de comprobante** (Factura A, B, C, etc.)
 - **Punto de venta** predeterminado
 - **Concepto** por defecto (Productos, Servicios, Productos y Servicios)
-- **Moneda** (para facturas de exportación)
-- **Alícuota de IVA** por defecto
+- **Alícuota de IVA** por defecto (la que aparece preseleccionada en los formularios del dashboard)
+
+Además, podés marcar uno de tus CUITs como **CUIT por defecto**: es el que se usa cuando una factura no trae `cuitId` ni `cuit`.
 
 ---
 
 ## Cómo configurar defaults vía API
 
-### PATCH /cuits/{cuit}/defaults
+Cada default se configura con su propio endpoint, usando el **id del CUIT en Facturear** (lo obtenés con `GET https://www.facture.ar/api/cuits`). Todos son `POST` y reciben un número:
+
+| Endpoint | Body | Qué configura |
+|---|---|---|
+| `POST /api/cuits/{id}/default-pos` | `{ "defaultPos": 1 }` | Punto de venta |
+| `POST /api/cuits/{id}/default-invoice-type` | `{ "defaultInvoiceType": 11 }` | Tipo de comprobante (código de ARCA) |
+| `POST /api/cuits/{id}/default-concept` | `{ "defaultConcept": 2 }` | Concepto |
+| `POST /api/cuits/{id}/default-iva` | `{ "defaultIva": 5 }` | Alícuota de IVA (código de ARCA) |
+| `POST /api/cuits/{id}/set-default` | sin body | Marca este CUIT como el default de tu cuenta |
 
 ```bash
-curl -X PATCH https://api.facture.ar/cuits/20123456789/defaults \
+curl -X POST https://www.facture.ar/api/cuits/cmg0a1b2c0000abc/default-pos \
   -H "x-api-key: tu_api_key" \
   -H "Content-Type: application/json" \
-  -d '{
-    "punto_venta": 1,
-    "tipo_comprobante": "C",
-    "concepto": 2,
-    "moneda": "PES",
-    "alicuota_iva": 21
-  }'
+  -d '{ "defaultPos": 1 }'
 ```
 
 ### Respuesta exitosa
 
 ```json
 {
-  "cuit": "20123456789",
-  "defaults": {
-    "punto_venta": 1,
-    "tipo_comprobante": "C",
-    "concepto": 2,
-    "moneda": "PES",
-    "alicuota_iva": 21
-  },
-  "updated_at": "2025-08-15T10:30:00Z"
+  "message": "Default point of sale updated successfully"
 }
 ```
+
+`default-invoice-type` y `default-concept` responden igual, con su propio mensaje. `default-iva` devuelve el CUIT actualizado y `set-default` devuelve `{ "success": true }`. Si el CUIT no existe o no es tuyo, la respuesta es `404`; si el valor no es un número válido, `400`.
+
+<Tip>
+  `set-default` acepta en `{id}` tanto el id del CUIT en Facturear como su número (`20123456789`).
+</Tip>
+
+También podés configurarlos desde el dashboard, en **CUITs** → tu CUIT, en las pestañas **Puntos de Venta**, **Conceptos**, **Tipos de Comprobante** e **IVA**.
 
 ---
 
 ## Cómo ver los defaults actuales
 
-### GET /cuits/{cuit}/defaults
+### GET /api/cuits/{id}
 
 ```bash
-curl https://api.facture.ar/cuits/20123456789/defaults \
+curl https://www.facture.ar/api/cuits/cmg0a1b2c0000abc \
   -H "x-api-key: tu_api_key"
+```
+
+Los defaults vienen en estos campos del CUIT:
+
+```json
+{
+  "id": "cmg0a1b2c0000abc",
+  "number": "20123456789",
+  "default_pos": 1,
+  "default_invoice_type": 11,
+  "default_concept": 2,
+  "default_iva": 5,
+  "is_default": true
+}
 ```
 
 ---
@@ -71,11 +88,16 @@ curl https://api.facture.ar/cuits/20123456789/defaults \
 
 | Parámetro | Tipo | Descripción |
 |---|---|---|
-| `punto_venta` | integer | Número de punto de venta (1–9999) |
-| `tipo_comprobante` | string | "A", "B", "C", "E", "M", etc. |
-| `concepto` | integer | 1=Productos, 2=Servicios, 3=Ambos |
-| `moneda` | string | "PES" (pesos), "DOL" (dólares), etc. |
-| `alicuota_iva` | number | 0, 10.5, 21, 27 |
+| `defaultPos` | integer | Número de punto de venta (mayor o igual a 1) |
+| `defaultInvoiceType` | integer | Código de ARCA: `1` Factura A, `6` Factura B, `11` Factura C, etc. |
+| `defaultConcept` | integer | `1` = Productos, `2` = Servicios, `3` = Ambos |
+| `defaultIva` | integer | Código de alícuota de ARCA: `3` = 0%, `4` = 10,5%, `5` = 21%, `6` = 27% |
+
+Los códigos vigentes están en la [API de parámetros de ARCA](/es/guides/parametros-arca).
+
+<Note>
+  El default de IVA lo usan los formularios del dashboard. La API no calcula el IVA a partir de él: en cada factura mandá el detalle en `iva` y los importes (`impNeto`, `impIVA`, `impTotal`). La moneda no tiene default configurable: si no mandás `monId`, la factura sale en pesos (`PES`).
+</Note>
 
 ---
 
@@ -86,11 +108,11 @@ Los defaults son solo valores predeterminados. Podés sobrescribirlos en cualqui
 ```json
 {
   "concepto": 1,
-  "items": [...]
+  "impTotal": 50000
 }
 ```
 
-Si enviás `concepto: 1` en la request, ese valor se usa en lugar del default configurado.
+Si enviás `concepto: 1` en la request, ese valor se usa en lugar del default configurado. Lo mismo vale para `ptoVta` e `invoiceType`.
 
 ---
 
@@ -99,40 +121,57 @@ Si enviás `concepto: 1` en la request, ese valor se usa en lugar del default co
 Si tu empresa tiene múltiples puntos de venta, podés:
 
 1. Configurar un punto de venta como default
-2. Sobreescribirlo en las facturas que correspondan a otro punto de venta
+2. Sobreescribirlo con `ptoVta` en las facturas que correspondan a otro punto de venta
 
-O alternativamente, no configurar un default de punto de venta y enviarlo explícitamente en cada request.
+O alternativamente, no configurar un default de punto de venta y enviar `ptoVta` explícitamente en cada request. Si el CUIT no tiene punto de venta por defecto y la factura no trae `ptoVta`, la API responde `400`. Lo mismo pasa con el concepto.
 
 ---
 
 ## Ejemplo: configuración para monotributista simple
 
-```json
-{
-  "punto_venta": 1,
-  "tipo_comprobante": "C",
-  "concepto": 2,
-  "moneda": "PES"
-}
+```bash
+# Punto de venta 1, Factura C, servicios
+curl -X POST https://www.facture.ar/api/cuits/cmg0a1b2c0000abc/default-pos \
+  -H "x-api-key: tu_api_key" -H "Content-Type: application/json" \
+  -d '{ "defaultPos": 1 }'
+
+curl -X POST https://www.facture.ar/api/cuits/cmg0a1b2c0000abc/default-invoice-type \
+  -H "x-api-key: tu_api_key" -H "Content-Type: application/json" \
+  -d '{ "defaultInvoiceType": 11 }'
+
+curl -X POST https://www.facture.ar/api/cuits/cmg0a1b2c0000abc/default-concept \
+  -H "x-api-key: tu_api_key" -H "Content-Type: application/json" \
+  -d '{ "defaultConcept": 2 }'
+
+curl -X POST https://www.facture.ar/api/cuits/cmg0a1b2c0000abc/set-default \
+  -H "x-api-key: tu_api_key"
 ```
 
-Con esta configuración, una request mínima de facturación sería:
+Con esta configuración, una request mínima de facturación (una Factura C de servicios a consumidor final) sería:
 
 ```json
 {
-  "receptor": {
-    "razon_social": "Cliente SA",
-    "cuit": "30987654321"
-  },
+  "condicionIVAReceptorId": 5,
+  "impNeto": 50000,
+  "impTotal": 50000,
+  "fchServDesde": "20260901",
+  "fchServHasta": "20260930",
+  "fchVtoPago": "20261010",
+  "description": "Servicio de consultoría",
   "items": [
     {
-      "descripcion": "Servicio de consultoría",
-      "cantidad": 1,
-      "precio_unitario": 50000
+      "description": "Servicio de consultoría",
+      "quantity": 1,
+      "unitPrice": 50000,
+      "discount": 0,
+      "ivaRate": 0,
+      "subtotal": 50000
     }
   ]
 }
 ```
+
+El CUIT, el punto de venta, el tipo de comprobante y el concepto salen de los defaults, y el receptor queda como consumidor final sin identificar (`docTipo` 99). Para facturarle a un cliente con CUIT, agregá `docTipo: 80`, `docNro` y `clientName`. Ver [Primera factura con Facturear](/es/guides/primera-factura).
 
 ---
 
