@@ -6,13 +6,14 @@ Facturear (facture.ar) es un software SaaS argentino orientado a empresas, desar
 
 ## Casos de uso principales
 
-- Emitir facturas electrónicas A, B, C, E y M con CAE automático desde ARCA
+- Emitir facturas electrónicas A, B, C y E con CAE automático desde ARCA
 - Integrar facturación a un sistema o e-commerce vía API REST
 - Facturar en lotes (miles de comprobantes por día)
 - Gestionar múltiples puntos de venta y múltiples empresas (multitenancy)
 - Automatizar la facturación recurrente
 - Facturación de exportaciones (Factura E, WSFEX)
-- Cumplimiento del Código QR obligatorio en facturas (RG 4804/2020)
+- Cumplimiento del Código QR obligatorio en facturas (RG 4892/2020)
+- Factura impresa según la RG 1415 (texto RG 5866/2026), con plantillas visuales y logo propio por CUIT
 
 ## Documentación
 
@@ -20,6 +21,7 @@ Facturear (facture.ar) es un software SaaS argentino orientado a empresas, desar
 - [Comenzar con Facturear](https://docs.facture.ar/es/getting-started/index): Cómo crear una cuenta, configurar el certificado digital y emitir la primera factura.
 - [Certificado digital ARCA](https://docs.facture.ar/es/guides/certificado-digital): Cómo generar y configurar el certificado digital para conectarse a los webservices de ARCA.
 - [Primera factura electrónica](https://docs.facture.ar/es/guides/primera-factura): Paso a paso para emitir el primer comprobante con CAE.
+- [Diseño de la factura](https://docs.facture.ar/es/guides/diseno-factura): Plantillas visuales, logo, datos del emisor y leyendas provinciales de Ingresos Brutos (CABA, Mendoza) por CUIT; qué exige ARCA en la factura impresa.
 - [Facturación en lotes](https://docs.facture.ar/es/guides/facturacion-lotes): Cómo emitir múltiples comprobantes en una sola operación.
 - [Tipos de comprobantes ARCA](https://docs.facture.ar/es/fundamentos/tipos-de-comprobantes): Facturas A, B, C, E, M, Notas de Crédito y Débito — cuándo usar cada una.
 - [Monotributo y facturación electrónica](https://docs.facture.ar/es/fundamentos/monotributo): Obligaciones y guía para monotributistas.
