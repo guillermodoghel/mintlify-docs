@@ -18,7 +18,7 @@ The notes live in es/newsletter/notas/<slug>.mdx, one per news item, with this f
   - es/newsletter/temas/<category>.mdx    one index per topic
   - es/newsletter/archivo/<yyyy-mm>.mdx   one index per month
   - the impact callout and "Más sobre ..." block inside each note
-  - the Newsletter tab in docs.json and the newsletter block in llms.txt
+  - the Newsletter tab in docs.json, the newsletter block in llms.txt and newsletter-feed.json
 
 Stdlib only: the daily GitHub Action imports it right after writing new notes.
 """
@@ -35,6 +35,9 @@ NEWSLETTER_DIR = REPO_ROOT / "es" / "newsletter"
 NOTES_DIR = NEWSLETTER_DIR / "notas"
 DOCS_JSON = REPO_ROOT / "docs.json"
 LLMS_TXT = REPO_ROOT / "llms.txt"
+# Read by facture.ar to build the Monday email; keep the shape stable
+FEED_JSON = REPO_ROOT / "newsletter-feed.json"
+FEED_SIZE = 80
 SITE = "https://docs.facture.ar"
 TAB_NAME = "Newsletter"
 
@@ -424,7 +427,7 @@ def front_page(notes: list[Note], today: date) -> str:
       </ul>
       <div className="fa-sub" data-fa-newsletter="inline">
         <p className="fa-sub-title">Recibí el newsletter</p>
-        <p className="fa-sub-text">Un resumen con lo que cambia para facturar, directo a tu mail. Sin spam, te das de baja con un clic.</p>
+        <p className="fa-sub-text">Todos los lunes a la mañana, lo que cambió en la semana para facturar. Sin spam, te das de baja con un clic.</p>
       </div>
     </div>
   </div>
@@ -529,7 +532,7 @@ def related_block(note: Note, notes: list[Note]) -> str:
     <a href="/es/newsletter/archivo/{month_key(note.day)}">{t(f"Archivo de {month_label(month_key(note.day)).lower()}")} →</a>
   </div>
   <div data-fa-newsletter="inline" className="fa-sub fa-sub-compact">
-    <p className="fa-sub-title">¿Te sirvió? Recibilas en tu mail</p>
+    <p className="fa-sub-title">¿Te sirvió? Recibí el resumen de los lunes</p>
   </div>
 </div>
 {RELATED_END}
@@ -576,6 +579,31 @@ def update_docs_json(notes: list[Note]) -> None:
     else:
         tabs[idx] = tab
     DOCS_JSON.write_text(json.dumps(docs, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+
+
+def write_feed(notes: list[Note]) -> None:
+    """Latest notes as JSON for the weekly email sent from facture.ar."""
+    feed = {
+        "version": 1,
+        "url": f"{SITE}/es/newsletter/index",
+        "notes": [
+            {
+                "slug": n.slug,
+                "title": n.title,
+                "description": n.description,
+                "date": n.day.isoformat(),
+                "category": n.category,
+                "category_label": CATEGORY[n.category][0],
+                "impact": n.impact,
+                "impact_note": n.impact_note or None,
+                "url": f"{SITE}{n.href}",
+            }
+            for n in notes[:FEED_SIZE]
+        ],
+    }
+    content = json.dumps(feed, ensure_ascii=False, indent=1) + "\n"
+    if not FEED_JSON.exists() or FEED_JSON.read_text(encoding="utf-8") != content:
+        FEED_JSON.write_text(content, encoding="utf-8")
 
 
 def update_llms_txt(notes: list[Note]) -> None:
@@ -662,6 +690,7 @@ def build(today: date | None = None) -> None:
 
     update_docs_json(notes)
     update_llms_txt(notes)
+    write_feed(notes)
     print(f"Newsletter built: {len(notes)} notes, {len(live_topics)} topics, {len(months)} months.")
 
 

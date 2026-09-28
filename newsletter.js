@@ -157,8 +157,8 @@
         },
       }),
       el('div', { class: 'fa-modal-kicker', text: 'Newsletter Facturear' }),
-      el('h2', { class: 'fa-modal-title', id: 'fa-modal-title', text: 'Las novedades impositivas, en tu mail' }),
-      el('p', { class: 'fa-modal-text', text: 'Te avisamos lo que cambia para facturar antes de que te afecte. Leés en dos minutos y seguís con lo tuyo.' }),
+      el('h2', { class: 'fa-modal-title', id: 'fa-modal-title', text: 'Las novedades impositivas, cada lunes en tu mail' }),
+      el('p', { class: 'fa-modal-text', text: 'Todos los lunes a la mañana, un resumen con lo que cambia para facturar. Se lee en dos minutos.' }),
       el('ul', { class: 'fa-modal-points' }, [
         el('li', { text: 'Cambios de ARCA que impactan en tus comprobantes' }),
         el('li', { text: 'Vencimientos y topes del Monotributo' }),
@@ -218,7 +218,7 @@
       el('button', {
         class: 'fa-banner-open',
         type: 'button',
-        text: 'Recibí las novedades impositivas',
+        text: 'Resumen impositivo de los lunes',
         on: {
           click: function () {
             openModal('banner');
