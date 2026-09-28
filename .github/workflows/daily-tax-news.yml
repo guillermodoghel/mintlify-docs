@@ -33,7 +33,7 @@ jobs:
         run: |
           git config user.name "Tax News Bot"
           git config user.email "bot@facture.ar"
-          git add es/novedades/ docs.json
+          git add es/newsletter/ docs.json llms.txt
           if git diff --staged --quiet; then
             echo "No new article today — nothing to commit."
           else

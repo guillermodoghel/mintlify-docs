@@ -27,14 +27,6 @@ Facturear (facture.ar) es un software SaaS argentino orientado a empresas, desar
 - [Delegación de CUIT en ARCA](https://docs.facture.ar/es/guides/delegacion): Cómo delegar el CUIT de un cliente para facturar en su nombre.
 - [API Reference](https://docs.facture.ar/es/api-reference/index): Documentación completa de la API REST de Facturear para integraciones.
 
-## Novedades impositivas
-
-Facturear publica artículos de novedades impositivas relevantes para empresas y contadores argentinos:
-
-- [ARCA reemplaza a AFIP](https://docs.facture.ar/es/novedades/arca-reemplaza-afip): Qué cambió con el nuevo nombre del organismo recaudador.
-- [Factura de Crédito Electrónica MiPyMEs](https://docs.facture.ar/es/novedades/factura-credito-electronica-mipymes): Obligatoriedad y funcionamiento de la FCE para PyMEs.
-- [Obligatoriedad de la factura electrónica](https://docs.facture.ar/es/novedades/obligatoriedad-factura-electronica): Quiénes están obligados a facturar electrónicamente en Argentina.
-
 ## Datos clave del producto
 
 - **País**: Argentina
@@ -46,3 +38,48 @@ Facturear publica artículos de novedades impositivas relevantes para empresas y
 - **Sitio web**: https://facture.ar
 - **Documentación**: https://docs.facture.ar
 - **Soporte**: support@facture.ar
+
+<!-- newsletter:start -->
+## Newsletter Facturear (novedades impositivas)
+
+- [Portada del newsletter](https://docs.facture.ar/es/newsletter/index): Novedades impositivas argentinas, actualizadas a diario.
+- [Novedades que impactan en Facturear](https://docs.facture.ar/es/newsletter/impacto-facturear): Cambios de ARCA que modifican cómo se emiten comprobantes electrónicos.
+- [Facturación electrónica](https://docs.facture.ar/es/newsletter/temas/facturacion): Comprobantes, CAE, nuevos obligados y cambios en cómo se factura.
+- [Vencimientos](https://docs.facture.ar/es/newsletter/temas/vencimientos): Fechas límite, prórrogas y calendarios de ARCA y las provincias.
+- [Monotributo](https://docs.facture.ar/es/newsletter/temas/monotributo): Escalas, cuotas, topes de facturación y recategorizaciones.
+- [IVA](https://docs.facture.ar/es/newsletter/temas/iva): Alícuotas, crédito fiscal, percepciones y reintegros.
+- [Ganancias](https://docs.facture.ar/es/newsletter/temas/ganancias): Escalas, deducciones, retenciones y declaraciones juradas.
+- [Bienes Personales](https://docs.facture.ar/es/newsletter/temas/bienes-personales): Mínimos, alícuotas y declaración anual.
+- [Ingresos Brutos y provincias](https://docs.facture.ar/es/newsletter/temas/iibb): ARBA, AGIP, Convenio Multilateral y tributos locales.
+- [Laboral y previsional](https://docs.facture.ar/es/newsletter/temas/laboral): Contribuciones, sueldos, aguinaldo y aportes.
+- [ARCA y procedimientos](https://docs.facture.ar/es/newsletter/temas/arca): Planes de pago, fiscalizaciones, regímenes de información y trámites.
+- [Economía y contexto](https://docs.facture.ar/es/newsletter/temas/economia): Recaudación, reformas y contexto económico con efecto fiscal.
+
+### Últimas notas
+
+- [Pagos a monotributistas: la Justicia avala el límite de ARCA para deducir en Ganancias](https://docs.facture.ar/es/newsletter/notas/deduccion-pagos-monotributistas-fallo-arca-2026-09-26) (2026-09-26): Un fallo judicial respaldó la restricción de ARCA para deducir en Ganancias los pagos a monotributistas, admitiendo solo aquellos vinculados a operaciones recurrentes. Qué…
+- [Recategorización de Monotributo: vencimiento y paso a paso en ARCA](https://docs.facture.ar/es/newsletter/notas/monotributo-recategorizacion-vencimiento-arca-2026-09-26) (2026-09-26): Guía práctica para realizar la recategorización semestral del Monotributo en ARCA, evitar inconsistencias y prevenir sanciones administrativas.
+- [Nueva fiscalización de ARCA: menos papel y más control digital](https://docs.facture.ar/es/newsletter/notas/nueva-fiscalizacion-arca-control-digital-2026-09-25) (2026-09-25): ARCA avanza hacia un esquema de fiscalización sin papel pero con mayor cruce de datos sobre los sistemas de los contribuyentes. Qué implica para empresas y contadores.
+- [IVA Dual y PIX argentino: el proyecto de Guillermo Michel para formalizar micropymes](https://docs.facture.ar/es/newsletter/notas/proyecto-iva-dual-pix-argentino-michel-2026-09-25) (2026-09-25): El diputado Guillermo Michel presentó una reforma tributaria que combina un IVA Dual, un IVA fijo para micropymes y un sistema de pagos instantáneos al estilo del PIX brasileño.
+- [Saldos técnicos de IVA en el agro: u$s770 millones inmovilizados y la propuesta de convertirlos en bonos](https://docs.facture.ar/es/newsletter/notas/saldos-iva-agro-bonos-negociables-2026-09-25) (2026-09-25): El Presupuesto 2026 mantiene retenidos u$s770 millones en saldos técnicos de IVA del sector agropecuario. Analizamos la propuesta de convertirlos en bonos negociables y qué…
+- [Ganancias 2025: ARCA prorrogó el vencimiento y fijó las pautas para los anticipos 2026](https://docs.facture.ar/es/newsletter/notas/ganancias-prorroga-anticipos-2026-2026-09-24) (2026-09-24): ARCA modificó el calendario del Impuesto a las Ganancias para personas humanas y sucesiones indivisas, y definió cómo calcular los anticipos 2026. Guía para contadores y…
+- [Ganancias Simplificada: ARCA actualizó el manual para armar la DDJJ](https://docs.facture.ar/es/newsletter/notas/ganancias-simplificada-manual-declaracion-jurada-2026-09-24) (2026-09-24): ARCA renovó las pautas y el manual online para confeccionar la declaración jurada de Ganancias Simplificada. Guía práctica para contribuyentes alcanzados en el período vigente.
+- [Patentes en CABA 2027: baja el impuesto para 6 de cada 10 autos y hay nuevas exenciones](https://docs.facture.ar/es/newsletter/notas/patentes-caba-2027-baja-impuesto-exenciones-2026-09-23) (2026-09-23): La Ciudad de Buenos Aires anunció cambios en el impuesto de patentes para 2027: reducción para el 60% de los vehículos, exención total para eléctricos y baja para autos con más…
+- [ARBA amplía su sistema digital de compensación de saldos a favor](https://docs.facture.ar/es/newsletter/notas/arba-sistema-digital-compensacion-saldos-a-favor-2026-09-22) (2026-09-22): La Agencia de Recaudación bonaerense sumó nuevos conceptos al sistema único de compensación digital, permitiendo recuperar saldos a favor de forma totalmente online. Qué implica…
+- [Ganancias 2025: ARCA prorroga la presentación hasta el 13 de octubre](https://docs.facture.ar/es/newsletter/notas/arca-prorroga-ddjj-ganancias-2025-personas-humanas-2026-09-21) (2026-09-21): La RG 5898/2026 extiende por tercera vez el plazo para presentar la DDJJ de Ganancias 2025 de personas humanas y sucesiones indivisas, pero mantiene el vencimiento del pago y…
+- [Transferencias y billeteras virtuales: los montos que ARCA controla en octubre 2025](https://docs.facture.ar/es/newsletter/notas/montos-arca-transferencias-billeteras-virtuales-2026-09-21) (2026-09-21): Repasamos los umbrales vigentes que obligan a bancos y billeteras virtuales a informar operaciones a ARCA, y qué implica realmente superarlos para monotributistas y responsables…
+- [Reintegro de IVA condicionado: cuando cobrar depende de que el agente de retención pague a ARCA](https://docs.facture.ar/es/newsletter/notas/reintegro-iva-condicionado-pago-agente-retencion-2026-09-21) (2026-09-21): La última modificación al régimen de reintegro de IVA introduce una condición polémica: el contribuyente no recupera lo retenido hasta que el agente cancele su obligación frente…
+- [Transferencias bajo la lupa de ARCA en octubre 2026: montos que activan el control](https://docs.facture.ar/es/newsletter/notas/arca-montos-control-transferencias-octubre-2026-2026-09-20) (2026-09-20): Conocé los umbrales a partir de los cuales bancos y billeteras virtuales deben informar movimientos a ARCA en octubre 2026 y cómo justificar los fondos para evitar requerimientos…
+- [Monotributo octubre 2026: nuevos valores y topes tras la actualización de ARCA](https://docs.facture.ar/es/newsletter/notas/monotributo-octubre-2026-nuevos-valores-topes-arca-2026-09-20) (2026-09-20): ARCA aplicó un ajuste del 16,8% sobre los valores del Monotributo. Conocé los nuevos importes mensuales y topes de facturación vigentes desde octubre 2026.
+- [ARCA fijó fecha límite para adaptar las facturas electrónicas: qué cambios aplicar](https://docs.facture.ar/es/newsletter/notas/arca-fecha-limite-cambios-facturas-electronicas-2026-09-19) (2026-09-19): ARCA estableció un plazo para que empresas y profesionales actualicen sus sistemas de facturación electrónica y cumplan con los nuevos requerimientos fiscales. Repasamos qué hay…
+- [Monotributo octubre 2026: aporte jubilatorio por categoría y requisitos para jubilarse](https://docs.facture.ar/es/newsletter/notas/monotributo-aporte-jubilatorio-octubre-categorias-2026-09-19) (2026-09-19): Conocé los valores actualizados del aporte jubilatorio del Monotributo para octubre de 2026 según cada categoría y los requisitos que exige ARCA para acceder a la jubilación.
+- [Presupuesto 2027: beneficios impositivos para concesionarias de rutas nacionales](https://docs.facture.ar/es/newsletter/notas/beneficios-impositivos-concesiones-rutas-presupuesto-2027-2026-09-18) (2026-09-18): El Gobierno propone un régimen permanente con amortización acelerada, tratamiento especial del IVA, cómputo total del impuesto al cheque y alivios provinciales para las empresas…
+- [Ganancias 2025: ARCA fijó el 22 y 24 de septiembre como fechas clave](https://docs.facture.ar/es/newsletter/notas/ganancias-fechas-clave-septiembre-ddjj-anticipo-2026-09-18) (2026-09-18): ARCA reprogramó el calendario del Impuesto a las Ganancias: la DDJJ 2025 vence el 22 de septiembre y el primer anticipo 2026 el 24. Guía para contadores y empresas.
+- [Monotributo septiembre 2026: ARCA reprogramó el vencimiento mensual](https://docs.facture.ar/es/newsletter/notas/monotributo-nueva-fecha-limite-pago-septiembre-2026-09-18) (2026-09-18): ARCA confirmó la nueva fecha límite para el pago del monotributo de septiembre 2026. Enterate cómo quedan los plazos y qué alternativas hay para abonar en término.
+- [Presupuesto 2027: régimen permanente de beneficios impositivos para concesiones viales](https://docs.facture.ar/es/newsletter/notas/beneficios-impositivos-concesiones-viales-presupuesto-2027-2026-09-17) (2026-09-17): El proyecto de Presupuesto 2027 incorpora un paquete de incentivos fiscales para las empresas que operen más de 9.000 km de rutas nacionales, con amortización acelerada,…
+- [Inocencia Fiscal II: claves del nuevo proyecto para exteriorizar ahorros](https://docs.facture.ar/es/newsletter/notas/inocencia-fiscal-ii-claves-proyecto-exteriorizacion-2026-09-17) (2026-09-17): El Gobierno impulsa cambios al régimen de exteriorización vigente desde diciembre. Qué se modifica, a quiénes alcanza y qué deberían evaluar contadores y contribuyentes antes de…
+- [ARCA amplía el débito directo en planes de facilidades: alcanza cuotas desde $100 millones](https://docs.facture.ar/es/newsletter/notas/arca-debito-directo-planes-facilidades-pago-2026-09-16) (2026-09-16): La RG ARCA 5896/2026 modifica el régimen de planes de pago y extiende el débito directo a cuotas de gran monto que antes se cancelaban por transferencia electrónica. Qué implica…
+- [Devolución exprés de saldos a favor de Ingresos Brutos en CABA: cómo funciona el nuevo sistema](https://docs.facture.ar/es/newsletter/notas/caba-devolucion-expres-saldos-favor-ingresos-brutos-2026-09-16) (2026-09-16): La Ciudad de Buenos Aires ya devolvió más de $50.000 millones en saldos a favor de Ingresos Brutos mediante un circuito digital que alcanzó a 31.000 contribuyentes. Guía práctica…
+- [Jubilación del monotributista: por qué los aportes no alcanzan para el haber mínimo](https://docs.facture.ar/es/newsletter/notas/monotributo-aportes-jubilacion-minima-2026-09-16) (2026-09-16): Análisis del componente previsional del monotributo y por qué resulta insuficiente para financiar una jubilación mínima. Diferencias por categoría y alternativas para…
+- [CNV RG 1166: fin del circuito pyme para evitar el impuesto al cheque](https://docs.facture.ar/es/newsletter/notas/cnv-resolucion-1166-frena-elusion-impuesto-cheque-pymes-2026-09-15) (2026-09-15): La Comisión Nacional de Valores exige que el fondeo de cuentas en ALyCs provenga de cuentas bancarias o CVU del propio titular, cerrando un mecanismo usado por pymes del agro…
+<!-- newsletter:end -->

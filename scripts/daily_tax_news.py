@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Daily Argentine tax news aggregator for facture.ar/novedades.
+Daily Argentine tax news aggregator for the Newsletter Facturear (docs.facture.ar/es/newsletter).
 
 Two passes per run:
   1. Multi-source: generates an article if 2+ papers cover the same tax topic.
@@ -8,7 +8,9 @@ Two passes per run:
      (vencimientos, nuevas obligaciones, nuevos formularios, etc.) even if
      only one source covers them.
 
-Maximum 3 new articles per run to avoid flooding the novedades section.
+Maximum 3 new articles per run to avoid flooding the newsletter. Every note carries its
+category and how much it impacts invoicing with Facturear; newsletter.build() then
+regenerates the front page, the topic and month indexes and the navigation.
 """
 
 import json
@@ -20,9 +22,10 @@ from pathlib import Path
 import anthropic
 import feedparser
 
-REPO_ROOT = Path(__file__).parent.parent
-NOVEDADES_DIR = REPO_ROOT / "es" / "novedades"
-DOCS_JSON = REPO_ROOT / "docs.json"
+sys.path.insert(0, str(Path(__file__).parent))
+import newsletter  # noqa: E402
+
+NOTES_DIR = newsletter.NOTES_DIR
 
 ART = timezone(timedelta(hours=-3))  # Argentina (no DST)
 MAX_ARTICLES_PER_RUN = 3
@@ -146,10 +149,10 @@ def already_exists(slug_base: str) -> bool:
     """Return True if an article with this slug base was already written today."""
     today = date.today().isoformat()
     # Exact match with today's date suffix
-    if (NOVEDADES_DIR / f"{slug_base}-{today}.mdx").exists():
+    if (NOTES_DIR / f"{slug_base}-{today}.mdx").exists():
         return True
     # Loose match: any existing file whose name starts with slug_base
-    return any(NOVEDADES_DIR.glob(f"{slug_base}*.mdx"))
+    return any(NOTES_DIR.glob(f"{slug_base}*.mdx"))
 
 
 def analyze_common_themes(articles: list[dict]) -> dict | None:
@@ -290,7 +293,14 @@ DETALLE DE LAS NOTICIAS FUENTE:
 FECHA: {today}
 
 FORMATO REQUERIDO — MDX con frontmatter YAML:
-- Empezá con frontmatter (title y description)
+- Empezá con frontmatter con estas claves, todas con valores entre comillas dobles:
+  - title y description
+  - category: una de {", ".join(newsletter.CATEGORY)}
+  - impact: cuánto cambia la facturación con Facturear, una de:
+    - "alto": cambia cómo se emiten comprobantes electrónicos (nuevos obligados, datos que pasan a ser obligatorios en la factura, CAE/CAEA, tipos de comprobante, impuestos que hay que discriminar en el comprobante, fechas límite para adaptar sistemas)
+    - "medio": no cambia la emisión pero sí decisiones de quien factura (topes y recategorización del Monotributo, percepciones, controles sobre comprobantes)
+    - "ninguno": todo lo demás. Ante la duda, "ninguno".
+  - impact_note: si impact no es "ninguno", una o dos oraciones concretas sobre qué tiene que hacer o saber quien factura con Facturear. Si es "ninguno", omitila.
 - Tono profesional y directo, dirigido a contadores y empresas argentinas
 - Usá vos/ustedes (no tuteo ni usted)
 - Secciones con ## y ### según corresponda
@@ -306,37 +316,34 @@ Respondé SOLO el MDX, comenzando con ---""",
         }],
     )
 
-    content = response.content[0].text.strip()
-    if not content.startswith("---"):
-        content = (
-            f"---\ntitle: '{topic}'\ndescription: 'Novedad impositiva del {date.today().isoformat()}'\n---\n\n"
-            + content
-        )
-    return content
+    return response.content[0].text.strip()
 
 
-def save_article(slug: str, mdx_content: str) -> None:
-    """Write MDX file and update docs.json navigation."""
-    output_path = NOVEDADES_DIR / f"{slug}.mdx"
-    output_path.write_text(mdx_content, encoding="utf-8")
-    print(f"  Written: {output_path.name}")
+def save_article(slug: str, mdx_content: str, topic: str, sources: list[str]) -> bool:
+    """Write the note with normalized frontmatter; newsletter.build() indexes it.
 
-    page_path = f"es/novedades/{slug}"
-    with open(DOCS_JSON, encoding="utf-8") as f:
-        docs = json.load(f)
-
-    for tab in docs["navigation"]["tabs"]:
-        for group in tab.get("groups", []):
-            if group.get("group") == "Novedades Impositivas":
-                if page_path not in group["pages"]:
-                    group["pages"].insert(0, page_path)
-                with open(DOCS_JSON, "w", encoding="utf-8") as f:
-                    json.dump(docs, f, indent=2, ensure_ascii=False)
-                    f.write("\n")
-                print(f"  docs.json updated: {page_path}")
-                return
-
-    print("Warning: 'Novedades Impositivas' group not found in docs.json", file=sys.stderr)
+    Returns False without writing when the MDX is broken: one bad note fails the whole deploy.
+    """
+    meta, body = newsletter.split_frontmatter(mdx_content)
+    body = newsletter.repair_mdx(body)
+    problems = newsletter.mdx_problems(body)
+    if problems:
+        print(f"  Skipping {slug}: invalid MDX ({'; '.join(problems)})", file=sys.stderr)
+        return False
+    meta.setdefault("title", topic)
+    meta.setdefault("description", f"Novedad impositiva del {date.today().isoformat()}")
+    meta["date"] = date.today().isoformat()
+    if meta.get("category") not in newsletter.CATEGORY:
+        meta["category"] = "economia"
+    if meta.get("impact") not in newsletter.IMPACTS:
+        meta["impact"] = "ninguno"
+    if meta["impact"] == "ninguno" or not meta.get("impact_note"):
+        meta.pop("impact_note", None)
+        meta["impact"] = "ninguno"
+    meta["sources"] = sources
+    path = newsletter.write_note(slug, meta, body)
+    print(f"  Written: {path.name} [{meta['category']} · impacto {meta['impact']}]")
+    return True
 
 
 def main() -> None:
@@ -350,6 +357,7 @@ def main() -> None:
 
     if not articles:
         print("Nothing to process today.")
+        newsletter.build()
         return
 
     today = date.today().isoformat()
@@ -373,9 +381,9 @@ def main() -> None:
             print(f"  Already exists — skipping.")
         else:
             mdx = generate_article(topic, sources, summary, articles)
-            save_article(slug, mdx)
-            covered_slugs.append(slug_base)
-            articles_written += 1
+            if save_article(slug, mdx, topic, sources):
+                covered_slugs.append(slug_base)
+                articles_written += 1
     else:
         print("  No common topic found across 2+ sources.")
 
@@ -405,11 +413,12 @@ def main() -> None:
                     summary=item["summary"],
                     source_articles=item["source_articles"],
                 )
-                save_article(slug, mdx)
-                covered_slugs.append(slug_base)
-                articles_written += 1
+                if save_article(slug, mdx, item["title"], [item["source"]]):
+                    covered_slugs.append(slug_base)
+                    articles_written += 1
 
     print(f"\nDone. {articles_written} article(s) written today.")
+    newsletter.build()
 
 
 if __name__ == "__main__":
