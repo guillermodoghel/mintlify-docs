@@ -1,0 +1,111 @@
+---
+title: 'WooCommerce: el firewall de la tienda bloquea a Facturear'
+description: 'Qué hacer cuando tu tienda WooCommerce no se conecta porque Cloudflare o el firewall del hosting bloquea a Facturear: el User-Agent que hay que permitir y el mensaje para mandarle a tu hosting.'
+---
+
+# WooCommerce: el firewall de la tienda bloquea a Facturear
+
+Si al conectar tu tienda WooCommerce ves un mensaje como este, la conexión no falló por tus claves ni por Facturear:
+
+> El firewall de tu tienda (Cloudflare) no deja pasar a facture.ar.
+
+Tu sitio tiene una protección contra bots que frena a Facturear antes de llegar a WooCommerce. Reintentar no lo resuelve: hay que pedirle a quien administra el sitio que nos deje pasar.
+
+---
+
+## Qué hay que permitir
+
+Facturear se identifica en todos sus pedidos con este User-Agent:
+
+```
+facture.ar/1.0 (+https://www.facture.ar)
+```
+
+La excepción que hace falta es:
+
+| Dato | Valor |
+|---|---|
+| User-Agent | contiene `facture.ar` |
+| Ruta | todo lo que empieza con `/wp-json/` |
+| Métodos | `GET` y `POST` |
+
+<Note>
+  No se puede permitir por IP: Facturear no sale desde direcciones fijas. La excepción tiene que ser por User-Agent y ruta.
+</Note>
+
+---
+
+## Mensaje para tu hosting
+
+Copiá este mensaje y mandáselo a tu hosting o a quien administra tu sitio. Cambiá la dirección por la de tu tienda.
+
+```
+Hola,
+
+Estoy conectando mi tienda WooCommerce (www.mitienda.com.ar) con facture.ar,
+el servicio que uso para facturar mis pedidos.
+
+El firewall del sitio lo está bloqueando (responde 403). Necesito que
+permitan sus pedidos, sin desafío anti-bots:
+
+  User-Agent:  facture.ar/1.0 (+https://www.facture.ar)
+  Ruta:        todo lo que empieza con /wp-json/
+
+No se puede hacer por IP porque facture.ar no usa direcciones fijas.
+La tienda sigue protegida: WooCommerce pide las claves de API en cada pedido.
+
+Avísenme cuando esté listo así vuelvo a conectar.
+
+Gracias.
+```
+
+---
+
+## Si administrás Cloudflare vos
+
+<Steps>
+  <Step title="Creá la regla">
+    En el panel de tu dominio, entrá a **Security → WAF → Custom rules** y elegí **Create rule**.
+  </Step>
+  <Step title="Pegá la expresión">
+    Con **Edit expression**, pegá:
+
+    ```
+    (starts_with(http.request.uri.path, "/wp-json/") and http.user_agent contains "facture.ar")
+    ```
+  </Step>
+  <Step title="Elegí la acción Skip">
+    Marcá todas las protecciones para saltear: las reglas custom restantes, rate limiting, managed rules, Super Bot Fight Mode, Browser Integrity Check y Security Level.
+  </Step>
+  <Step title="Ponela primera">
+    Guardá la regla y ubicala primera en la lista.
+  </Step>
+  <Step title="Volvé a conectar">
+    En Facturear, entrá a **Integraciones → WooCommerce** y conectá la tienda de nuevo.
+  </Step>
+</Steps>
+
+<Warning>
+  Con **Bot Fight Mode** activado (plan gratuito de Cloudflare) las reglas no alcanzan: esa protección no admite excepciones. Hay que desactivarla en **Security → Bots**.
+</Warning>
+
+Los nombres de las opciones pueden variar según la versión del panel de Cloudflare.
+
+---
+
+## Otros firewalls
+
+El mismo bloqueo puede venir de un plugin de seguridad de WordPress (Wordfence, Solid Security) o del firewall del servidor (ModSecurity). La excepción es la misma: permitir el User-Agent `facture.ar` en las rutas que empiezan con `/wp-json/`.
+
+---
+
+## ¿Es seguro?
+
+Sí. La excepción solo evita el desafío anti-bots. WooCommerce sigue pidiendo las claves de API en cada pedido, y esas claves las aprobaste vos al conectar la tienda.
+
+---
+
+## Recursos relacionados
+
+- [Integrar Facturear con tu e-commerce](/es/guides/integracion-ecommerce)
+- [Webhooks](/es/guides/webhook-integracion)
