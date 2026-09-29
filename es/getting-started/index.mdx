@@ -14,95 +14,57 @@ Bienvenido a Facturear, la plataforma de facturación electrónica más completa
 
 ## 📋 Requisitos previos
 
-Antes de comenzar, asegúrate de tener:
+Antes de comenzar, asegurate de tener:
 
-- ✅ Una cuenta activa en Facturear
-- ✅ Tu número de CUIT válido con clave fiscal nivel 3
-- ✅ Acceso a tu cuenta de AFIP
-- ✅ Una suscripción activa (gratuita o de pago)
+- ✅ Una cuenta en Facturear (el plan Free alcanza)
+- ✅ El CUIT que vas a facturar
+- ✅ La clave fiscal nivel 3 de ese CUIT, o la de quien lo administra en ARCA (tu contador o un apoderado)
 
-## 🎯 Proceso de configuración
+## 🤖 Conecta tu CUIT con ARCA por vos
 
-El proceso de configuración de un CUIT en Facturear consta de los siguientes pasos:
+No hace falta generar certificados ni hacer trámites en ARCA. Entrás con tu clave fiscal una vez y nuestro **agente de trámites** hace todo en el portal de ARCA por vos:
+
+<video autoPlay muted loop playsInline className="w-full rounded-xl" src="/images/conectar-cuit-agente.mp4" />
 
 <Steps>
-  Ingresa tu número de CUIT y valida que esté registrado en AFIP
-
-Decide cómo quieres integrar con ARCA (certificado digital o delegación)
-
-Configura los certificados de producción y testing
-
-Establece tus puntos de venta para emitir facturas
-
-Tu CUIT está configurado y listo para usar
-
+  <Step title="Entra con tu clave fiscal">Ingresa al portal con tu clave, como lo harías vos.</Step>
+  <Step title="Genera los certificados">El de homologación y el de producción, validados contra tu CUIT.</Step>
+  <Step title="Autoriza la factura electrónica">Delega el servicio de facturación a facture.ar.</Step>
+  <Step title="Crea el punto de venta">Si ya tenés uno que sirve, usa ese.</Step>
+  <Step title="Listo para facturar">Tu CUIT queda conectado. Sin turnos, sin tutoriales.</Step>
 </Steps>
 
-## 1️⃣ Agregar tu CUIT
+Tarda unos 5 minutos y te avisamos por email cuando termina.
 
-### Paso 1: Acceder a la gestión de CUITs
+## 1️⃣ Entrá con tu clave fiscal
 
-1. Inicia sesión en tu cuenta de Facturear
-2. Navega a **CUITs** en el menú lateral
-3. Haz clic en **"Agregar CUIT"**
+1. Iniciá sesión en Facturear
+2. Andá a **CUITs** en el menú lateral y hacé clic en **Agregar CUIT**
+3. Completá **CUIT/CUIL** y **Clave**, igual que en la web de ARCA
+4. Hacé clic en **Conectar con ARCA**
 
-### Paso 2: Ingresar el número de CUIT
+Con ese mismo paso validamos que el CUIT exista en ARCA, que no esté ya en tu cuenta y que tu plan tenga lugar para uno más.
 
-**Formato del CUIT**: Debe tener el formato XX-XXXXXXXX-X (ejemplo: 20-12345678-9)
+<Tip>
+  **¿Entrás con la clave de otra persona?** Si tu contador o un apoderado administra el CUIT en ARCA, elegí **Entro con la clave de otra persona** y completá el CUIT que querés
+  conectar y la CUIT/CUIL y clave de quien ingresa. Las empresas (CUIT 30, 33 o 34) no tienen clave fiscal propia, así que siempre entran de esta forma.
+</Tip>
 
-1. En el modal que aparece, ingresa tu número de CUIT
-2. El sistema validará automáticamente:
-   - ✅ Formato correcto del CUIT
-   - ✅ Existencia en la base de datos de AFIP
-   - ✅ Que no esté duplicado en tu cuenta
-   - ✅ Límites de tu suscripción
+<Info>
+  La clave se guarda cifrada (AES-256) y solo se usa para configurar y renovar tu conexión con ARCA. Nunca la mostramos ni la compartimos.
+</Info>
 
-## 2️⃣ Estrategia de integración
+## 2️⃣ Seguí el avance
 
-Después de agregar tu CUIT, serás dirigido al asistente de configuración donde elegirás tu estrategia de integración:
+Mientras el agente trabaja, ves en pantalla en qué paso está. Podés cerrar la ventana: te avisamos por email cuando tu CUIT queda listo o si necesitamos algo de vos (por ejemplo, si la clave no era correcta).
 
-<CardGroup cols={2}>
-  <Card title="🔐 Certificado Digital" icon="shield-check" href="/es/guides/certificado-digital">
-    **Recomendado para usuarios técnicos** - Control total sobre los certificados - Proceso manual de configuración - Mayor flexibilidad
-  </Card>
-  <Card title="🤝 Delegación" icon="user-group" href="/es/guides/delegacion">
-    **Recomendado para la mayoría de usuarios** - Configuración asistida por nuestro equipo - Proceso más simple - Soporte completo
-  </Card>
-</CardGroup>
+## 3️⃣ ¡Listo para facturar\!
 
-## 3️⃣ Configuración de certificados
+Cuando termina:
 
-### Para Certificado Digital
-
-1. **Descargar certificados**: Obtén los archivos CSR generados
-2. **Solicitar en ARCA**: Sube los CSR en el portal de ARCA
-3. **Subir certificados**: Una vez aprobados, súbelos a Facturear
-4. **Validar conexión**: El sistema verificará la conectividad con AFIP
-
-### Para Delegación
-
-Sigue los pasos de la guía (delegar en AFIP, crear punto de venta, esperar que te aceptemos):
-
-1. **Solicitar delegación**: Completa el formulario de solicitud
-2. **Agendar videollamada**: Programa una sesión con nuestro equipo
-3. **Configuración asistida**: Te ayudamos con todo el proceso
-4. **Activación automática**: Los certificados se configuran automáticamente
-
-## 4️⃣ Configuración de puntos de venta
-
-Los puntos de venta (POS) son necesarios para emitir facturas:
-
-1. **Punto de venta por defecto**: Se crea automáticamente (POS 1)
-2. **Validar configuración**: Verifica que todo esté correcto
-
-## 5️⃣ ¡Listo para facturar\!
-
-Una vez completada la configuración:
-
-- ✅ Tu CUIT estará activo y listo para usar
-- ✅ Podrás emitir facturas electrónicas
-- ✅ Los certificados estarán validados
-- ✅ Los puntos de venta configurados
+- ✅ Tus certificados de homologación y producción están generados y validados
+- ✅ El servicio de factura electrónica está autorizado para facture.ar
+- ✅ Tenés un punto de venta Web Services listo para emitir
 
 ## 🔧 Configuración avanzada
 
@@ -129,14 +91,15 @@ Para configurar impuestos específicos:
 
 ### Errores comunes
 
-<error>
-  **CUIT no encontrado en AFIP** - Verifica que el CUIT esté correctamente registrado - Asegúrate de que no haya espacios o caracteres especiales - Confirma que el CUIT esté activo
-  en AFIP
-</error>
+<Warning>
+  **ARCA no encuentra ese CUIT** - Revisá que el número sea correcto y que el CUIT esté activo en ARCA.
+</Warning>
 
 **Límite de suscripción excedido** - Verifica tu plan actual - Considera actualizar tu suscripción - Contacta soporte si necesitas ayuda
 
-**CUIT ya existe** - El CUIT ya está asociado a tu cuenta - Verifica en la lista de CUITs existentes - Contacta soporte si crees que es un error
+**Ese CUIT ya está en tu cuenta** - Buscalo en la lista de CUITs para terminar de conectarlo - Contactá a soporte si creés que es un error
+
+**La clave no es correcta** - Revisá que sea la clave nivel 3 con la que entrás a la web de ARCA y volvé a intentarlo desde el CUIT
 
 ## 📞 Soporte
 
@@ -145,7 +108,6 @@ Si necesitas ayuda durante el proceso:
 - 📧 **Email**: [support@facture.ar](mailto:support@facture.ar)
 - 💬 **Chat**: Disponible en la plataforma
 - 📚 **Documentación**: Explora nuestras guías detalladas
-- 🎥 **Videollamada**: Para configuración asistida
 
 ## 🎉 Próximos pasos
 
