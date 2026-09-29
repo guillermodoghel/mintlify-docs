@@ -3,6 +3,39 @@
  "url": "https://docs.facture.ar/es/newsletter/index",
  "notes": [
   {
+   "slug": "anticipos-ganancias-2026-calculo-arca-2026-09-29",
+   "title": "Anticipos de Ganancias 2026: cómo calcularlos según las nuevas pautas de ARCA",
+   "description": "ARCA modificó el calendario del Impuesto a las Ganancias para personas humanas y sucesiones indivisas y fijó nuevas pautas para el cálculo de los anticipos 2026.",
+   "date": "2026-09-29",
+   "category": "ganancias",
+   "category_label": "Ganancias",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/anticipos-ganancias-2026-calculo-arca-2026-09-29"
+  },
+  {
+   "slug": "arca-manual-rifl-incorporar-empleados-2026-09-29",
+   "title": "RIFL: ARCA publicó el manual para incorporar empleados al régimen de formalización laboral",
+   "description": "ARCA sumó al ABC de preguntas frecuentes un manual con las condiciones que deben cumplir los trabajadores para adherirse al Régimen de Incentivo a la Formalización Laboral.",
+   "date": "2026-09-29",
+   "category": "laboral",
+   "category_label": "Laboral y previsional",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/arca-manual-rifl-incorporar-empleados-2026-09-29"
+  },
+  {
+   "slug": "arca-posterga-caracterizacion-pequeno-contribuyente-plan-pag-2026-09-29",
+   "title": "ARCA posterga hasta octubre de 2026 la caracterización de Pequeño Contribuyente para el plan de pagos",
+   "description": "Mediante la RG 5902/2026, ARCA extendió el plazo para definir quiénes acceden al miniplan con más cuotas. La demora se vincula a la falta de sanción de la Ley de Inocencia Fiscal II.",
+   "date": "2026-09-29",
+   "category": "arca",
+   "category_label": "ARCA y procedimientos",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/arca-posterga-caracterizacion-pequeno-contribuyente-plan-pag-2026-09-29"
+  },
+  {
    "slug": "arca-recibos-casas-particulares-certificado-articulo-80-2026-09-28",
    "title": "ARCA aclaró cómo emitir recibos de Casas Particulares y el Certificado del artículo 80",
    "description": "ARCA actualizó su ABC de consultas frecuentes con precisiones sobre el recibo electrónico F.102/RT del personal de Casas Particulares y el Certificado de Trabajo del art. 80 LCT.",
@@ -848,39 +881,6 @@
    "impact": "ninguno",
    "impact_note": null,
    "url": "https://docs.facture.ar/es/newsletter/notas/defensa-recategorizacion-oficio-monotributo-arca-2026-08-19"
-  },
-  {
-   "slug": "nuevo-regimen-courier-arca-shein-temu-amazon-2026-08-18",
-   "title": "Nuevas reglas del régimen courier de ARCA: qué cambia para compras en Shein, Temu y Amazon",
-   "description": "El Decreto 604/2026 reformó el régimen de envíos postales internacionales. Repasamos los puntos clave para consumidores y para contadores que asesoran sobre importaciones simplificadas por courier.",
-   "date": "2026-08-18",
-   "category": "arca",
-   "category_label": "ARCA y procedimientos",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/nuevo-regimen-courier-arca-shein-temu-amazon-2026-08-18"
-  },
-  {
-   "slug": "recategorizacion-oficio-monotributo-como-defenderse-2026-08-18",
-   "title": "Recategorización de oficio del Monotributo: cómo defenderse ante las notificaciones de ARCA",
-   "description": "ARCA comenzó a notificar recategorizaciones de oficio del Monotributo en el Domicilio Fiscal Electrónico. Guía práctica para detectar la notificación, conocer los plazos y armar una defensa efectiva.",
-   "date": "2026-08-18",
-   "category": "monotributo",
-   "category_label": "Monotributo",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/recategorizacion-oficio-monotributo-como-defenderse-2026-08-18"
-  },
-  {
-   "slug": "contadores-argentina-vencimientos-web-arca-2026-08-17",
-   "title": "Ser contador en Argentina: cómo sobrevivir a los vencimientos y a la web de ARCA",
-   "description": "Vencimientos que se apilan, sistemas que se caen y normativa que cambia sin aviso. Un análisis del contexto que enfrentan los contadores argentinos y cómo mitigar el desgaste.",
-   "date": "2026-08-17",
-   "category": "vencimientos",
-   "category_label": "Vencimientos",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/contadores-argentina-vencimientos-web-arca-2026-08-17"
   }
  ]
 }
