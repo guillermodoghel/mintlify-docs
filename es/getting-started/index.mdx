@@ -1,28 +1,11 @@
 ---
 title: 'Comenzar con Facturear'
-description: 'Guía completa para configurar tu primer CUIT en Facturear'
+description: 'Conectá tu CUIT con ARCA en 5 minutos: entrás con tu clave fiscal y el agente de trámites hace todo en ARCA por vos.'
 ---
 
-# 🚀 Comenzar con Facturear
+Para facturar con Facturear tu CUIT tiene que estar conectado con ARCA. No hace falta generar certificados ni hacer trámites: entrás con tu clave fiscal una vez y nuestro **agente de trámites** hace todo en el portal de ARCA por vos.
 
-Bienvenido a Facturear, la plataforma de facturación electrónica más completa para Argentina. Esta guía te llevará paso a paso para configurar tu primer CUIT y comenzar a facturar.
-
-<info>
-  **¿Qué es un CUIT?** El CUIT (Código Único de Identificación Tributaria) es el identificador único que AFIP asigna a cada contribuyente. Es necesario para emitir facturas
-  electrónicas.
-</info>
-
-## 📋 Requisitos previos
-
-Antes de comenzar, asegurate de tener:
-
-- ✅ Una cuenta en Facturear (el plan Free alcanza)
-- ✅ El CUIT que vas a facturar
-- ✅ La clave fiscal nivel 3 de ese CUIT, o la de quien lo administra en ARCA (tu contador o un apoderado)
-
-## 🤖 Conecta tu CUIT con ARCA por vos
-
-No hace falta generar certificados ni hacer trámites en ARCA. Entrás con tu clave fiscal una vez y nuestro **agente de trámites** hace todo en el portal de ARCA por vos:
+## Conecta tu CUIT con ARCA por vos
 
 <video autoPlay muted loop playsInline className="w-full rounded-xl" src="/images/conectar-cuit-agente.mp4" />
 
@@ -34,93 +17,84 @@ No hace falta generar certificados ni hacer trámites en ARCA. Entrás con tu cl
   <Step title="Listo para facturar">Tu CUIT queda conectado. Sin turnos, sin tutoriales.</Step>
 </Steps>
 
-Tarda unos 5 minutos y te avisamos por email cuando termina.
+## Qué necesitás
 
-## 1️⃣ Entrá con tu clave fiscal
+- Una cuenta en [facture.ar](https://facture.ar). El plan Free alcanza para empezar, sin tarjeta.
+- La **clave fiscal nivel 3** del CUIT, la misma con la que entrás a la web de ARCA. Si el CUIT lo administra otra persona (tu contador, un apoderado), sirve la clave de esa persona.
 
-1. Iniciá sesión en Facturear
-2. Andá a **CUITs** en el menú lateral y hacé clic en **Agregar CUIT**
-3. Completá **CUIT/CUIL** y **Clave**, igual que en la web de ARCA
-4. Hacé clic en **Conectar con ARCA**
+## Paso a paso
 
-Con ese mismo paso validamos que el CUIT exista en ARCA, que no esté ya en tu cuenta y que tu plan tenga lugar para uno más.
-
-<Tip>
-  **¿Entrás con la clave de otra persona?** Si tu contador o un apoderado administra el CUIT en ARCA, elegí **Entro con la clave de otra persona** y completá el CUIT que querés
-  conectar y la CUIT/CUIL y clave de quien ingresa. Las empresas (CUIT 30, 33 o 34) no tienen clave fiscal propia, así que siempre entran de esta forma.
-</Tip>
+<Steps>
+  <Step title="Entrá a Agregar CUIT">
+    En Facturear, andá a **CUITs** en el menú lateral y hacé clic en **Agregar CUIT**.
+  </Step>
+  <Step title="Ingresá tu CUIT y tu clave fiscal">
+    Completá **CUIT/CUIL** y **Clave**, igual que en la web de ARCA, y hacé clic en **Conectar con ARCA**.
+  </Step>
+  <Step title="Esperá unos 5 minutos">
+    Ves en pantalla en qué paso está el agente. Podés cerrar la ventana: la conexión sigue y te avisamos por email cuando termina.
+  </Step>
+  <Step title="Emití tu primera factura">
+    Cuando tu CUIT queda conectado ya podés facturar. Seguí con [tu primera factura](/es/guides/primera-factura).
+  </Step>
+</Steps>
 
 <Info>
   La clave se guarda cifrada (AES-256) y solo se usa para configurar y renovar tu conexión con ARCA. Nunca la mostramos ni la compartimos.
 </Info>
 
-## 2️⃣ Seguí el avance
+## Si entrás con la clave de otra persona
 
-Mientras el agente trabaja, ves en pantalla en qué paso está. Podés cerrar la ventana: te avisamos por email cuando tu CUIT queda listo o si necesitamos algo de vos (por ejemplo, si la clave no era correcta).
+Si sos contador, o el CUIT lo administra un apoderado, en **Agregar CUIT** elegí **Entro con la clave de otra persona** y completá:
 
-## 3️⃣ ¡Listo para facturar\!
+- **CUIT que querés conectar**: el del contribuyente que va a facturar.
+- **CUIT/CUIL de quien ingresa** y su **Clave**: la de la persona que administra ese CUIT en ARCA.
 
-Cuando termina:
+Todo se configura a nombre del CUIT que conectás. Las empresas (CUIT 30, 33 o 34) no tienen clave fiscal propia, así que siempre se conectan de esta forma.
 
-- ✅ Tus certificados de homologación y producción están generados y validados
-- ✅ El servicio de factura electrónica está autorizado para facture.ar
-- ✅ Tenés un punto de venta Web Services listo para emitir
+## Si algo sale mal
 
-## 🔧 Configuración avanzada
+Si el agente no puede terminar, te lo dice en pantalla y por email. Lo que ya quedó hecho se conserva: al reintentar sigue desde donde falló.
 
-### Gestión de múltiples CUITs
+<AccordionGroup>
+  <Accordion title="ARCA rechazó la clave fiscal">
+    Revisala y volvé a cargarla desde la misma pantalla. Tiene que ser la clave con la que entrás a la web de ARCA.
+  </Accordion>
+  <Accordion title="Mi clave no es nivel 3">
+    ARCA pide nivel 3 para facturar por web service. Subila desde la app **Mi ARCA** validando tu identidad con el DNI y volvé a intentar.
+  </Accordion>
+  <Accordion title="Con esa clave no se puede operar por el CUIT">
+    Tiene que ingresar la persona que administra el CUIT en ARCA, o darte ese permiso desde el **Administrador de Relaciones de Clave Fiscal**.
+  </Accordion>
+  <Accordion title="ARCA pide cambiar la clave o completar algo">
+    Entrá a la web de ARCA, hacé lo que te pide (cambiar la clave, completar un dato, desbloquear la cuenta) y volvé a intentar.
+  </Accordion>
+  <Accordion title="ARCA no está respondiendo">
+    Suele ser temporal. Reintentamos solos en una hora, o podés reintentar vos en unos minutos.
+  </Accordion>
+  <Accordion title="Ese CUIT ya está en tu cuenta">
+    Buscalo en **CUITs** y abrilo para terminar de conectarlo.
+  </Accordion>
+  <Accordion title="Llegué al límite de CUITs de mi plan">
+    Te mostramos los planes antes de pedirte la clave. Con el plan Pro sumás hasta 25 CUITs.
+  </Accordion>
+</AccordionGroup>
 
-Si tienes una suscripción que permite múltiples CUITs:
+¿Seguís trabado? Escribinos a [support@facture.ar](mailto:support@facture.ar) o tocá **Hablar con soporte** en la pantalla de conexión.
 
-1. **Agregar CUIT adicional**: Repite el proceso para cada CUIT
-2. **Establecer CUIT por defecto**: Marca uno como predeterminado
-3. **Cambiar entre CUITs**: Selecciona el CUIT activo en cada operación
+## Próximos pasos
 
-## 🔧 Configuración avanzada
-
-### Configuración de tributos
-
-Para configurar impuestos específicos:
-
-1. Ve a **CUITs** → Selecciona tu CUIT
-2. Navega a **Tributos**
-3. Agrega los impuestos que necesites (impuestos nacionales o provinciales)
-4. Establece valores por defecto
-
-## ❓ Solución de problemas
-
-### Errores comunes
-
-<Warning>
-  **ARCA no encuentra ese CUIT** - Revisá que el número sea correcto y que el CUIT esté activo en ARCA.
-</Warning>
-
-**Límite de suscripción excedido** - Verifica tu plan actual - Considera actualizar tu suscripción - Contacta soporte si necesitas ayuda
-
-**Ese CUIT ya está en tu cuenta** - Buscalo en la lista de CUITs para terminar de conectarlo - Contactá a soporte si creés que es un error
-
-**La clave no es correcta** - Revisá que sea la clave nivel 3 con la que entrás a la web de ARCA y volvé a intentarlo desde el CUIT
-
-## 📞 Soporte
-
-Si necesitas ayuda durante el proceso:
-
-- 📧 **Email**: [support@facture.ar](mailto:support@facture.ar)
-- 💬 **Chat**: Disponible en la plataforma
-- 📚 **Documentación**: Explora nuestras guías detalladas
-
-## 🎉 Próximos pasos
-
-Una vez que tengas tu CUIT configurado:
-
-1. [**Explora las guías**](/es/guides) - Aprende a usar todas las funcionalidades
-2. [**Consulta la API**](/es/api-reference) - Integra Facturear con tu sistema
-3. [**Configurá valores por defecto**](/es/guides/configurar-defaults-cuit) - Ajustá la plataforma a tu forma de facturar
-
-¡Felicitaciones\! Ya estás listo para comenzar a facturar con Facturear. 🎊
-
----
-
-<Card title="Emití facturas electrónicas con Facturear" icon="rocket" href="https://facture.ar">
-  Conectate a ARCA en minutos y empezá a facturar sin complicaciones.
-</Card>
+<CardGroup cols={2}>
+  <Card title="Tu primera factura" icon="file-invoice" href="/es/guides/primera-factura">
+    Emití tu primer comprobante con CAE, desde el panel o por API.
+  </Card>
+  <Card title="Probar en homologación" icon="flask" href="/es/guides/entorno-testing">
+    Facturas de prueba, sin valor fiscal, antes de pasar a producción.
+  </Card>
+  <Card title="Valores por defecto" icon="sliders" href="/es/guides/configurar-defaults-cuit">
+    Punto de venta, tipo de comprobante y concepto que usás siempre.
+  </Card>
+  <Card title="Varios CUITs" icon="building" href="/es/guides/multiples-cuits">
+    Si sos contador, sumá el CUIT de cada cliente a tu cuenta.
+  </Card>
+</CardGroup>
