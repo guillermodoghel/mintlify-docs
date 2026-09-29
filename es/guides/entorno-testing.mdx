@@ -21,15 +21,7 @@ ARCA ofrece un entorno de **homologación** (también llamado "testing") que rep
 
 ## Configuración en Facturear
 
-El entorno de testing en Facturear se configura al crear el certificado digital:
-
-1. Primero configurás un **certificado de testing** (WSASS en ARCA)
-2. Luego configurás el **certificado de producción**
-3. Podés alternar entre ambos entornos desde el dashboard
-
-### Certificados separados
-
-El entorno de testing requiere su propio certificado, diferente al de producción. Ver la [guía de certificado digital](/es/guides/certificado-digital) para el proceso completo.
+No tenés que configurar nada: cuando conectás tu CUIT entrando con tu clave fiscal, el agente de trámites genera los dos certificados, el de homologación (testing) y el de producción, y los valida contra tu CUIT. Después alternás entre ambos entornos desde el dashboard. [Ver cómo funciona](/es/getting-started/index).
 
 ---
 
@@ -118,7 +110,7 @@ Antes de pasar a producción, testeá al menos estos escenarios:
 
 ## Recursos relacionados
 
-- [Configurar certificado digital](/es/guides/certificado-digital)
+- [Conectar tu CUIT con ARCA](/es/getting-started/index)
 - [Emitir tu primera factura](/es/guides/primera-factura)
 - [API Reference](/es/api-reference)
 
