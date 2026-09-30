@@ -3,6 +3,39 @@
  "url": "https://docs.facture.ar/es/newsletter/index",
  "notes": [
   {
+   "slug": "arca-nuevo-regimen-precios-transferencia-operaciones-interna-2026-09-30",
+   "title": "ARCA renueva el régimen de Precios de Transferencia y Operaciones Internacionales",
+   "description": "ARCA sustituyó la normativa de precios de transferencia y del Régimen Simplificado de Operaciones Internacionales, con nuevas pautas para operaciones financieras, servicios e intangibles.",
+   "date": "2026-09-30",
+   "category": "arca",
+   "category_label": "ARCA y procedimientos",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/arca-nuevo-regimen-precios-transferencia-operaciones-interna-2026-09-30"
+  },
+  {
+   "slug": "corte-suprema-prescripcion-blanqueo-solo-adherentes-2026-09-30",
+   "title": "La Corte Suprema limitó el alcance de la suspensión de la prescripción en los blanqueos",
+   "description": "La CSJN definió que la suspensión de la prescripción prevista en la Ley 26.860 solo alcanza a quienes adhirieron al régimen, no a la generalidad de los contribuyentes.",
+   "date": "2026-09-30",
+   "category": "ganancias",
+   "category_label": "Ganancias",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/corte-suprema-prescripcion-blanqueo-solo-adherentes-2026-09-30"
+  },
+  {
+   "slug": "inocencia-fiscal-arca-reglamento-extincion-accion-penal-2026-09-30",
+   "title": "Inocencia Fiscal: ARCA reglamentó cómo cancelar la deuda para evitar la denuncia penal",
+   "description": "ARCA reglamentó los cambios al Régimen Penal Tributario introducidos por la Ley de Inocencia Fiscal: procedimiento para extinguir la acción penal cancelando la deuda y supuestos en que no se formula denuncia.",
+   "date": "2026-09-30",
+   "category": "arca",
+   "category_label": "ARCA y procedimientos",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/inocencia-fiscal-arca-reglamento-extincion-accion-penal-2026-09-30"
+  },
+  {
    "slug": "anticipos-ganancias-2026-calculo-arca-2026-09-29",
    "title": "Anticipos de Ganancias 2026: cómo calcularlos según las nuevas pautas de ARCA",
    "description": "ARCA modificó el calendario del Impuesto a las Ganancias para personas humanas y sucesiones indivisas y fijó nuevas pautas para el cálculo de los anticipos 2026.",
@@ -848,39 +881,6 @@
    "impact": "ninguno",
    "impact_note": null,
    "url": "https://docs.facture.ar/es/newsletter/notas/arca-juicio-ejecutivo-defensas-express-contribuyentes-2026-08-20"
-  },
-  {
-   "slug": "vencimiento-monotributo-actualizacion-agosto-2026-2026-08-20",
-   "title": "Monotributo agosto 2026: vencimiento, nuevos topes y montos actualizados",
-   "description": "ARCA publicó los valores actualizados del Monotributo tras la recomposición por inflación. Repasamos los topes de facturación, las cuotas de agosto 2026 y qué hacer si no llegás al vencimiento.",
-   "date": "2026-08-20",
-   "category": "vencimientos",
-   "category_label": "Vencimientos",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/vencimiento-monotributo-actualizacion-agosto-2026-2026-08-20"
-  },
-  {
-   "slug": "arca-cambios-factura-electronica-septiembre-2026-08-19",
-   "title": "Factura electrónica: ARCA suma nuevas obligaciones desde septiembre",
-   "description": "ARCA estableció un cronograma gradual de nuevas obligaciones en factura electrónica que alcanza a bancos, aseguradoras, tarjetas y otros sectores. Repasamos qué cambia y desde cuándo.",
-   "date": "2026-08-19",
-   "category": "facturacion",
-   "category_label": "Facturación electrónica",
-   "impact": "alto",
-   "impact_note": "Nuevo cronograma de obligaciones para bancos, aseguradoras y tarjetas. Si tu empresa es de uno de esos rubros, revisá con tu contador qué comprobantes te corresponden antes de emitirlos.",
-   "url": "https://docs.facture.ar/es/newsletter/notas/arca-cambios-factura-electronica-septiembre-2026-08-19"
-  },
-  {
-   "slug": "defensa-recategorizacion-oficio-monotributo-arca-2026-08-19",
-   "title": "Recategorización de oficio del Monotributo: cómo defenderse ante las notificaciones de ARCA",
-   "description": "ARCA comenzó a notificar recategorizaciones de oficio a monotributistas en el Domicilio Fiscal Electrónico. Guía práctica sobre plazos, recursos y estrategia de defensa.",
-   "date": "2026-08-19",
-   "category": "monotributo",
-   "category_label": "Monotributo",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/defensa-recategorizacion-oficio-monotributo-arca-2026-08-19"
   }
  ]
 }
