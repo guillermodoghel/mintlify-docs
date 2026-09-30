@@ -30,8 +30,6 @@
           {
             "group": "Configuración",
             "pages": [
-              "es/guides/delegacion",
-              "es/guides/certificado-digital",
               "es/guides/primera-factura",
               "es/guides/puntos-de-venta",
               "es/guides/multiples-cuits",
@@ -713,6 +711,14 @@
     "strict": true
   },
   "redirects": [
+    {
+      "source": "/es/guides/delegacion",
+      "destination": "/es/getting-started/index"
+    },
+    {
+      "source": "/es/guides/certificado-digital",
+      "destination": "/es/getting-started/index"
+    },
     {
       "source": "/es/novedades",
       "destination": "/es/newsletter/index"

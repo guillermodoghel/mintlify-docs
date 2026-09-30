@@ -30,7 +30,7 @@ Los eventos se envían para los dos entornos, homologación y producción: el ca
 | `invoice.completed` | ARCA autorizó una factura (o nota de crédito/débito) y Facturear obtuvo el CAE |
 | `invoice.failed` | Una factura falló en forma definitiva: ARCA la rechazó, o el error era transitorio pero se agotaron los reintentos automáticos. No se envía en los intentos que Facturear todavía va a reintentar |
 | `batch.completed` | Un lote terminó de procesarse: su `status` pasó a `completed`, `completed_with_errors` o `error` |
-| `delegation.completed` | La delegación de un CUIT quedó completa en homologación o en producción. Se envía una vez por cada entorno |
+| `delegation.completed` | La delegación de un CUIT quedó completa en homologación o en producción. Se envía una vez por cada entorno. Solo aplica a CUITs conectados por delegación, el método anterior: los CUITs que se conectan hoy (con clave fiscal) no lo envían |
 
 Toda factura emitida por API se procesa en un lote (un `POST /api/invoices` crea un lote de un ítem), así que cada factura termina en `invoice.completed` o en `invoice.failed`, y cada lote en un `batch.completed`.
 
