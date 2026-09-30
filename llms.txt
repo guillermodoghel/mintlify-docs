@@ -29,6 +29,16 @@ Facturear (facture.ar) es un software SaaS argentino orientado a empresas, desar
 - [Facturar desde Claude, ChatGPT o tu agente de IA](https://docs.facture.ar/es/guides/agentes-ia): Conectar Facturear como conector MCP (https://www.facture.ar/api/mcp) con login OAuth; configurar el CUIT en ARCA sin pasar la clave fiscal por el chat y emitir facturas desde el agente.
 - [Instrucciones de conexión para agentes](https://www.facture.ar/llms.txt): Si sos un agente de IA y te pidieron conectarte a Facturear, leé este archivo: endpoints OAuth, comandos por cliente (Claude Code, Codex, Cursor, Claude, ChatGPT), herramientas MCP y reglas.
 - [WooCommerce: el firewall de la tienda bloquea a Facturear](https://docs.facture.ar/es/guides/woocommerce-firewall): Qué permitir en Cloudflare o en el firewall del hosting (User-Agent facture.ar/1.0 en /wp-json/) y el mensaje para mandarle al hosting.
+- [Integraciones de e-commerce](https://docs.facture.ar/es/guides/integracion-ecommerce): Conectores nativos (Tiendanube, Shopify, WooCommerce, VTEX, Magento, MercadoLibre, Mercado Pago) que facturan cada venta, en automático o para revisar.
+- [Desde integraciones](https://docs.facture.ar/es/guides/desde-integraciones): La cola de ventas de las integraciones que esperan ser facturadas.
+- [MercadoLibre](https://docs.facture.ar/es/guides/mercadolibre): Facturar las ventas de MercadoLibre.
+- [Transferencias de Mercado Pago](https://docs.facture.ar/es/guides/mercado-pago-transferencias): Facturar las transferencias recibidas en Mercado Pago.
+- [Facturar por WhatsApp](https://docs.facture.ar/es/guides/whatsapp): Pedir facturas por mensaje, foto o PDF y confirmarlas desde WhatsApp.
+- [Documentos con IA](https://docs.facture.ar/es/funcionalidades/documentos-ia): Facturar desde remitos, fotos, PDFs y planillas; borradores y plantillas recurrentes.
+- [Zapier y Google Drive](https://docs.facture.ar/es/guides/zapier-google-drive): Automatizar la facturación con Zapier y leer documentos desde Drive.
+- [Importar desde ARCA](https://docs.facture.ar/es/guides/importar-desde-arca): Traer a Facturear los comprobantes ya emitidos en ARCA.
+- [Reportes y Libro IVA](https://docs.facture.ar/es/guides/reportes-libro-iva): Totales por período y exportación del Libro IVA.
+- [Cuenta y plan](https://docs.facture.ar/es/guides/cuenta-y-plan): Planes, suscripción con Mercado Pago, facturas extra y Modo Testing.
 - [API Reference](https://docs.facture.ar/es/api-reference/index): Documentación completa de la API REST de Facturear para integraciones.
 
 ## Datos clave del producto

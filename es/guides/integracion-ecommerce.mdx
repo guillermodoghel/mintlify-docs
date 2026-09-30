@@ -1,28 +1,64 @@
 ---
 title: 'Integrar Facturear con tu e-commerce'
-description: 'Cómo conectar Facturear con tu tienda online para emitir facturas electrónicas automáticamente en cada venta: WooCommerce, Tiendanube, Shopify y API REST.'
+description: 'Cómo conectar tu tienda online con Facturear para facturar cada venta: Tiendanube, Shopify, WooCommerce, VTEX, Magento, MercadoLibre y Mercado Pago desde Integraciones, o cualquier otra plataforma con la API.'
 ---
 
 # Integrar Facturear con tu e-commerce
 
-Si tenés una tienda online, podés automatizar completamente la emisión de facturas electrónicas conectando tu plataforma de e-commerce con Facturear. Cada vez que se confirma una venta, la factura se emite automáticamente sin intervención manual.
+Si vendés online, Facturear puede traer las ventas de tu tienda y facturarlas: todas solas apenas se pagan, o las que vos elijas después de revisarlas. Para las plataformas más usadas no tenés que programar nada: se conectan desde **Integraciones**. Si tu tienda es propia o usa otra plataforma, integrás con la API.
 
 ---
 
-## Beneficios de la integración
+## Plataformas que se conectan desde Integraciones
 
-- **Automatización total**: factura emitida al segundo del pago confirmado
-- **Sin errores manuales**: los datos de la factura vienen directamente de la orden
-- **Cumplimiento fiscal garantizado**: toda venta queda facturada con CAE
-- **Mejor experiencia del cliente**: recibe la factura por email automáticamente
+| Plataforma | Cómo se conecta | Modo automático |
+|---|---|---|
+| Tiendanube | Autorizás a Facturear en tu tienda | Al instante |
+| Shopify | Escribís tu tienda (`mitienda.myshopify.com`) y aprobás el acceso | Al instante |
+| WooCommerce | Escribís la dirección de tu tienda y aprobás el acceso en WordPress | Al instante |
+| VTEX | Cargás el nombre de la cuenta, una App Key y su App Token | Dentro de la hora |
+| Magento 2 / Adobe Commerce | Cargás la dirección de la tienda y el Access Token de una integración | Dentro de la hora |
+| MercadoLibre | Conectás tu cuenta de MercadoLibre. Ver [MercadoLibre](/es/guides/mercadolibre) | Sí |
+| Mercado Pago | Conectás tu cuenta. Solo manual: traés las transferencias y elegís cuáles facturar. Ver [Mercado Pago](/es/guides/mercado-pago-transferencias) | No |
+
+Tiendanube, Shopify y WooCommerce avisan a Facturear en cada pedido pagado, por eso el modo automático factura al instante. VTEX y Magento no mandan avisos: Facturear revisa los pedidos una vez por hora.
 
 ---
 
-## Opciones de integración
+## Conectar tu tienda
 
-### Opción 1: API REST directa
+<Steps>
+  En el menú, entrá a **Configuración → Integraciones** y elegí tu plataforma
 
-La forma más flexible. Tu plataforma de e-commerce llama a la API de Facturear cuando se confirma cada venta.
+  Conectá la cuenta. En Tiendanube, Shopify y WooCommerce tocás **Conectar con …** y aprobás el acceso en tu tienda. En VTEX y Magento seguís los pasos de la pantalla para generar la clave y la pegás
+
+  En **Datos de la factura**, elegí el **CUIT** que factura, el **Punto de venta** y la **Alícuota de IVA de tus productos**
+
+  En **Envío al comprador**, marcá **Enviar la factura por mail** si querés que le llegue al mail que dejó en la tienda (y, si querés, una copia para vos)
+
+  Elegí **¿Cómo querés facturar?** y tocá **Empezar a facturar**
+</Steps>
+
+### Automática o manual
+
+- **Automática**: cada pedido pagado se factura solo. Aplica a lo que entra desde que la activás; lo anterior lo facturás a mano.
+- **Manual**: importás los pedidos de un período, los revisás y elegís cuáles facturar. Sirve si no todo lo que vendés se factura igual.
+
+Lo podés cambiar cuando quieras. Las ventas de todas tus integraciones, las que esperan revisión y las que se facturaron solas, las ves en **Facturación → Desde integraciones**. Ver [Desde integraciones](/es/guides/desde-integraciones).
+
+### Cómo arma la factura
+
+Facturear toma los precios de la tienda como finales y separa el neto y el IVA con la alícuota que elegiste. Si el comprador dejó un CUIT y es responsable inscripto o monotributista, sale Factura A; si no, Factura B. Si tu CUIT es monotributista, sale Factura C. El envío se suma como un ítem más.
+
+<Note>
+  Si conectás WooCommerce y el firewall del sitio bloquea a Facturear, mirá [WooCommerce: el firewall de la tienda bloquea a Facturear](/es/guides/woocommerce-firewall).
+</Note>
+
+---
+
+## Otras plataformas: la API
+
+Si tu tienda no está en la lista, tu sistema llama a la API de Facturear cuando se confirma cada venta.
 
 **Flujo típico:**
 
@@ -101,28 +137,6 @@ La API encola la factura y responde enseguida con un `batchId`, sin CAE. Para co
   Si el cliente informa un CUIT y no mandás `condicionIVAReceptorId`, Facturear la toma del padrón de ARCA. Si no corresponde a la clase del comprobante, la API responde `400`. Ver [Condición frente al IVA del receptor](/es/guides/condicion-iva-receptor).
 </Note>
 
-### Opción 2: Tiendanube
-
-Para tiendas en Tiendanube, podés usar la API de Tiendanube en combinación con webhooks:
-
-1. Configurá un webhook en Tiendanube para el evento "Pago aprobado"
-2. Tu servidor recibe el webhook con los datos de la orden
-3. Llamá a la API de Facturear para emitir la factura
-4. Guardá el resultado en los metadatos de la orden
-
-### Opción 3: WooCommerce (WordPress)
-
-Para WooCommerce, podés desarrollar un plugin que:
-1. Se enganche al hook `woocommerce_payment_complete`
-2. Llame a la API de Facturear con los datos del pedido
-3. Guarde el número de factura en el pedido
-
-Si conectás la tienda desde **Integraciones → WooCommerce** y el firewall del sitio bloquea a Facturear, mirá [WooCommerce: el firewall de la tienda bloquea a Facturear](/es/guides/woocommerce-firewall).
-
-### Opción 4: Shopify
-
-Similar a Tiendanube, usando los webhooks de Shopify para el evento `orders/paid`.
-
 ---
 
 ## Manejo de datos del cliente para determinar la factura
@@ -187,6 +201,7 @@ Si tu e-commerce tiene alto volumen y no querés facturar en tiempo real, podés
 
 ## Recursos relacionados
 
+- [Desde integraciones](/es/guides/desde-integraciones)
 - [Facturación en lotes](/es/guides/facturacion-lotes)
 - [API Reference completa](/es/api-reference)
 - [Emitir tu primera factura](/es/guides/primera-factura)
@@ -195,5 +210,5 @@ Si tu e-commerce tiene alto volumen y no querés facturar en tiempo real, podés
 ---
 
 <Card title="Integrá tu e-commerce con Facturear" icon="rocket" href="https://facture.ar">
-  Conectá tu tienda a la API de Facturear y automatizá la emisión de facturas en cada venta.
+  Conectá tu tienda desde Integraciones o con la API y facturá cada venta sin cargarla a mano.
 </Card>

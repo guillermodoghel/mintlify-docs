@@ -44,7 +44,7 @@ Las facturas de prueba no cuentan para el límite mensual de tu plan.
 
 ## Cómo testear con la API de Facturear
 
-El entorno lo define la **API key** que usás: tu cuenta tiene una key de testing y una de producción (en **Configuración → API**). Con la key de testing, todas las llamadas operan en homologación; el cuerpo de la factura y los endpoints son exactamente los mismos que en producción, así que pasar a producción es solo cambiar la key.
+El entorno lo define la **API key** que usás: tu cuenta tiene una key de testing y una de producción (en **Desarrolladores → Claves API**). Con la key de testing, todas las llamadas operan en homologación; el cuerpo de la factura y los endpoints son exactamente los mismos que en producción, así que pasar a producción es solo cambiar la key.
 
 ```javascript
 const response = await fetch('https://www.facture.ar/api/invoices', {
@@ -100,7 +100,7 @@ Antes de pasar a producción, testeá al menos estos escenarios:
 
 <AccordionGroup>
   <Accordion title="¿Las facturas de testing aparecen en mis reportes?">
-    Depende de la configuración. Facturear puede separar los comprobantes de testing de los de producción en el dashboard para evitar confusiones.
+    Nunca se mezclan con las reales. **Facturas** y **Reportes** muestran solo el entorno en el que está tu cuenta: con el **Modo Testing** prendido ves solo las facturas de prueba, y con el modo apagado, solo las de producción. Por API, `GET /api/invoices` y `GET /api/invoices/stats` devuelven las del entorno de tu API Key.
   </Accordion>
   <Accordion title="¿Puedo usar el mismo CUIT para testing y producción?">
     Sí, pero con diferentes certificados. El CUIT es el mismo; lo que cambia es si usás el certificado de homologación (testing) o el de producción.
@@ -116,7 +116,7 @@ Antes de pasar a producción, testeá al menos estos escenarios:
 
 - [Conectá tu CUIT con ARCA](/es/getting-started/index)
 - [Emitir tu primera factura](/es/guides/primera-factura)
-- [API Reference](/es/api-reference)
+- [API Reference](/es/api-reference/index)
 
 ---
 

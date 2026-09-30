@@ -1,0 +1,48 @@
+---
+title: 'Zapier y Google Drive'
+sidebarTitle: 'Zapier y Google Drive'
+description: 'Facturá desde más de 7.000 apps con Zapier, y elegí remitos, PDFs o planillas de tu Google Drive para facturarlos con IA.'
+---
+
+## Zapier
+
+Con la app de facture.ar en Zapier conectás tu cuenta con Gmail, Google Sheets, Typeform, HubSpot, Drive y miles de apps más, sin programar. La ves en **Integraciones → Zapier**.
+
+### Cómo conectarlo
+
+<Steps>
+  <Step title="Creá un Zap">
+    Desde **Integraciones → Zapier**, tocá **Abrir en Zapier** y creá un Zap con la app de facture.ar.
+  </Step>
+  <Step title="Pegá tu API key">
+    Cuando Zapier te pida la API key, copiala de [Claves API](/es/guides/api-keys). Usá la de **prueba** para probar el Zap sin emitir facturas reales, y cambiala por la de producción cuando funcione.
+  </Step>
+  <Step title="Elegí si se emite sola o queda para revisar">
+    Cada factura puede **emitirse sola** o quedar **para revisar** en Documentos. Si usás una plantilla, mandá la configuración de la plantilla.
+  </Step>
+</Steps>
+
+### Qué ofrece la app
+
+- **Disparadores**: Factura emitida, Factura rechazada y Borrador para revisar.
+- **Acciones**: Crear factura, Facturar un documento con IA, Facturar un texto con IA y Emitir un borrador.
+- **Búsquedas** de facturas y borradores.
+
+### Ideas para empezar
+
+| Desde | Cuando pasa | Acción | Resultado |
+|---|---|---|---|
+| Google Drive | Archivo nuevo en una carpeta | Facturar un documento con IA | Cada remito o pedido que guardás en una carpeta se convierte en factura. |
+| Gmail | Email nuevo con adjunto | Facturar un documento con IA | Reenviás los pedidos de tus clientes a una etiqueta y se facturan. |
+| Google Sheets | Fila nueva | Crear factura | Cada venta que anotás en tu planilla sale facturada. |
+| Typeform, Tally o Jotform | Formulario enviado | Crear factura | Inscripciones, reservas o pedidos cobrados, facturados al instante. |
+| Stripe, PayPal o Hotmart | Pago recibido | Crear factura | Cobros del exterior o suscripciones facturados sin tocar nada. |
+| facture.ar | Factura emitida | Slack, Sheets, HubSpot o tu sistema contable | Avisás a tu equipo o registrás cada factura donde la necesites. |
+
+¿Preferís Make o n8n? Usan la misma [API](/es/guides/api-keys).
+
+## Google Drive
+
+Google Drive está dentro de **Documentos**, donde la IA lee remitos, pedidos y planillas y arma las facturas. Además de subir archivos, podés tocar **Conectar Google Drive** (la primera vez) o **Desde Google Drive** y elegir remitos, PDFs o planillas de tu Drive, también Google Sheets. Los archivos elegidos se importan y se procesan igual que los que subís.
+
+Cómo se revisan y emiten esas facturas está en [Documentos con IA](/es/funcionalidades/documentos-ia).

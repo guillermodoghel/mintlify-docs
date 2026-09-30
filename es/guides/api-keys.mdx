@@ -28,11 +28,11 @@ Cada cuenta tiene **dos API Keys**: una de producción y una de testing. Las gen
 
   Ingresá al panel de control
 
-  En el menú lateral, entrá a **Claves API**
+  En el menú lateral, en **Desarrolladores**, entrá a **Claves API**
 
-  En la tarjeta **Production** o **Testing**, hacé clic en **"Generate Key"**
+  En la tarjeta **Producción** o **Testing**, hacé clic en **"Generar clave"**
 
-  Copiá la API Key con **"Copy"** y guardala en un lugar seguro (por ejemplo, en las variables de entorno de tu servidor)
+  Copiá la API Key con **"Copiar"** y guardala en un lugar seguro (por ejemplo, en las variables de entorno de tu servidor)
 </Steps>
 
 La key queda visible en esa misma pantalla, así que podés volver a copiarla cuando la necesites.
@@ -117,7 +117,7 @@ const apiKey = process.env.FACTUREAR_API_KEY;
 
 Rotá las API Keys periódicamente. Como hay una sola key por entorno, al regenerarla la anterior deja de funcionar en el acto:
 
-1. Ingresá a **Claves API** y hacé clic en **"Regenerate"** en la tarjeta del entorno
+1. Ingresá a **Desarrolladores → Claves API** y hacé clic en **"Regenerar"** en la tarjeta del entorno
 2. Copiá la nueva key
 3. Actualizá tu aplicación para usar la nueva key lo antes posible
 4. Verificá que todo funciona con la nueva key
@@ -134,8 +134,8 @@ Usá cada key en su lugar:
 
 Si una key se comprometió, regenerala:
 
-1. Ingresá al panel de Facturear → **Claves API**
-2. En la tarjeta del entorno afectado (Production o Testing), hacé clic en **"Regenerate"**
+1. Ingresá al panel de Facturear → **Desarrolladores → Claves API**
+2. En la tarjeta del entorno afectado (Producción o Testing), hacé clic en **"Regenerar"**
 3. La key anterior queda inválida inmediatamente; todas las requests con esa key empiezan a fallar con error 401
 
 ---
@@ -144,11 +144,11 @@ Si una key se comprometió, regenerala:
 
 | Error HTTP | Significado | Solución |
 |---|---|---|
-| `401 Unauthorized` | API Key inválida, regenerada o no enviada | Verificá que enviás el header `x-api-key` con la key vigente |
+| `401 Unauthorized`, con `code: "unauthorized"` | API Key inválida, regenerada o no enviada | Verificá que enviás el header `x-api-key` con la key vigente |
 | `403 Forbidden` al emitir, con `code: "SUBSCRIPTION_LIMIT_EXCEEDED"` | Superaste el límite de facturas de tu plan | Revisá tu plan en el dashboard |
 
 <Note>
-  Algunas funciones se manejan solo desde el dashboard y no aceptan API Key: generar y regenerar keys, configurar webhooks y cargar tributos por CUIT.
+  Algunas funciones se manejan solo desde el dashboard y no aceptan API Key: generar y regenerar keys, ver o rotar el secreto de firma de un webhook y su historial de entregas, y cargar tributos por CUIT. Crear, editar y borrar webhooks sí se puede hacer con la API Key.
 </Note>
 
 ---

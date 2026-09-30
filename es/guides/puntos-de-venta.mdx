@@ -17,40 +17,45 @@ Un punto de venta (PDV) es un número del 1 al 9999 que:
 - Reinicia el correlativo de numeración por cada número de PDV
 - Puede representar una sucursal, un sistema diferente, un tipo de cliente, etc.
 
-La mayoría de las empresas usa el **punto de venta 1** para la facturación electrónica.
+Para empezar a facturar con Facturear alcanza con uno, y lo dejamos listo nosotros al conectar tu CUIT.
 
 ---
 
-## Alta del punto de venta en ARCA
+## El punto de venta al conectar tu CUIT
 
-Antes de usar un punto de venta en Facturear, debe estar dado de alta en ARCA:
+No tenés que darlo de alta vos. Cuando [conectás tu CUIT](/es/getting-started/index), Facturear entra a ARCA y deja listo un punto de venta Web Services. Si ya tenías uno, usamos ese. Queda como punto de venta por defecto del CUIT.
+
+---
+
+## Agregar otro punto de venta
+
+Si querés usar más de un punto de venta (por sucursal, por canal, etc.), el nuevo se da de alta en ARCA:
 
 <Steps>
-  Ingresá a **arca.gob.ar** → servicios → **"ABM Puntos de Venta"**
+  Entrá a **arca.gob.ar** con tu clave fiscal → **Administración de puntos de venta y domicilios**
 
-  Hacé clic en **"Alta"** de nuevo punto de venta
+  Elegí el CUIT y dá de **alta** un nuevo punto de venta con un número libre
 
-  Asignale un número (recomendado: empezar por el 1)
+  En el sistema, elegí uno de **Web Services**: "Factura Electrónica - Monotributo - Web Services" si sos monotributista, o "RECE para aplicativo y web services" si sos responsable inscripto o exento
 
-  Seleccioná el tipo: **"Factura en línea"** (para facturación por web service como Facturear)
+  Confirmá el alta
 
-  Guardá el alta. El punto de venta ya puede usarse para emitir facturas
+  En Facturear, andá a **CUITs** → tu CUIT → **Puntos de Venta** y tocá **Actualizar** para traerlo
 </Steps>
 
 ---
 
 ## Tipos de puntos de venta
 
-ARCA define diferentes tipos de PDV:
+Facturear emite por el web service de factura electrónica de ARCA, así que el punto de venta tiene que ser de un sistema **Web Services**. Los otros no sirven para emitir con Facturear:
 
-| Tipo | Uso |
+| Sistema en ARCA | ¿Sirve con Facturear? |
 |---|---|
-| **Factura en línea** | Facturación a través de web service (Facturear, sistemas ERP) |
-| **Controlador fiscal** | Facturas emitidas desde controlador fiscal homologado |
-| **Manual** | Talonario en papel (excepcional) |
-| **CAEA** | Para contribuyentes con Código de Autorización Electrónico Anticipado (Facturear todavía no lo soporta, ver [CAEA](/es/guides/factura-caea)) |
-
-Para integrarse con Facturear, el punto de venta debe ser del tipo **"Factura en línea"**.
+| Factura Electrónica - Monotributo - Web Services | Sí |
+| RECE para aplicativo y web services | Sí |
+| Comprobantes en línea (factura desde la web de ARCA) | No |
+| Controlador fiscal | No |
+| CAEA | No, Facturear todavía no lo soporta (ver [CAEA](/es/guides/factura-caea)) |
 
 ---
 
@@ -67,7 +72,7 @@ curl https://www.facture.ar/api/cuits/cmg0a1b2c0000abc/pos \
 
 ### Respuesta
 
-Devuelve la última lista obtenida de ARCA, cuándo se actualizó y el punto de venta por defecto del CUIT:
+Devuelve la última lista obtenida de ARCA, cuándo se actualizó, el punto de venta por defecto del CUIT y, en `lastInvoices`, la última factura emitida con Facturear en cada punto de venta (en el entorno de tu clave: producción o testing):
 
 ```json
 {
@@ -82,7 +87,16 @@ Devuelve la última lista obtenida de ARCA, cuándo se actualizó y el punto de 
     },
     "posLastUpdated": "2026-09-15T13:30:00.000Z",
     "default_pos": 1
-  }
+  },
+  "lastInvoices": [
+    {
+      "ptoVta": 1,
+      "id": "cmg1a2b3e0002xyz",
+      "invoiceType": 11,
+      "voucherNumber": 128,
+      "createdAt": "2026-09-29T18:04:11.000Z"
+    }
+  ]
 }
 ```
 
@@ -110,9 +124,28 @@ curl -X POST https://www.facture.ar/api/cuits/cmg0a1b2c0000abc/pos \
 }
 ```
 
-La consulta se hace siempre contra ARCA **producción**. Si ARCA no devuelve ningún punto de venta, la respuesta es `400`: primero tenés que dar de alta uno en ARCA. La primera vez que se cargan, el primero de la lista queda como punto de venta por defecto; lo podés cambiar con `POST /api/cuits/{id}/default-pos` (ver [Configurar defaults por CUIT](/es/guides/configurar-defaults-cuit)).
+La consulta se hace siempre contra ARCA **producción**. Si ARCA no devuelve ningún punto de venta, la respuesta es `400`: primero tenés que dar de alta uno en ARCA.
 
-Desde el dashboard, lo mismo está en **CUITs** → tu CUIT → **Puntos de Venta**, con el botón **"Actualizar"**.
+### Último comprobante en ARCA
+
+`lastInvoices` solo mira lo que emitiste con Facturear. Para ver el último número que ARCA tiene autorizado en cada punto de venta y tipo de comprobante (incluido lo que emitiste por fuera de Facturear), usá:
+
+```bash
+curl https://www.facture.ar/api/cuits/cmg0a1b2c0000abc/pos/last-vouchers \
+  -H "x-api-key: tu_api_key"
+```
+
+```json
+{
+  "lastVouchers": [
+    { "ptoVta": 1, "invoiceType": 11, "voucherNumber": 128, "date": "2026-09-29", "invoiceId": "cmg1a2b3e0002xyz" }
+  ]
+}
+```
+
+`date` es la fecha del comprobante en ARCA (`AAAA-MM-DD`) e `invoiceId` es la factura en Facturear, o `null` si no se emitió desde acá. Consulta a ARCA, así que tarda unos segundos. La primera vez que se cargan, el primero de la lista queda como punto de venta por defecto; lo podés cambiar con `POST /api/cuits/{id}/default-pos` (ver [Configurar defaults por CUIT](/es/guides/configurar-defaults-cuit)).
+
+Desde el dashboard, lo mismo está en **CUITs** → tu CUIT → **Puntos de Venta**, con el botón **Actualizar**.
 
 ---
 
@@ -141,7 +174,7 @@ Estrategias comunes para usar múltiples PDV:
 
 Si necesitás dar de baja un punto de venta:
 
-1. Tramitá la baja en **arca.gob.ar → ABM Puntos de Venta**
+1. Tramitá la baja en **arca.gob.ar → Administración de puntos de venta y domicilios**
 2. Una vez dado de baja en ARCA, ese PDV no podrá usarse para emitir más facturas
 3. Los comprobantes emitidos previamente desde ese PDV siguen siendo válidos
 
@@ -154,7 +187,7 @@ Si necesitás dar de baja un punto de venta:
     Sí. Un punto de venta puede usarse para emitir distintos tipos de comprobante. La numeración es independiente por tipo: el último número de la Factura A es distinto al último número de la Factura B, aunque usen el mismo punto de venta.
   </Accordion>
   <Accordion title="¿Qué pasa si el punto de venta no está dado de alta en ARCA?">
-    ARCA rechaza la solicitud de facturación. El error devuelto indicará que el punto de venta no existe o no está habilitado para el CUIT. Primero debés dar de alta el PDV en ARCA y luego podrás usarlo en Facturear.
+    ARCA rechaza la solicitud de facturación: el error indica que el punto de venta no existe o no está habilitado para el CUIT. Dalo de alta en ARCA como Web Services (ver [Agregar otro punto de venta](#agregar-otro-punto-de-venta)) y tocá **Actualizar** en Facturear.
   </Accordion>
 </AccordionGroup>
 

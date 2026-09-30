@@ -33,7 +33,8 @@
               "es/guides/primera-factura",
               "es/guides/puntos-de-venta",
               "es/guides/multiples-cuits",
-              "es/guides/entorno-testing"
+              "es/guides/entorno-testing",
+              "es/guides/cuenta-y-plan"
             ]
           },
           {
@@ -42,8 +43,9 @@
               "es/funcionalidades/index",
               "es/funcionalidades/facturador-rapido",
               "es/funcionalidades/factura-detallada",
-              "es/funcionalidades/facturacion-excel",
-              "es/funcionalidades/facturacion-por-lotes"
+              "es/funcionalidades/documentos-ia",
+              "es/funcionalidades/facturacion-por-lotes",
+              "es/guides/reportes-libro-iva"
             ]
           },
           {
@@ -56,7 +58,8 @@
               "es/guides/buscar-facturas",
               "es/guides/diseno-factura",
               "es/guides/enviar-factura-email",
-              "es/guides/descarga-pdf-masiva"
+              "es/guides/descarga-pdf-masiva",
+              "es/guides/importar-desde-arca"
             ]
           },
           {
@@ -69,6 +72,11 @@
               "es/guides/condicion-iva-receptor",
               "es/guides/webhook-integracion",
               "es/guides/integracion-ecommerce",
+              "es/guides/desde-integraciones",
+              "es/guides/mercadolibre",
+              "es/guides/mercado-pago-transferencias",
+              "es/guides/whatsapp",
+              "es/guides/zapier-google-drive",
               "es/guides/woocommerce-firewall",
               "es/guides/integracion-erp"
             ]
@@ -711,6 +719,10 @@
     "strict": true
   },
   "redirects": [
+    {
+      "source": "/es/funcionalidades/facturacion-excel",
+      "destination": "/es/funcionalidades/documentos-ia"
+    },
     {
       "source": "/es/guides/delegacion",
       "destination": "/es/getting-started/index"

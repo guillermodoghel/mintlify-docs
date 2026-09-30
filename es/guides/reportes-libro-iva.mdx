@@ -1,0 +1,57 @@
+---
+title: 'Reportes y Libro IVA'
+sidebarTitle: 'Reportes y Libro IVA'
+description: 'Mirá el libro de ventas de cualquier período, con el IVA por alícuota y los tributos, y descargá el Libro IVA en CSV para tu contador.'
+---
+
+En **Reportes** (menú **Facturación**) ves el libro de ventas de un período: cuánto facturaste, el IVA débito fiscal y el detalle por alícuota, tributo, tipo de comprobante, mes, CUIT y punto de venta. Las fechas son las del comprobante y **las notas de crédito restan**.
+
+## Elegir el período
+
+Usá uno de los atajos:
+
+- **Este mes**
+- **Mes anterior**
+- **Trimestre** (el trimestre calendario en curso, hasta hoy)
+- **Año hasta la fecha**
+- **Año pasado**
+
+O cargá **Desde** y **Hasta** y tocá **Ver período**. El rango puede cubrir como máximo un año: si elegís uno más largo, se corta a un año.
+
+Si tenés más de un CUIT, podés filtrar por uno o ver **Todos**.
+
+## Qué muestra
+
+- **Comprobantes**, **Neto gravado**, **IVA débito fiscal** y **Total**.
+- **Discriminación**: neto gravado, IVA, operaciones exentas, no gravado y otros tributos.
+- **IVA por alícuota**: base imponible e impuesto de cada alícuota.
+- **Por tributo**: cada percepción, ingreso bruto u otro tributo que vino en los comprobantes.
+- **Por tipo de comprobante**, **Por mes** (si el período abarca más de uno), **Por CUIT emisor** y **Por punto de venta** (si hay más de uno).
+- **Otras monedas**: los comprobantes en moneda extranjera no se suman con los pesos; se listan aparte.
+
+Los comprobantes rechazados por ARCA no entran en los totales.
+
+## Descargar el Libro IVA
+
+Tocá **Libro IVA (CSV)** arriba a la derecha. Descarga un archivo separado por punto y coma, listo para abrir en Excel, con una fila por comprobante y estas columnas:
+
+`Fecha; Tipo; Punto de venta; Número; CUIT emisor; Doc. receptor; Moneda; Neto gravado; IVA; Exento; No gravado; Otros tributos; Total`
+
+Las notas de crédito van con importes negativos. Los comprobantes en otras monedas se incluyen con su moneda.
+
+También lo podés bajar por API con tu clave:
+
+```bash
+curl "https://www.facture.ar/api/reports/libro-iva?desde=2026-01-01&hasta=2026-03-31" \
+  -H "x-api-key: TU_API_KEY" -o libro-iva.csv
+```
+
+Sumá `&cuit=<id del CUIT>` para filtrar por un CUIT.
+
+## Completar con lo emitido en otra plataforma
+
+Si antes facturabas en otro lado, [importá esos comprobantes desde ARCA](/es/guides/importar-desde-arca) para que el reporte quede completo.
+
+<Note>
+Con el [Modo Testing](/es/guides/entorno-testing) prendido, los números son de homologación y lo ves indicado arriba del reporte.
+</Note>

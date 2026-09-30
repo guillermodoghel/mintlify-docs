@@ -1,0 +1,59 @@
+---
+title: 'Facturar tus ventas de MercadoLibre'
+sidebarTitle: 'MercadoLibre'
+description: 'Conectá tu cuenta de MercadoLibre para facturar cada venta pagada, sola o a mano, y adjuntar la factura en la venta.'
+---
+
+Con la integración de MercadoLibre, Facturear trae tus ventas pagadas, emite la factura y la adjunta en la venta para que el comprador la vea en el detalle de su compra.
+
+Por ahora solo se pueden conectar cuentas de **MercadoLibre Argentina**.
+
+## Conectar la cuenta
+
+<Steps>
+  <Step title="Abrí la integración">
+    Entrá a **Integraciones** y elegí **MercadoLibre**.
+  </Step>
+  <Step title="Autorizá el acceso">
+    Tocá **Conectar con MercadoLibre**. Te llevamos a MercadoLibre para que autorices a facture.ar a leer tus ventas y adjuntar las facturas. No vemos ni guardamos tu contraseña.
+  </Step>
+  <Step title="Contanos cómo facturar">
+    Elegí el **CUIT que factura**, el **Punto de venta** y si querés que facture sola o a mano (ver abajo). Tocá **Empezar a facturar**.
+  </Step>
+</Steps>
+
+## Automática o manual
+
+- **Automática**: cada venta pagada se factura al instante, sin que hagas nada. Aplica a lo que entre desde que la activás; lo anterior lo facturás a mano con **Traer ventas anteriores**.
+- **Manual**: importás un período de ventas, revisás y elegís qué facturar. Sirve si no todo lo que vendés se factura igual.
+
+Lo podés cambiar cuando quieras en la pestaña **Configuración**.
+
+## Datos de la factura
+
+- Si tu CUIT discrimina IVA, elegí la **Alícuota de IVA de tus productos** (21%, 10,5%, 27% o 0%). Los precios de MercadoLibre son finales: separamos el neto y el IVA con esa alícuota. Sale **Factura A** si el comprador es inscripto o monotributista con CUIT; si no, **B**.
+- Si el comprador no informó documento, la factura sale a **Consumidor final**.
+
+## Envío al comprador
+
+- **Adjuntar la factura en MercadoLibre**: el comprador la ve en el detalle de su compra y MercadoLibre le avisa.
+- **Enviar la factura por mail**: al mail del comprador cuando lo tengamos. MercadoLibre casi nunca lo comparte, así que podés cargarlo en cada venta.
+- **Enviarme copia a**: un mail tuyo, opcional.
+
+## Facturar a mano
+
+En la pestaña **Ventas**:
+
+1. Elegí el **Período** (Hoy, Ayer, Últimos 7 días, Últimos 30 días, Este mes, Mes pasado, Últimos 90 días o fechas a elección) y tocá **Importar ventas del período**.
+2. Marcá las ventas que querés facturar (o **Seleccionar todas**).
+3. Tocá **Facturar**.
+
+Cada venta muestra su estado: **Sin facturar**, **Facturando…**, **Facturada** (con el número de factura) o **Error** (con el motivo). Podés filtrar por estado y volver a seleccionar las que dieron error para reintentar.
+
+Para mandar la factura por mail, cargá el mail del comprador en la fila y tocá **Enviar** (o **Guardar** si todavía no se emitió: se envía apenas salga).
+
+## Desconectar
+
+Desde la integración podés desconectar la cuenta cuando quieras. Las facturas ya emitidas no se tocan. Si MercadoLibre deja de darnos acceso, vas a ver **Volver a conectar**.
+
+Las ventas pendientes de todas tus integraciones también se ven en [Desde integraciones](/es/guides/desde-integraciones).

@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Facturear API",
-    "description": "API completa para facturación electrónica en Argentina. Integra con AFIP y genera facturas electrónicas válidas de forma rápida y segura.",
+    "description": "API para emitir facturas electrónicas de ARCA (Argentina) desde tu sistema: facturas, notas de crédito y débito, lotes, PDF y XML, envío por email, borradores desde documentos, webhooks y reportes. Autenticación con API Key en el header x-api-key: la key de testing opera en homologación y la de producción emite comprobantes reales.",
     "version": "1.0.0",
     "contact": {
       "name": "Facturear Support",
@@ -18,6 +18,44 @@
     {
       "url": "https://www.facture.ar/api",
       "description": "Servidor de producción"
+    }
+  ],
+  "tags": [
+    {
+      "name": "CUITs",
+      "description": "CUITs emisores, sus defaults, puntos de venta y diseño"
+    },
+    {
+      "name": "Facturas",
+      "description": "Emitir, listar y consultar facturas, su PDF y XML, y enviarlas por email"
+    },
+    {
+      "name": "Lotes",
+      "description": "El resultado de cada emisión: toda factura se procesa en un lote"
+    },
+    {
+      "name": "Borradores",
+      "description": "Facturas propuestas desde documentos, planillas o datos, para revisar y emitir"
+    },
+    {
+      "name": "Plantillas",
+      "description": "Cómo se lee y se factura cada tipo de documento, y facturas recurrentes"
+    },
+    {
+      "name": "Importar desde ARCA",
+      "description": "Traer a Facturear los comprobantes que ARCA ya autorizó"
+    },
+    {
+      "name": "Webhooks",
+      "description": "Notificaciones a tu sistema cuando pasa algo con tus facturas"
+    },
+    {
+      "name": "Reportes",
+      "description": "Libro IVA Ventas"
+    },
+    {
+      "name": "Utilidades",
+      "description": "Parámetros de ARCA"
     }
   ],
   "security": [
@@ -115,6 +153,310 @@
           },
           "409": {
             "description": "El CUIT ya está registrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cuits/{cuitId}": {
+      "get": {
+        "summary": "Obtener un CUIT",
+        "description": "Devuelve un CUIT de tu cuenta con sus datos del padrón, puntos de venta, defaults y estado de la configuración en ARCA.",
+        "tags": ["CUITs"],
+        "parameters": [
+          {
+            "name": "cuitId",
+            "in": "path",
+            "description": "ID del CUIT en Facturear",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "CUIT",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Cuit"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "CUIT no encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cuits/{cuitId}/set-default": {
+      "post": {
+        "summary": "Marcar como CUIT por defecto",
+        "description": "Marca este CUIT como el default de tu cuenta y desmarca los demás.",
+        "tags": ["CUITs"],
+        "parameters": [
+          {
+            "name": "cuitId",
+            "in": "path",
+            "description": "ID del CUIT en Facturear o su número sin guiones",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "CUIT marcado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "CUIT no encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cuits/{cuitId}/setup-status": {
+      "get": {
+        "summary": "Estado de la configuración en ARCA",
+        "description": "En qué paso está la configuración del CUIT en ARCA.",
+        "tags": ["CUITs"],
+        "parameters": [
+          {
+            "name": "cuitId",
+            "in": "path",
+            "description": "ID del CUIT en Facturear",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Estado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "setupStatus": {
+                      "type": "string",
+                      "enum": ["INITIALIZED", "IN_PROGRESS", "TEST_CERTIFICATE_COMPLETE", "PROD_CERTIFICATE_COMPLETE", "AWAITING_DELEGATION", "DELEGATION_COMPLETE", "AUTOMATION_IN_PROGRESS", "AUTOMATION_FAILED", "COMPLETED", "SKIPPED"]
+                    },
+                    "progress": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 100,
+                      "description": "Porcentaje: certificados, puntos de venta y concepto por defecto"
+                    },
+                    "isCompleted": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "CUIT no encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cuits/{cuitId}/pos": {
+      "get": {
+        "summary": "Listar puntos de venta",
+        "description": "Los puntos de venta del CUIT guardados en Facturear (la última consulta a ARCA) y la última factura emitida desde Facturear en cada uno.",
+        "tags": ["CUITs"],
+        "parameters": [
+          {
+            "name": "cuitId",
+            "in": "path",
+            "description": "ID del CUIT en Facturear",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Puntos de venta",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PointsOfSale"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "CUIT no encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Actualizar puntos de venta desde ARCA",
+        "description": "Consulta en ARCA (producción) los puntos de venta del CUIT y los guarda. Tarda unos segundos.",
+        "tags": ["CUITs"],
+        "parameters": [
+          {
+            "name": "cuitId",
+            "in": "path",
+            "description": "ID del CUIT en Facturear",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Puntos de venta actualizados",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "pos": {
+                      "description": "Respuesta de ARCA a FEParamGetPtosVenta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "El CUIT no tiene puntos de venta dados de alta en ARCA",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "CUIT no encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "No se pudo consultar ARCA (por ejemplo, el CUIT no tiene certificados)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cuits/{cuitId}/pos/last-vouchers": {
+      "get": {
+        "summary": "Último comprobante por punto de venta",
+        "description": "Consulta en ARCA el último comprobante autorizado en cada punto de venta activo del CUIT, lo haya emitido Facturear u otro sistema. Usa el entorno de la API key y tarda unos segundos.",
+        "tags": ["CUITs"],
+        "parameters": [
+          {
+            "name": "cuitId",
+            "in": "path",
+            "description": "ID del CUIT en Facturear",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Últimos comprobantes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "lastVouchers": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/LastVoucher"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "CUIT no encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "No se pudo consultar ARCA",
             "content": {
               "application/json": {
                 "schema": {
@@ -434,6 +776,104 @@
         }
       }
     },
+    "/cuits/{cuitId}/email-design": {
+      "get": {
+        "summary": "Obtener el diseño del mail",
+        "description": "El diseño del mail con el que sale la factura de este CUIT. Los campos en null usan el valor por defecto.",
+        "tags": ["CUITs"],
+        "parameters": [
+          {
+            "name": "cuitId",
+            "in": "path",
+            "description": "ID del CUIT en Facturear",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Diseño del mail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmailDesign"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "CUIT no encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Cambiar el diseño del mail",
+        "description": "Los campos que no mandás quedan como están; null (o texto vacío) vuelve al valor por defecto. En signature, el texto vacío deja el mail sin firma.",
+        "tags": ["CUITs"],
+        "parameters": [
+          {
+            "name": "cuitId",
+            "in": "path",
+            "description": "ID del CUIT en Facturear",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmailDesign"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Diseño guardado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmailDesign"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Valor inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "CUIT no encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/invoices/{invoiceId}/email": {
       "post": {
         "summary": "Enviar la factura por email",
@@ -491,6 +931,15 @@
             "name": "comprobante",
             "in": "query",
             "description": "Número de comprobante",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "receptor",
+            "in": "query",
+            "description": "Documento del receptor (CUIT, CUIL o DNI, con o sin guiones: busca por DocNro exacto) o parte de su nombre (clientName, sin distinguir mayúsculas)",
             "required": false,
             "schema": {
               "type": "string"
@@ -655,6 +1104,49 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/invoices/stats": {
+      "get": {
+        "summary": "Resumen de facturas",
+        "description": "Totales de las facturas del entorno de la API key.",
+        "tags": ["Facturas"],
+        "responses": {
+          "200": {
+            "description": "Resumen",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "totalAmount": {
+                      "type": "number",
+                      "description": "Suma de las facturas exitosas"
+                    },
+                    "totalInvoices": {
+                      "type": "integer"
+                    },
+                    "successInvoices": {
+                      "type": "integer"
+                    },
+                    "errorInvoices": {
+                      "type": "integer"
+                    },
+                    "pendingJobs": {
+                      "type": "integer",
+                      "description": "Facturas en cola"
+                    },
+                    "environment": {
+                      "type": "string",
+                      "enum": ["production", "homologation"],
+                      "description": "Entorno del que salen los números"
+                    }
+                  }
                 }
               }
             }
@@ -1048,6 +1540,1418 @@
           },
           "404": {
             "description": "Factura no encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/invoices/{invoiceId}/xml": {
+      "get": {
+        "summary": "Obtener el XML de la factura",
+        "description": "La respuesta de ARCA (FECAESolicitarResponse) de una factura autorizada, como sobre SOAP en XML.",
+        "tags": ["Facturas"],
+        "parameters": [
+          {
+            "name": "invoiceId",
+            "in": "path",
+            "description": "ID de la factura",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "XML de la respuesta de ARCA",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "La factura no existe o no tiene respuesta de ARCA",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/webhooks": {
+      "get": {
+        "summary": "Listar webhooks",
+        "description": "Los webhooks de tu cuenta. El secreto de firma no se devuelve: se ve desde el dashboard.",
+        "tags": ["Webhooks"],
+        "responses": {
+          "200": {
+            "description": "Webhooks",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Webhook"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Crear un webhook",
+        "description": "Registra una URL que recibe los eventos elegidos. Facturear genera el secreto de firma (whsec_...), que se ve desde el dashboard en Webhooks → Secreto de firma.",
+        "tags": ["Webhooks"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "events": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                      "$ref": "#/components/schemas/WebhookEvent"
+                    }
+                  },
+                  "headers": {
+                    "type": ["object", "null"],
+                    "additionalProperties": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": ["url", "events"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Webhook creado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Webhook"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "URL o eventos inválidos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/webhooks/{webhookId}": {
+      "put": {
+        "summary": "Editar un webhook",
+        "description": "Cambia la URL, los eventos, los headers o lo pausa (isActive: false). Solo se cambian los campos que mandás.",
+        "tags": ["Webhooks"],
+        "parameters": [
+          {
+            "name": "webhookId",
+            "in": "path",
+            "description": "ID del webhook",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "events": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                      "$ref": "#/components/schemas/WebhookEvent"
+                    }
+                  },
+                  "headers": {
+                    "type": ["object", "null"],
+                    "additionalProperties": {
+                      "type": "string"
+                    }
+                  },
+                  "isActive": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Webhook actualizado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Webhook"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Datos inválidos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Webhook no encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Borrar un webhook",
+        "tags": ["Webhooks"],
+        "parameters": [
+          {
+            "name": "webhookId",
+            "in": "path",
+            "description": "ID del webhook",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Webhook borrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Webhook no encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/reports/libro-iva": {
+      "get": {
+        "summary": "Libro IVA Ventas (CSV)",
+        "description": "Los comprobantes autorizados del período, en CSV separado por punto y coma (para Excel en castellano). Columnas: Fecha, Tipo, Punto de venta, Número, CUIT emisor, Doc. receptor, Moneda, Neto gravado, IVA, Exento, No gravado, Otros tributos, Total. Las notas de crédito van en negativo. Usa el entorno de la API key.",
+        "tags": ["Reportes"],
+        "parameters": [
+          {
+            "name": "desde",
+            "in": "query",
+            "description": "Primer día, AAAA-MM-DD. Por defecto, el primero del mes",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "hasta",
+            "in": "query",
+            "description": "Último día, AAAA-MM-DD. Por defecto, hoy. El período se corta a 366 días",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "cuit",
+            "in": "query",
+            "description": "ID del CUIT en Facturear, para ver uno solo. Sin él, todos",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Archivo CSV",
+            "content": {
+              "text/csv": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/documents": {
+      "post": {
+        "summary": "Proponer facturas desde un documento",
+        "description": "Arma borradores de factura a partir de un archivo (fileUrl, o multipart con el campo file), un texto (text) o los datos ya estructurados (data, uno o hasta 100). Los archivos y textos se leen con IA en segundo plano: los borradores vuelven con status extracting; consultalos con GET /documents/drafts. El entorno lo fija la API key.",
+        "tags": ["Borradores"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "templateId": {
+                    "type": ["string", "null"],
+                    "description": "Plantilla que define CUIT, punto de venta, modo, cliente fijo, precios e instrucciones"
+                  },
+                  "mode": {
+                    "type": "string",
+                    "enum": ["manual", "automatic"],
+                    "description": "automatic: se emite solo si no hay observaciones"
+                  },
+                  "cuitId": {
+                    "type": ["string", "null"]
+                  },
+                  "ptoVta": {
+                    "type": ["integer", "null"],
+                    "minimum": 1
+                  },
+                  "dedupeKey": {
+                    "type": ["string", "null"],
+                    "maxLength": 200,
+                    "description": "Id estable del documento: repetir el pedido con el mismo valor no duplica el borrador"
+                  },
+                  "sourceRef": {
+                    "type": ["string", "null"],
+                    "maxLength": 200,
+                    "description": "Referencia que se muestra en el borrador"
+                  },
+                  "source": {
+                    "type": "string",
+                    "enum": ["api", "zapier", "mcp"],
+                    "default": "api"
+                  },
+                  "fileUrl": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "URL pública del archivo (PDF, imagen o planilla)"
+                  },
+                  "fileName": {
+                    "type": "string",
+                    "maxLength": 200
+                  },
+                  "mimeType": {
+                    "type": "string"
+                  },
+                  "text": {
+                    "type": "string",
+                    "description": "Texto del documento (un pedido, un mensaje)"
+                  },
+                  "data": {
+                    "oneOf": [
+                      {
+                        "$ref": "#/components/schemas/DraftData"
+                      },
+                      {
+                        "type": "array",
+                        "minItems": 1,
+                        "maxItems": 100,
+                        "items": {
+                          "$ref": "#/components/schemas/DraftData"
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": ["file"],
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Hasta 25 MB"
+                  },
+                  "templateId": {
+                    "type": ["string", "null"],
+                    "description": "Plantilla que define CUIT, punto de venta, modo, cliente fijo, precios e instrucciones"
+                  },
+                  "mode": {
+                    "type": "string",
+                    "enum": ["manual", "automatic"],
+                    "description": "automatic: se emite solo si no hay observaciones"
+                  },
+                  "cuitId": {
+                    "type": ["string", "null"]
+                  },
+                  "ptoVta": {
+                    "type": ["integer", "null"],
+                    "minimum": 1
+                  },
+                  "dedupeKey": {
+                    "type": ["string", "null"],
+                    "maxLength": 200,
+                    "description": "Id estable del documento: repetir el pedido con el mismo valor no duplica el borrador"
+                  },
+                  "sourceRef": {
+                    "type": ["string", "null"],
+                    "maxLength": 200,
+                    "description": "Referencia que se muestra en el borrador"
+                  },
+                  "source": {
+                    "type": "string",
+                    "enum": ["api", "zapier", "mcp"],
+                    "default": "api"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Borradores creados",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "drafts": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Draft"
+                      }
+                    },
+                    "mapping": {
+                      "type": "object",
+                      "description": "Solo planillas: las columnas usadas y si la IA las acaba de proponer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Falta el documento o los datos son inválidos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/documents/drafts": {
+      "get": {
+        "summary": "Listar borradores",
+        "description": "Los borradores del entorno de la API key, los más nuevos primero.",
+        "tags": ["Borradores"],
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Filtrar por estado. pending = leyéndose, para revisar, con error o en camino a ARCA",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["extracting", "review", "queued", "invoiced", "error", "discarded", "pending"]
+            }
+          },
+          {
+            "name": "source",
+            "in": "query",
+            "description": "Filtrar por origen",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["upload", "google_drive", "zapier", "api", "recurring", "mcp", "whatsapp"]
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Cantidad máxima",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 500,
+              "default": 200
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Borradores",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "drafts": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Draft"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/documents/drafts/{draftId}": {
+      "get": {
+        "summary": "Obtener un borrador",
+        "tags": ["Borradores"],
+        "parameters": [
+          {
+            "name": "draftId",
+            "in": "path",
+            "description": "ID del borrador",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Borrador",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "draft": {
+                      "$ref": "#/components/schemas/Draft"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "El borrador no existe",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Corregir un borrador",
+        "description": "Cambia los datos, el CUIT o el punto de venta de un borrador que espera revisión. Con una API key, environment solo se acepta si coincide con el de la key.",
+        "tags": ["Borradores"],
+        "parameters": [
+          {
+            "name": "draftId",
+            "in": "path",
+            "description": "ID del borrador",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "$ref": "#/components/schemas/DraftData"
+                  },
+                  "cuitId": {
+                    "type": ["string", "null"]
+                  },
+                  "ptoVta": {
+                    "type": ["integer", "null"],
+                    "minimum": 1
+                  },
+                  "environment": {
+                    "type": "string",
+                    "enum": ["production", "homologation"]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Borrador actualizado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "draft": {
+                      "$ref": "#/components/schemas/Draft"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Datos inválidos o el borrador ya no se puede editar",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Descartar un borrador",
+        "tags": ["Borradores"],
+        "parameters": [
+          {
+            "name": "draftId",
+            "in": "path",
+            "description": "ID del borrador",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Borrador descartado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "discarded": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "El borrador no se puede descartar",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/documents/drafts/{draftId}/email": {
+      "post": {
+        "summary": "Enviar la factura de un borrador por email",
+        "description": "Envía (o reenvía) la factura emitida desde el borrador a una dirección.",
+        "tags": ["Borradores"],
+        "parameters": [
+          {
+            "name": "draftId",
+            "in": "path",
+            "description": "ID del borrador",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["email"],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Resultado del envío",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": ["string", "null"],
+                      "description": "Estado del envío"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Email inválido o el borrador todavía no tiene factura",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/documents/drafts/invoice": {
+      "post": {
+        "summary": "Emitir borradores",
+        "description": "Emite ante ARCA los borradores indicados. Con la key de producción son comprobantes reales. Con una API key solo se emiten los borradores de su entorno.",
+        "tags": ["Borradores"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["ids"],
+                "properties": {
+                  "ids": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 500,
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Resultado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "queued": {
+                      "type": "integer",
+                      "description": "Borradores enviados a ARCA"
+                    },
+                    "batchIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Lotes creados; consultalos en GET /invoices/batches/{batchId}"
+                    },
+                    "failed": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "draftId": {
+                            "type": "string"
+                          },
+                          "error": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Datos inválidos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/documents/drafts/discard": {
+      "post": {
+        "summary": "Descartar borradores",
+        "tags": ["Borradores"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["ids"],
+                "properties": {
+                  "ids": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 500,
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Cantidad descartada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "discarded": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Datos inválidos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/documents/templates": {
+      "get": {
+        "summary": "Listar plantillas",
+        "tags": ["Plantillas"],
+        "responses": {
+          "200": {
+            "description": "Plantillas",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "templates": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Template"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Crear una plantilla",
+        "description": "Una plantilla define cómo se lee y se factura un tipo de documento (CUIT, punto de venta, modo, cliente fijo, precios, instrucciones para la IA, columnas de la planilla) y, con recurrence, una factura que sale sola todos los meses.",
+        "tags": ["Plantillas"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TemplateInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Plantilla creada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "template": {
+                      "$ref": "#/components/schemas/Template"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Datos inválidos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/documents/templates/{templateId}": {
+      "get": {
+        "summary": "Obtener una plantilla",
+        "tags": ["Plantillas"],
+        "parameters": [
+          {
+            "name": "templateId",
+            "in": "path",
+            "description": "ID de la plantilla",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Plantilla",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "template": {
+                      "$ref": "#/components/schemas/Template"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "La plantilla no existe",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Reemplazar una plantilla",
+        "description": "Reemplaza la plantilla con el body completo: los campos que no mandás vuelven a su valor por defecto, salvo columnMapping, que se conserva si no lo mandás.",
+        "tags": ["Plantillas"],
+        "parameters": [
+          {
+            "name": "templateId",
+            "in": "path",
+            "description": "ID de la plantilla",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TemplateInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Plantilla actualizada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "template": {
+                      "$ref": "#/components/schemas/Template"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Datos inválidos o la plantilla no existe",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Borrar una plantilla",
+        "tags": ["Plantillas"],
+        "parameters": [
+          {
+            "name": "templateId",
+            "in": "path",
+            "description": "ID de la plantilla",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Plantilla borrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/documents/templates/{templateId}/run": {
+      "post": {
+        "summary": "Emitir ya la factura recurrente del mes",
+        "description": "Genera ahora el borrador del mes de una plantilla recurrente. Como mucho una vez por mes.",
+        "tags": ["Plantillas"],
+        "parameters": [
+          {
+            "name": "templateId",
+            "in": "path",
+            "description": "ID de la plantilla",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Borrador del mes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "draft": {
+                      "$ref": "#/components/schemas/Draft"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "La plantilla no existe o no se puede emitir",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/arca-imports": {
+      "get": {
+        "summary": "Último relevamiento de un CUIT",
+        "description": "El relevamiento más reciente del CUIT en el entorno de la API key, o null.",
+        "tags": ["Importar desde ARCA"],
+        "parameters": [
+          {
+            "name": "cuitId",
+            "in": "query",
+            "description": "ID del CUIT en Facturear",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Relevamiento",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "job": {
+                      "oneOf": [
+                        {
+                          "$ref": "#/components/schemas/ArcaImport"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Falta cuitId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "CUIT no encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Relevar los comprobantes de ARCA",
+        "description": "Empieza a relevar los comprobantes que ARCA ya autorizó para el CUIT en el período. Si ya hay un relevamiento en curso, lo devuelve. Cuando llega a status ready, importalo con la acción start.",
+        "tags": ["Importar desde ARCA"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["cuitId", "range"],
+                "properties": {
+                  "cuitId": {
+                    "type": "string"
+                  },
+                  "range": {
+                    "type": "string",
+                    "enum": ["mes", "anio", "anio-pasado"],
+                    "description": "mes: desde principio de mes; anio: desde principio de año; anio-pasado: el año pasado"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Relevamiento",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "job": {
+                      "oneOf": [
+                        {
+                          "$ref": "#/components/schemas/ArcaImport"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Falta el CUIT o el período",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "CUIT no encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "La importación no está disponible en este momento",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/arca-imports/{importId}": {
+      "post": {
+        "summary": "Avanzar un relevamiento",
+        "description": "start: importa lo relevado (status ready); retry: reintenta uno con error; cancel: lo cancela; resume: lo retoma si quedó parado.",
+        "tags": ["Importar desde ARCA"],
+        "parameters": [
+          {
+            "name": "importId",
+            "in": "path",
+            "description": "ID del relevamiento",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["action"],
+                "properties": {
+                  "action": {
+                    "type": "string",
+                    "enum": ["start", "retry", "cancel", "resume"]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Relevamiento",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "job": {
+                      "oneOf": [
+                        {
+                          "$ref": "#/components/schemas/ArcaImport"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Acción desconocida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No se encontró la importación",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/arca-imports/vouchers": {
+      "get": {
+        "summary": "Comprobantes importados desde ARCA",
+        "description": "Los comprobantes del CUIT importados desde ARCA (origin arca), los más recientes primero. Devuelve hasta 100 y el total.",
+        "tags": ["Importar desde ARCA"],
+        "parameters": [
+          {
+            "name": "cuitId",
+            "in": "query",
+            "description": "ID del CUIT en Facturear",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Comprobantes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "vouchers": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "description": "ID de la factura en Facturear"
+                          },
+                          "issuedAt": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "typeName": {
+                            "type": "string"
+                          },
+                          "number": {
+                            "type": "string",
+                            "description": "Punto de venta y número, por ejemplo 0001-00000145"
+                          },
+                          "receiver": {
+                            "type": "string"
+                          },
+                          "amount": {
+                            "type": "number"
+                          },
+                          "moneda": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "total": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Falta cuitId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "CUIT no encontrado",
             "content": {
               "application/json": {
                 "schema": {
@@ -1626,6 +3530,16 @@
             "type": ["string", "null"],
             "description": "Descripción de la factura"
           },
+          "issuedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Cuándo ARCA autorizó el comprobante. En las facturas emitidas desde Facturear es la fecha de creación; en las importadas desde ARCA, la fecha del comprobante. Los reportes agrupan por este campo"
+          },
+          "origin": {
+            "type": "string",
+            "enum": ["facturear", "arca"],
+            "description": "facturear: emitida desde Facturear. arca: copiada de un comprobante que ARCA ya había autorizado (Importar desde ARCA)"
+          },
           "createdAt": {
             "type": "string",
             "format": "date-time",
@@ -1929,18 +3843,921 @@
       },
       "Error": {
         "type": "object",
+        "description": "Error de la API. Los errores de autenticación (401), validación (400), CUIT inexistente (404), conflicto (409) e internos (500) vienen como application/problem+json (RFC 9457) con code, message y resolution. Otros errores vienen como JSON con error y, a veces, details y code. En los dos casos está el campo error.",
         "required": ["error"],
         "properties": {
           "error": {
             "type": "string",
             "description": "Mensaje de error"
           },
-          "details": {
-            "description": "Detalle del error: un texto, o la lista de errores de validación"
-          },
           "code": {
             "type": "string",
-            "description": "Código de error, por ejemplo SUBSCRIPTION_LIMIT_EXCEEDED"
+            "description": "Código estable: unauthorized, invalid_request, cuit_not_found, conflict, internal_error, o códigos propios como SUBSCRIPTION_LIMIT_EXCEEDED"
+          },
+          "message": {
+            "type": "string",
+            "description": "Qué pasó (problem+json)"
+          },
+          "resolution": {
+            "type": "string",
+            "description": "Qué hacer para resolverlo (problem+json)"
+          },
+          "type": {
+            "type": "string",
+            "format": "uri",
+            "description": "URI del tipo de problema (problem+json)"
+          },
+          "title": {
+            "type": "string",
+            "description": "Título corto del problema (problem+json)"
+          },
+          "status": {
+            "type": "integer",
+            "description": "Código HTTP (problem+json)"
+          },
+          "detail": {
+            "type": "string",
+            "description": "Igual que message (problem+json)"
+          },
+          "details": {
+            "description": "Detalle del error: un texto, o la lista de errores de validación"
+          }
+        }
+      },
+      "PointsOfSale": {
+        "type": "object",
+        "properties": {
+          "pos": {
+            "type": ["object", "null"],
+            "properties": {
+              "pos": {
+                "description": "Respuesta de ARCA a FEParamGetPtosVenta guardada (ResultGet.PtoVenta con Nro, EmisionTipo, Bloqueado y FchBaja)"
+              },
+              "posLastUpdated": {
+                "type": ["string", "null"],
+                "format": "date-time",
+                "description": "Última vez que se consultaron los puntos de venta en ARCA"
+              },
+              "default_pos": {
+                "type": ["integer", "null"],
+                "description": "Punto de venta por defecto"
+              }
+            }
+          },
+          "lastInvoices": {
+            "type": "array",
+            "description": "La última factura autorizada desde Facturear en cada punto de venta, en el entorno de la API key",
+            "items": {
+              "type": "object",
+              "properties": {
+                "ptoVta": {
+                  "type": "integer"
+                },
+                "id": {
+                  "type": "string",
+                  "description": "ID de la factura"
+                },
+                "invoiceType": {
+                  "type": ["integer", "null"]
+                },
+                "voucherNumber": {
+                  "type": "integer"
+                },
+                "createdAt": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              }
+            }
+          }
+        }
+      },
+      "LastVoucher": {
+        "type": "object",
+        "properties": {
+          "ptoVta": {
+            "type": "integer",
+            "description": "Punto de venta"
+          },
+          "invoiceType": {
+            "type": "integer",
+            "description": "Código de ARCA del tipo de comprobante"
+          },
+          "voucherNumber": {
+            "type": "integer",
+            "description": "Último número autorizado"
+          },
+          "date": {
+            "type": ["string", "null"],
+            "description": "Fecha del comprobante en ARCA (AAAA-MM-DD)"
+          },
+          "invoiceId": {
+            "type": ["string", "null"],
+            "description": "ID de la factura en Facturear, si se emitió desde Facturear"
+          }
+        }
+      },
+      "EmailDesign": {
+        "type": "object",
+        "description": "Diseño del mail con el que sale la factura de este CUIT. null = valor por defecto",
+        "properties": {
+          "accentColor": {
+            "type": ["string", "null"],
+            "pattern": "^#[0-9a-fA-F]{6}$",
+            "description": "Color de la banda superior (#rrggbb)"
+          },
+          "backgroundColor": {
+            "type": ["string", "null"],
+            "pattern": "^#[0-9a-fA-F]{6}$",
+            "description": "Color de fondo (#rrggbb)"
+          },
+          "showLogo": {
+            "type": "boolean",
+            "description": "Mostrar el logo del CUIT en el encabezado"
+          },
+          "subject": {
+            "type": ["string", "null"],
+            "maxLength": 200,
+            "description": "Asunto. Admite bloques como %emisor%"
+          },
+          "body": {
+            "type": ["string", "null"],
+            "maxLength": 3000,
+            "description": "Mensaje. Admite bloques como %cliente%"
+          },
+          "signature": {
+            "type": ["string", "null"],
+            "maxLength": 500,
+            "description": "Firma. null = firma por defecto; texto vacío = sin firma"
+          }
+        }
+      },
+      "Webhook": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "headers": {
+            "type": ["object", "null"],
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Headers propios que se agregan a cada envío"
+          },
+          "events": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WebhookEvent"
+            }
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "WebhookEvent": {
+        "type": "string",
+        "enum": ["delegation.completed", "invoice.completed", "invoice.failed", "batch.completed", "draft.review_required"]
+      },
+      "DraftData": {
+        "type": "object",
+        "description": "Los datos de la factura propuesta",
+        "required": ["lines"],
+        "properties": {
+          "receiver": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": ["string", "null"],
+                "maxLength": 200
+              },
+              "docType": {
+                "type": ["string", "null"],
+                "description": "CUIT, CUIL o DNI; null = consumidor final sin identificar"
+              },
+              "docNumber": {
+                "type": ["string", "null"],
+                "description": "CUIT, CUIL o DNI, con o sin guiones"
+              },
+              "condicionIva": {
+                "type": ["integer", "null"],
+                "description": "Condición frente al IVA del receptor (código de ARCA). Si falta, se busca en el padrón"
+              },
+              "email": {
+                "type": ["string", "null"],
+                "format": "email",
+                "description": "Si está, se le manda la factura"
+              },
+              "address": {
+                "type": ["string", "null"],
+                "maxLength": 300
+              }
+            }
+          },
+          "concepto": {
+            "type": "integer",
+            "enum": [1, 2, 3],
+            "default": 1,
+            "description": "1 productos, 2 servicios, 3 productos y servicios"
+          },
+          "serviceFrom": {
+            "type": ["string", "null"],
+            "format": "date",
+            "description": "AAAA-MM-DD, servicios"
+          },
+          "serviceTo": {
+            "type": ["string", "null"],
+            "format": "date",
+            "description": "AAAA-MM-DD, servicios"
+          },
+          "paymentDue": {
+            "type": ["string", "null"],
+            "format": "date",
+            "description": "Vencimiento del pago, AAAA-MM-DD"
+          },
+          "pricesIncludeIva": {
+            "type": "boolean",
+            "default": true,
+            "description": "Los precios de las líneas incluyen IVA"
+          },
+          "lines": {
+            "type": "array",
+            "maxItems": 200,
+            "items": {
+              "type": "object",
+              "required": ["description", "unitPrice"],
+              "properties": {
+                "description": {
+                  "type": "string",
+                  "maxLength": 200
+                },
+                "quantity": {
+                  "type": "number",
+                  "exclusiveMinimum": 0,
+                  "default": 1
+                },
+                "unitPrice": {
+                  "type": ["number", "null"],
+                  "minimum": 0,
+                  "description": "null si el documento no trae precio"
+                },
+                "ivaRate": {
+                  "type": "number",
+                  "enum": [0, 2.5, 5, 10.5, 21, 27],
+                  "default": 21,
+                  "description": "Alícuota de IVA en porcentaje"
+                }
+              }
+            }
+          },
+          "documentTotal": {
+            "type": ["number", "null"],
+            "description": "Total impreso en el documento, para controlar las líneas"
+          },
+          "currency": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 3,
+            "default": "ARS",
+            "description": "Moneda ISO 4217"
+          },
+          "documentDate": {
+            "type": ["string", "null"],
+            "format": "date",
+            "description": "Fecha del documento, AAAA-MM-DD. La factura se emite con la fecha del día"
+          },
+          "reference": {
+            "type": ["string", "null"],
+            "maxLength": 100,
+            "description": "Número de remito, pedido o referencia"
+          },
+          "description": {
+            "type": ["string", "null"],
+            "maxLength": 500,
+            "description": "Texto libre que va en la factura"
+          }
+        }
+      },
+      "Draft": {
+        "type": "object",
+        "description": "Un borrador de factura armado desde un documento, una planilla, datos enviados por API o una plantilla recurrente",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["extracting", "review", "queued", "invoiced", "error", "discarded"],
+            "description": "extracting: leyéndose; review: espera revisión; queued: enviado a ARCA; invoiced: facturado; error: no se pudo leer o emitir; discarded: descartado"
+          },
+          "mode": {
+            "type": "string",
+            "enum": ["manual", "automatic"],
+            "description": "automatic: se emite solo si no hay observaciones"
+          },
+          "source": {
+            "type": "string",
+            "enum": ["upload", "google_drive", "zapier", "api", "recurring", "mcp", "whatsapp"]
+          },
+          "sourceRef": {
+            "type": ["string", "null"]
+          },
+          "fileName": {
+            "type": ["string", "null"]
+          },
+          "mimeType": {
+            "type": ["string", "null"]
+          },
+          "hasFile": {
+            "type": "boolean"
+          },
+          "templateId": {
+            "type": ["string", "null"]
+          },
+          "templateName": {
+            "type": ["string", "null"]
+          },
+          "cuitId": {
+            "type": ["string", "null"]
+          },
+          "ptoVta": {
+            "type": ["integer", "null"]
+          },
+          "environment": {
+            "type": "string",
+            "enum": ["production", "homologation"]
+          },
+          "data": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/DraftData"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "total": {
+            "type": ["number", "null"],
+            "description": "Total calculado con las líneas; null si falta algún precio"
+          },
+          "voucherLetter": {
+            "type": ["string", "null"],
+            "enum": ["A", "B", "C", null]
+          },
+          "confidence": {
+            "type": ["number", "null"],
+            "description": "Confianza de la lectura con IA, de 0 a 1"
+          },
+          "issues": {
+            "type": "array",
+            "description": "Observaciones que hay que revisar",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "enum": ["no_cuit", "no_lines", "missing_price", "invalid_amount", "total_mismatch", "invalid_document", "unidentified_receiver", "foreign_currency", "low_confidence", "possible_duplicate", "ai_note", "ai_info"]
+                },
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "errorMessage": {
+            "type": ["string", "null"]
+          },
+          "invoice": {
+            "type": ["object", "null"],
+            "description": "La factura emitida desde el borrador",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "voucherNumber": {
+                "type": "integer"
+              },
+              "ptoVta": {
+                "type": ["integer", "null"]
+              },
+              "invoiceType": {
+                "type": ["integer", "null"]
+              },
+              "status": {
+                "type": "string"
+              },
+              "amount": {
+                "type": "number"
+              }
+            }
+          },
+          "emailStatus": {
+            "type": ["string", "null"],
+            "description": "Estado del envío de la factura por email"
+          },
+          "url": {
+            "type": "string",
+            "description": "Link al borrador en el dashboard"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "TemplateInput": {
+        "type": "object",
+        "required": ["name"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 120
+          },
+          "cuitId": {
+            "type": ["string", "null"],
+            "description": "CUIT emisor. Obligatorio en modo automático y en las recurrentes"
+          },
+          "ptoVta": {
+            "type": ["integer", "null"],
+            "minimum": 1,
+            "maximum": 99999
+          },
+          "mode": {
+            "type": "string",
+            "enum": ["manual", "automatic"],
+            "default": "manual"
+          },
+          "concepto": {
+            "type": "integer",
+            "enum": [1, 2, 3],
+            "default": 1
+          },
+          "ivaRate": {
+            "type": "number",
+            "enum": [0, 2.5, 5, 10.5, 21, 27],
+            "default": 21
+          },
+          "pricesIncludeIva": {
+            "type": "boolean",
+            "default": true
+          },
+          "receiverDocType": {
+            "type": ["string", "null"],
+            "enum": ["CUIT", "CUIL", "DNI", null],
+            "description": "Cliente fijo: todas las facturas de la plantilla van a él"
+          },
+          "receiverDocNumber": {
+            "type": ["string", "null"],
+            "maxLength": 20
+          },
+          "receiverName": {
+            "type": ["string", "null"],
+            "maxLength": 200
+          },
+          "receiverCondicionIva": {
+            "type": ["integer", "null"]
+          },
+          "receiverEmail": {
+            "type": ["string", "null"],
+            "format": "email"
+          },
+          "items": {
+            "type": ["array", "null"],
+            "maxItems": 100,
+            "description": "Líneas fijas, para las facturas recurrentes",
+            "items": {
+              "type": "object",
+              "required": ["description", "quantity", "unitPrice"],
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "quantity": {
+                  "type": "number"
+                },
+                "unitPrice": {
+                  "type": "number",
+                  "minimum": 0
+                }
+              }
+            }
+          },
+          "priceList": {
+            "type": ["array", "null"],
+            "maxItems": 2000,
+            "description": "Precios para documentos que no los traen (remitos)",
+            "items": {
+              "type": "object",
+              "required": ["description", "unitPrice"],
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "unitPrice": {
+                  "type": "number",
+                  "minimum": 0
+                }
+              }
+            }
+          },
+          "instructions": {
+            "type": ["string", "null"],
+            "maxLength": 4000,
+            "description": "Lo que la IA tiene que saber para leer este tipo de documento"
+          },
+          "columnMapping": {
+            "type": ["object", "null"],
+            "description": "Columnas de la planilla → campos de la factura",
+            "properties": {
+              "headerRow": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "columns": {
+                "type": "object",
+                "description": "Campo → nombre de la columna. Campos: receiverName, receiverDoc, receiverEmail, receiverCondicionIva, receiverAddress, description, quantity, unitPrice, lineTotal, ivaRate, reference, date, concepto",
+                "additionalProperties": {
+                  "type": "string"
+                }
+              },
+              "groupBy": {
+                "type": ["string", "null"]
+              },
+              "pricesIncludeIva": {
+                "type": "boolean"
+              }
+            }
+          },
+          "paymentTermDays": {
+            "type": ["integer", "null"],
+            "minimum": 0,
+            "maximum": 365
+          },
+          "sendEmail": {
+            "type": "boolean",
+            "default": true,
+            "description": "Mandarle la factura al cliente por email"
+          },
+          "emailCopyTo": {
+            "type": ["string", "null"],
+            "format": "email"
+          },
+          "recurrence": {
+            "type": ["string", "null"],
+            "enum": ["monthly", null],
+            "description": "monthly: emite las líneas fijas todos los meses en dayOfMonth"
+          },
+          "dayOfMonth": {
+            "type": ["integer", "null"],
+            "minimum": 1,
+            "maximum": 28
+          },
+          "active": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      },
+      "Template": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 120
+          },
+          "cuitId": {
+            "type": ["string", "null"],
+            "description": "CUIT emisor. Obligatorio en modo automático y en las recurrentes"
+          },
+          "ptoVta": {
+            "type": ["integer", "null"],
+            "minimum": 1,
+            "maximum": 99999
+          },
+          "mode": {
+            "type": "string",
+            "enum": ["manual", "automatic"],
+            "default": "manual"
+          },
+          "concepto": {
+            "type": "integer",
+            "enum": [1, 2, 3],
+            "default": 1
+          },
+          "ivaRate": {
+            "type": "number",
+            "enum": [0, 2.5, 5, 10.5, 21, 27],
+            "default": 21
+          },
+          "pricesIncludeIva": {
+            "type": "boolean",
+            "default": true
+          },
+          "receiverDocType": {
+            "type": ["string", "null"],
+            "enum": ["CUIT", "CUIL", "DNI", null],
+            "description": "Cliente fijo: todas las facturas de la plantilla van a él"
+          },
+          "receiverDocNumber": {
+            "type": ["string", "null"],
+            "maxLength": 20
+          },
+          "receiverName": {
+            "type": ["string", "null"],
+            "maxLength": 200
+          },
+          "receiverCondicionIva": {
+            "type": ["integer", "null"]
+          },
+          "receiverEmail": {
+            "type": ["string", "null"],
+            "format": "email"
+          },
+          "items": {
+            "type": ["array", "null"],
+            "maxItems": 100,
+            "description": "Líneas fijas, para las facturas recurrentes",
+            "items": {
+              "type": "object",
+              "required": ["description", "quantity", "unitPrice"],
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "quantity": {
+                  "type": "number"
+                },
+                "unitPrice": {
+                  "type": "number",
+                  "minimum": 0
+                }
+              }
+            }
+          },
+          "priceList": {
+            "type": ["array", "null"],
+            "maxItems": 2000,
+            "description": "Precios para documentos que no los traen (remitos)",
+            "items": {
+              "type": "object",
+              "required": ["description", "unitPrice"],
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "unitPrice": {
+                  "type": "number",
+                  "minimum": 0
+                }
+              }
+            }
+          },
+          "instructions": {
+            "type": ["string", "null"],
+            "maxLength": 4000,
+            "description": "Lo que la IA tiene que saber para leer este tipo de documento"
+          },
+          "columnMapping": {
+            "type": ["object", "null"],
+            "description": "Columnas de la planilla → campos de la factura",
+            "properties": {
+              "headerRow": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "columns": {
+                "type": "object",
+                "description": "Campo → nombre de la columna. Campos: receiverName, receiverDoc, receiverEmail, receiverCondicionIva, receiverAddress, description, quantity, unitPrice, lineTotal, ivaRate, reference, date, concepto",
+                "additionalProperties": {
+                  "type": "string"
+                }
+              },
+              "groupBy": {
+                "type": ["string", "null"]
+              },
+              "pricesIncludeIva": {
+                "type": "boolean"
+              }
+            }
+          },
+          "paymentTermDays": {
+            "type": ["integer", "null"],
+            "minimum": 0,
+            "maximum": 365
+          },
+          "sendEmail": {
+            "type": "boolean",
+            "default": true,
+            "description": "Mandarle la factura al cliente por email"
+          },
+          "emailCopyTo": {
+            "type": ["string", "null"],
+            "format": "email"
+          },
+          "recurrence": {
+            "type": ["string", "null"],
+            "enum": ["monthly", null],
+            "description": "monthly: emite las líneas fijas todos los meses en dayOfMonth"
+          },
+          "dayOfMonth": {
+            "type": ["integer", "null"],
+            "minimum": 1,
+            "maximum": 28
+          },
+          "active": {
+            "type": "boolean",
+            "default": true
+          },
+          "nextRunAt": {
+            "type": ["string", "null"],
+            "format": "date-time"
+          },
+          "lastRunAt": {
+            "type": ["string", "null"],
+            "format": "date-time"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ArcaImport": {
+        "type": "object",
+        "description": "Un relevamiento de los comprobantes que ARCA ya autorizó para un CUIT, y su importación a Facturear",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["scanning", "ready", "importing", "done", "error", "cancelled"],
+            "description": "scanning: relevando; ready: relevado, listo para importar; importing: importando; done, error o cancelled"
+          },
+          "range": {
+            "type": "string",
+            "enum": ["mes", "anio", "anio-pasado"]
+          },
+          "rangeLabel": {
+            "type": "string"
+          },
+          "from": {
+            "type": ["string", "null"],
+            "description": "Primer día incluido (DD/MM/AAAA)"
+          },
+          "to": {
+            "type": ["string", "null"],
+            "description": "Último día incluido (DD/MM/AAAA)"
+          },
+          "imported": {
+            "type": "integer"
+          },
+          "skipped": {
+            "type": "integer"
+          },
+          "gaps": {
+            "type": "integer"
+          },
+          "errorMessage": {
+            "type": ["string", "null"]
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "pointsOfSale": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "segments": {
+            "type": "array",
+            "description": "Un tramo por punto de venta y tipo de comprobante",
+            "items": {
+              "type": "object",
+              "properties": {
+                "ptoVta": {
+                  "type": "integer"
+                },
+                "cbteTipo": {
+                  "type": "integer"
+                },
+                "cbteTipoName": {
+                  "type": "string"
+                },
+                "lastNumber": {
+                  "type": "integer"
+                },
+                "fromNumber": {
+                  "type": ["integer", "null"]
+                },
+                "toNumber": {
+                  "type": ["integer", "null"]
+                },
+                "fromDate": {
+                  "type": ["string", "null"]
+                },
+                "toDate": {
+                  "type": ["string", "null"]
+                },
+                "inRange": {
+                  "type": "integer"
+                },
+                "already": {
+                  "type": "integer",
+                  "description": "Ya estaban en Facturear"
+                },
+                "pending": {
+                  "type": "integer"
+                },
+                "note": {
+                  "type": ["string", "null"]
+                },
+                "resolved": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "totals": {
+            "type": "object",
+            "properties": {
+              "inRange": {
+                "type": "integer"
+              },
+              "already": {
+                "type": "integer"
+              },
+              "pending": {
+                "type": "integer"
+              }
+            }
+          },
+          "scan": {
+            "type": ["object", "null"],
+            "description": "Avance del relevamiento; null cuando terminó",
+            "properties": {
+              "phase": {
+                "type": "string",
+                "enum": ["puntos", "numeracion", "fechas"]
+              },
+              "done": {
+                "type": "integer"
+              },
+              "total": {
+                "type": "integer"
+              }
+            }
+          },
+          "cursor": {
+            "type": ["object", "null"],
+            "description": "Por dónde va la importación",
+            "properties": {
+              "ptoVta": {
+                "type": "integer"
+              },
+              "cbteTipoName": {
+                "type": "string"
+              },
+              "next": {
+                "type": "integer"
+              },
+              "toNumber": {
+                "type": "integer"
+              }
+            }
           }
         }
       }

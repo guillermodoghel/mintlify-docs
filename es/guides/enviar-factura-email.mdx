@@ -5,13 +5,15 @@ description: 'Cómo enviarle la factura en PDF a tu cliente por email desde Fact
 
 # Enviar una factura por email
 
-Facturear le envía a tu cliente el PDF de la factura por email. El mail sale desde **noreply@facture.ar**, firmado con tu nombre de fantasía o tu razón social. Es solo de envío: esa dirección no recibe respuestas, y el mail se lo aclara a tu cliente.
+Facturear le envía a tu cliente el PDF de la factura por email. El mail sale desde **noreply@facture.ar** con el diseño de mail del CUIT emisor. Es solo de envío: esa dirección no recibe respuestas, y el mail se lo aclara a tu cliente.
+
+El asunto, el mensaje, la firma y los colores del mail se configuran por CUIT en **Configuración → Diseño**, pestaña **Mail**. Ver [Diseño de la factura y del mail](/es/guides/diseno-factura#diseño-del-mail).
 
 ---
 
 ## Desde el dashboard
 
-En **Facturación**, abrí la factura y tocá **Enviar por email**. Cargá hasta 5 direcciones separadas por coma y, si querés, un mensaje. El PDF va adjunto con el diseño de tu CUIT (ver [Diseño de la factura](/es/guides/diseno-factura)).
+En **Facturas**, abrí la factura y tocá **Enviar por email**. Cargá hasta 5 direcciones separadas por coma y, si querés, un mensaje. El PDF va adjunto con el diseño de tu CUIT (ver [Diseño de la factura](/es/guides/diseno-factura)).
 
 Solo se pueden enviar facturas autorizadas por ARCA. Las de homologación salen con **[PRUEBA]** en el asunto.
 
@@ -32,7 +34,7 @@ curl -X POST https://www.facture.ar/api/invoices/cmuikenv10007kz045cbmekr0/email
 | Campo | Tipo | Qué es |
 |---|---|---|
 | `to` | string[] o string | Hasta 5 destinatarios. También acepta un string con direcciones separadas por coma |
-| `message` | string | Opcional, hasta 2000 caracteres. Reemplaza el texto de saludo del mail |
+| `message` | string | Opcional, hasta 2000 caracteres. Se agrega debajo del saludo, antes del resto del mensaje del diseño; no lo reemplaza |
 
 ### Respuesta
 

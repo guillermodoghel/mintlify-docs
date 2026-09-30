@@ -143,13 +143,21 @@ El link vence a los 30 minutos y sirve una sola vez. Si usás un agente en la te
 
 | Herramienta | Para qué |
 | --- | --- |
+| `get_profile` | Quién está conectado: id de la cuenta y, si están, nombre y email |
 | `get_account` | Plan, uso del mes y estado de cada CUIT |
 | `add_cuit` | Dar de alta un CUIT (lo valida con el padrón de ARCA) |
 | `setup_cuit` | Configurarlo en ARCA con el link seguro para la clave fiscal |
 | `get_cuit_setup_status` | Ver en qué paso está la configuración |
 | `create_invoice` | Emitir una factura, en homologación o en producción |
 | `get_invoice_batch` | Ver si ARCA la autorizó (CAE) o por qué la rechazó |
-| `list_invoices` / `get_invoice` | Buscar facturas y obtener el PDF |
+| `list_invoices` / `get_invoice` | Buscar facturas y obtener el detalle y el link al PDF |
+| `send_invoice_email` | Mandar el PDF de una factura autorizada por email (hasta 5 destinatarios, con un mensaje opcional) |
+| `list_templates` | Ver tus plantillas: CUIT, punto de venta, modo, cliente fijo, lista de precios e instrucciones |
+| `propose_invoice` | Armar un borrador con los datos de un documento que leyó el agente (remito, pedido, mensaje, planilla). En modo `automatic` se emite solo si no hay observaciones |
+| `list_drafts` | Ver los borradores pendientes de revisar o emitir, con sus observaciones |
+| `issue_drafts` | Emitir ante ARCA los borradores que le indiques |
+
+`create_invoice`, `list_invoices` y `propose_invoice` reciben `environment` (`homologation` o `production`). Con login OAuth el agente lo tiene que indicar en cada llamada; con una API Key lo fija la key y no puede pedir el otro entorno.
 
 <Tip>
   Probá primero en **homologación**: el agente emite facturas de prueba, sin valor fiscal. En producción, el agente te confirma importe, receptor y tipo de comprobante antes de emitir.

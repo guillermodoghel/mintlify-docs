@@ -46,25 +46,23 @@ Las notas de crédito/débito siguen el **mismo tipo** que la factura que ajusta
 
 ## Cómo emitir una Nota de Crédito en Facturear
 
-### Desde el Dashboard
+### Desde el dashboard
+
+Las notas se emiten desde la **Factura detallada**. No hay un botón en la factura original: la asociás a mano con sus datos, así que tené a mano el tipo, el punto de venta y el número de la factura que querés ajustar (los ves en el detalle de la factura, en **Facturas**).
 
 <Steps>
-  Buscá la factura original en **Facturas → Buscar**
+  Entrá a **Facturas** y tocá **Factura detallada**
 
-  Hacé clic en la factura → **"Emitir Nota de Crédito"**
+  Elegí el **CUIT** y el **Punto de Venta**, y en **Tipo** elegí la nota que corresponde (Nota de Crédito A, B o C según la factura original)
 
-  El sistema pre-carga los datos de la factura original
+  Aparece el recuadro **Comprobante asociado**. Completá el **Tipo de Comprobante Asociado** (Factura A, B, C o M), su **Punto de Venta** y el **Número de Comprobante**. El CUIT del comprobante asociado se completa solo con el CUIT emisor, y la fecha arranca en la de hoy: cambiala por la de la factura original
 
-  Editá el **importe** que querés acreditar (puede ser parcial o total)
+  Cargá el mismo receptor de la factura original y los ítems con el **importe** que querés acreditar (puede ser parcial o total)
 
-  Ajustá la **descripción** si es necesario
-
-  Verificá que el tipo de comprobante sea el correcto (NC A/B/C según la factura original)
-
-  Emití la Nota de Crédito
+  Tocá **Generar Comprobante**
 </Steps>
 
-### Via API
+### Con la API
 
 Una Nota de Crédito se emite con el mismo `POST /api/invoices` que una factura: cambiás `invoiceType` por el de la nota y referenciás la factura original en `cbtesAsoc`. El receptor y su condición frente al IVA tienen que ser los mismos que en la factura original.
 
@@ -128,9 +126,9 @@ Como toda emisión por API, la nota queda **encolada**: la respuesta trae un `ba
 
 ## Cómo emitir una Nota de Débito en Facturear
 
-El proceso es idéntico al de la Nota de Crédito, pero seleccionando "Emitir Nota de Débito" y el tipo de comprobante correspondiente (ND).
+El proceso es idéntico al de la Nota de Crédito: en la **Factura detallada** elegís en **Tipo** la Nota de Débito que corresponde (A, B o C) y completás el comprobante asociado.
 
-Via API, usás el mismo cuerpo con `invoiceType` de la nota de débito (`2` ND A, `7` ND B, `12` ND C) y la factura original en `cbtesAsoc`. Por ejemplo, intereses por mora sobre una Factura C:
+Con la API, usás el mismo cuerpo con `invoiceType` de la nota de débito (`2` ND A, `7` ND B, `12` ND C) y la factura original en `cbtesAsoc`. Por ejemplo, intereses por mora sobre una Factura C:
 
 ```javascript
 {

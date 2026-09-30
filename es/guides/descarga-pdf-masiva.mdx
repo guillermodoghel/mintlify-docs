@@ -17,7 +17,7 @@ Facturear permite descargar el PDF de cada factura emitida, desde el dashboard o
 
 ### Desde el dashboard
 
-En **Facturación**, abrí la factura y usá **"Descargar PDF"**. Desde la misma pantalla, **"Compartir PDF"** te permite enviarla por email o WhatsApp.
+En **Facturas**, abrí la factura y usá **"Descargar PDF"**. Desde la misma pantalla, **"Compartir PDF"** te permite compartirla por email o WhatsApp, y **"Enviar por email"** se la manda a tu cliente desde Facturear.
 
 ### Con la API
 
@@ -115,7 +115,7 @@ async function descargarFacturasMes(cuit, mes, anio) {
 
 ## Envío de facturas por e-mail
 
-Facturear no envía facturas por e-mail desde la API. Desde el dashboard, en el detalle de la factura, **"Compartir PDF"** te permite compartirla por email o WhatsApp. Si necesitás automatizar el envío, descargá el PDF con la API y mandalo desde tu propio sistema de correo.
+No hace falta descargar el PDF para mandárselo a tu cliente: Facturear lo envía por vos, desde noreply@facture.ar, con `POST /api/invoices/{invoiceId}/email` (hasta 5 destinatarios por envío). Desde el dashboard, en el detalle de la factura, usá **"Enviar por email"**. Ver [Enviar una factura por email](/es/guides/enviar-factura-email).
 
 ---
 

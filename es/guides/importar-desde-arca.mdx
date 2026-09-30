@@ -1,0 +1,51 @@
+---
+title: 'Importar desde ARCA'
+sidebarTitle: 'Importar desde ARCA'
+description: 'Traé a Facturear los comprobantes que ya emitiste en ARCA o en otra plataforma, para que tus reportes y el Libro IVA queden completos.'
+---
+
+Si empezaste a usar Facturear a mitad de año, o emitís también desde otra plataforma, tus reportes quedan incompletos. **Importar desde ARCA** trae lo que ARCA ya autorizó para tu CUIT y lo suma al libro de ventas.
+
+Lo importado **no se vuelve a emitir** y **no cuenta para el cupo mensual** de tu plan. Cada comprobante se suma por la fecha en que ARCA lo autorizó.
+
+## Paso a paso
+
+<Steps>
+  <Step title="Abrí la pantalla">
+    En el menú, dentro de **Facturación**, entrá a **Importar desde ARCA**.
+  </Step>
+  <Step title="Elegí el CUIT y el período">
+    Si tenés más de un CUIT, elegilo en el selector. Después elegí el período: **Desde principio de mes**, **Desde principio de año** o **El año pasado**.
+  </Step>
+  <Step title="Relevá">
+    Tocá **Relevar en ARCA**. Leemos tus puntos de venta y la numeración de cada tipo de comprobante, y te mostramos una tabla por punto de venta y tipo con cuántos hay **En el período**, cuántos están **Ya en Facturear** y cuántos quedan **Por traer**.
+  </Step>
+  <Step title="Importá">
+    Si hay comprobantes para traer, tocá **Importar**. Podés ver el avance en pantalla; los comprobantes van apareciendo en la lista **Importados** a medida que entran.
+  </Step>
+</Steps>
+
+Cuando termina, ves el resumen: cuántos se importaron, cuántos ya estaban y cuántos números no tenían comprobante. Para traer otro período, tocá **Relevar otro período**.
+
+Los comprobantes importados aparecen en **Facturas** y en [Reportes](/es/guides/reportes-libro-iva), y entran en el CSV del Libro IVA.
+
+## Qué no se puede reconstruir
+
+ARCA solo guarda los totales y el IVA por alícuota de cada comprobante. Por eso, al importar:
+
+- No se recupera el detalle de ítems (descripción, cantidad y precio).
+- Si se facturó a un DNI, no se recupera el nombre del receptor. Con CUIT, el nombre sale del padrón al abrir el PDF.
+- La condición de IVA del receptor queda como no informada en el PDF.
+- No se trae el PDF original de la otra plataforma. Podés generar uno con los totales y el CAE.
+- La factura de exportación y la factura de crédito MiPyME no se importan: están en otros servicios de ARCA.
+
+## Si algo falla
+
+- **El proceso se detuvo**: tocá **Reanudar**. Sigue desde el último número.
+- **Error**: tocá **Reintentar**.
+- **Nada para traer**: en ese período no hay comprobantes nuevos en ARCA, o ya están todos en Facturear.
+- Podés **Cancelar** mientras se releva o se importa.
+
+<Note>
+La importación respeta el entorno de tu cuenta: con el [Modo Testing](/es/guides/entorno-testing) prendido, trae lo emitido en homologación.
+</Note>

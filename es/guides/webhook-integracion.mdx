@@ -1,11 +1,11 @@
 ---
 title: 'Webhooks en Facturear: notificaciones en tiempo real'
-description: 'Cómo configurar y usar webhooks de Facturear para recibir notificaciones en tiempo real: eventos de facturas y lotes, payloads, verificación de la firma y reintentos.'
+description: 'Cómo configurar y usar webhooks de Facturear para recibir notificaciones en tiempo real: eventos de facturas, lotes y borradores, payloads, verificación de la firma y reintentos.'
 ---
 
 # Webhooks en Facturear
 
-Los **webhooks** te permiten recibir notificaciones en tiempo real cuando ocurren eventos en Facturear, sin necesidad de hacer polling a la API. Tu sistema recibe un POST automático cuando algo sucede: una factura obtuvo CAE, ARCA la rechazó, terminó un lote o se completó la delegación de un CUIT.
+Los **webhooks** te permiten recibir notificaciones en tiempo real cuando ocurren eventos en Facturear, sin necesidad de hacer polling a la API. Tu sistema recibe un POST automático cuando algo sucede: una factura obtuvo CAE, ARCA la rechazó, terminó un lote, un borrador leído de un documento espera tu revisión o se completó la delegación de un CUIT.
 
 ---
 
@@ -30,6 +30,7 @@ Los eventos se envían para los dos entornos, homologación y producción: el ca
 | `invoice.completed` | ARCA autorizó una factura (o nota de crédito/débito) y Facturear obtuvo el CAE |
 | `invoice.failed` | Una factura falló en forma definitiva: ARCA la rechazó, o el error era transitorio pero se agotaron los reintentos automáticos. No se envía en los intentos que Facturear todavía va a reintentar |
 | `batch.completed` | Un lote terminó de procesarse: su `status` pasó a `completed`, `completed_with_errors` o `error` |
+| `draft.review_required` | Un borrador de [Documentos](/es/funcionalidades/documentos-ia) (un documento leído con IA, o datos que llegaron por Google Drive, Zapier, la API, WhatsApp o una plantilla recurrente) quedó esperando tu revisión antes de emitirse, o el documento no se pudo leer |
 | `delegation.completed` | La delegación de un CUIT quedó completa en homologación o en producción. Se envía una vez por cada entorno. Solo aplica a CUITs conectados por delegación, el método anterior: los CUITs que se conectan hoy (con clave fiscal) no lo envían |
 
 Toda factura emitida por API se procesa en un lote (un `POST /api/invoices` crea un lote de un ítem), así que cada factura termina en `invoice.completed` o en `invoice.failed`, y cada lote en un `batch.completed`.
@@ -38,18 +39,25 @@ Toda factura emitida por API se procesa en un lote (un `POST /api/invoices` crea
 
 ## Configurar un webhook
 
-Los webhooks se configuran desde el **dashboard**, no con la API key:
+Desde el dashboard:
 
-1. Iniciá sesión en [facture.ar](https://facture.ar)
-2. En el menú lateral, entrá a **Webhooks**
-3. Presioná **"Add Webhook"**
+1. Iniciá sesión en [facture.ar](https://www.facture.ar)
+2. En el menú lateral, en **Desarrolladores**, entrá a **Webhooks**
+3. Presioná **"Agregar webhook"**
 4. Completá:
-   - **URL**: la dirección de tu sistema que va a recibir el POST
-   - **Events**: marcá los eventos que te interesan (`invoice.completed`, `invoice.failed`, `batch.completed`, `delegation.completed`)
+   - **URL del webhook**: la dirección de tu sistema que va a recibir el POST
+   - **Eventos**: marcá los eventos que te interesan (`delegation.completed`, `invoice.completed`, `invoice.failed`, `batch.completed`, `draft.review_required`)
    - **Headers** (opcional): headers propios que Facturear agrega a cada envío
-5. Guardá. Facturear genera el **secreto de firma** del webhook (empieza con `whsec_`) y te lo muestra
+5. Presioná **"Crear"**. Facturear genera el **secreto de firma** del webhook (empieza con `whsec_`)
 
-Desde la misma pantalla podés editar el webhook, pausarlo y reactivarlo, eliminarlo y ver el historial de envíos. Con **"Signing Secret"** ves el secreto, lo copiás o lo rotás.
+En la lista de webhooks, cada uno tiene estas acciones:
+
+- **Secreto de firma**: muestra el secreto, con **Copiar** y **Rotar**
+- **Ver entregas**: el historial de envíos, con el detalle de cada uno y **Reintentar**
+- **Editar** y **Eliminar**
+- El estado (**Activo** / **Inactivo**): hacé clic para pausarlo o reactivarlo
+
+También podés crear, listar, editar y borrar webhooks con tu API Key (`GET` y `POST /api/webhooks`, `PUT` y `DELETE /api/webhooks/{id}`, con el body `{ "url", "events", "headers", "isActive" }`). El secreto de firma y el historial de entregas se ven solo desde el dashboard: la API nunca devuelve el secreto.
 
 <Warning>
   Guardá el secreto como cualquier otra credencial (variable de entorno, gestor de secretos). Si se filtra, rotalo: desde ese momento los envíos se firman con el secreto nuevo y el anterior deja de validar, así que actualizalo en tu sistema enseguida.
@@ -208,6 +216,80 @@ Todos los eventos comparten estos campos:
 | `status.setupStatus` | Pasa a `DELEGATION_COMPLETE` cuando ambos entornos quedaron completos |
 | `environment` | Entorno que se acaba de completar |
 
+### draft.review_required
+
+```json
+{
+  "id": "evt_7c6b5a4f3e2d1c0b9a8f7e6d",
+  "event": "draft.review_required",
+  "draft": {
+    "id": "cmg3draft0000abc",
+    "status": "review",
+    "mode": "manual",
+    "source": "upload",
+    "sourceRef": null,
+    "fileName": "remito-0001-00001234.pdf",
+    "mimeType": "application/pdf",
+    "hasFile": true,
+    "templateId": "cmg3tpl0000xyz",
+    "templateName": "Remitos de Distribuidora Sur",
+    "cuitId": "cmg1a2b3c0000xyz",
+    "ptoVta": 3,
+    "environment": "production",
+    "data": {
+      "receiver": {
+        "name": "DISTRIBUIDORA SUR SA",
+        "docType": "CUIT",
+        "docNumber": "30712345678",
+        "condicionIva": 1,
+        "email": null,
+        "address": null
+      },
+      "concepto": 1,
+      "serviceFrom": null,
+      "serviceTo": null,
+      "paymentDue": null,
+      "pricesIncludeIva": false,
+      "lines": [
+        { "description": "Caja de tornillos x100", "quantity": 10, "unitPrice": null, "ivaRate": 21 }
+      ],
+      "documentTotal": null,
+      "currency": "ARS",
+      "documentDate": "2026-09-27",
+      "reference": "0001-00001234",
+      "description": "Remito 0001-00001234"
+    },
+    "total": null,
+    "voucherLetter": null,
+    "confidence": 0.92,
+    "issues": [
+      { "code": "missing_price", "message": "..." }
+    ],
+    "errorMessage": null,
+    "invoice": null,
+    "emailStatus": null,
+    "url": "https://www.facture.ar/app/documentos?draft=cmg3draft0000abc",
+    "createdAt": "2026-09-28T13:00:00.000Z",
+    "updatedAt": "2026-09-28T13:00:20.000Z"
+  },
+  "environment": "production",
+  "timestamp": "2026-09-28T13:00:20.500Z"
+}
+```
+
+Se envía cuando un borrador queda para revisar: porque su modo es `manual` (no se emite solo), porque algún control lo frenó (falta un precio, el total no cierra, receptor sin identificar, posible duplicado, etc.) o porque falló la emisión automática. También se envía cuando el documento no se pudo leer: en ese caso `draft.status` es `error`, `draft.data` es `null` y `draft.errorMessage` explica el motivo. Se manda una vez por cada cambio de estado del borrador.
+
+| Campo | Qué es |
+|---|---|
+| `draft.id` | Id del borrador. Con él lo consultás en `GET /api/documents/drafts/{id}`, lo corregís con `PATCH` y lo emitís con `POST /api/documents/drafts/invoice` |
+| `draft.status` | `review` (espera revisión) o `error` (no se pudo leer o no se pudo emitir) |
+| `draft.source` | De dónde vino: `upload`, `google_drive`, `zapier`, `api`, `recurring`, `mcp` o `whatsapp` |
+| `draft.data` | Lo que se leyó del documento: receptor, líneas, moneda, referencia y fechas |
+| `draft.issues` | Lo que hay que revisar, cada uno con `code` y `message` (por ejemplo `missing_price`, `total_mismatch`, `unidentified_receiver`, `possible_duplicate`, `low_confidence`) |
+| `draft.total` | Total calculado con las líneas, o `null` si no hay datos o a alguna línea le falta el precio |
+| `draft.voucherLetter` | Siempre `null` en el webhook: la letra se calcula con la condición del emisor al consultar el borrador |
+| `draft.url` | Link al borrador en el dashboard, para revisarlo a mano |
+
 ---
 
 ## Verificar la firma
@@ -344,7 +426,7 @@ Cada intento se firma de nuevo, con un `t` actual. Después del 3er intento fall
 
 ## Consultar webhooks fallidos
 
-Cada envío (exitoso o fallido) queda en el historial del webhook, con el payload, los headers, el código y el body de tu respuesta, y el error si lo hubo. Lo ves desde **Webhooks** en el dashboard, y desde ahí podés **reintentar** un envío: sale con el mismo payload (mismo `id` de evento), firmado con el secreto actual y con un `Facturear-Delivery` nuevo.
+Cada envío (exitoso o fallido) queda en el historial del webhook, con el payload, los headers, el código y el body de tu respuesta, y el error si lo hubo. Lo ves desde **Webhooks** en el dashboard, con **Ver entregas** en la fila del webhook, y desde ahí podés **Reintentar** un envío: sale con el mismo payload (mismo `id` de evento), firmado con el secreto actual y con un `Facturear-Delivery` nuevo.
 
 ---
 

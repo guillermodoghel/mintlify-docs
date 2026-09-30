@@ -1,0 +1,108 @@
+---
+title: 'Facturar por WhatsApp'
+sidebarTitle: 'WhatsApp'
+description: 'Vinculá tu celular y facturá mandando un texto, una foto o un PDF por WhatsApp. También podés confirmar cada venta de tus integraciones desde el chat.'
+---
+
+Con WhatsApp le mandás a Facturear lo que querés facturar (un mensaje, una foto o un PDF), te responde con un resumen de la factura y la emite solo cuando tocás **Emitir**. Cuando ARCA la autoriza, te llegan el CAE y el PDF al mismo chat.
+
+Además, tus integraciones y plantillas pueden mandarte cada venta al WhatsApp para que la confirmes con **Facturar** o **Rechazar** (ver [Confirmar ventas por WhatsApp](#confirmar-ventas-por-whatsapp)).
+
+## Vincular tu número
+
+<Steps>
+  <Step title="Abrí la integración">
+    Entrá a **Integraciones** y elegí **WhatsApp**.
+  </Step>
+  <Step title="Ingresá tu celular">
+    En **Vinculá tu WhatsApp**, escribí tu número en **Tu celular** (con característica, por ejemplo `11 2345-6789`) y tocá **Generar código**.
+  </Step>
+  <Step title="Mandá el código desde ese número">
+    La página te muestra un mensaje del tipo `vincular 123456`. Mandalo desde ese celular al número de Facturear que aparece en pantalla, o tocá **Abrir WhatsApp** para que se escriba solo. El código vence a los 15 minutos y la página se actualiza sola cuando llega.
+  </Step>
+</Steps>
+
+Cuando se vincula, la integración muestra **Vinculado** y el chat te responde con la ayuda. Así sabemos que el número es tuyo: tiene que ser el mismo celular que ingresaste.
+
+- Si ingresaste mal el número, tocá **Usar otro número** y generá un código nuevo.
+- Un número solo puede estar vinculado a una cuenta de Facturear.
+- Con **Desvincular** lo sacás. No vas a poder facturar desde WhatsApp hasta que lo vincules de nuevo.
+
+## Qué le podés mandar
+
+- **Un texto**, por ejemplo: "Facturale a CUIT 20-12345678-9 dos horas de consultoría a $30.000".
+- **Una foto** (JPG o PNG) de un remito, un pedido o un presupuesto.
+- **Un PDF**, por ejemplo uno que te mandó tu cliente.
+
+La IA lo lee igual que en [Facturar con IA](/es/funcionalidades/documentos-ia), y todo lo que llega por WhatsApp también queda ahí. Si mandás una foto o un PDF con un texto al pie, ese texto se toma como corrección de lo que dice el archivo (por ejemplo, "es para Juan Pérez, CUIT …").
+
+## Revisar y emitir
+
+<Steps>
+  <Step title="Te llega el resumen">
+    Te respondemos con la letra de la factura, el modo, el CUIT que emite, el cliente, los ítems y el total. Abajo aparecen los botones **Emitir**, **Cancelar** y el de cambiar de modo.
+  </Step>
+  <Step title="Corregí si hace falta">
+    Si falta algo para emitirla (por ejemplo un precio o el cliente), el resumen dice **Para emitirla falta:** y no muestra **Emitir**. Respondé con lo que falta, por ejemplo "el precio es 15000", y te llega el resumen corregido. Mientras haya una factura en curso, cualquier texto que mandes se toma como corrección de esa factura.
+  </Step>
+  <Step title="Tocá Emitir">
+    La factura se emite solo con el botón **Emitir**: escribir "emitir" te devuelve el resumen con el botón. Cuando ARCA responde, te llega el comprobante con el CAE y el PDF.
+  </Step>
+</Steps>
+
+Si ARCA la rechaza, te llega el motivo con **Reintentar** y **Cancelar**. Podés corregirla respondiendo en el chat o revisarla en la web desde el link que te mandamos.
+
+## Comandos
+
+| Escribí | Para |
+| --- | --- |
+| `ayuda` | Ver qué podés mandar y en qué modo estás. |
+| `cuit` | Cambiar el CUIT que factura. |
+| `modo` | Ver el modo y pasar de Producción a Testing (o volver). También sirven `testing` y `produccion`. |
+| `cancelar` | Descartar la factura en curso. |
+
+## Qué CUIT factura
+
+En la integración elegís el **CUIT que factura**. Si lo dejás en **Preguntarme en el chat** (o **Automático** si tenés un solo CUIT), la primera vez te preguntamos en el chat con qué CUIT facturar y lo recordamos para las próximas. Lo cambiás cuando quieras desde la web o escribiendo `cuit`.
+
+Si todavía no cargaste ningún CUIT, el chat te pide que lo agregues en **Mis CUITs**.
+
+## Producción o Testing
+
+El chat factura en el modo de tu cuenta, el mismo que usan la web y tus integraciones: en **Producción** las facturas son reales; en **Testing** van al entorno de pruebas de ARCA y no tienen valor fiscal. El resumen y el mensaje final te dicen en qué modo salió cada una.
+
+Si cambiás de modo desde el chat (con `modo` o el botón **Pasar a Testing** / **Pasar a Producción**), cambia para **toda tu cuenta**, y la factura en curso se pasa al nuevo modo. Más info en [Entorno de testing](/es/guides/entorno-testing).
+
+## Confirmar ventas por WhatsApp
+
+Con el número vinculado, tus integraciones (tiendas online, MercadoLibre y Mercado Pago) y tus plantillas de Facturar con IA suman una opción más además de facturar solas o a mano:
+
+- En la integración, en **¿Cómo querés facturar?**, elegí **Confirmar por WhatsApp**.
+- En una plantilla, en **Qué hacer con las facturas de esta plantilla**, elegí **Confirmar por WhatsApp**.
+
+Si todavía no vinculaste tu número, la opción aparece bloqueada con **Vincular WhatsApp →**. Aplica a lo que entre desde que la activás.
+
+Cada venta te llega al chat con el total, el comprador y los ítems, y la pregunta **¿La facturo?**:
+
+- **Facturar**: la emite y te manda el PDF al chat. Si la integración no manda la factura al comprador por su cuenta y tenemos su mail, te aparece **Enviar al comprador**.
+- **Rechazar**: esa venta no se factura. Si cambiás de idea, la facturás desde la web (con el link que te mandamos).
+
+Si no contestás, la venta queda como pendiente en la integración para facturarla a mano. Por cada integración te preguntamos hasta 20 ventas por vez, así un atraso no te llena el chat. Una factura de plantilla a la que le falta algún dato no se pregunta por WhatsApp: queda para revisar en la web.
+
+Las ventas pendientes de todas tus integraciones se ven en [Desde integraciones](/es/guides/desde-integraciones).
+
+## Límites y errores
+
+- **Audios**: todavía no se entienden. Escribí el pedido o mandá una foto.
+- **Otros archivos**: solo fotos (JPG o PNG) y PDF. Las planillas conviene subirlas desde la web, en Facturar con IA, para revisar todas las filas juntas.
+- **Tamaño**: el archivo no puede superar los 25 MB.
+- **Varias facturas en un documento**: si un archivo trae más de una, te pedimos que las revises y emitas desde la web.
+- **No encontré nada para facturar**: probá con otra foto o escribí el pedido.
+- **Código de vinculación**: si no coincide, revisalo en la web y mandalo de nuevo; si venció, generá uno nuevo.
+- **Número sin vincular**: si escribís desde un número que no vinculaste, el chat te manda el link para vincularlo.
+
+## Relacionado
+
+- [Facturar con IA](/es/funcionalidades/documentos-ia): plantillas y documentos, la misma lectura que usa WhatsApp.
+- [Desde integraciones](/es/guides/desde-integraciones): las ventas pendientes de todas tus integraciones.
+- [Agentes de IA](/es/guides/agentes-ia): facturar desde Claude, ChatGPT y otros asistentes.

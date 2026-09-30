@@ -1,22 +1,26 @@
 ---
-title: 'Diseño de la factura: plantillas, logo y datos del emisor'
-description: 'Cómo personalizar la factura impresa de cada CUIT en Facturear: plantillas visuales, logo, color, Ingresos Brutos, inicio de actividades y las leyendas provinciales de CABA y Mendoza. Qué exige ARCA en la representación impresa.'
+title: 'Diseño de la factura y del mail: plantillas, logo y datos del emisor'
+description: 'Cómo personalizar la factura impresa y el mail que la acompaña para cada CUIT en Facturear: plantillas visuales, logo, color, asunto y mensaje con bloques, Ingresos Brutos, inicio de actividades y las leyendas provinciales de CABA y Mendoza. Qué exige ARCA en la representación impresa.'
 ---
 
 # Diseño de la factura
 
 Cada CUIT tiene su propio diseño de factura: una plantilla visual, tu logo, un color de acento y los datos del emisor que el padrón de ARCA no informa. El diseño se aplica al PDF y a la vista de la factura en el dashboard, tanto para las facturas nuevas como para las ya emitidas (el CAE y los datos fiscales no cambian: solo la presentación).
 
+Cada CUIT también tiene su diseño de mail: los colores, el asunto, el mensaje y la firma del mail que le llega a tu cliente con la factura en PDF. Lo explicamos más abajo, en **Diseño del mail**.
+
 ---
 
 ## Desde el dashboard
 
-1. Entrá a **CUITs** y abrí el CUIT, o tocá **Diseño** (la ruedita) arriba de cualquier factura.
-2. Andá a la pestaña **Diseño de factura** (o directo a `https://www.facture.ar/app/cuits/<id>?tab=factura`).
-3. Elegí la plantilla, subí el logo, ajustá el color y completá los datos del emisor. La vista previa de la derecha muestra cómo queda con datos de ejemplo.
+1. En el menú, entrá a **Configuración → Diseño** (o tocá **Diseño**, arriba de cualquier factura).
+2. Arriba, en **CUIT**, elegí el CUIT que querés cambiar.
+3. En la pestaña **Factura**, elegí la plantilla, subí el logo, ajustá el color y completá los datos del emisor. La vista previa muestra cómo queda con datos de ejemplo.
 4. Tocá **Guardar diseño**.
 
-Al dar de alta un CUIT, el alta pasa por este mismo editor después de conectar ARCA. Si no cambiás nada, queda la plantilla clásica.
+La dirección es `https://www.facture.ar/app/diseno?cuit=<id>`; con `&tab=mail` abre directo la pestaña **Mail**.
+
+Al dar de alta un CUIT, después de conectar ARCA pasás por este mismo editor (factura y mail). Si no cambiás nada, queda la plantilla clásica y el mail por defecto.
 
 La factura ocupa una hoja A4 completa, con el código QR y el CAE al pie.
 
@@ -108,6 +112,81 @@ curl -X PUT https://www.facture.ar/api/cuits/cmg0a1b2c0000abc/invoice-branding \
 | `activityStart` | string \| null | `AAAA-MM-DD` |
 | `address` | string \| null | Hasta 200 caracteres |
 | `footerNote` | string \| null | Hasta 500 caracteres |
+
+La respuesta es el diseño completo, igual que el `GET`. Si un valor no es válido, `400` con el motivo; si el CUIT no es tuyo, `404`.
+
+---
+
+## Diseño del mail
+
+El mail con la factura sale con el diseño del CUIT que la emitió, tanto si la mandás vos con **Enviar por email** como si sale sola (por ejemplo, desde una integración). Se configura en **Configuración → Diseño**, pestaña **Mail**:
+
+| Opción | Qué hace |
+|---|---|
+| Colores | **Encabezado** (por defecto, el color de acento de tu factura) y **Fondo** (por defecto, gris claro) |
+| Logo | **Mostrar el logo en el encabezado**, el mismo del diseño de la factura |
+| Asunto | Por defecto, `%comprobante% de %emisor%` |
+| Mensaje | El texto que acompaña a la factura. Una línea en blanco separa los párrafos |
+| Firma | Cierra el mensaje. Por defecto, `— %emisor%`; si la dejás vacía, el mail sale sin firma |
+
+La vista previa muestra el mail con datos de ejemplo. Tocá **Guardar diseño**: los próximos mails salen con ese diseño.
+
+### Bloques
+
+En el asunto, el mensaje y la firma podés sumar bloques con los botones de **Agregar bloque**. Cada bloque se reemplaza por el dato de la factura cuando sale el mail:
+
+| Bloque | Qué pone |
+|---|---|
+| `%cliente%` | El nombre del cliente. Si no lo sabemos, queda vacío |
+| `%emisor%` | Tu nombre de fantasía o razón social |
+| `%cuit%` | Tu CUIT, con guiones |
+| `%comprobante%` | Tipo, letra y número, por ejemplo "Factura C 00001-00001234" |
+| `%total%` | El importe total de la factura |
+| `%fecha%` | La fecha de emisión (dd/mm/aaaa) |
+| `%referencia%` | De dónde viene la venta: "tu compra en Tiendanube #123", "tu pago del 12/03/2026". Si la mandás a mano, dice "tu compra" |
+
+Un bloque sin dato desaparece solo y se acomoda la puntuación: si no sabemos el nombre del cliente, "Hola %cliente%," queda "Hola,". Una línea que solo tenía ese bloque no se muestra.
+
+### Con la API
+
+```bash
+curl https://www.facture.ar/api/cuits/cmg0a1b2c0000abc/email-design \
+  -H "x-api-key: tu_api_key"
+```
+
+```json
+{
+  "accentColor": null,
+  "backgroundColor": null,
+  "showLogo": true,
+  "subject": null,
+  "body": null,
+  "signature": null
+}
+```
+
+`null` significa que usa el valor por defecto. Para cambiarlo, `PUT` con los campos que querés cambiar; los que no mandás quedan como están:
+
+```bash
+curl -X PUT https://www.facture.ar/api/cuits/cmg0a1b2c0000abc/email-design \
+  -H "x-api-key: tu_api_key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "accentColor": "#0e7490",
+    "subject": "Tu factura de %emisor%",
+    "body": "Hola %cliente%,\n\nTe mandamos la factura de %referencia%: %comprobante% por %total%.",
+    "signature": "Gracias por tu compra.\n%emisor%"
+  }'
+```
+
+| Campo | Tipo | Valores |
+|---|---|---|
+| `accentColor` | string \| null | Color del encabezado, `#rrggbb`. `null` usa el color de acento de la factura |
+| `backgroundColor` | string \| null | Color de fondo, `#rrggbb`. `null` usa el gris claro por defecto |
+| `showLogo` | boolean | Muestra el logo de la factura en el encabezado. Por defecto `true` |
+| `subject` | string \| null | Hasta 200 caracteres, en una línea. `null` o vacío vuelve al asunto por defecto |
+| `body` | string \| null | Hasta 3000 caracteres. `null` o vacío vuelve al mensaje por defecto |
+| `signature` | string \| null | Hasta 500 caracteres. `null` vuelve a la firma por defecto; `""` deja el mail sin firma |
 
 La respuesta es el diseño completo, igual que el `GET`. Si un valor no es válido, `400` con el motivo; si el CUIT no es tuyo, `404`.
 

@@ -1,163 +1,140 @@
 ---
 title: 'Tributos adicionales en facturas: cómo declararlos en Facturear'
-description: 'Cómo incluir tributos adicionales (impuesto interno, impuesto de sellos, IIBB percepción, etc.) en las facturas electrónicas emitidas a través de la API de Facturear.'
+description: 'Cómo incluir tributos adicionales (percepciones de IIBB o IVA, impuestos internos, tributos municipales, etc.) en las facturas electrónicas de Facturear, desde el dashboard o con la API.'
 ---
 
 # Tributos adicionales en facturas
 
-Algunas facturas requieren incluir **tributos adicionales** más allá del IVA: percepciones de IIBB, impuestos internos, impuestos de sellos, contribuciones municipales, etc. La API de Facturear permite declarar estos tributos en el comprobante.
+Algunas facturas llevan **tributos adicionales** además del IVA: percepciones de Ingresos Brutos o de IVA, impuestos internos, tributos municipales, etc. En Facturear los podés guardar por CUIT para usarlos desde el dashboard, o mandarlos en cada factura con la API.
 
 ---
 
-## ¿Qué son los tributos adicionales?
+## Tipos de tributo (ARCA)
 
-Son gravámenes distintos al IVA que pueden aparecer en una factura:
-
-| Tributo | Descripción |
-|---|---|
-| **Percepción IIBB** | El emisor actúa como agente de percepción de Ingresos Brutos |
-| **Impuesto interno** | Aplica para ciertos bienes (combustibles, cigarrillos, bebidas alcohólicas, etc.) |
-| **Impuesto de sellos** | En algunas provincias se aplica a contratos y facturas |
-| **Contribución municipal** | Algunas municipalidades tienen tributos sobre las ventas |
-
----
-
-## Cómo incluir tributos en la API de Facturear
-
-Dentro del objeto de la factura, incluís un array `tributos`:
-
-```json
-{
-  "tipo_comprobante": "A",
-  "punto_venta": 1,
-  "receptor": {
-    "cuit": "30987654321",
-    "razon_social": "Cliente SA",
-    "iva_condition": "responsable_inscripto"
-  },
-  "items": [
-    {
-      "descripcion": "Producto con impuesto interno",
-      "cantidad": 100,
-      "precio_unitario": 1000,
-      "alicuota_iva": 21
-    }
-  ],
-  "tributos": [
-    {
-      "id": 4,
-      "descripcion": "Impuesto Interno",
-      "base_imponible": 100000,
-      "alicuota": 20,
-      "importe": 20000
-    }
-  ]
-}
-```
-
----
-
-## Códigos de tributos (ARCA)
-
-ARCA define códigos para cada tipo de tributo:
+ARCA identifica cada tributo con un código. Estos son los que devuelve hoy `FEParamGetTiposTributos`:
 
 | Código | Descripción |
 |---|---|
-| 1 | Impuesto Nacional a las Ganancias |
-| 2 | Impuesto Nacional al Valor Agregado |
-| 3 | Impuesto Interno |
-| 4 | Impuesto Interno (otro) |
-| 5 | Reintegro |
-| 6 | Percepción de Ingresos Brutos |
-| 7 | Impuesto de Sellos |
-| 8 | Impuesto Municipal a las Actividades Económicas |
+| 1 | Impuestos nacionales |
+| 2 | Impuestos provinciales |
+| 3 | Impuestos municipales |
+| 4 | Impuestos internos |
+| 5 | Ingresos brutos |
+| 6 | Percepción de IVA |
+| 7 | Percepción de ingresos brutos |
+| 8 | Percepciones municipales |
+| 9 | Otras percepciones |
+| 13 | Percepción de IVA a no categorizado |
 | 99 | Otros |
 
----
+ARCA puede sumar o dar de baja códigos. Para ver la lista vigente, consultala con la API:
 
-## Ejemplo: factura con percepción de IIBB
-
-Cuando actuás como agente de percepción de IIBB, incluís la percepción como tributo:
-
-```json
-{
-  "tipo_comprobante": "A",
-  "items": [
-    {
-      "descripcion": "Servicio de consultoría",
-      "cantidad": 1,
-      "precio_unitario": 500000,
-      "alicuota_iva": 21
-    }
-  ],
-  "tributos": [
-    {
-      "id": 6,
-      "descripcion": "Percepción IIBB CABA",
-      "base_imponible": 500000,
-      "alicuota": 3,
-      "importe": 15000
-    }
-  ]
-}
+```bash
+curl https://www.facture.ar/api/arca/FEPARAMGETTIPOSTRIBUTOS \
+  -H "x-api-key: tu_api_key"
 ```
 
-La factura mostrará:
-```
-Subtotal:           $500.000
-IVA 21%:            $105.000
-Percepción IIBB:     $15.000
-TOTAL:              $620.000
-```
+Ver [Parámetros de ARCA](/es/guides/parametros-arca).
 
 ---
 
-## Estructura del objeto tributo
+## Guardar tributos en el CUIT
+
+Si siempre cobrás el mismo tributo (por ejemplo, una percepción de IIBB), guardalo en el CUIT y no lo tenés que cargar en cada factura:
+
+<Steps>
+  Entrá a **CUITs**, abrí el CUIT y andá a la pestaña **Tributos**
+
+  Tocá **+ Agregar Tributo** y elegí el **Tipo de Tributo** (la lista sale de ARCA)
+
+  Completá el **Nombre** (es la descripción que se informa a ARCA y sale en la factura), la **Alícuota (%)** y, si querés, una **Base Imponible** fija. Si la dejás vacía, se usa el importe del comprobante sin IVA
+
+  Marcá **Predeterminado** si querés que se aplique solo en cada factura nueva
+</Steps>
+
+En la **Factura detallada** aparece la sección **Tributos** con los tributos del CUIT elegido: los predeterminados ya vienen marcados y podés marcar o desmarcar cada uno. Facturear calcula el importe (base × alícuota / 100) y lo suma al total.
+
+<Note>
+  El tributo de tipo **Ingresos brutos** (código 5) es especial: en vez de un nombre pide el **Número IIBB**, que se imprime en la factura. Ver [Diseño de la factura](/es/guides/diseno-factura#ingresos-brutos).
+</Note>
+
+Los tributos guardados se usan desde el dashboard. Con la API, mandás los tributos en cada factura, como se explica abajo.
+
+---
+
+## Tributos con la API
+
+En `POST https://www.facture.ar/api/invoices`, mandás un array `tributos` y la suma de sus importes en `impTrib`. El `impTotal` tiene que incluir los tributos: `impTotal = impNeto + impIVA + impTrib` (más `impTotConc` e `impOpEx` si los usás).
 
 | Campo | Tipo | Descripción |
 |---|---|---|
-| `id` | integer | Código de tributo según tabla ARCA |
-| `descripcion` | string | Descripción del tributo (aparece en la factura) |
-| `base_imponible` | number | Base sobre la que se calcula el tributo |
-| `alicuota` | number | Porcentaje del tributo |
-| `importe` | number | Monto del tributo (base × alícuota / 100) |
+| `id` | number | Código del tributo (tabla de arriba) |
+| `desc` | string | Descripción del tributo |
+| `baseImp` | number | Base imponible sobre la que se calcula |
+| `alic` | number | Alícuota en porcentaje (0 a 100) |
+| `importe` | number | Importe del tributo (base × alícuota / 100) |
 
----
+### Ejemplo: Factura A con percepción de IIBB
 
-## Múltiples tributos en la misma factura
+```bash
+curl -X POST https://www.facture.ar/api/invoices \
+  -H "x-api-key: tu_api_key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "cuitId": "id-de-tu-cuit",
+    "invoiceType": 1,
+    "concepto": 2,
+    "docTipo": 80,
+    "docNro": 30712345678,
+    "condicionIVAReceptorId": 1,
+    "clientName": "Cliente S.A.",
+    "description": "Servicio de consultoría",
+    "fchServDesde": "20260901",
+    "fchServHasta": "20260930",
+    "fchVtoPago": "20261010",
+    "impNeto": 500000,
+    "impIVA": 105000,
+    "iva": [{ "id": 5, "baseImp": 500000, "importe": 105000 }],
+    "tributos": [
+      { "id": 7, "desc": "Percepción IIBB CABA", "baseImp": 500000, "alic": 3, "importe": 15000 }
+    ],
+    "impTrib": 15000,
+    "impTotal": 620000
+  }'
+```
 
-Podés incluir varios tributos:
+La factura queda así:
+
+```
+Neto gravado:         $500.000
+IVA 21%:              $105.000
+Percepción IIBB:       $15.000
+TOTAL:                $620.000
+```
+
+### Varios tributos en la misma factura
 
 ```json
 {
   "tributos": [
-    {
-      "id": 3,
-      "descripcion": "Impuesto Interno",
-      "base_imponible": 100000,
-      "alicuota": 8,
-      "importe": 8000
-    },
-    {
-      "id": 6,
-      "descripcion": "Percepción IIBB PBA",
-      "base_imponible": 100000,
-      "alicuota": 3.5,
-      "importe": 3500
-    }
-  ]
+    { "id": 4, "desc": "Impuesto interno", "baseImp": 100000, "alic": 8, "importe": 8000 },
+    { "id": 7, "desc": "Percepción IIBB PBA", "baseImp": 100000, "alic": 3.5, "importe": 3500 }
+  ],
+  "impTrib": 11500
 }
 ```
+
+Como toda emisión por API, la factura queda encolada y la respuesta trae un `batchId`. Ver [Emitir tu primera factura](/es/guides/primera-factura).
 
 ---
 
 ## Validaciones de ARCA
 
-ARCA puede rechazar la factura si los tributos tienen inconsistencias:
+ARCA rechaza la factura si los tributos no cierran, por ejemplo cuando:
 
-- El importe no coincide con base × alícuota
-- El código de tributo no es válido
-- Se declara un tributo que no corresponde al tipo de bien/servicio
+- `impTrib` no es la suma de los `importe` de `tributos`
+- `impTotal` no incluye `impTrib`
+- El código de tributo no existe
 
 ---
 

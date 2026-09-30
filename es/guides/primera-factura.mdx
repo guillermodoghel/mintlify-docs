@@ -5,7 +5,7 @@ description: 'Guía paso a paso para emitir tu primera factura electrónica desd
 
 # Cómo emitir tu primera factura electrónica con Facturear
 
-Una vez que tu CUIT está conectado con ARCA, estás listo para emitir tu primera factura electrónica. Esta guía cubre los dos caminos: desde el **dashboard** y via **API**.
+Una vez que tu CUIT está conectado con ARCA, estás listo para emitir tu primera factura electrónica. Esta guía cubre los dos caminos: desde el **dashboard** y con la **API**.
 
 ---
 
@@ -13,26 +13,34 @@ Una vez que tu CUIT está conectado con ARCA, estás listo para emitir tu primer
 
 Asegurate de tener completado:
 
-- ✅ [Cuenta activa en Facturear](https://facture.ar)
-- ✅ [CUIT conectado con ARCA](/es/getting-started/index) (los certificados y el punto de venta los dejamos listos nosotros)
+- [Cuenta activa en Facturear](https://facture.ar)
+- [CUIT conectado con ARCA](/es/getting-started/index) (los certificados y el punto de venta los dejamos listos nosotros)
 
 Si todavía no lo conectaste, seguí primero la [guía de inicio](/es/getting-started/index).
 
 ---
 
-## Opción 1: Emitir desde el Dashboard
+## Opción 1: Emitir desde el dashboard
 
-### Paso 1: Nueva factura
+Entrá a [facture.ar](https://facture.ar) y, en el menú, a **Facturas**. Arriba tenés dos botones:
 
-1. Iniciá sesión en [facture.ar](https://facture.ar)
-2. En el menú lateral, hacé clic en **"Facturas"**
-3. Presioná el botón **"Nueva Factura"**
+- **Nueva factura**: la factura rápida. Un monto y una descripción, a consumidor final. Es lo más rápido para empezar.
+- **Factura detallada**: elegís el tipo de comprobante, identificás al cliente, cargás ítems y tributos.
 
-### Paso 2: Datos del comprobante
+### Factura rápida
 
-Completá los campos principales:
+1. Tocá **Nueva factura**.
+2. Elegí el **CUIT**. El punto de venta, el concepto y el tipo de comprobante salen de los predeterminados del CUIT; para cambiarlos, tocá **Ajustes**.
+3. Escribí una descripción (opcional: si la dejás vacía, sale "Venta de servicios").
+4. Cargá el **Monto** y elegí si es **Total sin IVA** o **Total con IVA**.
+5. Tocá **Generar Factura**.
 
-**Tipo de comprobante**
+La factura rápida no pide datos del receptor: sale a consumidor final sin identificar. Si tenés que identificar al cliente, usá la factura detallada.
+
+### Factura detallada
+
+1. Tocá **Factura detallada**.
+2. Elegí el **CUIT**, el **Punto de Venta**, el **Concepto** y el **Tipo** de comprobante:
 
 | Si sos... | Y tu cliente es... | Elegí... |
 |---|---|---|
@@ -42,11 +50,7 @@ Completá los campos principales:
 
 Ver la guía completa de [tipos de comprobantes](/es/fundamentos/tipos-de-comprobantes) si tenés dudas.
 
-**Punto de venta**: seleccioná el punto de venta que configuraste en ARCA.
-
-**Fecha**: por defecto es la fecha actual. En algunos casos podés retroactuar (consultá los límites en la normativa vigente).
-
-### Paso 3: Datos del receptor
+3. En **Cliente**, elegí el tipo de documento (Consumidor Final, CUIT o DNI), el nombre, el domicilio, la condición frente al IVA y la condición de venta. Si cargás un CUIT, Facturear lo valida contra el padrón de ARCA.
 
 Según el tipo de comprobante y el monto:
 
@@ -55,46 +59,21 @@ Según el tipo de comprobante y el monto:
 - **Factura B/C de $10.000.000 o más**: el comprador tiene que quedar identificado con DNI, CUIL o CDI (o pasaporte si es extranjero). Lo exige la RG 1415 (texto RG 5866/2026) y Facturear rechaza la factura antes de pedir el CAE si falta
 - **CUIT del consumidor final**: sin importar el monto, si el comprador lo pide para deducir el gasto en Ganancias
 
-Facturear valida el CUIT en tiempo real contra la base de ARCA.
+4. Cargá el detalle. En modo **Items**, tocá **+ Agregar Item** y completá descripción, cantidad, precio unitario, descuento y alícuota de IVA. En modo **Descripción**, cargás un texto y un subtotal. Facturear calcula el neto, el IVA por alícuota y el total.
+5. Si el CUIT tiene [tributos](/es/guides/tributos-adicionales) guardados, marcá los que correspondan.
+6. Tocá **Generar Comprobante**.
 
-### Paso 4: Detalle de la factura
+### Después de emitir
 
-Agregá uno o más ítems:
+Facturear manda la factura a ARCA y, cuando vuelve el CAE (en segundos), te lleva al detalle de la factura. Ahí ves el CAE, su vencimiento y la factura como se imprime, y podés:
 
-1. Hacé clic en **"Agregar ítem"**
-2. Completá:
-   - Descripción del producto/servicio
-   - Cantidad
-   - Precio unitario
-   - Alícuota de IVA (solo para Facturas A y B)
-3. Repetí para cada ítem
-
-Facturear calcula automáticamente:
-- Subtotal neto
-- IVA por alícuota
-- Total
-
-### Paso 5: Emitir
-
-1. Revisá el resumen de la factura
-2. Hacé clic en **"Emitir Factura"**
-3. Facturear envía los datos a ARCA y espera la respuesta
-
-En segundos, tu factura tendrá:
-- **CAE** (Código de Autorización Electrónico)
-- **Fecha de vencimiento del CAE**
-- **PDF listo para descargar o enviar**
-
-### Paso 6: Entregar al cliente
-
-Desde la pantalla de confirmación podés:
-- **Descargar PDF** para enviar por tu cuenta
-- **Enviar por email** directamente desde Facturear
-- **Compartir link** de descarga
+- **Descargar PDF**
+- **Compartir PDF** por email o WhatsApp
+- **Enviar por email**: le llega a tu cliente con el PDF adjunto, con el [diseño de mail](/es/guides/diseno-factura) de tu CUIT
 
 ---
 
-## Opción 2: Emitir via API
+## Opción 2: Emitir con la API
 
 La API de Facturear es RESTful y su URL base es `https://www.facture.ar/api`. Para emitir una factura necesitás:
 
@@ -107,7 +86,7 @@ x-api-key: tu_api_key_aqui
 Content-Type: application/json
 ```
 
-Encontrá tu API key en **Configuración → API** en el dashboard de Facturear. La key de testing opera en [homologación](/es/guides/entorno-testing) (sin validez fiscal) y la de producción emite comprobantes reales.
+Creá tu clave en **Desarrolladores → Claves API** en el dashboard de Facturear. Hay una clave de **Producción** y una de **Testing**: la de testing opera en [homologación](/es/guides/entorno-testing) (sin validez fiscal) y la de producción emite comprobantes reales.
 
 ### Cómo es el cuerpo de una factura
 

@@ -1,88 +1,85 @@
 ---
 title: 'API Reference'
-description: 'Documentación completa de la API de Facturear'
+description: 'Referencia de la API de Facturear: autenticación con API Key, URL base, entornos de testing y producción, y formato de los errores.'
 ---
 
-# 🔌 API Reference
+# API Reference
 
-Bienvenido a la documentación completa de la API de Facturear. Aquí encontrarás toda la información necesaria para integrar tu sistema con nuestra plataforma de facturación electrónica.
+La API de Facturear te deja emitir facturas electrónicas de ARCA desde tu propio sistema, consultar su resultado, descargar el PDF y el XML, mandarlas por email y administrar tus CUITs, borradores y webhooks. En la sección **API Endpoints** está cada operación con sus parámetros y respuestas.
 
-## 🚀 Comenzar con la API
+## Autenticación
 
-### Autenticación
-
-Todas las peticiones requieren autenticación usando:
-
-- **Sesión Web**: Para aplicaciones basadas en navegador
-- **API Key**: Para integraciones servidor a servidor
-
-Incluye tu API key en el header `x-api-key`:
+Cada pedido lleva tu API Key en el header `x-api-key`:
 
 ```bash
-x-api-key: tu-api-key-aqui
+curl https://www.facture.ar/api/invoices \
+  -H "x-api-key: test_sk_..."
 ```
 
-#### 🔑 API Keys por Ambiente
+Sin key, o con una key que ya no es válida, la API responde `401` con `code: "unauthorized"`.
 
-Facturear utiliza la misma URL base pero diferentes API keys para distinguir entre ambientes:
+### Una key por entorno
 
-**Testing (Homologación)**
+La URL es la misma para los dos entornos. El entorno lo decide la key:
 
-- **Prefijo API Key**: `test_sk_`
-- **Propósito**: Pruebas y desarrollo
-- **Datos**: Ambiente de homologación ARCA, no genera facturas reales
-- **Límites**: Más permisivo para testing
+| Prefijo | Entorno | Qué hace |
+|---|---|---|
+| `test_sk_` | Testing (homologación de ARCA) | Emite comprobantes de prueba, sin validez fiscal |
+| `prod_sk_` | Producción | Emite comprobantes reales, con validez fiscal |
 
-**Producción**
+Con una API Key, el header `x-environment` y el parámetro `environment` se ignoran.
 
-- **Prefijo API Key**: `prod_sk_`
-- **Propósito**: Ambiente real de facturación
-- **Datos**: Genera facturas electrónicas reales con validez fiscal
-- **Límites**: Restricciones de rate limiting estrictas
+<Warning>
+  Las facturas que emitís con la key de producción son reales. Para probar, usá la key de testing. Ver [Entorno de testing](/es/guides/entorno-testing).
+</Warning>
 
-<callout type="warning">
-  ⚠️ **Importante**: Nunca uses tu API key de producción (`prod_sk_`) para testing. Las facturas generadas en producción son reales y tienen validez fiscal.
-</callout>
+### Obtener tu API Key
 
-#### 📋 Obtener tu API Key
+1. Entrá a tu cuenta en [facture.ar](https://www.facture.ar)
+2. En el menú lateral, en **Desarrolladores**, entrá a **Claves API**
+3. En la tarjeta **Producción** o **Testing**, tocá **Generar clave**
+4. Copiala con **Copiar** y guardala en un lugar seguro
 
-1. **Accede a tu dashboard** en [facture.ar](https://facture.ar)
-2. **Ve a Claves APIs**
-3. **Genera una nueva API key** para el ambiente que necesites
-4. **Copia y guarda** tu API key de forma segura
+Con **Regenerar** obtenés una key nueva: la anterior deja de funcionar en el acto. Ver [API Keys](/es/guides/api-keys).
 
-<info>
-  ⚠️ **Tip**: Puedes regenerar tu API key en cualquier momento. Solo asegurate de guardar la nueva key, la anterior se perdera.
-</info>
-
-### URL Base
-
-La URL base es la misma para todos los ambientes:
+## URL base
 
 ```
-https://facture.ar/api
+https://www.facture.ar/api
 ```
 
-<info>
-  💡 **Nota**: El ambiente (testing/producción) se determina automáticamente por tu API key, no por la URL.
-</info>
+Usá siempre la dirección con `www`. Si llamás a `facture.ar` sin `www` y el pedido pasa por una redirección, algunos clientes HTTP convierten el `POST` en `GET` o pierden el body.
 
-## 🎮 Playground Interactivo
+## Errores
 
-Prueba la API directamente desde la documentación usando nuestro playground interactivo:
+Los errores de autenticación, de validación y los internos siguen el formato **RFC 9457** (`Content-Type: application/problem+json`):
 
-- **Prueba endpoints en tiempo real**: Envía peticiones reales y ve las respuestas
-- **Ejemplos de código**: Genera código en múltiples lenguajes (cURL, JavaScript, Python, PHP)
-- **Autenticación integrada**: Configura tu API key una vez y úsala en todas las pruebas
-- **Ambiente seguro**: Usa tu API key de testing para experimentar sin riesgos
+```json
+{
+  "type": "https://www.facture.ar/problems/invalid_request",
+  "title": "Bad Request",
+  "status": 400,
+  "code": "invalid_request",
+  "detail": "Content-Type must be application/json or application/xml",
+  "error": "Content-Type must be application/json or application/xml",
+  "message": "Content-Type must be application/json or application/xml",
+  "resolution": "Compare the body with https://www.facture.ar/openapi.json and resend the corrected fields."
+}
+```
 
-[Explorar Playground](/es/api-reference/playground)
+| Campo | Qué es |
+|---|---|
+| `code` | Código estable para tu programa: `unauthorized` (401), `invalid_request` (400), `cuit_not_found` (404), `conflict` (409), `internal_error` (500) |
+| `message` / `detail` | Qué pasó, en texto |
+| `resolution` | Qué hacer para resolverlo |
+| `error` | El mismo texto de siempre, para los clientes que ya leían `error` |
 
-## 📞 Soporte
+Algunas respuestas todavía son JSON común con `error` y, a veces, `details` y `code`. Por ejemplo, al superar el límite de tu plan la API responde `403` con `code: "SUBSCRIPTION_LIMIT_EXCEEDED"`. En los dos formatos siempre está `error`, así que leer ese campo te sirve para todos los casos.
 
-Si necesitas ayuda con la API:
+## Playground
 
-- 📧 **Email**: support@facture.ar
-- 💬 **Chat**: Disponible en la plataforma
-- 📚 **Documentación**: Explora nuestros ejemplos detallados
-- 🎥 **Videollamada**: Para asistencia personalizada
+Cada endpoint de la sección **API Endpoints** tiene un playground para mandar el pedido desde la documentación. Ver [Playground](/es/api-reference/playground).
+
+## Soporte
+
+Si necesitás ayuda con la API, escribinos a **support@facture.ar** o por el chat del panel.

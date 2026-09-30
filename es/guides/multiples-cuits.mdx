@@ -36,27 +36,27 @@ Facturear permite gestionar **múltiples CUITs** desde una sola cuenta. Es ideal
 
 La cantidad de CUITs que podés gestionar depende de tu **plan de suscripción**:
 
-| Plan | CUITs incluidos |
-|---|---|
-| Free | 1 |
-| Starter | Hasta 3 |
-| Pro | Hasta 10 |
-| Business | Hasta 25 |
-| Enterprise | Ilimitado |
+| Plan | CUITs emisores | Facturas por mes |
+|---|---|---|
+| Free | 1 | 10 |
+| Básica | 1 | 1.000 |
+| Pro | 25 | 25.000 |
+| Enterprise | A medida | A medida |
 
-Si necesitás más CUITs, contactá a [support@facture.ar](mailto:support@facture.ar).
+Para tener más de un CUIT necesitás el plan Pro. Si necesitás más de 25, escribinos a [support@facture.ar](mailto:support@facture.ar) y armamos un plan Enterprise.
 
 ---
 
-## Cambiar entre CUITs activos
+## Elegir el CUIT al facturar
 
-Cuando tenés múltiples CUITs configurados:
+No hay un CUIT "activo" para toda la cuenta: cada pantalla te deja elegir con qué CUIT trabajar.
 
-1. En el dashboard, el **selector de CUIT** está visible en la parte superior
-2. Seleccioná el CUIT para el que querés operar
-3. Todas las operaciones (facturas, lotes, configuración) aplican al CUIT seleccionado
+- **Nueva factura** (rápida o detallada) y **Lotes**: elegís el CUIT emisor en el formulario. Arranca con tu CUIT predeterminado.
+- **Diseño**: elegís el CUIT en el selector de arriba.
+- **Reportes**: podés ver todos los CUITs juntos o filtrar uno.
+- **CUITs**: cada CUIT tiene su propia configuración (puntos de venta, tributos, conceptos, IVA).
 
-### Via API
+### Con la API
 
 En cada factura indicás el CUIT emisor con `cuitId` (el id del CUIT en Facturear) o con `cuit` (el número, por ejemplo `"20-12345678-9"`). Si no mandás ninguno de los dos, se usa tu CUIT por defecto.
 
@@ -88,10 +88,10 @@ En un lote (`POST /api/invoices` con un array), cada factura puede llevar un CUI
 
 ## CUIT por defecto
 
-Podés configurar un **CUIT por defecto** que se pre-selecciona al iniciar sesión:
+Podés marcar un **CUIT predeterminado**: es el que aparece elegido en los formularios de facturación y el que usa la API cuando no mandás `cuitId` ni `cuit`.
 
-1. Ir a **CUITs** → Seleccioná el CUIT
-2. Hacé clic en **"Establecer como predeterminado"**
+1. Entrá a **CUITs**
+2. En el CUIT que querés, hacé clic en **Establecer como predeterminado**
 
 ---
 
@@ -103,24 +103,18 @@ Para conectar el CUIT de un cliente no necesitás su clave fiscal: al agregarlo 
 
 ## Reportes por CUIT
 
-El dashboard de Facturear permite filtrar todos los reportes por CUIT:
-
-- Facturas emitidas por CUIT
-- Totales facturados por CUIT
-- Exportación de datos por CUIT
-
-Esto es especialmente útil para estudios contables que necesitan separar la información de cada cliente.
+En **Reportes** podés ver lo facturado por todos tus CUITs juntos o elegir uno, y descargar el CSV del período con ese mismo filtro. Esto es útil para estudios contables que necesitan separar la información de cada cliente.
 
 ---
 
 ## Preguntas frecuentes
 
 <AccordionGroup>
-  <Accordion title="¿Puedo compartir el acceso a Facturear con mi equipo?">
-    Sí. Facturear permite agregar usuarios adicionales a la cuenta con diferentes niveles de acceso. Podés limitar qué CUITs y qué operaciones puede hacer cada usuario.
+  <Accordion title="¿Los CUITs de mis clientes están separados entre sí?">
+    Sí. Cada CUIT tiene sus propios certificados, puntos de venta, configuración y facturas. En los listados y reportes podés filtrar por CUIT para ver solo los de un cliente.
   </Accordion>
-  <Accordion title="¿Los CUITs de mis clientes están aislados entre sí?">
-    Sí. Los datos de facturación de cada CUIT son independientes. Un usuario con acceso al CUIT A no ve automáticamente los datos del CUIT B.
+  <Accordion title="¿Qué pasa si llego al límite de CUITs?">
+    No vas a poder agregar otro CUIT hasta que pases a un plan que lo permita.
   </Accordion>
 </AccordionGroup>
 

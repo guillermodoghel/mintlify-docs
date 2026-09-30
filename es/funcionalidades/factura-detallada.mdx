@@ -1,224 +1,77 @@
 ---
-title: 'Factura Detallada'
-description: 'Crea facturas electrónicas complejas con control total sobre todos los campos y configuraciones'
+title: 'Factura detallada'
+description: 'Emití facturas con receptor identificado, varios ítems, IVA por línea, tributos, moneda extranjera y notas de crédito o débito.'
 ---
 
-# 📄 Factura Detallada
+La factura detallada es el formulario completo: elegís el tipo de comprobante, identificás al cliente, cargás los ítems con su IVA y, si hace falta, sumás tributos o facturás en otra moneda. También es la pantalla para emitir **notas de crédito y de débito**.
 
-La Factura Detallada es la herramienta completa de Facturear para crear facturas electrónicas complejas. Ofrece control total sobre todos los campos, configuraciones avanzadas y es ideal para facturas empresariales que requieren precisión y detalle.
+Si solo necesitás facturar un importe a consumidor final, la [factura rápida](/es/funcionalidades/facturador-rapido) es más corta.
 
-## 🎯 ¿Qué es la Factura Detallada?
+## Dónde está
 
-La Factura Detallada es la funcionalidad más completa de Facturear, diseñada para:
+- En **Facturas**, el botón **Factura detallada**.
+- En **Inicio**, el acceso **Factura detallada**.
 
-- ✅ Facturas empresariales complejas
-- ✅ Múltiples productos o servicios
-- ✅ Configuración de tributos específicos
-- ✅ Control total sobre todos los campos
-- ✅ Facturas con configuraciones avanzadas
-
-## 🚀 Características Principales
-
-### 📋 Campos Completos
-- **Datos del emisor**: Información completa de tu empresa
-- **Datos del receptor**: Cliente con validación AFIP
-- **Productos/Servicios**: Gestión detallada de items
-- **Tributos**: Configuración de impuestos específicos
-- **Observaciones**: Notas y comentarios personalizados
-
-### ⚙️ Configuración Avanzada
-- **Múltiples tributos**: IVA, impuestos provinciales, nacionales
-- **Condiciones de pago**: Efectivo, transferencia, cheque, etc.
-- **Monedas**: Pesos argentinos, dólares, euros
-- **Puntos de venta**: Selección específica del POS
-- **Tipos de comprobante**: A, B, C, según corresponda
-
-### 🔧 Funcionalidades Avanzadas
-- **Gestión de productos**: Base de datos de productos/servicios
-- **Cálculos automáticos**: Subtotal, impuestos, totales
-- **Validación en tiempo real**: Verificación de datos
-- **Plantillas**: Guardar configuraciones frecuentes
-- **Historial**: Acceso a facturas anteriores
-
-## 📋 Cómo Usar la Factura Detallada
-
-### Paso 1: Acceder a Factura Detallada
-
-1. **Inicia sesión** en tu cuenta de Facturear
-2. **Navega** a "Facturación" en el menú lateral
-3. **Selecciona** "Factura Detallada"
-4. **Elige tu CUIT** y punto de venta
-
-### Paso 2: Configurar Datos del Comprobante
+## Paso a paso
 
 <Steps>
-  <Step title="Información Básica">
-    - **Tipo de comprobante**: A, B, C según corresponda
-    - **Punto de venta**: Selecciona el POS apropiado
-    - **Fecha de emisión**: Por defecto es la fecha actual
-    - **Fecha de vencimiento**: Para pagos diferidos
+  <Step title="Configurá el comprobante">
+    Elegí **CUIT**, **Punto de Venta**, **Concepto** (productos, servicios o ambos) y **Tipo** de comprobante. Arrancan con los valores por defecto del CUIT.
+
+    Los tipos que ves dependen del CUIT: un monotributista emite comprobantes clase C; un responsable inscripto, clase A y B. En la misma lista están las facturas y las notas de crédito y de débito.
   </Step>
-  <Step title="Configuración Avanzada">
-    - **Condición de pago**: Efectivo, transferencia, etc.
-    - **Moneda**: ARS, USD, EUR
-    - **Cotización**: Para monedas extranjeras
-    - **Observaciones**: Notas adicionales
+  <Step title="Identificá al cliente">
+    - **Tipo de documento**: Consumidor Final, CUIT, DNI u otro de los que acepta ARCA.
+    - **Número**: con CUIT, se valida contra el padrón de ARCA y se completan solos el nombre, el domicilio fiscal y la condición frente al IVA.
+    - **Nombre o razón social** y **Domicilio**: el domicilio sale impreso en la factura; lo podés editar.
+    - **Condición IVA** del receptor: consumidor final, responsable inscripto, monotributo, exento, etc.
+    - **Condición de venta**: contado, cuenta corriente, tarjeta, transferencia, cheque u otra. Sale impresa en la factura.
+  </Step>
+  <Step title="Cargá las fechas">
+    Si el concepto incluye servicios, completá **Fecha Servicio Desde**, **Fecha Servicio Hasta** y **Fecha Vencimiento** del pago: ARCA las pide para servicios. Si solo son productos, no hacen falta.
+  </Step>
+  <Step title="Cargá los ítems">
+    Tenés dos modos, **Items** y **Descripción**:
+
+    - **Items**: una línea por producto o servicio, con **Descripción**, **Cantidad**, **Precio Unit.**, **Desc. %** (descuento) e **IVA %**. Con **+ Agregar Item** sumás líneas. En comprobantes clase C no hay columna de IVA.
+    - **Descripción**: un texto libre y un subtotal, sin detalle de líneas.
+
+    La pantalla recuerda el último modo que usaste.
+  </Step>
+  <Step title="Sumá tributos (opcional)">
+    En **Tributos** aparecen los que configuraste en la pestaña **Tributos** del CUIT (percepciones, IIBB, impuestos municipales, etc.). Los marcados como **Predeterminado** vienen tildados. Cada uno muestra su alícuota y el importe se calcula sobre la base imponible.
+  </Step>
+  <Step title="Elegí la moneda">
+    Por defecto es pesos. Si elegís otra moneda de la lista de ARCA (dólares, euros, etc.), la **Cotización** se trae sola de ARCA; si necesitás otra, la podés editar. Abajo ves el total en la moneda elegida y el **Total en Pesos**.
+  </Step>
+  <Step title="Tocá Generar Comprobante">
+    El comprobante se envía a ARCA. Cuando lo autoriza, te lleva al detalle, con el CAE y el PDF. Si ARCA lo rechaza, los errores aparecen arriba del botón con su código.
   </Step>
 </Steps>
-
-### Paso 3: Completar Datos del Cliente
-
-- **Documento**: Consumidor final, CUIT, DNI u otro tipo. Con CUIT se valida contra el padrón de ARCA
-- **Nombre / Razón social**: Con CUIT se completa automáticamente
-- **Domicilio**: Con CUIT se completa con el domicilio fiscal del padrón; lo podés editar. Sale impreso en la factura
-- **Condición de IVA**: Consumidor final, responsable inscripto, etc. Con CUIT se completa del padrón
-- **Condición de venta**: Contado, cuenta corriente, tarjeta, transferencia, cheque u otra. Sale impresa en la factura
 
 <Note>
   Una venta a consumidor final de $10.000.000 o más tiene que identificar al comprador con DNI, CUIL o CDI (RG 1415, texto RG 5866/2026). Si no lo cargás, el formulario no deja emitir.
 </Note>
 
-### Paso 4: Agregar Productos/Servicios
+## Notas de crédito y de débito
 
-**Para cada producto/servicio:**
+Si en **Tipo** elegís una nota de crédito o de débito, aparece la sección del **comprobante asociado**, que ARCA exige:
 
-1. **Código**: Código interno del producto
-2. **Descripción**: Descripción detallada
-3. **Cantidad**: Número de unidades
-4. **Precio unitario**: Precio por unidad
-5. **Descuento**: Porcentaje o monto fijo
-6. **IVA**: Tipo de IVA aplicable
-7. **Tributos adicionales**: Impuestos específicos
+- **Tipo de Comprobante Asociado**: Factura A, B, C o M.
+- **Punto de Venta** y **Número de Comprobante** de la factura original.
+- **Fecha del Comprobante Asociado**.
 
-**Gestión de productos:**
-- **Base de datos**: Guarda productos para reutilizar
-- **Categorías**: Organiza por tipo de producto
-- **Precios**: Mantén precios actualizados
-- **Stock**: Control de inventario (opcional)
+El resto del formulario se completa igual que una factura. Más detalles en [Notas de crédito y débito](/es/guides/nota-credito-debito).
 
-### Paso 5: Configurar Tributos
+## Valores por defecto
 
-**Impuestos Nacionales:**
-- **IVA**: 21%, 10.5%, 0% según corresponda
-- **Impuestos internos**: Para productos específicos
-- **Percepciones**: Según régimen aplicable
+El CUIT, el punto de venta, el concepto, el tipo de comprobante, la alícuota de IVA de los ítems y los tributos tildados salen de la ficha del CUIT (**Configuración → CUITs**). Cambiarlos ahí te ahorra tocarlos en cada factura. Ver [Configurar defaults por CUIT](/es/guides/configurar-defaults-cuit).
 
-**Impuestos Provinciales:**
-- **Ingresos Brutos**: Según jurisdicción
-- **Impuestos municipales**: Si aplica
-- **Otros tributos**: Según normativa local
+## Si algo falla
 
-### Paso 6: Revisar y Generar
+- **El CUIT del cliente no se encuentra**: revisá el número; tiene que existir en el padrón de ARCA.
+- **El botón no se habilita**: falta el nombre y número del cliente (si no es consumidor final), la descripción de algún ítem o el importe en modo Descripción.
+- **ARCA rechaza el comprobante**: el mensaje trae el código de ARCA. Los más comunes son un tipo de comprobante que no corresponde a la condición IVA del receptor, o fechas de servicio faltantes. Ver [Condición IVA del receptor](/es/guides/condicion-iva-receptor).
+- **Cotización no encontrada**: ARCA no devolvió la cotización de esa moneda. Cargala a mano.
 
-1. **Revisa el resumen**: Verifica todos los datos
-2. **Valida cálculos**: Confirma totales y subtotales
-3. **Genera la factura**: Haz clic en "Generar Factura"
-4. **Descarga PDF**: Con código QR y validez fiscal
-5. **Envía al cliente**: Por email o descarga directa
-
-## 💡 Consejos y Mejores Prácticas
-
-### ✅ Configuración de Productos
-- **Base de datos actualizada**: Mantén precios y descripciones actualizadas
-- **Códigos consistentes**: Usa un sistema de codificación claro
-- **Categorías organizadas**: Facilita la búsqueda y selección
-- **Descripciones detalladas**: Incluye especificaciones técnicas
-
-### ✅ Gestión de Tributos
-- **Configuración correcta**: Verifica que los tributos sean aplicables
-- **Cálculos precisos**: Revisa que los cálculos sean correctos
-- **Normativa actualizada**: Mantente al día con cambios fiscales
-- **Documentación**: Guarda justificativos de tributos especiales
-
-### ✅ Datos del Cliente
-- **Validación AFIP**: Siempre verifica datos con AFIP
-- **Información completa**: Incluye todos los datos necesarios
-- **Actualización regular**: Mantén datos de contacto actualizados
-- **Historial**: Revisa facturas anteriores del cliente
-
-## 🔧 Configuración Avanzada
-
-### Plantillas de Facturación
-Crea plantillas para agilizar el proceso:
-
-1. **Ve a Configuración** → "Plantillas"
-2. **Crea nueva plantilla**:
-   - Nombre descriptivo
-   - Configuración de tributos
-   - Productos frecuentes
-   - Datos por defecto
-
-### Gestión de Productos
-Organiza tu base de datos de productos:
-
-1. **Categorías**: Organiza por tipo de producto
-2. **Precios**: Mantén precios actualizados
-3. **Códigos**: Sistema de codificación consistente
-4. **Descripciones**: Detalladas y precisas
-
-### Configuración de Tributos
-Personaliza la configuración fiscal:
-
-1. **Tributos por defecto**: Establece tributos comunes
-2. **Cálculos automáticos**: Configura fórmulas personalizadas
-3. **Validaciones**: Establece reglas de validación
-4. **Reportes**: Configura reportes fiscales
-
-## 📊 Casos de Uso Comunes
-
-### 🏢 Factura Empresarial Completa
-- **Múltiples productos**: Varios items con diferentes tributos
-- **Descuentos**: Descuentos por volumen o cliente
-- **Condiciones especiales**: Pagos diferidos o financiación
-- **Observaciones**: Términos y condiciones específicos
-
-### 🏭 Factura Industrial
-- **Productos técnicos**: Especificaciones detalladas
-- **Tributos específicos**: Impuestos internos o especiales
-- **Certificaciones**: Cumplimiento de normativas
-- **Trazabilidad**: Códigos de lote o serie
-
-### 🛒 Factura Comercial
-- **Gran cantidad de items**: Múltiples productos
-- **Descuentos promocionales**: Ofertas y promociones
-- **Programa de fidelidad**: Puntos o descuentos acumulados
-- **Envío**: Costos de logística incluidos
-
-## ❓ Solución de Problemas
-
-### Errores Comunes
-
-<error>
-  **Error de validación AFIP** - Verifica que el CUIT sea correcto - Confirma que esté activo en AFIP - Revisa que no haya espacios o caracteres especiales
-</error>
-
-**Error en cálculos** - Verifica que los precios sean números válidos - Confirma que las cantidades sean positivas - Revisa la configuración de tributos
-
-**Problema de generación** - Asegúrate de tener certificados activos - Verifica que tu CUIT esté configurado - Confirma que el punto de venta sea válido
-
-### Validaciones Importantes
-- **CUIT válido**: Formato correcto y activo en AFIP
-- **Precios positivos**: Todos los valores deben ser positivos
-- **Cantidades válidas**: Números enteros o decimales válidos
-- **Tributos aplicables**: Verifica que los tributos sean correctos
-
-## 🎉 Próximos Pasos
-
-Una vez que domines la Factura Detallada:
-
-1. **[Explora el Facturador Rápido](/es/funcionalidades/facturador-rapido)** - Para facturas simples
-2. **[Aprende sobre Facturación desde Excel](/es/funcionalidades/facturacion-excel)** - Para procesamiento masivo
-3. **[Configura plantillas avanzadas](/es/guides/configurar-defaults-cuit)** - Para optimizar tu flujo
-
-## 🆘 Soporte
-
-Si necesitas ayuda con la Factura Detallada:
-
-- 📧 **Email**: support@facture.ar
-- 💬 **Chat**: Disponible en la plataforma
-- 📚 **Documentación**: Explora nuestras guías detalladas
-- 🎥 **Videollamada**: Para asistencia personalizada
-
-
-
-
+Si seguís trabado, escribinos a [support@facture.ar](mailto:support@facture.ar) o por el chat dentro de la plataforma.

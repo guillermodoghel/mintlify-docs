@@ -157,7 +157,7 @@ Las facturas pueden tener estos estados:
 | `error` | Hubo un error al emitir (por ejemplo, ARCA la rechazó). El motivo está en `errorMessage` |
 | `processing` | Se está pidiendo el CAE a ARCA |
 
-Las facturas en error también se listan con `GET /api/invoices/pending` (misma paginación), y `GET /api/invoices/stats` devuelve el resumen: `totalInvoices`, `successInvoices`, `errorInvoices`, `totalAmount` (de las exitosas) y `pendingJobs` (en cola).
+Las facturas en error también se listan con `GET /api/invoices/pending` (misma paginación), y `GET /api/invoices/stats` devuelve el resumen: `totalInvoices`, `successInvoices`, `errorInvoices`, `totalAmount` (de las exitosas), `pendingJobs` (en cola) y `environment` (el entorno de tu API Key, del que salen todos los números).
 
 ---
 

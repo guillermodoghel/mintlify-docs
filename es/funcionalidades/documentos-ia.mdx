@@ -1,0 +1,96 @@
+---
+title: 'Facturar desde documentos y planillas con IA'
+sidebarTitle: 'Documentos con IA'
+description: 'Subí remitos, pedidos, fotos o planillas Excel, o pegá un texto con tus ventas: la IA arma las facturas y vos elegís si las revisás o se emiten solas.'
+---
+
+En **Documentos** le das a Facturear lo que ya tenés, como un remito en PDF, la foto de un pedido, tu planilla de ventas en Excel o un texto con las ventas del día, y la IA arma las facturas. Cada factura queda como un **borrador** que revisás y emitís, o se emite sola si todo cierra.
+
+## Qué podés subir
+
+- **Archivos**: PDF, JPG, PNG, Excel (`.xlsx`) o CSV, de hasta 25 MB cada uno. Podés arrastrar varios juntos o tocar **Elegir archivos**. Las fotos grandes del celular se achican solas antes de subirlas.
+- **Google Drive**: con **Conectar Google Drive** autorizás tu cuenta una vez; después, **Desde Google Drive** abre el selector para elegir los archivos.
+- **Texto**: con **Pegar un texto** escribís o pegás un pedido, un mail o la lista de ventas del día, y tocás **Armar facturas**. La IA arma una factura por venta; las que no nombran cliente salen a consumidor final. Si querés otra cosa, escribilo ("todo en una sola factura").
+
+<Note>
+  Las planillas en formato viejo de Excel (`.xls`) no se aceptan. Guardalas como `.xlsx` o CSV.
+</Note>
+
+## Paso a paso
+
+<Steps>
+  <Step title="Elegí cómo leer y qué hacer">
+    Arriba de la zona de carga elegís:
+
+    - **Plantilla**: una de tus [plantillas](#plantillas), o **Sin plantilla (la IA decide todo)**.
+    - **CUIT que emite**: si la plantilla ya tiene un CUIT, usa ese.
+    - **Qué hacer con las facturas**: **Revisar antes** (quedan como borradores) o **Emitir solas**. En modo automático se emiten solas las que tienen todos los datos, los importes cierran y la lectura es segura; las demás quedan para revisar.
+  </Step>
+  <Step title="Subí los documentos">
+    Mientras la IA lee, el borrador dice **Leyendo…**. Después pasa a **Lista para emitir** o a **Revisar**, con el motivo (por ejemplo, un dato que falta o un importe que no cierra).
+  </Step>
+  <Step title="Revisá los borradores">
+    Tocá un borrador para abrirlo al lado del documento original. Podés corregir el CUIT que emite, el punto de venta, el concepto, el cliente (nombre, CUIT, CUIL o DNI, condición frente al IVA, email para mandarle la factura), la referencia del remito o pedido, las fechas de servicio y los ítems. Guardá con **Guardar** o sacalo con **Descartar**.
+  </Step>
+  <Step title="Emití">
+    Desde el borrador, **Emitir factura**. O tildá varios en la lista y tocá **Emitir N facturas** (o **Descartar**). Las facturas van a ARCA y, cuando se autorizan, el borrador muestra el número del comprobante.
+  </Step>
+</Steps>
+
+La lista se filtra por **Pendientes**, **Emitidas** o **Todas**, y muestra de dónde vino cada documento (subido, Google Drive, Zapier, recurrente, API o un agente de IA).
+
+Las facturas se emiten en el modo de tu cuenta: con el **Modo Testing** prendido, van al entorno de pruebas de ARCA y no tienen validez fiscal.
+
+## Planillas Excel y CSV
+
+La primera vez que subís una planilla, la IA propone qué columna es cada dato y te muestra **Revisá cómo se lee tu planilla**. Para cada dato elegís la columna de tu planilla:
+
+- Cliente (nombre o razón social), CUIT o DNI, email, condición frente al IVA y domicilio
+- Descripción del ítem, cantidad, precio unitario o importe de la línea, alícuota de IVA
+- Número de remito o pedido, fecha, y si son productos o servicios
+
+Además indicás si **Los importes incluyen IVA** y si **Filas con el mismo valor son una sola factura** (por ejemplo, todas las filas de un mismo número de pedido) o si **Cada fila es una factura**.
+
+Con **Crear plantilla y releer** guardás ese mapeo en una plantilla nueva y la planilla se vuelve a leer con las columnas confirmadas. Las próximas planillas con las mismas columnas se leen solas, sin IA, eligiendo esa plantilla. Si una planilla no tiene alguna columna que la plantilla espera, te avisa con **Faltan columnas en la planilla**.
+
+<Tip>
+  Si ya tenés un CSV en el formato fijo de Facturear (columnas `cuit`, `punto_venta_id`, `monto`, etc.), también podés usar [Lotes](/es/funcionalidades/facturacion-por-lotes).
+</Tip>
+
+## Plantillas
+
+Una plantilla le dice a Facturear cómo leer y facturar un tipo de documento. Están en **Configuración → Plantillas** (o en el botón **Plantillas** de Documentos). Con **Nueva plantilla** configurás:
+
+- **Nombre**, **CUIT que emite** y **Punto de venta** (o el predeterminado del CUIT).
+- **Qué hacer con las facturas de esta plantilla**: **Revisar antes de emitir**, **Confirmar por WhatsApp** (cada factura te llega al WhatsApp con **Facturar** y **Rechazar**; ver [Facturar por WhatsApp](/es/guides/whatsapp)) o **Emitir solas**.
+- **Concepto**, **Alícuota de IVA habitual** y si **Los precios incluyen IVA**.
+- **Siempre al mismo cliente**: nombre, CUIT o DNI, condición frente al IVA (o automática, desde el padrón de ARCA) y email.
+- **Instrucciones para la IA (opcional)**: por ejemplo, "Son remitos de reparto de bidones. El cliente está arriba a la derecha. Si dice 'envase' no se factura."
+- **Lista de precios (para remitos sin precio)**: un producto por línea, con nombre y precio. Podés pegar dos columnas copiadas de Excel.
+- **Mandar la factura por email al cliente**, con una copia opcional a otra dirección.
+- Las **columnas de planilla guardadas**, si la creaste desde una planilla.
+
+## Facturas recurrentes
+
+En una plantilla, tildá **Emitir todos los meses (factura recurrente)** para facturar lo mismo cada mes, por ejemplo un abono. Elegís el **Día del mes** (del 1 al 28), a cuántos días vence y los **Ítems de la factura**. La factura recurrente siempre va al mismo cliente.
+
+Ese día, la plantilla genera la factura: si está en **Emitir solas**, se emite; si está en **Revisar antes de emitir**, queda un borrador en Documentos; si está en **Confirmar por WhatsApp**, te llega al WhatsApp para que la confirmes. En la lista de plantillas ves la próxima fecha, y con **Emitir la de este mes** la generás en el momento.
+
+## Automatizar con Zapier
+
+Desde Documentos, **Automatizalo con Zapier** te lleva a **Integraciones → Zapier**, con los pasos para conectar. Algunos ejemplos:
+
+- Cada archivo nuevo en una carpeta de Google Drive se factura con IA.
+- Cada email de Gmail con adjunto se factura con IA.
+- Cada fila nueva de Google Sheets crea una factura.
+
+En Zapier elegís si cada factura se emite sola o queda para revisar en Documentos, y podés indicar una plantilla.
+
+## Si algo falla
+
+- **La lectura con IA no está disponible en este momento**: podés seguir importando planillas con una plantilla que ya tenga columnas guardadas.
+- **Para emitir necesitás un CUIT conectado**: podés ir preparando borradores, pero para emitir tenés que [conectar tu CUIT con ARCA](/es/getting-started/index).
+- **Un borrador queda en Revisar**: abrilo; el motivo aparece arriba. Completá el dato que falta o corregí el importe y emitilo.
+- **Error al emitir**: el borrador muestra el mensaje de ARCA. Corregilo y volvé a emitir.
+
+Si seguís trabado, escribinos a [support@facture.ar](mailto:support@facture.ar) o por el chat dentro de la plataforma.

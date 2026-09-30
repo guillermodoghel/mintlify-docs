@@ -1,0 +1,51 @@
+---
+title: 'Facturar transferencias de Mercado Pago'
+sidebarTitle: 'Mercado Pago'
+description: 'Conectá tu cuenta de Mercado Pago, traé las transferencias que recibís y facturalas en un lote después de revisar quién te pagó.'
+---
+
+Si cobrás por transferencia a tu cuenta de Mercado Pago, Facturear trae esos cobros para que los factures sin copiar datos a mano.
+
+Mercado Pago se factura **por lote**: importás lo que te transfirieron, revisás quién te pagó y generás todas las facturas juntas. Así nunca se factura un cobro que no correspondía.
+
+## Conectar la cuenta
+
+<Steps>
+  <Step title="Abrí la integración">
+    Entrá a **Integraciones** y elegí **Mercado Pago**.
+  </Step>
+  <Step title="Autorizá el acceso">
+    Tocá **Conectar con Mercado Pago**. Te llevamos a Mercado Pago para que autorices a facture.ar a leer los cobros que recibís. Solo se pueden conectar cuentas de Mercado Pago Argentina.
+  </Step>
+  <Step title="Contanos cómo facturar">
+    Completá los datos de la factura y tocá **Empezar a facturar**.
+  </Step>
+</Steps>
+
+## Datos de la factura
+
+- **CUIT que factura** y **Punto de venta**.
+- **Concepto**: Servicios, Productos o Productos y servicios.
+- **Alícuota de IVA**, si tu CUIT discrimina IVA. El importe recibido se toma con IVA incluido: sale A si quien paga es inscripto o monotributista, si no B.
+- **Detalle en cada factura**: cada transferencia se factura como un ítem con este texto (por ejemplo, "Servicios profesionales") por el importe recibido.
+- **Enviar cada factura por mail a quien pagó**, cuando Mercado Pago comparte su mail o si lo cargás en la transferencia. Opcionalmente, **Enviarme copia a** un mail tuyo.
+
+## Cómo llegan los cobros
+
+Cada hora traemos solos los cobros de los últimos días, así los encontrás esperando sin tener que importar. Si querés un período más largo, elegí el **Período** y tocá **Importar**.
+
+Por defecto la lista muestra **Solo transferencias**; destildalo para ver también otros cobros. Las transferencias entre cuentas propias se marcan como **Entre cuentas propias**.
+
+## Revisar y generar el lote
+
+Para cada transferencia ves la fecha, **Quién pagó**, **CUIT / DNI**, el **Importe**, el estado de la factura y el mail.
+
+1. Revisá el **CUIT / DNI** de quien pagó. Si falta, cargalo; sin CUIT la factura sale a **Consumidor final**. También podés marcar **Consumidor final** a propósito.
+2. Si un cobro no se tiene que facturar, tocá **No facturar**. Queda como **Omitida**; lo podés recuperar con **Incluir**.
+3. Seleccioná las transferencias y tocá **Generar lote de N**.
+
+Las facturas se emiten como un [lote](/es/guides/facturacion-lotes): tocá **Ver el lote** para seguir el avance. Los filtros **Por facturar**, **Facturadas**, **Con error**, **Omitidas** y **Todas** te ayudan a encontrar cada cobro.
+
+## Desconectar
+
+Podés desconectar la cuenta cuando quieras. Las facturas ya emitidas no se tocan.
