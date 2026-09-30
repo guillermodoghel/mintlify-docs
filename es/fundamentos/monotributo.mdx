@@ -69,28 +69,9 @@ Todos los Monotributistas están obligados a facturar electrónicamente, pero el
 
 ## Configuración en ARCA (ex AFIP)
 
-### Paso 1: Punto de venta para Monotributistas
+Para facturar por Web Services, los Monotributistas necesitan un punto de venta del tipo **"Factura Electrónica - Monotributo - Web Service"**, distinto al de los Responsables Inscriptos.
 
-En ARCA, los Monotributistas deben crear un punto de venta del tipo:
-
-**"Factura Electrónica - Monotributo - Web Service"**
-
-Este es diferente al punto de venta de los Responsables Inscriptos. Asegurate de elegir el correcto al configurar.
-
-Ver la guía completa: [Crear un punto de venta en la guía de certificado digital](/es/guides/certificado-digital#paso-7-crear-un-punto-de-venta)
-
-### Paso 2: Certificado digital o Delegación
-
-Para conectar Facturear con ARCA tenés dos opciones:
-
-<CardGroup cols={2}>
-  <Card title="Certificado Digital" icon="shield-check" href="/es/guides/certificado-digital">
-    Lo configurás vos mismo desde el portal de ARCA. Más control, un poco más técnico.
-  </Card>
-  <Card title="Delegación" icon="user-group" href="/es/guides/delegacion">
-    Le das permiso a Facturear para facturar por vos. Más simple, el equipo te guía.
-  </Card>
-</CardGroup>
+No tenés que crearlo vos: cuando entrás a Facturear con tu clave fiscal, el agente de trámites conecta tu CUIT con ARCA y deja listo el punto de venta del tipo correcto (si ya tenés uno que sirve, usa ese). [Ver cómo funciona](/es/getting-started/index).
 
 ---
 
@@ -238,7 +219,6 @@ Ver la [documentación completa de la API](/es/api-reference).
 
 - [Qué es la factura electrónica en Argentina](/es/fundamentos/que-es-factura-electronica)
 - [Tipos de comprobantes AFIP/ARCA](/es/fundamentos/tipos-de-comprobantes)
-- [Configurar certificado digital](/es/guides/certificado-digital)
 - [Comenzar con Facturear](/es/getting-started)
 
 ---

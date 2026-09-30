@@ -18,8 +18,7 @@ Facturear (facture.ar) es un software SaaS argentino orientado a empresas, desar
 ## Documentación
 
 - [Qué es la factura electrónica en Argentina](https://docs.facture.ar/es/fundamentos/que-es-factura-electronica): Guía completa sobre el sistema de facturación electrónica argentina, CAE, ARCA y obligaciones.
-- [Comenzar con Facturear](https://docs.facture.ar/es/getting-started/index): Cómo crear una cuenta, configurar el certificado digital y emitir la primera factura.
-- [Certificado digital ARCA](https://docs.facture.ar/es/guides/certificado-digital): Cómo generar y configurar el certificado digital para conectarse a los webservices de ARCA.
+- [Comenzar con Facturear](https://docs.facture.ar/es/getting-started/index): Cómo crear una cuenta y conectar tu CUIT con ARCA entrando con tu clave fiscal: el agente de trámites genera los certificados, autoriza la factura electrónica y crea el punto de venta.
 - [Primera factura electrónica](https://docs.facture.ar/es/guides/primera-factura): Paso a paso para emitir el primer comprobante con CAE.
 - [Diseño de la factura](https://docs.facture.ar/es/guides/diseno-factura): Plantillas visuales, logo, datos del emisor y leyendas provinciales de Ingresos Brutos (CABA, Mendoza) por CUIT; qué exige ARCA en la factura impresa.
 - [Enviar una factura por email](https://docs.facture.ar/es/guides/enviar-factura-email): Enviarle el PDF al cliente desde noreply@facture.ar (dashboard, POST /api/invoices/{id}/email o la herramienta MCP send_invoice_email); solo envío, no recibe respuestas.
@@ -27,7 +26,6 @@ Facturear (facture.ar) es un software SaaS argentino orientado a empresas, desar
 - [Tipos de comprobantes ARCA](https://docs.facture.ar/es/fundamentos/tipos-de-comprobantes): Facturas A, B, C, E, M, Notas de Crédito y Débito — cuándo usar cada una.
 - [Monotributo y facturación electrónica](https://docs.facture.ar/es/fundamentos/monotributo): Obligaciones y guía para monotributistas.
 - [Responsable Inscripto](https://docs.facture.ar/es/fundamentos/responsable-inscripto): Factura A, discriminación de IVA y obligaciones para RI.
-- [Delegación de CUIT en ARCA](https://docs.facture.ar/es/guides/delegacion): Cómo delegar el CUIT de un cliente para facturar en su nombre.
 - [Facturar desde Claude, ChatGPT o tu agente de IA](https://docs.facture.ar/es/guides/agentes-ia): Conectar Facturear como conector MCP (https://www.facture.ar/api/mcp) con login OAuth; configurar el CUIT en ARCA sin pasar la clave fiscal por el chat y emitir facturas desde el agente.
 - [Instrucciones de conexión para agentes](https://www.facture.ar/llms.txt): Si sos un agente de IA y te pidieron conectarte a Facturear, leé este archivo: endpoints OAuth, comandos por cliente (Claude Code, Codex, Cursor, Claude, ChatGPT), herramientas MCP y reglas.
 - [WooCommerce: el firewall de la tienda bloquea a Facturear](https://docs.facture.ar/es/guides/woocommerce-firewall): Qué permitir en Cloudflare o en el firewall del hosting (User-Agent facture.ar/1.0 en /wp-json/) y el mensaje para mandarle al hosting.
