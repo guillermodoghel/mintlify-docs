@@ -3,6 +3,28 @@
  "url": "https://docs.facture.ar/es/newsletter/index",
  "notes": [
   {
+   "slug": "monotributo-octubre-2026-valores-cuotas-topes-categorias-2026-10-01",
+   "title": "Monotributo octubre 2026: nuevos valores y topes tras la suba del 16,8%",
+   "description": "ARCA actualizó las cuotas y topes de facturación del Monotributo para octubre 2026 con un aumento del 16,8% en línea con la inflación. Repasamos qué paga cada categoría y qué implica para los monotributistas.",
+   "date": "2026-10-01",
+   "category": "monotributo",
+   "category_label": "Monotributo",
+   "impact": "medio",
+   "impact_note": "Los nuevos topes de facturación anual rigen para evaluar la permanencia en el régimen y la recategorización. Revisá tu facturación acumulada de los últimos 12 meses en Facturear para confirmar que seguís dentro de tu categoría.",
+   "url": "https://docs.facture.ar/es/newsletter/notas/monotributo-octubre-2026-valores-cuotas-topes-categorias-2026-10-01"
+  },
+  {
+   "slug": "arca-reglamento-fondo-asistencia-laboral-fal-2026-10-01",
+   "title": "ARCA reglamentó el Fondo de Asistencia Laboral: cómo y cuándo aportar",
+   "description": "La RG 5907/2026 pone en marcha el FAL desde noviembre de 2026, con alícuotas del 1% para grandes empresas y 2,5% para MiPyMEs y entidades sin fines de lucro.",
+   "date": "2026-10-01",
+   "category": "laboral",
+   "category_label": "Laboral y previsional",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/arca-reglamento-fondo-asistencia-laboral-fal-2026-10-01"
+  },
+  {
    "slug": "arca-nuevo-regimen-precios-transferencia-operaciones-interna-2026-09-30",
    "title": "ARCA renueva el régimen de Precios de Transferencia y Operaciones Internacionales",
    "description": "ARCA sustituyó la normativa de precios de transferencia y del Régimen Simplificado de Operaciones Internacionales, con nuevas pautas para operaciones financieras, servicios e intangibles.",
@@ -859,28 +881,6 @@
    "impact": "alto",
    "impact_note": "CABA pospone la obligación de discriminar Ingresos Brutos en tickets y facturas a consumidor final. Facturear la va a incorporar cuando salga la especificación técnica definitiva.",
    "url": "https://docs.facture.ar/es/newsletter/notas/prorroga-discriminacion-ingresos-brutos-facturas-caba-2026-08-21"
-  },
-  {
-   "slug": "iva-credito-fiscal-facturacion-mensual-bancos-2026-08-20",
-   "title": "Factura mensual de bancos: riesgos de IVA y crédito fiscal por desfasajes",
-   "description": "Los bancos están emitiendo las facturas mensuales fuera de término y esto complica la liquidación del IVA. Analizamos los riesgos ante una fiscalización y cómo protegerse.",
-   "date": "2026-08-20",
-   "category": "iva",
-   "category_label": "IVA",
-   "impact": "medio",
-   "impact_note": "Afecta las facturas que recibís de los bancos, no las que emitís. Ojo con el período en que computás ese crédito fiscal.",
-   "url": "https://docs.facture.ar/es/newsletter/notas/iva-credito-fiscal-facturacion-mensual-bancos-2026-08-20"
-  },
-  {
-   "slug": "arca-juicio-ejecutivo-defensas-express-contribuyentes-2026-08-20",
-   "title": "ARCA ejecuta deudas en una semana: 4 defensas exprés para frenar el juicio",
-   "description": "ARCA acelera los juicios ejecutivos fiscales y notifica intimaciones a los pocos días del vencimiento. Repasamos las cuatro defensas legales clave para evitar la ejecución y los honorarios oficiales.",
-   "date": "2026-08-20",
-   "category": "arca",
-   "category_label": "ARCA y procedimientos",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/arca-juicio-ejecutivo-defensas-express-contribuyentes-2026-08-20"
   }
  ]
 }
