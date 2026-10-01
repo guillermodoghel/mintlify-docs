@@ -18,6 +18,7 @@ El header `Idempotency-Key` resuelve eso: le ponés una clave a cada factura y, 
 | `POST /api/invoices` | Una factura (objeto) o un lote (array) |
 | `PATCH /api/invoices/batches/{batchId}` | Facturas agregadas a un lote existente |
 | `POST /api/documents` (JSON) | Borradores desde datos, texto o un archivo; en modo `automatic`, también la factura que emiten |
+| `POST /api/invoices/{invoiceId}/credit-note` | La nota de crédito que anula una factura. Ver [Anular una factura](#anular-una-factura) |
 | MCP `create_invoice` | El argumento `idempotency_key` cumple la misma función. Ver [Agentes de IA](/es/guides/agentes-ia) |
 
 El header es **opcional**: sin él, la API funciona igual que siempre.
@@ -197,9 +198,35 @@ curl -X POST https://www.facture.ar/api/invoices \
 
 ---
 
+## Anular una factura
+
+`POST /api/invoices/{invoiceId}/credit-note` emite la nota de crédito que anula una factura por el total (ver [Notas de Crédito y Débito](/es/guides/nota-credito-debito#anular-una-factura-completa)). También acepta `Idempotency-Key`: mandá una clave por anulación y, si el pedido se corta, reenvialo con la misma.
+
+```bash
+KEY=$(uuidgen)
+
+curl -X POST https://www.facture.ar/api/invoices/ID_DE_LA_FACTURA/credit-note \
+  -H "x-api-key: tu_api_key" \
+  -H "Idempotency-Key: $KEY"
+```
+
+```json
+{
+  "status": "processing",
+  "batchId": "cmg1a2b3c0000xyz",
+  "voids": "Factura C 0003-00000012"
+}
+```
+
+El status es `202`. Un reenvío con la misma clave devuelve esa misma respuesta (mismo `batchId`) con `Idempotent-Replayed: true`. La clave queda atada a esa factura: usarla para anular otra responde `422`.
+
+Aunque no mandes clave, una factura **nunca se anula dos veces**: si su nota de crédito ya está en la cola o en ARCA, el pedido responde `409` con el `batchId` para seguirla; si ya está autorizada, `409` con el `creditNoteId`. Si ARCA rechazó la nota de crédito, podés volver a pedirla con una clave nueva.
+
+---
+
 ## Lo que ya lo usa
 
-- **El dashboard**: la factura rápida, la detallada y los lotes mandan una clave por envío, así que un doble clic o un reintento por la red no duplica la factura.
+- **El dashboard**: la factura rápida, la detallada y los lotes mandan una clave por envío, así que un doble clic o un reintento por la red no duplica la factura. **Anular factura** manda una clave por anulación.
 - **Zapier**: cada paso de "Crear factura" o de borrador manda una clave derivada del Zap y de los datos del paso; si Zapier repite el paso, no se factura dos veces. Ver [Zapier y Google Drive](/es/guides/zapier-google-drive).
 - **Agentes de IA (MCP)**: `create_invoice` acepta `idempotency_key`, y las instrucciones del servidor le piden al agente mandar una y reusarla al reintentar. Ver [Agentes de IA](/es/guides/agentes-ia).
 

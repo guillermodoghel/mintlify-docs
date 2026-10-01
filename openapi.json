@@ -903,6 +903,122 @@
         }
       }
     },
+    "/invoices/{invoiceId}/credit-note": {
+      "post": {
+        "summary": "Anular una factura con nota de crédito",
+        "description": "Encola la nota de crédito que anula por el total una factura A, B, C o M autorizada por ARCA (A→NC A, B→NC B, C→NC C, M→NC M): mismo receptor, ítems, importes y moneda, asociada a la factura (`CbtesAsoc`) y con fecha de hoy. No cuenta contra el límite de facturas del plan. Es asíncrono: seguí el `batchId` con `GET /invoices/batches/{batchId}`. Una factura se anula una sola vez: mientras su nota está en la cola, en ARCA o ya autorizada, otro pedido responde `409`. Mandá un header `Idempotency-Key` para poder reintentar sin pedir dos veces (ver la guía de idempotencia).",
+        "tags": [
+          "Facturas"
+        ],
+        "parameters": [
+          {
+            "name": "invoiceId",
+            "in": "path",
+            "description": "ID de la factura a anular",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Nota de crédito encolada. Un reenvío con el mismo `Idempotency-Key` devuelve esta misma respuesta.",
+            "headers": {
+              "Idempotent-Replayed": {
+                "$ref": "#/components/headers/IdempotentReplayed"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "processing"
+                      ]
+                    },
+                    "batchId": {
+                      "type": "string",
+                      "description": "Lote a seguir con GET /invoices/batches/{batchId}"
+                    },
+                    "voids": {
+                      "type": "string",
+                      "description": "La factura que se anula",
+                      "example": "Factura C 0003-00000012"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "La factura no se puede anular: no está autorizada por ARCA, no es A, B, C o M, o ya es una nota de crédito de anulación. También si el `Idempotency-Key` es inválido.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API key faltante o inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Factura no encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "La factura ya fue anulada (`creditNoteId`), su nota de crédito está en la cola o en ARCA (`batchId` para seguirla), o hay una solicitud en curso con este `Idempotency-Key`.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "creditNoteId": {
+                      "type": "string",
+                      "description": "ID de la nota de crédito que ya anuló la factura"
+                    },
+                    "batchId": {
+                      "type": "string",
+                      "description": "Lote de la nota de crédito que está en curso"
+                    },
+                    "code": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "$ref": "#/components/responses/IdempotencyKeyReused"
+          }
+        }
+      }
+    },
     "/invoices": {
       "get": {
         "summary": "Listar facturas",

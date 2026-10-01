@@ -46,9 +46,24 @@ Las notas de crédito/débito siguen el **mismo tipo** que la factura que ajusta
 
 ## Cómo emitir una Nota de Crédito en Facturear
 
+### Anular una factura completa
+
+Si querés anular la factura entera, no hace falta cargar nada a mano:
+
+- **Desde el dashboard**: en **Facturas**, abrí la factura y tocá **Anular factura**. Facturear emite la nota de crédito que corresponde (Factura A → NC A, B → NC B, C → NC C, M → NC M) por el total, con el mismo cliente, ítems, importes y moneda, asociada a la factura y con fecha de hoy. El detalle muestra después que la factura quedó anulada y enlaza la nota.
+- **Con la API**: `POST /api/invoices/{invoiceId}/credit-note`, sin cuerpo. La respuesta (`202`) trae el `batchId` para seguir la nota hasta el CAE.
+
+```bash
+curl -X POST https://www.facture.ar/api/invoices/ID_DE_LA_FACTURA/credit-note \
+  -H "x-api-key: tu_api_key" \
+  -H "Idempotency-Key: $(uuidgen)"
+```
+
+Solo se pueden anular así las facturas A, B, C y M autorizadas por ARCA. Una factura se anula una sola vez: si ya tiene su nota de crédito (o está en camino), el pedido responde `409`. Anular no cuenta contra el límite de facturas de tu plan. Para reintentar sin riesgo, mandá un `Idempotency-Key` (ver [Reintentar sin duplicar](/es/guides/idempotencia#anular-una-factura)).
+
 ### Desde el dashboard
 
-Las notas se emiten desde la **Factura detallada**. No hay un botón en la factura original: la asociás a mano con sus datos, así que tené a mano el tipo, el punto de venta y el número de la factura que querés ajustar (los ves en el detalle de la factura, en **Facturas**).
+Para una nota parcial (o una de débito), usá la **Factura detallada** y asociá la factura original a mano con sus datos: tené a mano el tipo, el punto de venta y el número de la factura que querés ajustar (los ves en el detalle de la factura, en **Facturas**).
 
 <Steps>
   Entrá a **Facturas** y tocá **Factura detallada**
