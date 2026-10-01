@@ -1,0 +1,213 @@
+---
+title: 'Reintentar sin duplicar facturas: Idempotency-Key'
+description: 'Cómo usar el header Idempotency-Key de la API de Facturear para reenviar un pedido de factura después de un timeout o un error sin emitir dos comprobantes.'
+---
+
+# Reintentar sin duplicar facturas: Idempotency-Key
+
+Cuando mandás una factura y la conexión se corta, el servidor tarda demasiado o recibís un `5xx`, no sabés si la factura quedó encolada o no. Si la reenviás "por las dudas" podés terminar con **dos comprobantes reales ante ARCA** por la misma venta.
+
+El header `Idempotency-Key` resuelve eso: le ponés una clave a cada factura y, si reenviás el mismo pedido con la misma clave, Facturear te devuelve **la respuesta original** (mismo `batchId`) en vez de encolar otra factura.
+
+---
+
+## Dónde se usa
+
+| Endpoint | Qué protege |
+|---|---|
+| `POST /api/invoices` | Una factura (objeto) o un lote (array) |
+| `PATCH /api/invoices/batches/{batchId}` | Facturas agregadas a un lote existente |
+| `POST /api/documents` (JSON) | Borradores desde datos, texto o un archivo; en modo `automatic`, también la factura que emiten |
+| MCP `create_invoice` | El argumento `idempotency_key` cumple la misma función. Ver [Agentes de IA](/es/guides/agentes-ia) |
+
+El header es **opcional**: sin él, la API funciona igual que siempre.
+
+---
+
+## Cómo funciona
+
+1. Generá una clave única por factura (te recomendamos un **UUID v4**) y mandala en el header `Idempotency-Key`. Tiene que tener entre 1 y 255 caracteres ASCII imprimibles.
+2. La primera vez, Facturear procesa el pedido normalmente y **guarda la respuesta** asociada a esa clave durante **7 días**.
+3. Si llega otra vez la misma clave con el mismo cuerpo, la API devuelve la respuesta guardada, con el mismo status y el header `Idempotent-Replayed: true`. No se encola nada nuevo ni se descuenta otra factura de tu plan.
+
+| Situación | Respuesta |
+|---|---|
+| Clave nueva | Se procesa normalmente |
+| Misma clave, mismo cuerpo, el primer pedido ya terminó | La respuesta original + `Idempotent-Replayed: true` |
+| Misma clave mientras el primer pedido todavía se está procesando | `409`, `code: "IDEMPOTENCY_KEY_IN_PROGRESS"`: esperá unos segundos y reintentá con la misma clave |
+| Misma clave con **otro cuerpo** (u otro endpoint) | `422`, `code: "IDEMPOTENCY_KEY_REUSED"`: es otra factura, usá otra clave |
+| Clave vacía, de más de 255 caracteres o con caracteres no ASCII | `400`, `code: "IDEMPOTENCY_KEY_INVALID"` |
+
+Qué respuestas se guardan:
+
+- Las `2xx` (la factura quedó encolada) y los errores de validación (`400`, `404`, `422`): el mismo pedido daría siempre lo mismo.
+- Los `5xx`, el `403` por límite del plan, los `409` y los `429` **no se guardan**: la clave queda libre y podés reintentar con la misma.
+
+Las claves son por cuenta y por entorno: la misma clave en homologación y en producción son pedidos distintos. Pasados los 7 días, la clave se considera nueva.
+
+---
+
+## ¿Misma clave o clave nueva?
+
+La regla: **la clave identifica la factura, no el intento**.
+
+| Qué pasó | Qué hacer |
+|---|---|
+| Error de red, timeout, se cortó la conexión | Reenviá **con la misma clave** |
+| `5xx` | Reenviá **con la misma clave** |
+| `409 IDEMPOTENCY_KEY_IN_PROGRESS` | Esperá unos segundos y reenviá **con la misma clave** |
+| `429` o `403` por límite del plan | Cuando corresponda, reenviá **con la misma clave** |
+| `400` por datos inválidos | Corregí los datos y mandá el pedido corregido **con una clave nueva** |
+| La factura quedó encolada (`200`) y después falló en forma definitiva (`invoice.failed` con un error de validación o un rechazo de ARCA) | Corregí lo que haga falta y emitila **con una clave nueva** |
+| La factura falló con `errorCategory: "ARCA_OUTCOME_UNKNOWN"` (ARCA no respondió y el comprobante puede estar autorizado) | **No** la emitas con una clave nueva. Reintentá el ítem con `POST /api/invoices/batches/{batchId}/items/{itemId}/retry`, que consulta a ARCA antes de volver a emitir. Si reenviás el pedido original, usá **la misma clave** |
+
+<Warning>
+  Una clave nueva siempre es una factura nueva. Si no sabés si la factura anterior se emitió (timeout, `5xx`, `ARCA_OUTCOME_UNKNOWN`), **no cambies la clave**.
+</Warning>
+
+Con la misma clave, Facturear además protege la emisión en sí: si por cualquier motivo se encola un segundo intento de la misma factura, antes de pedir un número a ARCA busca la que ya emitió con esa clave y la devuelve.
+
+---
+
+## Ejemplo con curl
+
+```bash
+KEY=$(uuidgen)
+
+curl -X POST https://www.facture.ar/api/invoices \
+  -H "x-api-key: tu_api_key" \
+  -H "Content-Type: application/json" \
+  -H "Idempotency-Key: $KEY" \
+  -d '{
+    "cuitId": "id-de-tu-cuit",
+    "invoiceType": 11,
+    "concepto": 1,
+    "docTipo": 99,
+    "docNro": 0,
+    "condicionIVAReceptorId": 5,
+    "impNeto": 15000,
+    "impTotal": 15000,
+    "description": "Remera talle M"
+  }'
+```
+
+Si el pedido se corta, repetí exactamente el mismo comando con el mismo `$KEY`. Si la primera vez había llegado, la respuesta es la misma (mismo `batchId`) y trae el header:
+
+```
+Idempotent-Replayed: true
+```
+
+```json
+{
+  "batch": false,
+  "message": "Factura encolada para procesamiento",
+  "count": 1,
+  "status": "processing",
+  "batchId": "cmg1a2b3c0000xyz",
+  "queueIdentifiers": ["..."]
+}
+```
+
+Con ese `batchId` seguís como siempre: consultás `GET /api/invoices/batches/{batchId}` o esperás el [webhook](/es/guides/webhook-integracion) `invoice.completed` / `invoice.failed`.
+
+---
+
+## Ejemplo en JavaScript con reintentos
+
+Guardá la clave junto con la venta en tu sistema (por ejemplo, en la fila del pedido) para que un reintento —aunque sea de otro proceso o después de reiniciar— use la misma.
+
+```javascript
+import { randomUUID } from 'node:crypto'
+
+async function emitirFactura(factura, idempotencyKey = randomUUID()) {
+  for (let intento = 1; intento <= 5; intento++) {
+    let response
+    try {
+      response = await fetch('https://www.facture.ar/api/invoices', {
+        method: 'POST',
+        headers: {
+          'x-api-key': process.env.FACTUREAR_API_KEY,
+          'Content-Type': 'application/json',
+          'Idempotency-Key': idempotencyKey, // la misma en todos los intentos
+        },
+        body: JSON.stringify(factura),
+      })
+    } catch (error) {
+      // Error de red: no sabemos si llegó. Reintentamos con la MISMA clave.
+      await esperar(intento)
+      continue
+    }
+
+    if (response.ok) {
+      const data = await response.json()
+      const repetida = response.headers.get('Idempotent-Replayed') === 'true'
+      return { batchId: data.batchId, repetida, idempotencyKey }
+    }
+
+    if (response.status >= 500 || response.status === 409 || response.status === 429) {
+      await esperar(intento) // reintento con la misma clave
+      continue
+    }
+
+    // 400/403/422: reintentar igual no sirve. Corregí y usá una clave nueva.
+    const error = await response.json()
+    throw new Error(`${response.status}: ${error.error}`)
+  }
+  throw new Error('No se pudo confirmar la factura: reintentá más tarde con la misma clave')
+}
+
+const esperar = intento => new Promise(resolve => setTimeout(resolve, 500 * 2 ** intento))
+
+const { batchId } = await emitirFactura({
+  cuitId: 'id-de-tu-cuit',
+  invoiceType: 6,
+  concepto: 1,
+  docTipo: 99,
+  docNro: 0,
+  condicionIVAReceptorId: 5,
+  impNeto: 10000,
+  impIVA: 2100,
+  impTotal: 12100,
+  iva: [{ id: 5, baseImp: 10000, importe: 2100 }],
+})
+```
+
+---
+
+## Lotes
+
+En un lote (`POST /api/invoices` con un array, o `PATCH /api/invoices/batches/{batchId}`) mandás **una sola clave para todo el pedido**. Si lo reenviás con la misma clave, recibís el mismo `batchId` y no se duplica ningún ítem.
+
+Internamente, cada factura del lote queda identificada como `<clave>:<posición>` (empezando en `0`), así que la protección también vale para cada ítem por separado. Por eso, si reenviás un lote corregido, mandalo con una clave nueva.
+
+```bash
+curl -X POST https://www.facture.ar/api/invoices \
+  -H "x-api-key: tu_api_key" \
+  -H "Content-Type: application/json" \
+  -H "Idempotency-Key: cierre-2026-09-lote-1" \
+  -d '[
+    { "cuitId": "id-de-tu-cuit", "invoiceType": 11, "concepto": 1, "docTipo": 99, "docNro": 0, "condicionIVAReceptorId": 5, "impNeto": 15000, "impTotal": 15000 },
+    { "cuitId": "id-de-tu-cuit", "invoiceType": 11, "concepto": 1, "docTipo": 99, "docNro": 0, "condicionIVAReceptorId": 5, "impNeto": 22000, "impTotal": 22000 }
+  ]'
+```
+
+<Tip>
+  La clave puede ser cualquier texto que identifique la operación en tu sistema (`pedido-1234`, `cierre-2026-09-lote-1`), siempre que nunca la uses para otra factura. Un UUID es lo más seguro.
+</Tip>
+
+---
+
+## Lo que ya lo usa
+
+- **El dashboard**: la factura rápida, la detallada y los lotes mandan una clave por envío, así que un doble clic o un reintento por la red no duplica la factura.
+- **Zapier**: cada paso de "Crear factura" o de borrador manda una clave derivada del Zap y de los datos del paso; si Zapier repite el paso, no se factura dos veces. Ver [Zapier y Google Drive](/es/guides/zapier-google-drive).
+- **Agentes de IA (MCP)**: `create_invoice` acepta `idempotency_key`, y las instrucciones del servidor le piden al agente mandar una y reusarla al reintentar. Ver [Agentes de IA](/es/guides/agentes-ia).
+
+---
+
+## Recursos relacionados
+
+- [Emitir tu primera factura](/es/guides/primera-factura)
+- [Facturación en lotes por API](/es/guides/facturacion-lotes)
+- [Webhooks](/es/guides/webhook-integracion)
+- [Referencia de la API](/es/api-reference)

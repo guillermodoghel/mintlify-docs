@@ -1014,8 +1014,9 @@
       },
       "post": {
         "summary": "Crear facturas",
-        "description": "Crea facturas electrónicas individuales o en lote. El sistema procesa las solicitudes de forma asíncrona a través de un sistema de colas.",
+        "description": "Crea facturas electrónicas individuales o en lote. El sistema procesa las solicitudes de forma asíncrona a través de un sistema de colas. Mandá un header `Idempotency-Key` para poder reintentar sin duplicar facturas (ver la guía de idempotencia).",
         "tags": ["Facturas"],
+        "parameters": [{ "$ref": "#/components/parameters/IdempotencyKey" }],
         "requestBody": {
           "required": true,
           "content": {
@@ -1040,6 +1041,7 @@
         "responses": {
           "200": {
             "description": "Factura(s) aceptada(s) para procesamiento",
+            "headers": { "Idempotent-Replayed": { "$ref": "#/components/headers/IdempotentReplayed" } },
             "content": {
               "application/json": {
                 "schema": {
@@ -1067,7 +1069,9 @@
                 }
               }
             }
-          }
+          },
+          "409": { "$ref": "#/components/responses/IdempotencyInProgress" },
+          "422": { "$ref": "#/components/responses/IdempotencyKeyReused" }
         }
       }
     },
@@ -1334,7 +1338,7 @@
       },
       "patch": {
         "summary": "Agregar facturas a lote",
-        "description": "Agrega facturas adicionales a un lote existente que aún no ha sido completado.",
+        "description": "Agrega facturas adicionales a un lote existente que aún no ha sido completado. Con `Idempotency-Key`, reenviar el mismo agregado no suma las facturas dos veces, aunque el lote ya haya terminado.",
         "tags": ["Lotes"],
         "parameters": [
           {
@@ -1345,7 +1349,8 @@
             "schema": {
               "type": "string"
             }
-          }
+          },
+          { "$ref": "#/components/parameters/IdempotencyKey" }
         ],
         "requestBody": {
           "required": true,
@@ -1366,6 +1371,7 @@
         "responses": {
           "200": {
             "description": "Facturas agregadas al lote exitosamente",
+            "headers": { "Idempotent-Replayed": { "$ref": "#/components/headers/IdempotentReplayed" } },
             "content": {
               "application/json": {
                 "schema": {
@@ -1405,7 +1411,9 @@
                 }
               }
             }
-          }
+          },
+          "409": { "$ref": "#/components/responses/IdempotencyInProgress" },
+          "422": { "$ref": "#/components/responses/IdempotencyKeyReused" }
         }
       }
     },
@@ -1847,8 +1855,9 @@
     "/documents": {
       "post": {
         "summary": "Proponer facturas desde un documento",
-        "description": "Arma borradores de factura a partir de un archivo (fileUrl, o multipart con el campo file), un texto (text) o los datos ya estructurados (data, uno o hasta 100). Los archivos y textos se leen con IA en segundo plano: los borradores vuelven con status extracting; consultalos con GET /documents/drafts. El entorno lo fija la API key.",
+        "description": "Arma borradores de factura a partir de un archivo (fileUrl, o multipart con el campo file), un texto (text) o los datos ya estructurados (data, uno o hasta 100). Los archivos y textos se leen con IA en segundo plano: los borradores vuelven con status extracting; consultalos con GET /documents/drafts. El entorno lo fija la API key. Las solicitudes JSON aceptan `Idempotency-Key`: un reenvío devuelve los mismos borradores en vez de crear otros (ni, en modo automático, emitir otra factura).",
         "tags": ["Borradores"],
+        "parameters": [{ "$ref": "#/components/parameters/IdempotencyKey" }],
         "requestBody": {
           "required": true,
           "content": {
@@ -1970,6 +1979,7 @@
         "responses": {
           "202": {
             "description": "Borradores creados",
+            "headers": { "Idempotent-Replayed": { "$ref": "#/components/headers/IdempotentReplayed" } },
             "content": {
               "application/json": {
                 "schema": {
@@ -1999,7 +2009,9 @@
                 }
               }
             }
-          }
+          },
+          "409": { "$ref": "#/components/responses/IdempotencyInProgress" },
+          "422": { "$ref": "#/components/responses/IdempotencyKeyReused" }
         }
       }
     },
@@ -4757,6 +4769,53 @@
               "toNumber": {
                 "type": "integer"
               }
+            }
+          }
+        }
+      }
+    },
+    "parameters": {
+      "IdempotencyKey": {
+        "name": "Idempotency-Key",
+        "in": "header",
+        "required": false,
+        "description": "Clave que elegís vos (recomendado: un UUID nuevo por cada factura o lote). Si reenviás la misma solicitud con la misma clave —por un timeout, un error de red o un 5xx— recibís la respuesta original (mismo `batchId`, header `Idempotent-Replayed: true`) en vez de una factura nueva. Para una factura distinta, o después de que ARCA rechazó la anterior en forma definitiva, usá una clave nueva. Entre 1 y 255 caracteres ASCII imprimibles; se guarda 7 días. En un lote, el ítem `i` queda identificado como `<clave>:<i>`.",
+        "schema": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 255
+        },
+        "example": "6f1c2b0e-8a43-4c5e-9d2a-3b7f1e0c9a11"
+      }
+    },
+    "headers": {
+      "IdempotentReplayed": {
+        "description": "`true` cuando la respuesta es la guardada de una solicitud anterior con el mismo `Idempotency-Key`: no se encoló nada nuevo.",
+        "schema": {
+          "type": "string",
+          "enum": [
+            "true"
+          ]
+        }
+      }
+    },
+    "responses": {
+      "IdempotencyInProgress": {
+        "description": "Ya hay una solicitud en curso con este `Idempotency-Key` (code `IDEMPOTENCY_KEY_IN_PROGRESS`). Esperá unos segundos y reintentá con la misma clave para recibir su resultado.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "IdempotencyKeyReused": {
+        "description": "Este `Idempotency-Key` ya se usó con otra solicitud: otro cuerpo u otro endpoint (code `IDEMPOTENCY_KEY_REUSED`). Usá una clave nueva para una factura distinta.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
             }
           }
         }

@@ -159,6 +159,8 @@ El link vence a los 30 minutos y sirve una sola vez. Si usás un agente en la te
 
 `create_invoice`, `list_invoices` y `propose_invoice` reciben `environment` (`homologation` o `production`). Con login OAuth el agente lo tiene que indicar en cada llamada; con una API Key lo fija la key y no puede pedir el otro entorno.
 
+`create_invoice` acepta además `idempotency_key`: el agente manda un UUID nuevo por factura y, si la llamada falla por red o timeout, la repite con la misma clave; Facturear devuelve la emisión original en vez de emitir otra. `propose_invoice` cumple la misma función con `externalId`. Ver [Reintentar sin duplicar facturas](/es/guides/idempotencia).
+
 <Tip>
   Probá primero en **homologación**: el agente emite facturas de prueba, sin valor fiscal. En producción, el agente te confirma importe, receptor y tipo de comprobante antes de emitir.
 </Tip>

@@ -66,6 +66,7 @@
             "group": "Integraciones",
             "pages": [
               "es/guides/api-keys",
+              "es/guides/idempotencia",
               "es/guides/facturacion-lotes",
               "es/guides/configurar-defaults-cuit",
               "es/guides/parametros-arca",
