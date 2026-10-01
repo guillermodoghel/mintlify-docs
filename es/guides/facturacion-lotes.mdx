@@ -157,6 +157,10 @@ await fetch(`https://www.facture.ar/api/invoices/batches/${batchId}`, {
 })
 ```
 
+<Tip>
+  Mandá un header `Idempotency-Key` en cada `POST` o `PATCH` de lote: si la llamada se corta y la reenviás con la misma clave, recibís el mismo `batchId` y ninguna factura se duplica. Cada ítem queda identificado como `<clave>:<posición>`. Ver [Reintentar sin duplicar facturas](/es/guides/idempotencia).
+</Tip>
+
 <Info>
   Podés agregar facturas en múltiples llamadas al mismo lote mientras no haya terminado. Si el lote ya está en `completed`, `completed_with_errors` o `error`, la API responde `400`: en ese caso creá un lote nuevo con `POST /api/invoices`.
 </Info>
@@ -249,7 +253,7 @@ await fetch(
 
 El reintento vuelve a encolar el ítem **con los mismos datos**: sirve para errores transitorios (ARCA caído, timeouts, un certificado que ya corregiste). Cada ítem admite hasta 5 reintentos manuales.
 
-Si el error está en los datos (por ejemplo, un CUIT de receptor equivocado), emití una factura nueva con los datos corregidos con `POST /api/invoices`.
+Si el error está en los datos (por ejemplo, un CUIT de receptor equivocado), emití una factura nueva con los datos corregidos con `POST /api/invoices` y un `Idempotency-Key` nuevo. Si el ítem falló con `errorCategory: "ARCA_OUTCOME_UNKNOWN"` (ARCA no respondió y la factura puede estar autorizada), no la emitas de nuevo: reintentá el ítem, que consulta a ARCA antes de volver a emitir.
 
 ---
 
@@ -390,6 +394,7 @@ async function facturacionMensual(clientes, mes) {
 
 - [Facturación por lotes desde la app (CSV)](/es/funcionalidades/facturacion-por-lotes)
 - [Emitir tu primera factura](/es/guides/primera-factura)
+- [Reintentar sin duplicar facturas (Idempotency-Key)](/es/guides/idempotencia)
 - [API Reference — Lotes](/es/api-reference)
 - [Tipos de comprobantes AFIP/ARCA](/es/fundamentos/tipos-de-comprobantes)
 

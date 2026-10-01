@@ -200,6 +200,10 @@ console.log('Batch ID:', resultado.batchId)
   Si no mandás `condicionIVAReceptorId` en una factura a un CUIT, Facturear la toma del padrón de ARCA. Si la condición no corresponde a la clase del comprobante (por ejemplo, una Factura A a un Consumidor Final), la API responde `400` antes de pedir el CAE. Ver [Condición frente al IVA del receptor](/es/guides/condicion-iva-receptor).
 </Note>
 
+<Tip>
+  Mandá también un header `Idempotency-Key` con un UUID nuevo por factura. Si la conexión se corta o recibís un `5xx`, reenviá el pedido con **la misma** clave: Facturear te devuelve la respuesta original (mismo `batchId`) en vez de emitir otra factura. Ver [Reintentar sin duplicar facturas](/es/guides/idempotencia).
+</Tip>
+
 ### Respuesta: la factura queda encolada
 
 La emisión es **asincrónica**. La API valida el pedido, lo encola y responde enseguida, todavía sin CAE:
@@ -352,6 +356,7 @@ El PDF incluye:
 
 Hay dos momentos en que una factura puede fallar:
 
+- **Sin respuesta**: si se cortó la conexión, hubo un timeout o la API respondió `5xx`, no sabés si la factura quedó encolada. Reenviá el pedido con el mismo `Idempotency-Key`: nunca se duplica. Ver [Reintentar sin duplicar facturas](/es/guides/idempotencia).
 - **Al enviarla**: si el cuerpo no es válido (importes que no cierran, condición frente al IVA que no corresponde a la clase, un consumidor final sin identificar en una venta de $10.000.000 o más, etc.), la API responde `400` con `{ "error": "...", "details": ... }`. Si superaste el límite de tu plan, responde `403` con `code: "SUBSCRIPTION_LIMIT_EXCEEDED"`.
 - **Al procesarla**: si ARCA rechaza el comprobante, el ítem queda en `status: "error"` y el `responseBody` trae los mensajes de ARCA.
 
@@ -381,6 +386,7 @@ Si necesitás emitir muchas facturas al mismo tiempo (fin de mes, facturación r
 - [Facturar siendo monotributista](/es/fundamentos/monotributo)
 - [Facturar siendo responsable inscripto](/es/fundamentos/responsable-inscripto)
 - [Facturación en lotes](/es/guides/facturacion-lotes)
+- [Reintentar sin duplicar facturas (Idempotency-Key)](/es/guides/idempotencia)
 - [Documentación de la API](/es/api-reference)
 
 ---
