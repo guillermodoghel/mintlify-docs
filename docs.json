@@ -4,11 +4,15 @@
   "name": "Facturear",
   "description": "Facturear es la plataforma de facturación electrónica más simple de Argentina. Emitá facturas con CAE de ARCA/AFIP vía API o dashboard, sin complicaciones.",
   "colors": {
-    "primary": "#4f46e5",
-    "light": "#6366f1",
-    "dark": "#4338ca"
+    "primary": "#29476c",
+    "light": "#6b8fbb",
+    "dark": "#29476c"
   },
   "favicon": "/favicon.svg",
+  "logo": {
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg"
+  },
   "navigation": {
     "tabs": [
       {
