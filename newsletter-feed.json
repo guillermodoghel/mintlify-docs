@@ -3,6 +3,39 @@
  "url": "https://docs.facture.ar/es/newsletter/index",
  "notes": [
   {
+   "slug": "exclusion-bancos-factura-credito-electronica-mipyme-2026-10-02",
+   "title": "ARCA excluye a bancos no considerados grandes empresas del régimen de FCE MiPyME",
+   "description": "ARCA dejó fuera del régimen de Factura de Crédito Electrónica MiPyME a 39 de las 73 entidades financieras del país, en respuesta a un reclamo de las asociaciones bancarias.",
+   "date": "2026-10-02",
+   "category": "facturacion",
+   "category_label": "Facturación electrónica",
+   "impact": "alto",
+   "impact_note": "Si sos una PyME que emite Facturas de Crédito Electrónicas a bancos, revisá contra qué entidades podés seguir emitiendo FCE MiPyME. Los bancos excluidos ya no están obligados a recibirlas y deberás gestionarlos como clientes comunes bajo el régimen general de facturación.",
+   "url": "https://docs.facture.ar/es/newsletter/notas/exclusion-bancos-factura-credito-electronica-mipyme-2026-10-02"
+  },
+  {
+   "slug": "osde-baja-monotributistas-cobro-iva-2026-10-02",
+   "title": "OSDE da de baja a monotributistas y les cobra IVA: cómo reclamar",
+   "description": "OSDE está reclasificando a monotributistas como afiliados directos con IVA, eliminando el descuento del aporte a obra social. Qué implica y cómo presentar el reclamo.",
+   "date": "2026-10-02",
+   "category": "monotributo",
+   "category_label": "Monotributo",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/osde-baja-monotributistas-cobro-iva-2026-10-02"
+  },
+  {
+   "slug": "recaudacion-tributaria-septiembre-2025-2026-10-02",
+   "title": "Recaudación de septiembre 2025: creció 33,5% interanual, pero el repunte real es acotado",
+   "description": "ARCA informó un alza del 33,5% interanual en la recaudación de septiembre, con un crecimiento real del 3,7%. Ganancias, Derechos de Exportación e IVA explican la mejora, aunque buena parte responde a efectos estadísticos.",
+   "date": "2026-10-02",
+   "category": "economia",
+   "category_label": "Economía y contexto",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/recaudacion-tributaria-septiembre-2025-2026-10-02"
+  },
+  {
    "slug": "monotributo-octubre-2026-valores-cuotas-topes-categorias-2026-10-01",
    "title": "Monotributo octubre 2026: nuevos valores y topes tras la suba del 16,8%",
    "description": "ARCA actualizó las cuotas y topes de facturación del Monotributo para octubre 2026 con un aumento del 16,8% en línea con la inflación. Repasamos qué paga cada categoría y qué implica para los monotributistas.",
@@ -848,39 +881,6 @@
    "impact": "ninguno",
    "impact_note": null,
    "url": "https://docs.facture.ar/es/newsletter/notas/monotributo-recategorizacion-oficio-arca-defensa-2026-08-24"
-  },
-  {
-   "slug": "monotributo-aportes-jubilatorios-por-categoria-2026-08-23",
-   "title": "Monotributo: aportes jubilatorios por categoría y cómo se calcula el haber al retirarse",
-   "description": "Guía práctica para monotributistas: cuánto va a la jubilación en cada categoría, cómo se determina el haber inicial y qué prestaciones se obtienen al momento de retirarse.",
-   "date": "2026-08-23",
-   "category": "monotributo",
-   "category_label": "Monotributo",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/monotributo-aportes-jubilatorios-por-categoria-2026-08-23"
-  },
-  {
-   "slug": "recategorizacion-oficio-monotributo-como-apelar-arca-2026-08-22",
-   "title": "Recategorización de oficio en Monotributo: cómo apelar la notificación de ARCA",
-   "description": "ARCA está notificando recategorizaciones de oficio al Domicilio Fiscal Electrónico. Te explicamos cómo apelar en tiempo y forma para evitar sanciones y ajustes retroactivos.",
-   "date": "2026-08-22",
-   "category": "monotributo",
-   "category_label": "Monotributo",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/recategorizacion-oficio-monotributo-como-apelar-arca-2026-08-22"
-  },
-  {
-   "slug": "prorroga-discriminacion-ingresos-brutos-facturas-caba-2026-08-21",
-   "title": "Ingresos Brutos en facturas de CABA: prorrogan el plazo para discriminar el impuesto",
-   "description": "La Ciudad de Buenos Aires extendió el plazo para que los comercios detallen el impuesto sobre los Ingresos Brutos en tickets y facturas. Te contamos qué implica para tu operación y cómo impacta en Facturear.",
-   "date": "2026-08-21",
-   "category": "facturacion",
-   "category_label": "Facturación electrónica",
-   "impact": "alto",
-   "impact_note": "CABA pospone la obligación de discriminar Ingresos Brutos en tickets y facturas a consumidor final. Facturear la va a incorporar cuando salga la especificación técnica definitiva.",
-   "url": "https://docs.facture.ar/es/newsletter/notas/prorroga-discriminacion-ingresos-brutos-facturas-caba-2026-08-21"
   }
  ]
 }
