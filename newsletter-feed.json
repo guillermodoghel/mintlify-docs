@@ -3,6 +3,17 @@
  "url": "https://docs.facture.ar/es/newsletter/index",
  "notes": [
   {
+   "slug": "acuerdo-fatca-informacion-arca-cuentas-estados-unidos-2026-10-03",
+   "title": "Acuerdo FATCA: qué información recibe ARCA sobre tus cuentas en Estados Unidos",
+   "description": "Qué datos le llegan a ARCA desde Estados Unidos sobre cuentas e ingresos de residentes argentinos, por qué no incluye saldos y cómo prepararse ante posibles cruces de información.",
+   "date": "2026-10-03",
+   "category": "arca",
+   "category_label": "ARCA y procedimientos",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/acuerdo-fatca-informacion-arca-cuentas-estados-unidos-2026-10-03"
+  },
+  {
    "slug": "exclusion-bancos-factura-credito-electronica-mipyme-2026-10-02",
    "title": "ARCA excluye a bancos no considerados grandes empresas del régimen de FCE MiPyME",
    "description": "ARCA dejó fuera del régimen de Factura de Crédito Electrónica MiPyME a 39 de las 73 entidades financieras del país, en respuesta a un reclamo de las asociaciones bancarias.",
@@ -870,17 +881,6 @@
    "impact": "ninguno",
    "impact_note": null,
    "url": "https://docs.facture.ar/es/newsletter/notas/impacto-fiscal-cambios-impositivos-milei-2026-08-24"
-  },
-  {
-   "slug": "monotributo-recategorizacion-oficio-arca-defensa-2026-08-24",
-   "title": "Recategorización de oficio del Monotributo: cómo defenderse ante las notificaciones de ARCA",
-   "description": "ARCA comenzó a notificar recategorizaciones de oficio en el Domicilio Fiscal Electrónico. Repasamos el procedimiento, los plazos y las vías de defensa disponibles para los monotributistas.",
-   "date": "2026-08-24",
-   "category": "monotributo",
-   "category_label": "Monotributo",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/monotributo-recategorizacion-oficio-arca-defensa-2026-08-24"
   }
  ]
 }
