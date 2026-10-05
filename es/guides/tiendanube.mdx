@@ -1,0 +1,103 @@
+---
+title: 'Facturar tus ventas de Tiendanube'
+sidebarTitle: 'Tiendanube'
+description: 'Instalá la app facture.ar en tu tienda Tiendanube y facturá en ARCA cada venta pagada, sola o a mano, con el PDF al mail del comprador.'
+---
+
+Con la app **facture.ar – Factura electrónica** de Tiendanube, cada venta pagada de tu tienda se convierte en una factura electrónica de ARCA (con CAE y código QR) y le llega al comprador por mail. La app solo pide permiso para **leer tus ventas**: no toca productos, precios ni stock.
+
+**Antes de empezar** necesitás:
+
+- Una tienda Tiendanube de Argentina.
+- Un CUIT conectado con ARCA en facture.ar. Si todavía no lo tenés, la sección **CUITs** te guía paso a paso. Ver [Tu primera factura](/es/guides/primera-factura).
+
+No hace falta generar claves ni tokens: la conexión se autoriza con un clic.
+
+## Instalar la app
+
+<Steps>
+  <Step title="Buscá la app en Tiendanube">
+    En el administrador de tu tienda, entrá a **Aplicaciones → Tienda de aplicaciones**, buscá **facture.ar** y tocá **Instalar**. También podés arrancar desde facture.ar: **Integraciones → Tiendanube → Conectar con Tiendanube**.
+  </Step>
+  <Step title="Aceptá el permiso">
+    Tiendanube te muestra el único permiso que pide la app, **leer las ventas**. Aceptalo.
+  </Step>
+  <Step title="Entrá a facture.ar">
+    Tiendanube te lleva a facture.ar. Si no tenés sesión, ingresá con Google o con el link que te llega por mail (no hay contraseñas). Si no tenés cuenta, se crea en ese momento: la instalación queda guardada mientras tanto.
+  </Step>
+  <Step title="Contanos cómo facturar">
+    Vas a ver **Tiendanube quedó conectado**. Elegí el modo, el **CUIT que factura** y el **Punto de venta**, y tocá **Empezar a facturar**. Los detalles están más abajo.
+  </Step>
+</Steps>
+
+Una vez instalada, la app aparece en **Aplicaciones** del administrador de Tiendanube como **Activada**:
+
+<Frame>
+  <img src="/images/tiendanube/01-tiendanube-aplicaciones.jpg" alt="La app facture.ar activada en Aplicaciones del administrador de Tiendanube" />
+</Frame>
+
+## Elegir cómo facturar
+
+<Frame>
+  <img src="/images/tiendanube/03-elegir-modo.jpg" alt="Pantalla Contanos cómo facturar con los modos Automática, Confirmar por WhatsApp y Manual" />
+</Frame>
+
+- **Automática**: cada pedido pagado se factura solo, apenas Tiendanube avisa el pago. Aplica a lo que entre desde que la activás; lo anterior lo facturás a mano.
+- **Confirmar por WhatsApp**: cada pedido pagado te llega por WhatsApp con los botones **Facturar** y **Rechazar**. Tocás uno y listo: el PDF te llega al chat. Ver [WhatsApp](/es/guides/whatsapp).
+- **Manual**: importás un período de pedidos, revisás y elegís qué facturar. Sirve si no todo lo que vendés se factura igual.
+
+Lo podés cambiar cuando quieras en la pestaña **Configuración**.
+
+## Datos de la factura y envío al comprador
+
+<Frame>
+  <img src="/images/tiendanube/04-cuit-punto-de-venta.jpg" alt="Datos de la factura (CUIT y punto de venta) y opciones de envío al comprador" />
+</Frame>
+
+- **CUIT que factura** y **Punto de venta**: con qué CUIT y en qué punto de venta de ARCA salen las facturas.
+- Si tu CUIT es **responsable inscripto**, elegí también la **Alícuota de IVA de tus productos**. Los precios de Tiendanube son finales: separamos el neto y el IVA con esa alícuota. Sale **Factura A** si el comprador informó un CUIT inscripto o monotributista; si no, **Factura B**. Si sos **monotributista**, sale **Factura C**.
+- Si el pedido trae el DNI o CUIT del comprador, la factura sale a su nombre; si no, a **Consumidor final**.
+- El **costo de envío** del pedido va como un ítem más de la factura.
+- **Envío al comprador**: en **Automático** la factura le llega por mail apenas se emite, al mail que dejó en la tienda. En **Manual** la mandás vos desde el pedido.
+- **Enviarme copia a**: un mail tuyo, opcional.
+
+## Facturar a mano o ventas anteriores
+
+En la pestaña **Pedidos**:
+
+1. Elegí el **Período** (Hoy, Ayer, Últimos 7 días, Últimos 30 días, Este mes, Mes pasado, Últimos 90 días o fechas a elección) y tocá **Importar pedidos del período**.
+
+<Frame>
+  <img src="/images/tiendanube/05-importar-pedidos.jpg" alt="Pedidos de Tiendanube importados del mes pasado, sin facturar" />
+</Frame>
+
+2. Marcá los pedidos que querés facturar (o **Seleccionar todos**).
+3. Tocá **Facturar**.
+
+<Frame>
+  <img src="/images/tiendanube/06-facturar-pedidos.jpg" alt="Un pedido seleccionado y el botón Facturar 1" />
+</Frame>
+
+Cada pedido muestra su estado: **Sin facturar**, **Facturado** (con el número de factura) o **Error** (con el motivo). Podés filtrar por estado y reintentar los que dieron error. Un pedido nunca se factura dos veces.
+
+Para mandar la factura por mail, cargá o corregí el mail del comprador en la fila y tocá **Enviar** (o **Guardar** si todavía no se emitió: se envía apenas salga).
+
+## Probar sin emitir facturas reales
+
+En facture.ar el ambiente es uno solo para toda la cuenta: **Producción** emite facturas reales y **Testing** usa la homologación de ARCA (facturas sin validez fiscal, que no consumen tu plan). Se cambia arriba a la derecha. Ver [Entorno de testing](/es/guides/entorno-testing).
+
+## Desinstalar
+
+Desde **Aplicaciones** en Tiendanube, tocá los tres puntos de **facture.ar** y **Desinstalar**, o tocá **Desconectar** en la integración de facture.ar. Las facturas ya emitidas no se tocan. Si volvés a instalarla, se retoma la conexión con tu cuenta.
+
+<Frame>
+  <img src="/images/tiendanube/07-tiendanube-desinstalar.jpg" alt="Menú de la app en Tiendanube con Soporte, Calificar, Configurar y Desinstalar" />
+</Frame>
+
+## Planes y soporte
+
+La app es gratis en Tiendanube; el servicio se cobra con los [planes de facture.ar](https://www.facture.ar/#pricing). El plan **Free** incluye 10 facturas por mes, sin vencimiento.
+
+¿Dudas? Escribinos a **soporte@facture.ar** o usá el botón **Necesito ayuda** dentro de la app, de lunes a viernes de 9 a 18 h.
+
+Los pedidos pendientes de todas tus integraciones también se ven en [Desde integraciones](/es/guides/desde-integraciones).
