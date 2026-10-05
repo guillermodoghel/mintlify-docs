@@ -3,6 +3,28 @@
  "url": "https://docs.facture.ar/es/newsletter/index",
  "notes": [
   {
+   "slug": "arca-servicio-web-ganancias-personas-juridicas-declaraciones-2026-10-05",
+   "title": "Ganancias Personas Jurídicas: el nuevo servicio web de ARCA para las declaraciones juradas de sociedades",
+   "description": "ARCA habilita desde el 19 de octubre de 2026 un nuevo servicio web para confeccionar y presentar Ganancias de sociedades y otros sujetos. Será obligatorio desde marzo de 2027 para ejercicios cerrados a partir de junio de 2026.",
+   "date": "2026-10-05",
+   "category": "ganancias",
+   "category_label": "Ganancias",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/arca-servicio-web-ganancias-personas-juridicas-declaraciones-2026-10-05"
+  },
+  {
+   "slug": "obras-sociales-monotributistas-lista-actualizada-2026-10-05",
+   "title": "Obras sociales para monotributistas: cómo consultar la lista vigente y cambiar de cobertura en octubre 2026",
+   "description": "Guía práctica para monotributistas sobre el componente de salud de la cuota mensual: dónde consultar la nómina actualizada de obras sociales, cómo verificar la asignada y cómo hacer el cambio.",
+   "date": "2026-10-05",
+   "category": "monotributo",
+   "category_label": "Monotributo",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/obras-sociales-monotributistas-lista-actualizada-2026-10-05"
+  },
+  {
    "slug": "acuerdo-fatca-informacion-arca-cuentas-estados-unidos-2026-10-03",
    "title": "Acuerdo FATCA: qué información recibe ARCA sobre tus cuentas en Estados Unidos",
    "description": "Qué datos le llegan a ARCA desde Estados Unidos sobre cuentas e ingresos de residentes argentinos, por qué no incluye saldos y cómo prepararse ante posibles cruces de información.",
@@ -859,28 +881,6 @@
    "impact": "ninguno",
    "impact_note": null,
    "url": "https://docs.facture.ar/es/newsletter/notas/clave-fiscal-arca-obtener-recuperar-celular-2026-08-25"
-  },
-  {
-   "slug": "ganancias-2025-pedido-prorroga-vencimiento-2026-08-24",
-   "title": "Ganancias 2025: contadores piden una nueva prórroga ante el vencimiento inminente",
-   "description": "Agrupaciones profesionales le reclaman a ARCA una nueva extensión del plazo para presentar Ganancias 2025, cuyo vencimiento cae esta semana. Qué conviene hacer si todavía no presentaste.",
-   "date": "2026-08-24",
-   "category": "vencimientos",
-   "category_label": "Vencimientos",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/ganancias-2025-pedido-prorroga-vencimiento-2026-08-24"
-  },
-  {
-   "slug": "impacto-fiscal-cambios-impositivos-milei-2026-08-24",
-   "title": "Reforma impositiva de Milei: un costo fiscal neto del 4,7% del PBI hacia 2027",
-   "description": "Un informe privado calcula el impacto neto de los cambios tributarios del Gobierno. Analizamos qué tributos suben, cuáles bajan y qué implica para contadores y empresas.",
-   "date": "2026-08-24",
-   "category": "economia",
-   "category_label": "Economía y contexto",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/impacto-fiscal-cambios-impositivos-milei-2026-08-24"
   }
  ]
 }
