@@ -877,7 +877,7 @@
     "/invoices/{invoiceId}/email": {
       "post": {
         "summary": "Enviar la factura por email",
-        "description": "Envía el PDF de una factura autorizada desde noreply@facture.ar (solo envío, no recibe respuestas). Hasta 5 destinatarios y 200 envíos cada 24 horas.",
+        "description": "Envía el PDF de una factura autorizada desde noreply@facture.ar (solo envío, no recibe respuestas). Hasta 5 destinatarios por envío. Por mes podés mandar tantas facturas distintas como facturas emite tu plan (reenviar una que ya mandaste ese mes no suma), y cada factura hasta 5 veces cada 24 horas.",
         "tags": ["Facturas"],
         "parameters": [{ "name": "invoiceId", "in": "path", "description": "ID de la factura", "required": true, "schema": { "type": "string" } }],
         "requestBody": {
@@ -899,7 +899,7 @@
           "200": { "description": "Enviada", "content": { "application/json": { "schema": { "type": "object", "properties": { "sent": { "type": "boolean" }, "to": { "type": "array", "items": { "type": "string" } } } } } } },
           "400": { "description": "Destinatarios inválidos o factura no autorizada", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
           "404": { "description": "Factura no encontrada", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
-          "429": { "description": "Límite diario de envíos alcanzado", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
+          "429": { "description": "La factura ya se mandó 5 veces en las últimas 24 horas, o llegaste al límite mensual de facturas enviadas de tu plan", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
         }
       }
     },
@@ -1029,6 +1029,15 @@
             "name": "cuit",
             "in": "query",
             "description": "CUIT emisor (o parte de él)",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cuitId",
+            "in": "query",
+            "description": "ID del CUIT emisor en Facturear (filtro exacto). Alternativa a cuit",
             "required": false,
             "schema": {
               "type": "string"
@@ -1536,7 +1545,7 @@
     "/invoices/batches/{batchId}/items/{itemId}/retry": {
       "post": {
         "summary": "Reintentar item de lote",
-        "description": "Reintenta el procesamiento de un item específico que falló en un lote.",
+        "description": "Reintenta el procesamiento de un item específico que falló en un lote. Solo items en estado error, hasta 5 reintentos manuales por item.",
         "tags": ["Lotes"],
         "parameters": [
           {
@@ -1591,6 +1600,7 @@
               }
             }
           },
+          "400": { "description": "El item no está en estado error", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
           "404": {
             "description": "Lote o item no encontrado",
             "content": {
@@ -1600,14 +1610,16 @@
                 }
               }
             }
-          }
+          },
+          "409": { "description": "El item cambió de estado mientras se reintentaba (por ejemplo, otro reintento simultáneo ya lo volvió a encolar)", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "429": { "description": "El item ya tuvo 5 reintentos manuales. Contactá soporte", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
         }
       }
     },
     "/invoices/{invoiceId}/pdf": {
       "get": {
         "summary": "Obtener PDF de factura",
-        "description": "Genera el PDF de una factura. Por defecto devuelve una URL de descarga; con download=true devuelve el archivo.",
+        "description": "Genera el PDF de una factura. Por defecto devuelve una URL de descarga; con download=true devuelve el archivo. Si el pedido acepta text/html (un navegador que abre el link), responde 302 directo al PDF.",
         "tags": ["Facturas"],
         "parameters": [
           {
@@ -3322,6 +3334,13 @@
             "enum": ["contado", "cuenta_corriente", "tarjeta_debito", "tarjeta_credito", "transferencia", "cheque", "otra"],
             "description": "Condición de venta impresa en la factura (RG 1415, Anexo II, B). ARCA no la recibe"
           },
+          "emailTo": {
+            "type": "array",
+            "items": { "type": "string", "format": "email" },
+            "minItems": 1,
+            "maxItems": 5,
+            "description": "Direcciones a las que se manda el PDF de la factura apenas ARCA la autoriza. Mismos límites que POST /invoices/{invoiceId}/email"
+          },
           "fchServDesde": {
             "type": "string",
             "description": "Inicio del período facturado (servicios). Fecha en formato YYYYMMDD"
@@ -3667,6 +3686,10 @@
             "type": "string",
             "enum": ["facturear", "arca"],
             "description": "facturear: emitida desde Facturear. arca: copiada de un comprobante que ARCA ya había autorizado (Importar desde ARCA)"
+          },
+          "voidedBy": {
+            "type": ["string", "null"],
+            "description": "ID de la nota de crédito que anuló esta factura (POST /invoices/{invoiceId}/credit-note), o null. Solo viene en GET /invoices"
           },
           "createdAt": {
             "type": "string",

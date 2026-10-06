@@ -226,7 +226,7 @@ Aunque no mandes clave, una factura **nunca se anula dos veces**: si su nota de 
 
 ## Lo que ya lo usa
 
-- **El dashboard**: la factura rápida, la detallada y los lotes mandan una clave por envío, así que un doble clic o un reintento por la red no duplica la factura. **Anular factura** manda una clave por anulación.
+- **El dashboard**: la factura rápida, la detallada y los lotes mandan una clave por envío, así que un doble clic o un reintento por la red no duplica la factura. **Anular** manda una clave por anulación.
 - **Zapier**: cada paso de "Crear factura" o de borrador manda una clave derivada del Zap y de los datos del paso; si Zapier repite el paso, no se factura dos veces. Ver [Zapier y Google Drive](/es/guides/zapier-google-drive).
 - **Agentes de IA (MCP)**: `create_invoice` acepta `idempotency_key`, y las instrucciones del servidor le piden al agente mandar una y reusarla al reintentar. Ver [Agentes de IA](/es/guides/agentes-ia).
 

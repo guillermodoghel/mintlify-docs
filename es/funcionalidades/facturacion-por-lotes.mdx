@@ -3,7 +3,7 @@ title: 'Facturación por lotes'
 description: 'Emití muchas facturas de una vez desde la web: subís un CSV o cargás una tabla, revisás el resumen y emitís.'
 ---
 
-Con un lote emitís muchas facturas en una sola carga, sin usar la API. Cada fila es una factura distinta, con su CUIT emisor, punto de venta, monto y receptor. Podés subir un CSV o cargar las filas a mano, revisar el resumen y emitir. Después seguís el estado de cada factura en el detalle del lote.
+Con un lote emitís muchas facturas en una sola carga, sin usar la API. Todas las facturas del lote salen del CUIT elegido en el selector de CUIT de arriba de la pantalla, y cada fila es una factura distinta, con su punto de venta, monto y receptor. Podés subir un CSV o cargar las filas a mano, revisar el resumen y emitir. Después seguís el estado de cada factura en el detalle del lote.
 
 <Tip>
   El CSV del lote tiene un formato fijo. Si tus ventas están en tu propia planilla Excel, con tus columnas, usá [Documentos con IA](/es/funcionalidades/documentos-ia): la IA reconoce las columnas por vos.
@@ -11,7 +11,9 @@ Con un lote emitís muchas facturas en una sola carga, sin usar la API. Cada fil
 
 ## Dónde está
 
-En el menú, entrá a **Lotes** y tocá **Nuevo lote**. También está el acceso **Nuevo lote** en **Inicio**.
+En **Facturas**, pestaña **Lotes**, tocá **Nuevo lote**. También está la opción **Nuevo lote** en el botón **Nueva factura** de arriba del menú lateral, y el acceso **Nuevo lote** en **Inicio**.
+
+Si tenés más de un CUIT y en el selector de arriba está **Todos los CUITs**, la pantalla te pide que elijas uno ahí: el lote se emite con ese CUIT.
 
 ## Paso a paso
 
@@ -19,13 +21,13 @@ En el menú, entrá a **Lotes** y tocá **Nuevo lote**. También está el acceso
   <Step title="Cargá las facturas">
     Tenés dos formas, que se pueden combinar:
 
-    - **Cargar CSV**: subí un archivo `.csv` con el formato de abajo. Con **Descargar ejemplo** bajás uno armado con tu CUIT, tu punto de venta y tu IVA por defecto.
-    - **Agregar fila**: cargás cada factura en la tabla: **CUIT emisor**, **Pto. venta**, **Concepto**, **Receptor** y **Monto**. En el detalle de cada fila (**Descripción, fecha, IVA y tributos**) completás la descripción, la fecha del comprobante, la tasa de IVA y los tributos.
+    - **Cargar CSV**: subí un archivo `.csv` con el formato de abajo. Con **Descargar ejemplo** bajás uno armado con tu punto de venta y tu IVA por defecto.
+    - **Agregar fila**: cargás cada factura en la tabla: **Pto. venta**, **Concepto**, **Receptor** y **Monto**. En el detalle de cada fila (**Descripción, fecha, IVA y tributos**) completás la descripción, a quién mandarle la factura (**Enviar por email a**), la fecha del comprobante, la condición IVA del receptor, la tasa de IVA y los tributos.
 
     Lo que importás del CSV queda en la tabla, así que podés corregir cualquier valor antes de emitir.
   </Step>
   <Step title="Tocá Revisar y emitir">
-    La pantalla valida todas las filas y marca los errores (CUIT que no está en tu cuenta, punto de venta inválido, monto en cero, etc.). Si todo está bien, te muestra el **Resumen del lote**: cantidad de facturas, neto, IVA, tributos y **Total a facturar**, el desglose **Por CUIT emisor** si usás más de uno, y la lista de facturas.
+    La pantalla valida todas las filas y marca los errores (punto de venta que el CUIT no tiene habilitado, monto en cero, email inválido, etc.). Si todo está bien, te muestra el **Resumen del lote**: cantidad de facturas, neto, IVA, tributos y **Total a facturar**, y la lista de facturas (con la columna **Se envía a** si alguna lleva email).
   </Step>
   <Step title="Emití">
     Tocá **Emitir N facturas**. Si querés cambiar algo, **Seguir editando** te devuelve a la tabla. Al emitir, el lote se encola y te lleva a su detalle.
@@ -46,11 +48,10 @@ Si al emitir el lote falla por un error que la IA puede corregir, también te pr
 
 El archivo tiene que tener **una fila de encabezado** y al menos una fila de datos, separado por **comas**. Evitá comas dentro del texto de una celda, o exportá desde Excel o Sheets de forma que no rompa las columnas. El enlace **Formato del archivo** de la pantalla resume lo mismo.
 
-Orden fijo de las primeras columnas:
+El CSV no lleva el CUIT emisor: todas las filas salen del CUIT elegido arriba. Orden fijo de las primeras columnas:
 
 | Columna | Descripción |
 | --- | --- |
-| `cuit` | CUIT emisor (como lo tenés dado de alta en Facturear) |
 | `punto_venta_id` | Punto de venta numérico |
 | `concepto_id` | Concepto ARCA (1 productos, 2 servicios, 3 productos y servicios) |
 | `monto` | Importe |
@@ -66,7 +67,13 @@ Después de esas columnas:
 - **`descripcion`** (opcional): texto del comprobante. Si la celda va vacía, se usa el texto por defecto del concepto.
 - **Tributos** (opcional): grupos de **cuatro** columnas repetibles: `tributo_id`, `tributo_alic`, `tributo_base`, `tributo_desc`. Si usás tributos, incluí las columnas `cbte_fch` y `descripcion` aunque estén vacías, para que el orden coincida con el archivo de ejemplo.
 
-Los CSV antiguos **sin** la columna `cbte_fch` o **sin** `descripcion` siguen siendo válidos.
+Los CSV antiguos **sin** la columna `cbte_fch` o **sin** `descripcion` siguen siendo válidos. Los que todavía empiezan con una columna `cuit` también se leen, siempre que todas las filas sean del CUIT elegido arriba; si el archivo es de otro CUIT, la pantalla te avisa y no lo carga. Cambiá el CUIT en el selector o borrá la columna `cuit`.
+
+### Columna email
+
+Para mandarle cada factura a tu cliente, agregá una columna `email` (también vale `mail` o `correo`) en cualquier posición. Cada factura se envía sola a esa dirección apenas ARCA la autoriza, con el PDF adjunto y el [diseño de mail](/es/guides/diseno-factura#diseño-del-mail) de tu CUIT. Si son varias direcciones, separalas con un espacio (hasta 5 por factura). Las filas sin email no se envían.
+
+Los envíos cuentan para el límite de mails de tu plan y quedan en **Facturas → Mails enviados**. Ver [Enviar una factura por email](/es/guides/enviar-factura-email).
 
 ## Fechas y correlatividad (ARCA)
 
@@ -84,17 +91,19 @@ La fecha efectiva de cada fila es `cbte_fch` si la cargaste; si no, la fecha en 
 
 ## Después de emitir
 
-El procesamiento es **asíncrono**. En **Lotes** ves todos tus lotes y, en el detalle de cada uno, el estado de cada factura (pendiente, procesando, completado o con error), el mensaje de ARCA cuando algo falla y el botón **Reintentar** para las que quedaron con error.
+El procesamiento es **asíncrono**. En **Facturas → Lotes** ves todos tus lotes y, en el detalle de cada uno, el estado de cada factura (pendiente, procesando, completado o con error), el mensaje de ARCA cuando algo falla y el botón **Reintentar** para las que quedaron con error. Cada factura se puede reintentar a mano hasta 5 veces; si sigue fallando, escribinos.
+
+Si ARCA no responde a tiempo, puede haber autorizado la factura igual. En ese caso el ítem dice **ARCA no respondió; la factura puede estar autorizada. No la emitas de nuevo: reintentá este ítem.** Al reintentar, Facturear primero le consulta a ARCA si ese número quedó autorizado: si quedó, lo adopta con su CAE en vez de emitir otro, así no hay dos facturas para la misma venta.
 
 ## Límites
 
 - Hasta **500** facturas por lote.
-- Los CUITs del CSV tienen que estar en tu cuenta, y el punto de venta tiene que estar habilitado para ese CUIT.
+- Un lote sale de un solo CUIT, y el punto de venta tiene que estar habilitado para ese CUIT.
 - Cada factura cuenta para el límite de tu plan.
 
 ## Relación con otros métodos
 
-- [Factura rápida](/es/funcionalidades/facturador-rapido) y [factura detallada](/es/funcionalidades/factura-detallada): un comprobante por vez. Por dentro también se procesan como un lote de un ítem, por eso aparecen en **Lotes**.
+- [Factura rápida](/es/funcionalidades/facturador-rapido) y [factura detallada](/es/funcionalidades/factura-detallada): un comprobante por vez. Por dentro también se procesan como un lote de un ítem, por eso aparecen en la pestaña **Lotes**.
 - [Documentos con IA](/es/funcionalidades/documentos-ia): para planillas con tus propias columnas, remitos, fotos o texto.
 - [API de lotes](/es/guides/facturacion-lotes): para crear lotes desde tu sistema.
 

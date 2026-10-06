@@ -6,7 +6,7 @@ description: 'Vinculá tu celular y facturá mandando un texto, una foto o un PD
 
 Con WhatsApp le mandás a Facturear lo que querés facturar (un mensaje, una foto o un PDF), te responde con un resumen de la factura y la emite solo cuando tocás **Emitir**. Cuando ARCA la autoriza, te llegan el CAE y el PDF al mismo chat.
 
-Además, tus integraciones y plantillas pueden mandarte cada venta al WhatsApp para que la confirmes con **Facturar** o **Rechazar** (ver [Confirmar ventas por WhatsApp](#confirmar-ventas-por-whatsapp)).
+Además, tus integraciones y plantillas pueden mandarte cada venta al WhatsApp para que la confirmes con **Facturar** o la marques como **No facturable** (ver [Confirmar ventas por WhatsApp](#confirmar-ventas-por-whatsapp)).
 
 ## Vincular tu número
 
@@ -82,14 +82,28 @@ Con el número vinculado, tus integraciones (tiendas online, MercadoLibre y Merc
 
 Si todavía no vinculaste tu número, la opción aparece bloqueada con **Vincular WhatsApp →**. Aplica a lo que entre desde que la activás.
 
-Cada venta te llega al chat con el total, el comprador y los ítems, y la pregunta **¿La facturo?**:
+Cada venta te llega al chat con el total, el comprador y los ítems. Los botones dependen de si la venta trae el documento del comprador:
 
-- **Facturar**: la emite y te manda el PDF al chat. Si la integración no manda la factura al comprador por su cuenta y tenemos su mail, te aparece **Enviar al comprador**.
-- **Rechazar**: esa venta no se factura. Si cambiás de idea, la facturás desde la web (con el link que te mandamos).
+| La venta trae | Te preguntamos | Botones |
+| --- | --- | --- |
+| CUIT o DNI del comprador | **¿La facturo a ese documento o a consumidor final?** | **A CUIT 20-…** (o **A DNI …**), **Consumidor final** y **No facturable** |
+| Sin documento | **¿La facturo?** | **Facturar** y **No facturable** |
+
+- **A CUIT …** / **Facturar**: la emite y, cuando ARCA la autoriza, te manda el PDF al chat con el CAE. Si la integración no manda la factura al comprador por su cuenta y tenemos su mail, te aparece **Enviar al comprador**.
+- **Consumidor final**: factura la misma venta sin el documento del comprador (el nombre y el mail se mantienen).
+- **No facturable**: esa venta no se factura y queda como omitida en la web. Si cambiás de idea, tocá el botón para facturarla en el mismo mensaje.
+
+Si pasaron más de 24 horas desde la última vez que le escribiste al número de Facturear, WhatsApp solo nos deja mandarte un mensaje de plantilla: la venta te llega resumida en una línea, con los botones **Facturar**, **Consumidor final** y **Marcar como no facturable**.
+
+Si ARCA rechaza la factura, te llega el motivo con **Reintentar** (y, si la venta trae documento, **Consumidor final**) y **No facturable**.
 
 Si no contestás, la venta queda como pendiente en la integración para facturarla a mano. Por cada integración te preguntamos hasta 20 ventas por vez, así un atraso no te llena el chat. Una factura de plantilla a la que le falta algún dato no se pregunta por WhatsApp: queda para revisar en la web.
 
-Las ventas pendientes de todas tus integraciones se ven en [Desde integraciones](/es/guides/desde-integraciones).
+Si WhatsApp no llega a entregarte una pregunta (por ejemplo, porque el número no estaba disponible), la volvemos a mandar más tarde, y apenas le escribís algo al número de Facturear te llega de nuevo con los botones.
+
+En Mercado Pago, en modo **Confirmar por WhatsApp** los cobros se buscan cada minuto, así la pregunta te llega al ratito de recibir la transferencia. Ver [Mercado Pago](/es/guides/mercado-pago-transferencias).
+
+Las ventas pendientes de todas tus integraciones se ven en [Ventas](/es/guides/desde-integraciones).
 
 ## Límites y errores
 
@@ -104,5 +118,5 @@ Las ventas pendientes de todas tus integraciones se ven en [Desde integraciones]
 ## Relacionado
 
 - [Facturar con IA](/es/funcionalidades/documentos-ia): plantillas y documentos, la misma lectura que usa WhatsApp.
-- [Desde integraciones](/es/guides/desde-integraciones): las ventas pendientes de todas tus integraciones.
+- [Ventas](/es/guides/desde-integraciones): las ventas pendientes de todas tus integraciones.
 - [Agentes de IA](/es/guides/agentes-ia): facturar desde Claude, ChatGPT y otros asistentes.

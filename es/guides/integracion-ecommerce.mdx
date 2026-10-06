@@ -18,8 +18,8 @@ Si vendés online, Facturear puede traer las ventas de tu tienda y facturarlas: 
 | WooCommerce | Escribís la dirección de tu tienda y aprobás el acceso en WordPress | Al instante |
 | VTEX | Cargás el nombre de la cuenta, una App Key y su App Token | Dentro de la hora |
 | Magento 2 / Adobe Commerce | Cargás la dirección de la tienda y el Access Token de una integración | Dentro de la hora |
-| MercadoLibre | Conectás tu cuenta de MercadoLibre. Ver [MercadoLibre](/es/guides/mercadolibre) | Sí |
-| Mercado Pago | Conectás tu cuenta. Solo manual: traés las transferencias y elegís cuáles facturar. Ver [Mercado Pago](/es/guides/mercado-pago-transferencias) | No |
+| MercadoLibre | Conectás tu cuenta de MercadoLibre. Ver [MercadoLibre](/es/guides/mercadolibre) | Al instante |
+| Mercado Pago | Conectás tu cuenta. Manual (traés las transferencias y elegís cuáles facturar) o confirmando cada cobro por WhatsApp. Ver [Mercado Pago](/es/guides/mercado-pago-transferencias) | No |
 
 Tiendanube, Shopify y WooCommerce avisan a Facturear en cada pedido pagado, por eso el modo automático factura al instante. VTEX y Magento no mandan avisos: Facturear revisa los pedidos una vez por hora.
 
@@ -39,12 +39,13 @@ Tiendanube, Shopify y WooCommerce avisan a Facturear en cada pedido pagado, por 
   Elegí **¿Cómo querés facturar?** y tocá **Empezar a facturar**
 </Steps>
 
-### Automática o manual
+### Automática, por WhatsApp o manual
 
 - **Automática**: cada pedido pagado se factura solo. Aplica a lo que entra desde que la activás; lo anterior lo facturás a mano.
+- **Confirmar por WhatsApp**: cada pedido pagado te llega al WhatsApp vinculado para que lo factures o lo marques como no facturable desde el chat, y el PDF te vuelve ahí. Ver [WhatsApp](/es/guides/whatsapp#confirmar-ventas-por-whatsapp).
 - **Manual**: importás los pedidos de un período, los revisás y elegís cuáles facturar. Sirve si no todo lo que vendés se factura igual.
 
-Lo podés cambiar cuando quieras. Las ventas de todas tus integraciones, las que esperan revisión y las que se facturaron solas, las ves en **Facturación → Desde integraciones**. Ver [Desde integraciones](/es/guides/desde-integraciones).
+Lo podés cambiar cuando quieras. Las ventas de todas tus integraciones, las que esperan revisión y las que se facturaron solas, las ves en **Facturación → Ventas**. Ver [Ventas](/es/guides/desde-integraciones).
 
 ### Cómo arma la factura
 
@@ -201,7 +202,7 @@ Si tu e-commerce tiene alto volumen y no querés facturar en tiempo real, podés
 
 ## Recursos relacionados
 
-- [Desde integraciones](/es/guides/desde-integraciones)
+- [Ventas: lo que traen tus integraciones](/es/guides/desde-integraciones)
 - [Facturación en lotes](/es/guides/facturacion-lotes)
 - [API Reference completa](/es/api-reference)
 - [Emitir tu primera factura](/es/guides/primera-factura)

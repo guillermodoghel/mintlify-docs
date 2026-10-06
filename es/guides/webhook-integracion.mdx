@@ -160,7 +160,7 @@ Todos los eventos comparten estos campos:
 | `invoice.id` | Id del intento en Facturear. Es `null` si la factura falló antes de llegar a ARCA (datos inválidos, CUIT sin certificados, etc.) |
 | `invoice.voucherNumber` | Número que se intentó usar, o `null`. Si ARCA rechazó el comprobante, ese número no se consume |
 | `invoice.batchId` / `invoice.jobId` | Lote e ítem. Con ellos podés reintentar el ítem con `POST /api/invoices/batches/{batchId}/items/{itemId}/retry` |
-| `errorCategory` | Categoría del error cuando la hay (por ejemplo `VALIDATION_ERROR` o `AFIP_ERROR`), o `null` |
+| `errorCategory` | Categoría del error cuando la hay (por ejemplo `VALIDATION_ERROR` o `AFIP_ERROR`), o `null`. Con `ARCA_OUTCOME_UNKNOWN`, ARCA no respondió y el comprobante puede estar autorizado: no lo emitas de nuevo con otra `Idempotency-Key`, reintentá el ítem (ver [idempotencia](/es/guides/idempotencia)) |
 | `attempts` | En qué intento automático falló en forma definitiva |
 | `errors` | Errores que devolvió ARCA (`code` y `message`). Si la falla no vino de ARCA, trae el mensaje del error con `code: null` |
 | `observations` | Observaciones de ARCA sobre el comprobante (`code` y `message`), que explican el rechazo |

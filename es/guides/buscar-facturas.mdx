@@ -9,6 +9,17 @@ La API de Facturear incluye endpoints para **consultar el historial de facturas*
 
 ---
 
+## Desde el dashboard
+
+En **Facturas**, pestaña **Emitidas**, ves todo lo que emitiste, de la más nueva a la más vieja, en el modo de tu cuenta (Producción o Testing) y del CUIT elegido en el selector de CUIT de arriba. Cada fila muestra el tipo y número de comprobante, el receptor, la descripción, la fecha y el importe, con un punto de color según el estado. Tocá la fila para abrir la factura.
+
+- **Buscador**: busca por CUIT, comprobante, tipo o receptor.
+- **Filtros Avanzados**: **Comprobante** (número), **Tipo de Comprobante** (facturas, notas de crédito y notas de débito A, B y C), **Receptor** (DNI, CUIT o nombre) y **Estado** (**Exitoso** o **Error**). El filtro **CUIT** aparece solo si tenés más de un CUIT y arriba está elegido **Todos los CUITs**.
+- **Con error**: las facturas que ARCA rechazó llevan esa etiqueta. Tocala para ver el motivo que devolvió ARCA.
+- **Anulada**: las facturas anuladas con una [nota de crédito](/es/guides/nota-credito-debito#anular-una-factura-completa) muestran el importe tachado.
+
+---
+
 ## Listar facturas
 
 ### GET /api/invoices

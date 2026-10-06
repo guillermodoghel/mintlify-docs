@@ -23,7 +23,7 @@ En **Documentos** le das a Facturear lo que ya tenés, como un remito en PDF, la
     Arriba de la zona de carga elegís:
 
     - **Plantilla**: una de tus [plantillas](#plantillas), o **Sin plantilla (la IA decide todo)**.
-    - **CUIT que emite**: si la plantilla ya tiene un CUIT, usa ese.
+    - **CUIT que emite**: arranca con el CUIT elegido en el selector de CUIT de arriba de la pantalla. Si la plantilla ya tiene un CUIT, usa ese.
     - **Qué hacer con las facturas**: **Revisar antes** (quedan como borradores) o **Emitir solas**. En modo automático se emiten solas las que tienen todos los datos, los importes cierran y la lectura es segura; las demás quedan para revisar.
   </Step>
   <Step title="Subí los documentos">
@@ -54,12 +54,12 @@ Además indicás si **Los importes incluyen IVA** y si **Filas con el mismo valo
 Con **Crear plantilla y releer** guardás ese mapeo en una plantilla nueva y la planilla se vuelve a leer con las columnas confirmadas. Las próximas planillas con las mismas columnas se leen solas, sin IA, eligiendo esa plantilla. Si una planilla no tiene alguna columna que la plantilla espera, te avisa con **Faltan columnas en la planilla**.
 
 <Tip>
-  Si ya tenés un CSV en el formato fijo de Facturear (columnas `cuit`, `punto_venta_id`, `monto`, etc.), también podés usar [Lotes](/es/funcionalidades/facturacion-por-lotes).
+  Si ya tenés un CSV en el formato fijo de Facturear (columnas `punto_venta_id`, `concepto_id`, `monto`, etc.), también podés usar [Lotes](/es/funcionalidades/facturacion-por-lotes).
 </Tip>
 
 ## Plantillas
 
-Una plantilla le dice a Facturear cómo leer y facturar un tipo de documento. Están en **Configuración → Plantillas** (o en el botón **Plantillas** de Documentos). Con **Nueva plantilla** configurás:
+Una plantilla le dice a Facturear cómo leer y facturar un tipo de documento. Están en la pestaña **Plantillas** de Documentos. Con **Nueva plantilla** configurás:
 
 - **Nombre**, **CUIT que emite** y **Punto de venta** (o el predeterminado del CUIT).
 - **Qué hacer con las facturas de esta plantilla**: **Revisar antes de emitir**, **Confirmar por WhatsApp** (cada factura te llega al WhatsApp con **Facturar** y **Rechazar**; ver [Facturar por WhatsApp](/es/guides/whatsapp)) o **Emitir solas**.

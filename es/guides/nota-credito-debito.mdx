@@ -50,7 +50,7 @@ Las notas de crédito/débito siguen el **mismo tipo** que la factura que ajusta
 
 Si querés anular la factura entera, no hace falta cargar nada a mano:
 
-- **Desde el dashboard**: en **Facturas**, abrí la factura y tocá **Anular factura**. Facturear emite la nota de crédito que corresponde (Factura A → NC A, B → NC B, C → NC C, M → NC M) por el total, con el mismo cliente, ítems, importes y moneda, asociada a la factura y con fecha de hoy. El detalle muestra después que la factura quedó anulada y enlaza la nota.
+- **Desde el dashboard**: en **Facturas**, abrí la factura y tocá **Anular**. Te muestra qué nota de crédito se va a emitir y por cuánto; confirmás con **Emitir** y el nombre de la nota. Facturear emite la nota de crédito que corresponde (Factura A → NC A, B → NC B, C → NC C, M → NC M) por el total, con el mismo cliente, ítems, importes y moneda, asociada a la factura y con fecha de hoy. El detalle muestra después que la factura quedó anulada y enlaza la nota, y en la lista de **Facturas** aparece como **Anulada**, con el importe tachado.
 - **Con la API**: `POST /api/invoices/{invoiceId}/credit-note`, sin cuerpo. La respuesta (`202`) trae el `batchId` para seguir la nota hasta el CAE.
 
 ```bash

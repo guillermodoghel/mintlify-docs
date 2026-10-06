@@ -22,15 +22,23 @@ Si todavía no lo conectaste, seguí primero la [guía de inicio](/es/getting-st
 
 ## Opción 1: Emitir desde el dashboard
 
-Entrá a [facture.ar](https://facture.ar) y, en el menú, a **Facturas**. Arriba tenés dos botones:
+Entrá a [facture.ar](https://facture.ar). Arriba del menú tenés siempre el botón **Nueva factura**, con cuatro opciones:
 
-- **Nueva factura**: la factura rápida. Un monto y una descripción, a consumidor final. Es lo más rápido para empezar.
+- **Factura rápida**: un monto y una descripción, a consumidor final. Es lo más rápido para empezar.
 - **Factura detallada**: elegís el tipo de comprobante, identificás al cliente, cargás ítems y tributos.
+- **Nuevo lote**: muchas facturas desde una planilla. Ver [Facturación en lotes](/es/guides/facturacion-lotes).
+- **Desde documentos**: la IA lee remitos y pedidos y arma la factura.
+
+En **Facturas** también tenés **Nueva factura** (la rápida) y **Factura detallada** arriba de la lista.
+
+Si recién conectaste tu CUIT y todavía no facturaste, al terminar la conexión te llevamos directo a la factura rápida con el aviso **¡Tu CUIT quedó conectado con ARCA!**.
+
+Si tenés más de un CUIT, la factura sale del **CUIT activo**, el que elegiste en el selector de arriba. Ver [El CUIT activo](/es/guides/multiples-cuits#el-cuit-activo).
 
 ### Factura rápida
 
-1. Tocá **Nueva factura**.
-2. Elegí el **CUIT**. El punto de venta, el concepto y el tipo de comprobante salen de los predeterminados del CUIT; para cambiarlos, tocá **Ajustes**.
+1. Tocá **Nueva factura** → **Factura rápida**.
+2. Revisá el **CUIT** (es el activo). El punto de venta, el concepto y el tipo de comprobante salen de los predeterminados del CUIT; para cambiarlos, tocá **Ajustes**. Si el CUIT no tiene un tipo predeterminado, sale Factura C si sos monotributista o Factura B si sos responsable inscripto.
 3. Escribí una descripción (opcional: si la dejás vacía, sale "Venta de servicios").
 4. Cargá el **Monto** y elegí si es **Total sin IVA** o **Total con IVA**.
 5. Tocá **Generar Factura**.
@@ -39,8 +47,8 @@ La factura rápida no pide datos del receptor: sale a consumidor final sin ident
 
 ### Factura detallada
 
-1. Tocá **Factura detallada**.
-2. Elegí el **CUIT**, el **Punto de Venta**, el **Concepto** y el **Tipo** de comprobante:
+1. Tocá **Nueva factura** → **Factura detallada**.
+2. Revisá el **CUIT** (es el activo) y elegí el **Punto de Venta**, el **Concepto** y el **Tipo** de comprobante:
 
 | Si sos... | Y tu cliente es... | Elegí... |
 |---|---|---|
@@ -68,8 +76,9 @@ Según el tipo de comprobante y el monto:
 Facturear manda la factura a ARCA y, cuando vuelve el CAE (en segundos), te lleva al detalle de la factura. Ahí ves el CAE, su vencimiento y la factura como se imprime, y podés:
 
 - **Descargar PDF**
-- **Compartir PDF** por email o WhatsApp
 - **Enviar por email**: le llega a tu cliente con el PDF adjunto, con el [diseño de mail](/es/guides/diseno-factura) de tu CUIT
+- **Compartir** el PDF desde tu celular o navegador (por ejemplo, por WhatsApp)
+- **Anular**: emite la nota de crédito por el total. Ver [Notas de crédito y débito](/es/guides/nota-credito-debito)
 
 ---
 

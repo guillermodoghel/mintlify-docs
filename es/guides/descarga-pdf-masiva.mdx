@@ -17,7 +17,7 @@ Facturear permite descargar el PDF de cada factura emitida, desde el dashboard o
 
 ### Desde el dashboard
 
-En **Facturas**, abrí la factura y usá **"Descargar PDF"**. Desde la misma pantalla, **"Compartir PDF"** te permite compartirla por email o WhatsApp, y **"Enviar por email"** se la manda a tu cliente desde Facturear.
+En **Facturas**, abrí la factura y usá **"Descargar PDF"**. Desde la misma pantalla, **"Enviar por email"** se la manda a tu cliente desde Facturear, y en el celular **"Compartir"** te deja pasar el PDF por WhatsApp u otra app.
 
 ### Con la API
 
@@ -46,6 +46,8 @@ curl "https://www.facture.ar/api/invoices/cmg1a2b3e0002xyz/pdf" \
   "environment": "production"
 }
 ```
+
+Si abrís ese mismo link (`/api/invoices/{id}/pdf`) en el navegador, con tu sesión iniciada, va directo al PDF en vez de mostrar el JSON. Pasa, por ejemplo, con el link que te devuelve un [agente de IA](/es/guides/agentes-ia).
 
 Si la factura no existe o no es tuya, la respuesta es `404`.
 

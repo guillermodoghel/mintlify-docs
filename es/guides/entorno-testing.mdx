@@ -100,7 +100,7 @@ Antes de pasar a producción, testeá al menos estos escenarios:
 
 <AccordionGroup>
   <Accordion title="¿Las facturas de testing aparecen en mis reportes?">
-    Nunca se mezclan con las reales. **Facturas** y **Reportes** muestran solo el entorno en el que está tu cuenta: con el **Modo Testing** prendido ves solo las facturas de prueba, y con el modo apagado, solo las de producción. Por API, `GET /api/invoices` y `GET /api/invoices/stats` devuelven las del entorno de tu API Key.
+    Nunca se mezclan con las reales. **Inicio**, **Facturas** y **Reportes** muestran solo el entorno en el que está tu cuenta: con el **Modo Testing** prendido ves solo las facturas de prueba (Inicio lo aclara con **Entorno de testing: los números son de homologación**), y con el modo apagado, solo las de producción. Por API, `GET /api/invoices` y `GET /api/invoices/stats` devuelven las del entorno de tu API Key.
   </Accordion>
   <Accordion title="¿Puedo usar el mismo CUIT para testing y producción?">
     Sí, pero con diferentes certificados. El CUIT es el mismo; lo que cambia es si usás el certificado de homologación (testing) o el de producción.

@@ -19,7 +19,7 @@ No hace falta tener cuenta de antemano: si no tenés, la creás en el mismo paso
 
 ## La forma rápida: pegale esto a tu agente
 
-Copiá este mensaje y pegalo en el chat de tu agente (también está, con el botón de copiar, en **Agentes** dentro del panel):
+Copiá este mensaje y pegalo en el chat de tu agente (también está, con el botón **Copiar mensaje**, en **Configuración → Agentes IA** dentro del panel):
 
 ```text
 Conectá Facturear (facturación electrónica ARCA, Argentina) como servidor MCP. Las instrucciones para agentes están en https://www.facture.ar/llms.txt: leelas y hacé la conexión. La URL del servidor es https://www.facture.ar/api/mcp, con login OAuth (no hace falta client ID ni secret). Si no podés agregar conectores vos mismo, decime los pasos exactos para hacerlo en esta app y después ayudame a facturar.
@@ -45,7 +45,7 @@ No le das tu contraseña ni tu API Key al agente. La conexión usa **OAuth**, el
   </Step>
 </Steps>
 
-Podés ver y desconectar los agentes conectados cuando quieras desde **Agentes** en el panel.
+Podés ver y desconectar los agentes conectados cuando quieras desde **Configuración → Agentes IA** en el panel.
 
 ---
 
@@ -75,20 +75,20 @@ Podés ver y desconectar los agentes conectados cuando quieras desde **Agentes**
   <Tab title="ChatGPT">
     <Steps>
       <Step title="Activá el modo desarrollador">
-        Tu foto de perfil → **Configuración → Aplicaciones y conectores** (Apps & Connectors). Abajo, en **Configuración avanzada**, activá **Modo desarrollador** (Developer mode).
+        En chatgpt.com, tu foto de perfil → **Configuración → Seguridad e inicio de sesión** (Settings → Security and login) y activá **Modo desarrollador** (Developer mode). Por ahora se activa solo desde la web.
       </Step>
       <Step title="Creá el conector">
-        En esa misma pantalla tocá **Crear**. Nombre: `Facturear`. Descripción: `Facturas electrónicas de ARCA`. URL del servidor MCP: `https://www.facture.ar/api/mcp`. Autenticación: **OAuth**. No pide Client ID ni Secret.
+        Andá a **Plugins** y tocá **+**. Nombre: `Facturear`. Descripción: `Facturas electrónicas de ARCA`. En **Conexión** (Connection), la URL del servidor MCP: `https://www.facture.ar/api/mcp`. Autenticación: **OAuth**. No pide Client ID ni Secret.
       </Step>
       <Step title="Conectá">
-        Tocá Crear, iniciá sesión en Facturear y aprobá el acceso.
+        Creá la conexión, iniciá sesión en Facturear y aprobá el acceso.
       </Step>
       <Step title="Usalo en el chat">
         En un chat nuevo, **+ → Modo desarrollador** y marcá Facturear. Pedile las cosas nombrándolo: "usá Facturear para...".
       </Step>
     </Steps>
 
-    Necesitás ChatGPT Plus, Pro, Business, Enterprise o Edu: el plan gratuito no admite conectores propios. En Business/Enterprise, un admin tiene que permitir antes **Crear conectores MCP personalizados** en Permisos y roles → Datos conectados.
+    Necesitás ChatGPT Plus, Pro, Business, Enterprise o Edu: el plan gratuito no admite conectores propios. En Business/Enterprise, si no ves **Modo desarrollador**, lo habilita un admin del workspace.
   </Tab>
   <Tab title="Claude Code">
     ```bash
@@ -177,7 +177,7 @@ El link vence a los 30 minutos y sirve una sola vez. Si usás un agente en la te
     Tus CUITs, tu plan y uso, y tus facturas. Nunca tu clave fiscal ni las claves privadas de tus certificados.
   </Accordion>
   <Accordion title="¿Cómo lo desconecto?">
-    Desde el panel, en **Agentes**, tocá **Desconectar**. El agente pierde el acceso en su próxima llamada. También podés quitarlo desde la configuración de conectores de tu agente.
+    Desde el panel, en **Configuración → Agentes IA**, tocá **Desconectar** en **Agentes conectados**. El agente pierde el acceso en su próxima llamada. También podés quitarlo desde la configuración de conectores de tu agente.
   </Accordion>
   <Accordion title="Me aparece un error al conectar">
     Revisá que la URL sea exactamente `https://www.facture.ar/api/mcp` (con `www`) y que no hayas cargado un Client ID o Client Secret. Si sigue fallando, escribinos desde el chat de soporte del panel.

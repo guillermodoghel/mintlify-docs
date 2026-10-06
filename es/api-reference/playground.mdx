@@ -11,7 +11,7 @@ Cada página de la sección **API Endpoints** tiene un playground: completás lo
 
 <Steps>
   <Step title="Conseguí tu API Key de testing">
-    En [facture.ar](https://www.facture.ar), en el menú lateral, entrá a **Desarrolladores → Claves API** y copiá la key de la tarjeta **Testing** (empieza con `test_sk_`). Ver [API Keys](/es/guides/api-keys).
+    En [facture.ar](https://www.facture.ar), en el menú lateral, entrá a **Desarrolladores → Claves API** y usá la key de la tarjeta **Testing** (empieza con `test_sk_`). La key completa se muestra una sola vez, al generarla: si no la guardaste, tocá **Regenerar** y copiá la nueva (la anterior deja de funcionar). Ver [API Keys](/es/guides/api-keys).
 
     <Warning>
       Usá la key de testing. Con la de producción (`prod_sk_`), el playground emite comprobantes reales ante ARCA.
@@ -24,7 +24,7 @@ Cada página de la sección **API Endpoints** tiene un playground: completás lo
     - `GET /cuits`: tus CUITs, con su id en Facturear
     - `POST /invoices`: emitir una factura (o varias, mandando un array)
     - `GET /invoices/batches/{batchId}`: el resultado de la emisión, con el CAE
-    - `GET /invoices`: listar y buscar facturas. Para buscar, usá los parámetros `search`, `receptor`, `cuit`, `tipo`, `comprobante` y `status`
+    - `GET /invoices`: listar y buscar facturas. Para buscar, usá los parámetros `search`, `receptor`, `cuit`, `cuitId`, `tipo`, `comprobante` y `status`
     - `GET /invoices/{invoiceId}/pdf`: el PDF de una factura
   </Step>
 

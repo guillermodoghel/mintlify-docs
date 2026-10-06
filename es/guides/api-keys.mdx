@@ -35,7 +35,9 @@ Cada cuenta tiene **dos API Keys**: una de producción y una de testing. Las gen
   Copiá la API Key con **"Copiar"** y guardala en un lugar seguro (por ejemplo, en las variables de entorno de tu servidor)
 </Steps>
 
-La key queda visible en esa misma pantalla, así que podés volver a copiarla cuando la necesites.
+<Warning>
+  La key completa se muestra **una sola vez**, en el momento en que la generás. Facturear no la guarda (solo guarda un hash), así que no la vas a poder ver de nuevo: copiala antes de salir de la pantalla. Después, en la tarjeta queda solo el principio y el final (por ejemplo `prod_sk_…1a2b`) para que sepas cuál está en uso. Si la perdiste, regenerala.
+</Warning>
 
 ---
 
@@ -118,7 +120,7 @@ const apiKey = process.env.FACTUREAR_API_KEY;
 Rotá las API Keys periódicamente. Como hay una sola key por entorno, al regenerarla la anterior deja de funcionar en el acto:
 
 1. Ingresá a **Desarrolladores → Claves API** y hacé clic en **"Regenerar"** en la tarjeta del entorno
-2. Copiá la nueva key
+2. Copiá la nueva key en ese momento: es la única vez que se muestra completa
 3. Actualizá tu aplicación para usar la nueva key lo antes posible
 4. Verificá que todo funciona con la nueva key
 

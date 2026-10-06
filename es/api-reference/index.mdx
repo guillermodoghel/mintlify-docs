@@ -40,6 +40,8 @@ Con una API Key, el header `x-environment` y el parámetro `environment` se igno
 3. En la tarjeta **Producción** o **Testing**, tocá **Generar clave**
 4. Copiala con **Copiar** y guardala en un lugar seguro
 
+La key completa se muestra **una sola vez**, cuando la generás: Facturear guarda solo un hash, así que después en el panel ves apenas el principio y el final (`prod_sk_…1a2b`). Si la perdiste, regenerala.
+
 Con **Regenerar** obtenés una key nueva: la anterior deja de funcionar en el acto. Ver [API Keys](/es/guides/api-keys).
 
 ## URL base
@@ -74,7 +76,13 @@ Los errores de autenticación, de validación y los internos siguen el formato *
 | `resolution` | Qué hacer para resolverlo |
 | `error` | El mismo texto de siempre, para los clientes que ya leían `error` |
 
+Los errores de `Idempotency-Key` también traen un `code` propio: `IDEMPOTENCY_KEY_INVALID` (400), `IDEMPOTENCY_KEY_IN_PROGRESS` (409) e `IDEMPOTENCY_KEY_REUSED` (422). Ver [Reintentar sin duplicar facturas](/es/guides/idempotencia).
+
 Algunas respuestas todavía son JSON común con `error` y, a veces, `details` y `code`. Por ejemplo, al superar el límite de tu plan la API responde `403` con `code: "SUBSCRIPTION_LIMIT_EXCEEDED"`. En los dos formatos siempre está `error`, así que leer ese campo te sirve para todos los casos.
+
+## Especificación OpenAPI
+
+La sección **API Endpoints** sale de la especificación completa de esta documentación. Además, la app publica en [`https://www.facture.ar/openapi.json`](https://www.facture.ar/openapi.json) una versión reducida pensada para agentes de IA: crear y listar facturas, anular con nota de crédito y los documentos públicos de descubrimiento (`/api/v1`, `/api/v1/sandbox`). Es la que citan los mensajes de error en `resolution`.
 
 ## Playground
 
