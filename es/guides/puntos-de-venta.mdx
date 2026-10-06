@@ -23,7 +23,7 @@ Para empezar a facturar con Facturear alcanza con uno, y lo dejamos listo nosotr
 
 ## El punto de venta al conectar tu CUIT
 
-No tenés que darlo de alta vos. Cuando [conectás tu CUIT](/es/getting-started/index), Facturear entra a ARCA y deja listo un punto de venta Web Services. Si ya tenías uno, usamos ese. Queda como punto de venta por defecto del CUIT.
+No tenés que darlo de alta vos. Cuando [conectás tu CUIT](/es/getting-started/index), nuestro agente de trámites entra a ARCA y deja listo un punto de venta Web Services. Si ya tenías uno, usamos ese. Queda como punto de venta por defecto del CUIT.
 
 ---
 
@@ -145,7 +145,7 @@ curl https://www.facture.ar/api/cuits/cmg0a1b2c0000abc/pos/last-vouchers \
 
 `date` es la fecha del comprobante en ARCA (`AAAA-MM-DD`) e `invoiceId` es la factura en Facturear, o `null` si no se emitió desde acá. Consulta a ARCA, así que tarda unos segundos. La primera vez que se cargan, el primero de la lista queda como punto de venta por defecto; lo podés cambiar con `POST /api/cuits/{id}/default-pos` (ver [Configurar defaults por CUIT](/es/guides/configurar-defaults-cuit)).
 
-Desde el dashboard, lo mismo está en **CUITs** → tu CUIT → **Puntos de Venta**, con el botón **Actualizar**.
+Desde el dashboard, lo mismo está en **CUITs** → tu CUIT → **Puntos de Venta**, con el botón **Actualizar**. Ahí también cambiás el punto de venta por defecto con **Establecer como predeterminado**.
 
 ---
 

@@ -1,21 +1,23 @@
 ---
 title: 'Importar desde ARCA'
 sidebarTitle: 'Importar desde ARCA'
-description: 'Traé a Facturear los comprobantes que ya emitiste en ARCA o en otra plataforma, para que tus reportes y el Libro IVA queden completos.'
+description: 'Traé a Facturear los comprobantes que ya emitiste en ARCA o en otra plataforma, para que tus reportes y el Libro IVA queden completos, y las facturas que te emitieron tus proveedores.'
 ---
 
 Si empezaste a usar Facturear a mitad de año, o emitís también desde otra plataforma, tus reportes quedan incompletos. **Importar desde ARCA** trae lo que ARCA ya autorizó para tu CUIT y lo suma al libro de ventas.
 
 Lo importado **no se vuelve a emitir** y **no cuenta para el cupo mensual** de tu plan. Cada comprobante se suma por la fecha en que ARCA lo autorizó.
 
-## Paso a paso
+La pantalla tiene dos pestañas: **Emitidos**, lo que facturaste vos, y **Recibidos**, lo que te facturaron tus proveedores (ver [Comprobantes recibidos](#comprobantes-recibidos)).
+
+## Paso a paso (emitidos)
 
 <Steps>
   <Step title="Abrí la pantalla">
-    En el menú, dentro de **Facturación**, entrá a **Importar desde ARCA**.
+    En el menú, dentro de **Configuración**, entrá a **Importar de ARCA**. Se abre en la pestaña **Emitidos**.
   </Step>
   <Step title="Elegí el CUIT y el período">
-    Si tenés más de un CUIT, elegilo en el selector. Después elegí el período: **Desde principio de mes**, **Desde principio de año** o **El año pasado**.
+    La importación es del CUIT elegido en el selector de CUIT de arriba de la pantalla; si ahí está **Todos los CUITs**, elegilo en el selector de la pantalla. Después elegí el período: **Desde principio de mes**, **Desde principio de año**, **El año pasado** o **Los últimos 12 meses**.
   </Step>
   <Step title="Relevá">
     Tocá **Relevar en ARCA**. Leemos tus puntos de venta y la numeración de cada tipo de comprobante, y te mostramos una tabla por punto de venta y tipo con cuántos hay **En el período**, cuántos están **Ya en Facturear** y cuántos quedan **Por traer**.
@@ -46,6 +48,27 @@ ARCA solo guarda los totales y el IVA por alícuota de cada comprobante. Por eso
 - **Nada para traer**: en ese período no hay comprobantes nuevos en ARCA, o ya están todos en Facturear.
 - Podés **Cancelar** mientras se releva o se importa.
 
+## Comprobantes recibidos
+
+En la pestaña **Recibidos** traés las facturas que tus proveedores le emitieron a tu CUIT, como figuran en **Mis Comprobantes** de ARCA. Un agente entra a ARCA con tu clave fiscal, las descarga y las carga en Facturear.
+
+<Steps>
+  <Step title="Elegí el período">
+    **Desde principio de mes**, **Desde principio de año** o **El año pasado**.
+  </Step>
+  <Step title="Tocá Importar recibidos">
+    Si Facturear no tiene tu clave fiscal guardada, o ARCA rechazó la que estaba, te la pide antes de empezar. Tarda uno o dos minutos y podés cerrar la página: sigue solo.
+  </Step>
+</Steps>
+
+Al terminar ves cuántos hay en ARCA, cuántos son nuevos y cuántos ya estaban (los repetidos no se duplican), y la lista **Recibidos importados** con fecha, comprobante, número, emisor, IVA y total. Para traer otro período, tocá **Importar otro período**; si falló, **Reintentar**.
+
+Los recibidos aparecen en [Reportes](/es/guides/reportes-libro-iva#recibidos), pestaña **Recibidos**.
+
+### Actualización diaria (plan Pro)
+
+Con el plan Pro o superior, el interruptor **Actualización diaria** trae los recibidos solos todos los días a la mañana. Ahí mismo ves si está activada y cuándo fue la **Última actualización**. Para que pueda correr sola, Facturear necesita tu clave fiscal: si no la tiene, actualizá una vez a mano.
+
 <Note>
-La importación respeta el entorno de tu cuenta: con el [Modo Testing](/es/guides/entorno-testing) prendido, trae lo emitido en homologación.
+La importación de emitidos respeta el entorno de tu cuenta: con el [Modo Testing](/es/guides/entorno-testing) prendido, trae lo emitido en homologación.
 </Note>

@@ -1,10 +1,10 @@
 ---
 title: 'Reportes y Libro IVA'
 sidebarTitle: 'Reportes y Libro IVA'
-description: 'Mirá el libro de ventas de cualquier período, con el IVA por alícuota y los tributos, y descargá el Libro IVA en CSV para tu contador.'
+description: 'Mirá el libro de ventas de cualquier período, con el IVA por alícuota y los tributos, descargá el Libro IVA en CSV para tu contador y revisá lo que te facturaron tus proveedores.'
 ---
 
-En **Reportes** (menú **Facturación**) ves el libro de ventas de un período: cuánto facturaste, el IVA débito fiscal y el detalle por alícuota, tributo, tipo de comprobante, mes, CUIT y punto de venta. Las fechas son las del comprobante y **las notas de crédito restan**.
+En **Reportes** (menú **Facturación**) hay dos pestañas: **Emitidos**, lo que facturaste, y **Recibidos**, lo que te facturaron (ver [Recibidos](#recibidos)). Reportes abre en **Emitidos**, el libro de ventas de un período: cuánto facturaste, el IVA débito fiscal y el detalle por alícuota, tributo, tipo de comprobante, mes, CUIT y punto de venta. Las fechas son las del comprobante y **las notas de crédito restan**.
 
 ## Elegir el período
 
@@ -18,7 +18,7 @@ Usá uno de los atajos:
 
 O cargá **Desde** y **Hasta** y tocá **Ver período**. El rango puede cubrir como máximo un año: si elegís uno más largo, se corta a un año.
 
-Si tenés más de un CUIT, podés filtrar por uno o ver **Todos**.
+El reporte es del CUIT elegido en el selector de CUIT de arriba de la pantalla; con **Todos los CUITs** suma todos. Al pasar de una pestaña a la otra se mantienen el período y el CUIT.
 
 ## Qué muestra
 
@@ -30,6 +30,12 @@ Si tenés más de un CUIT, podés filtrar por uno o ver **Todos**.
 - **Otras monedas**: los comprobantes en moneda extranjera no se suman con los pesos; se listan aparte.
 
 Los comprobantes rechazados por ARCA no entran en los totales.
+
+## Tope de monotributo
+
+Si el CUIT es monotributista, arriba del reporte ves el **Tope de monotributo**: lo facturado en los últimos 12 meses contra el tope de tu categoría, con el porcentaje usado y cuánto te queda **Disponible** (o en cuánto lo superaste). Las notas de crédito restan y solo entran los comprobantes en pesos. Si ARCA no informa la categoría del CUIT, no hay tope para comparar.
+
+Si facturaste fuera de Facturear, [importá esos comprobantes desde ARCA](/es/guides/importar-desde-arca) para que cuenten.
 
 ## Descargar el Libro IVA
 
@@ -47,6 +53,12 @@ curl "https://www.facture.ar/api/reports/libro-iva?desde=2026-01-01&hasta=2026-0
 ```
 
 Sumá `&cuit=<id del CUIT>` para filtrar por un CUIT.
+
+## Recibidos
+
+En la pestaña **Recibidos** ves lo que te facturaron tus proveedores en el período, según **Mis Comprobantes** de ARCA: cuánto **Te facturaron**, el **Neto gravado**, el **IVA crédito fiscal** (solo lo discriminan las facturas A y M) y la cantidad de **Proveedores**, con el detalle **Por mes**, **Por proveedor** y la lista de **Comprobantes**. Las notas de crédito restan.
+
+Con un CUIT elegido en el selector de arriba, **Actualizar desde ARCA** trae lo que ARCA tenga para ese período; los que ya estaban no se duplican. Ahí también está el interruptor **Actualización diaria** del plan Pro. Más detalles en [Importar desde ARCA](/es/guides/importar-desde-arca#comprobantes-recibidos).
 
 ## Completar con lo emitido en otra plataforma
 

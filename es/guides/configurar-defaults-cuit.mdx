@@ -20,6 +20,10 @@ Si tu integración siempre emite el mismo tipo de factura desde el mismo punto d
 
 Además, podés marcar uno de tus CUITs como **CUIT por defecto**: es el que se usa cuando una factura no trae `cuitId` ni `cuit`.
 
+<Note>
+  El **CUIT por defecto** de la API no es lo mismo que el **CUIT activo** que elegís en el selector del header del dashboard. El CUIT activo solo cambia qué ves y desde qué CUIT emitís en la web; a la API no le llega, así que cambiarlo no afecta tu integración.
+</Note>
+
 ---
 
 ## Cómo configurar defaults vía API

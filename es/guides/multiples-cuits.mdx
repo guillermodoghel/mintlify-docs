@@ -21,13 +21,13 @@ Facturear permite gestionar **múltiples CUITs** desde una sola cuenta. Es ideal
 ## Cómo agregar un CUIT adicional
 
 <Steps>
-  Ingresá a **Mis CUITs** y hacé clic en **Agregar CUIT**
+  Ingresá a **CUITs** y hacé clic en **Agregar CUIT**
 
-  Ingresá el nuevo CUIT y la clave fiscal. Si la clave es tuya como contador o apoderado, marcá **Entro con la clave de otra persona**
+  Te lleva directo al login de ARCA: ingresá el nuevo CUIT y la clave fiscal. Si la clave es tuya como contador o apoderado, tocá **Entro con la clave de otra persona (mi contador, un apoderado)**. Si la clave la tiene tu cliente, tocá **La clave la tiene otra persona: mandale un link** y la carga él
 
   Nosotros lo conectamos con ARCA en unos 5 minutos ([ver la guía](/es/getting-started/index))
 
-  Una vez conectado, el nuevo CUIT está disponible en tu cuenta
+  Una vez conectado, el nuevo CUIT aparece en el selector de CUIT de arriba
 </Steps>
 
 ---
@@ -47,13 +47,14 @@ Para tener más de un CUIT necesitás el plan Pro. Si necesitás más de 25, esc
 
 ---
 
-## Elegir el CUIT al facturar
+## El CUIT activo
 
-No hay un CUIT "activo" para toda la cuenta: cada pantalla te deja elegir con qué CUIT trabajar.
+Con más de un CUIT, arriba de la pantalla tenés el selector de **CUIT activo**: lo elegís una vez y todas las pantallas trabajan con ese. Desde 6 CUITs el selector tiene un buscador (**Buscar por nombre o CUIT**). La elección se recuerda la próxima vez que entres. Con un solo CUIT el selector no aparece.
 
-- **Nueva factura** (rápida o detallada) y **Lotes**: elegís el CUIT emisor en el formulario. Arranca con tu CUIT predeterminado.
-- **Diseño**: elegís el CUIT en el selector de arriba.
-- **Reportes**: podés ver todos los CUITs juntos o filtrar uno.
+- **Inicio**, **Facturas**, **Reportes**, **Diseño**, **Documentos** e **Importar de ARCA** muestran solo el CUIT activo.
+- **Nueva factura** (rápida o detallada) emite con el CUIT activo; para facturar con otro, cambialo en el selector. Con **Todos los CUITs**, elegís el CUIT en el formulario.
+- **Nuevo lote**: todas las facturas del lote salen del CUIT activo.
+- **Todos los CUITs** muestra los números de todos juntos en Inicio, Facturas y Reportes. Con esa opción, **Nuevo lote** te pide que elijas un CUIT en el selector antes de emitir.
 - **CUITs**: cada CUIT tiene su propia configuración (puntos de venta, tributos, conceptos, IVA).
 
 ### Con la API
@@ -88,7 +89,7 @@ En un lote (`POST /api/invoices` con un array), cada factura puede llevar un CUI
 
 ## CUIT por defecto
 
-Podés marcar un **CUIT predeterminado**: es el que aparece elegido en los formularios de facturación y el que usa la API cuando no mandás `cuitId` ni `cuit`.
+Podés marcar un **CUIT predeterminado**: es el que queda como CUIT activo si no elegiste otro y el que usa la API cuando no mandás `cuitId` ni `cuit`.
 
 1. Entrá a **CUITs**
 2. En el CUIT que querés, hacé clic en **Establecer como predeterminado**
@@ -97,13 +98,15 @@ Podés marcar un **CUIT predeterminado**: es el que aparece elegido en los formu
 
 ## CUITs de tus clientes
 
-Para conectar el CUIT de un cliente no necesitás su clave fiscal: al agregarlo marcá **Entro con la clave de otra persona** e ingresá tu CUIT/CUIL y tu clave, siempre que administres ese CUIT en ARCA. Configuramos todo a nombre del CUIT de tu cliente. Lo mismo vale para las empresas, que no tienen clave fiscal propia. Ver [Si entra otra persona por vos](/es/getting-started/index#si-entra-otra-persona-por-vos).
+Para conectar el CUIT de un cliente no necesitás su clave fiscal: al agregarlo tocá **Entro con la clave de otra persona (mi contador, un apoderado)** e ingresá tu CUIT/CUIL y tu clave, siempre que administres ese CUIT en ARCA. Configuramos todo a nombre del CUIT de tu cliente. Lo mismo vale para las empresas, que no tienen clave fiscal propia. Ver [Si entra otra persona por vos](/es/getting-started/index#si-entra-otra-persona-por-vos).
+
+Si no administrás el CUIT y la clave la tiene tu cliente, mandale un link de un solo uso para que la cargue él, sin pasártela. Ver [Si la clave la tiene otra persona](/es/getting-started/index#si-la-clave-la-tiene-otra-persona).
 
 ---
 
 ## Reportes por CUIT
 
-En **Reportes** podés ver lo facturado por todos tus CUITs juntos o elegir uno, y descargar el CSV del período con ese mismo filtro. Esto es útil para estudios contables que necesitan separar la información de cada cliente.
+**Reportes** muestra lo facturado por el CUIT activo, o por todos juntos si elegiste **Todos los CUITs** en el selector, y descarga el CSV del período con ese mismo filtro. Esto es útil para estudios contables que necesitan separar la información de cada cliente.
 
 ---
 
@@ -111,7 +114,7 @@ En **Reportes** podés ver lo facturado por todos tus CUITs juntos o elegir uno,
 
 <AccordionGroup>
   <Accordion title="¿Los CUITs de mis clientes están separados entre sí?">
-    Sí. Cada CUIT tiene sus propios certificados, puntos de venta, configuración y facturas. En los listados y reportes podés filtrar por CUIT para ver solo los de un cliente.
+    Sí. Cada CUIT tiene sus propios certificados, puntos de venta, configuración y facturas. Con el selector de CUIT activo ves solo los de un cliente en los listados y reportes.
   </Accordion>
   <Accordion title="¿Qué pasa si llego al límite de CUITs?">
     No vas a poder agregar otro CUIT hasta que pases a un plan que lo permita.

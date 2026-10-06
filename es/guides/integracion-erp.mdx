@@ -193,7 +193,7 @@ Para producción, implementá un sistema de cola:
 
 1. El ERP encola la factura en lugar de llamar directamente a la API
 2. Un worker procesa la cola y llama a Facturear
-3. Si falla, el worker reintenta con backoff exponencial
+3. Si falla, el worker reintenta con backoff exponencial, mandando siempre el mismo header `Idempotency-Key` para esa factura: si el primer intento sí había llegado, Facturear devuelve el mismo `batchId` en vez de encolarla otra vez. Ver [Reintentar sin duplicar facturas](/es/guides/idempotencia)
 4. El ERP consulta el lote con `GET /api/invoices/batches/{batchId}` o recibe el resultado por webhook (`invoice.completed`/`invoice.failed`)
 5. Si un ítem falló por un error transitorio (ARCA caído, timeout), reintentalo con `POST /api/invoices/batches/{batchId}/items/{itemId}/retry`
 

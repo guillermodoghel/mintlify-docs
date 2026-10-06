@@ -8,53 +8,78 @@ Para emitir facturas con CAE, tu CUIT tiene que estar conectado con ARCA. En Fac
 
 ## Qué necesitás
 
-- Una cuenta en [facture.ar](https://facture.ar)
+- Una cuenta en [facture.ar](https://facture.ar). Te registrás con Google o con tu email, sin tarjeta, y arrancás en el plan Free
 - El CUIT con el que vas a facturar
-- La clave fiscal **nivel 3**, la misma con la que entrás a la web de ARCA
+- La clave fiscal **nivel 3**, la misma con la que entrás a la web de ARCA. Si la tiene otra persona, le mandás un link para que la cargue ella (ver [abajo](#si-la-clave-la-tiene-otra-persona))
 
 ## Paso a paso
 
 <Steps>
-  <Step title="Agregá tu CUIT">
-    Entrá a **Mis CUITs** y hacé clic en **Agregar CUIT** (o **Conectar mi primer CUIT** si es el primero). Si ya nos diste tu CUIT al registrarte, aparece cargado; si vas a facturar con otro, cambialo.
+  <Step title="Entrá a CUITs">
+    Al crear tu cuenta entrás directo a la app, en **CUITs**, con la bienvenida y una demo del agente de trámites. Tocá **Conectar mi primer CUIT**. Si ya tenés otros, usá **Agregar CUIT**.
   </Step>
-  <Step title="Ingresá tu clave fiscal">
-    Completá la clave fiscal y tocá **Conectar con ARCA**. Buscamos el CUIT en ARCA para confirmar que existe.
+  <Step title="Ingresá tu CUIT y tu clave fiscal">
+    La pantalla **Conectá tu CUIT con ARCA** está armada como el login de ARCA: **CUIT/CUIL** y **Clave**. Si el CUIT tiene un error de tipeo te lo marcamos mientras escribís, y cuando lo encontramos en ARCA te saludamos por tu nombre. Tocá **Conectar con ARCA**.
+  </Step>
+  <Step title="Validamos la clave en el momento">
+    Antes de arrancar, probamos la clave contra ARCA. Si está mal escrita, te avisamos ahí mismo y la corregís sin esperar.
   </Step>
   <Step title="Esperá a que termine la conexión">
-    Tarda unos 5 minutos. Podés cerrar la pantalla: la conexión sigue corriendo y te avisamos por email cuando termina.
+    Tarda unos 5 minutos y ves cada paso en pantalla. Podés cerrarla: la conexión sigue corriendo y te avisamos por email cuando termina.
   </Step>
-  <Step title="Diseñá tu factura">
-    Elegí los colores de la factura y el mensaje del mail que acompaña a cada una. Lo podés cambiar después desde **Configuración → Diseño**.
-  </Step>
-  <Step title="Empezá a facturar">
-    Listo: el CUIT ya puede emitir facturas electrónicas. Seguí con [tu primera factura](/es/guides/primera-factura).
+  <Step title="Emití tu primera factura">
+    Si todavía no facturaste, al terminar te llevamos a la **Factura rápida** con el aviso **¡Tu CUIT quedó conectado con ARCA!**: revisás los datos y la emitís. Seguí con [tu primera factura](/es/guides/primera-factura).
   </Step>
 </Steps>
 
+Si ya habías facturado antes (por ejemplo, cuando sumás otro CUIT), después de conectar pasás por dos pasos más:
+
+- **Diseñá tu factura**: los colores de la factura y el mensaje del mail que acompaña a cada una. Lo podés cambiar después desde **Configuración → Diseño**.
+- **Traé tus facturas** (opcional): **¿Traemos tus facturas del último año?** Con **Sí, traer mis facturas** importamos lo que ese CUIT ya emitió, también con otro sistema o en la web de ARCA, para tener tu libro de ventas completo y el tope de monotributo calculado con todo. No se vuelven a emitir ni cuentan en tu cupo mensual. Ves el avance en **Importar de ARCA**. Si no lo necesitás, tocá **Ahora no**.
+
 ## Qué hacemos en ARCA
 
-Entramos con tu CUIT y clave fiscal, como lo harías vos en la web, y:
+Nuestro agente de trámites entra con tu CUIT y clave fiscal, como lo harías vos en la web, y:
 
 1. Generamos tus certificados de homologación (pruebas) y producción, con una clave privada propia de tu CUIT.
 2. Autorizamos el servicio de factura electrónica para esos certificados.
 3. Dejamos listo un punto de venta Web Services. Si ya tenés uno, lo usamos.
 
-Tu clave fiscal se guarda cifrada (AES-256) y solo se usa para configurar y renovar tu conexión con ARCA. Nunca la mostramos ni la compartimos.
+## Cómo cuidamos tu clave fiscal
+
+- Se cifra **en tu navegador** antes de enviarse: lo que viaja y lo que guardamos es solo el texto cifrado.
+- La clave que la descifra vive en módulos de seguridad de hardware de nuestro proveedor de nube y nunca sale de ahí. El agente la descifra en el momento de hacer tu trámite en ARCA, y el modelo de IA que lo asiste nunca la ve.
+- Con **Recordar para otros procesos** (viene marcado) la guardamos cifrada para importar comprobantes y renovar la conexión sin pedírtela de nuevo. Si lo desmarcás, la borramos apenas termina la conexión.
+- Podés borrarla cuando quieras desde **Cuenta y plan → Privacidad**, con **Olvidar clave**. Ver [Cuenta y plan](/es/guides/cuenta-y-plan#privacidad).
+
+Al tocar **Conectar con ARCA** aceptás los Términos y condiciones y nos autorizás a operar en ARCA solo para lo que nos pidas. Todo el detalle está en [facture.ar/seguridad](https://facture.ar/seguridad).
 
 ## Si entra otra persona por vos
 
-Si el CUIT es de una empresa, o si quien tiene la clave es tu contador o un apoderado, marcá **Entro con la clave de otra persona**. Ingresás la CUIT/CUIL y la clave de la persona que administra ese CUIT en ARCA, y configuramos todo a nombre del CUIT que vas a facturar.
+Si el CUIT es de una empresa, o si quien entra a ARCA es tu contador o un apoderado con su propia clave, tocá **Entro con la clave de otra persona (mi contador, un apoderado)**. Completás el **CUIT que querés conectar**, la **CUIT/CUIL de quien ingresa** y su clave, y configuramos todo a nombre del CUIT que vas a facturar.
 
 Las empresas no tienen clave fiscal propia, así que siempre entran con la clave de una persona.
 
+## Si la clave la tiene otra persona
+
+Si la clave la tiene alguien que no está con vos (tu cliente, un socio), no hace falta que te la pase. Escribí el CUIT y tocá **La clave la tiene otra persona: mandale un link**:
+
+1. Copiá el link con **Copiar** o mandalo con **Mandar por WhatsApp**.
+2. Esa persona lo abre, ve **Clave fiscal de ARCA** y la carga ella con **Enviar a Facturear**. La clave viaja directo a Facturear: vos no la ves.
+3. Mientras tanto ves **Esperando que cargue la clave. Seguimos solos apenas llegue.** Cuando la carga, la conexión arranca sola.
+
+El link sirve una sola vez y vence a las 24 horas. Si se perdió, tocá **Generar otro link**: el anterior deja de funcionar. Si preferís cargarla vos, tocá **Mejor la cargo yo**.
+
 ## Si algo falla
 
+- **El CUIT/CUIL está mal escrito**: lo marcamos mientras escribís (por ejemplo, **Ese CUIT/CUIL no existe: revisá los números.**).
 - **ARCA no encuentra ese CUIT**: revisá el número.
-- **Ese CUIT ya está en tu cuenta**: buscalo en **Mis CUITs** para terminar de conectarlo.
-- **ARCA no está respondiendo**: es algo de ARCA, no de tu cuenta. Lo que ya quedó hecho se conserva, seguimos solos a la hora que indica la pantalla y te avisamos por email. Si no querés esperar, tocá **Probar ahora**.
-- **No pudimos terminar la conexión**: tocá **Reintentar**. Lo que ya quedó hecho se conserva y seguimos desde donde falló.
-- **Llegaste al límite de CUITs de tu plan**: para sumar otro CUIT tenés que pasar a un plan que lo permita.
+- **Ese CUIT ya está en tu cuenta**: buscalo en **CUITs** para terminar de conectarlo.
+- **La clave está mal**: te avisamos antes de arrancar la conexión. Corregila y probá de nuevo.
+- **ARCA pide cambiar la clave fiscal**: ARCA lo exige cuando pasó más de un año desde el último cambio o cuando la clave no cumple sus requisitos actuales (10 a 64 caracteres, con al menos 2 números, 4 letras, una mayúscula y una minúscula). Entrá a auth.arca.gob.ar con tu clave actual, elegí una nueva y cargala en Facturear.
+- **ARCA no está respondiendo**: es algo de ARCA, no de tu cuenta. Lo que ya quedó hecho se conserva, seguimos solos a la hora que indica la pantalla y te avisamos por email.
+- **No pudimos terminar la conexión**: tocá **Reintentar**. Lo que ya quedó hecho se conserva y seguimos desde donde falló. Si el problema es la clave, desde ahí también podés mandarle el link a quien la tiene. Para ayuda, tocá **Hablar con soporte**.
+- **Llegaste al límite de CUITs de tu plan**: para sumar otro CUIT tenés que pasar a un plan que lo permita (Pro suma hasta 25).
 
 Si seguís trabado, escribinos a [support@facture.ar](mailto:support@facture.ar) o por el chat dentro de la plataforma.
 

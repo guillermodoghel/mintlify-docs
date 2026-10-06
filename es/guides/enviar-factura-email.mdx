@@ -17,6 +17,25 @@ En **Facturas**, abrí la factura y tocá **Enviar por email**. Cargá hasta 5 d
 
 Solo se pueden enviar facturas autorizadas por ARCA. Las de homologación salen con **[PRUEBA]** en el asunto.
 
+### Automático, desde un lote
+
+En un [lote](/es/funcionalidades/facturacion-por-lotes#columna-email), agregá una columna `email` al CSV (o completá **Enviar por email a** en cada fila): cada factura se manda sola apenas ARCA la autoriza.
+
+---
+
+## Límites
+
+- **Por mes**: podés mandar por mail tantas facturas distintas como emite tu plan por mes (como mínimo, las del plan gratuito). En los planes sin límite de facturas, tampoco hay límite de mails. Reenviar una factura que ya mandaste este mes no suma.
+- **Por factura**: hasta 5 envíos cada 24 horas.
+
+Valen igual para los envíos a mano, los automáticos y los de la API.
+
+---
+
+## Mails enviados
+
+En **Facturas**, pestaña **Mails enviados**, está el historial de los mails que salieron del CUIT elegido arriba: la fecha, la factura, los destinatarios y el estado (**Enviado** o **No se envió**), y si fue **Manual** o **Automático**. Tocá una fila para ver el mail tal como salió. Si un envío automático falló, ahí ves el motivo; la podés mandar de nuevo desde el detalle de la factura.
+
 ---
 
 ## Con la API
@@ -36,6 +55,8 @@ curl -X POST https://www.facture.ar/api/invoices/cmuikenv10007kz045cbmekr0/email
 | `to` | string[] o string | Hasta 5 destinatarios. También acepta un string con direcciones separadas por coma |
 | `message` | string | Opcional, hasta 2000 caracteres. Se agrega debajo del saludo, antes del resto del mensaje del diseño; no lo reemplaza |
 
+Para que la factura se mande sola cuando ARCA la autorice, al emitir con `POST /api/invoices` sumá `emailTo` con hasta 5 direcciones (`"emailTo": ["cliente@ejemplo.com"]`).
+
 ### Respuesta
 
 ```json
@@ -46,7 +67,7 @@ curl -X POST https://www.facture.ar/api/invoices/cmuikenv10007kz045cbmekr0/email
 |---|---|
 | `400` | Un email inválido, más de 5 destinatarios, o la factura no está autorizada por ARCA |
 | `404` | La factura no existe o no es tuya |
-| `429` | Llegaste al límite de 200 envíos cada 24 horas |
+| `429` | Llegaste al límite de mails del mes de tu plan, o esa factura ya se envió 5 veces en las últimas 24 horas |
 
 ---
 

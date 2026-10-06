@@ -23,7 +23,7 @@ Facturear (facture.ar) es un software SaaS argentino orientado a empresas, desar
 - [Diseño de la factura](https://docs.facture.ar/es/guides/diseno-factura): Plantillas visuales, logo, datos del emisor y leyendas provinciales de Ingresos Brutos (CABA, Mendoza) por CUIT; qué exige ARCA en la factura impresa.
 - [Enviar una factura por email](https://docs.facture.ar/es/guides/enviar-factura-email): Enviarle el PDF al cliente desde noreply@facture.ar (dashboard, POST /api/invoices/{id}/email o la herramienta MCP send_invoice_email); solo envío, no recibe respuestas.
 - [Facturación en lotes](https://docs.facture.ar/es/guides/facturacion-lotes): Cómo emitir múltiples comprobantes en una sola operación.
-- [Reintentar sin duplicar facturas (Idempotency-Key)](https://docs.facture.ar/es/guides/idempotencia): Header Idempotency-Key en POST /api/invoices, PATCH /api/invoices/batches/{id} y POST /api/documents (idempotency_key en la herramienta MCP create_invoice): reenviar con la misma clave después de un timeout, error de red o 5xx devuelve la respuesta original (Idempotent-Replayed: true) en vez de otra factura; clave nueva solo para una factura distinta o después de un rechazo definitivo; 409 si sigue en curso, 422 si la clave se reusa con otro cuerpo; se guarda 7 días.
+- [Reintentar sin duplicar facturas (Idempotency-Key)](https://docs.facture.ar/es/guides/idempotencia): Header Idempotency-Key en POST /api/invoices, PATCH /api/invoices/batches/{id}, POST /api/invoices/{id}/credit-note y POST /api/documents (idempotency_key en la herramienta MCP create_invoice): reenviar con la misma clave después de un timeout, error de red o 5xx devuelve la respuesta original (Idempotent-Replayed: true) en vez de otra factura; clave nueva solo para una factura distinta o después de un rechazo definitivo; 409 si sigue en curso, 422 si la clave se reusa con otro cuerpo; se guarda 7 días.
 - [Tipos de comprobantes ARCA](https://docs.facture.ar/es/fundamentos/tipos-de-comprobantes): Facturas A, B, C, E, M, Notas de Crédito y Débito — cuándo usar cada una.
 - [Monotributo y facturación electrónica](https://docs.facture.ar/es/fundamentos/monotributo): Obligaciones y guía para monotributistas.
 - [Responsable Inscripto](https://docs.facture.ar/es/fundamentos/responsable-inscripto): Factura A, discriminación de IVA y obligaciones para RI.
@@ -40,7 +40,9 @@ Facturear (facture.ar) es un software SaaS argentino orientado a empresas, desar
 - [Importar desde ARCA](https://docs.facture.ar/es/guides/importar-desde-arca): Traer a Facturear los comprobantes ya emitidos en ARCA.
 - [Reportes y Libro IVA](https://docs.facture.ar/es/guides/reportes-libro-iva): Totales por período y exportación del Libro IVA.
 - [Cuenta y plan](https://docs.facture.ar/es/guides/cuenta-y-plan): Planes, suscripción con Mercado Pago, facturas extra y Modo Testing.
-- [API Reference](https://docs.facture.ar/es/api-reference/index): Documentación completa de la API REST de Facturear para integraciones.
+- [API Keys](https://docs.facture.ar/es/guides/api-keys): Una key por entorno (test_sk_ homologación, prod_sk_ producción) en el header x-api-key; se muestra completa una sola vez al generarla (se guarda hasheada) y si se pierde se regenera.
+- [Webhooks](https://docs.facture.ar/es/guides/webhook-integracion): Eventos delegation.completed, invoice.completed, invoice.failed, batch.completed y draft.review_required, firmados con HMAC-SHA256.
+- [API Reference](https://docs.facture.ar/es/api-reference/index): Documentación completa de la API REST de Facturear para integraciones. Errores en application/problem+json (RFC 9457) con code, message y resolution; especificación reducida para agentes en https://www.facture.ar/openapi.json.
 
 ## Datos clave del producto
 

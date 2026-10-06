@@ -1,12 +1,12 @@
 ---
 title: 'Facturar transferencias de Mercado Pago'
 sidebarTitle: 'Mercado Pago'
-description: 'Conectá tu cuenta de Mercado Pago, traé las transferencias que recibís y facturalas en un lote después de revisar quién te pagó.'
+description: 'Conectá tu cuenta de Mercado Pago, traé las transferencias que recibís y facturalas en un lote después de revisar quién te pagó, o confirmá cada una por WhatsApp.'
 ---
 
 Si cobrás por transferencia a tu cuenta de Mercado Pago, Facturear trae esos cobros para que los factures sin copiar datos a mano.
 
-Mercado Pago se factura **por lote**: importás lo que te transfirieron, revisás quién te pagó y generás todas las facturas juntas. Así nunca se factura un cobro que no correspondía.
+Mercado Pago nunca se factura solo: cada cobro lo confirmás vos, en un lote o por WhatsApp. Así nunca se factura un cobro que no correspondía (una devolución, plata entre tus cuentas).
 
 ## Conectar la cuenta
 
@@ -18,9 +18,16 @@ Mercado Pago se factura **por lote**: importás lo que te transfirieron, revisá
     Tocá **Conectar con Mercado Pago**. Te llevamos a Mercado Pago para que autorices a facture.ar a leer los cobros que recibís. Solo se pueden conectar cuentas de Mercado Pago Argentina.
   </Step>
   <Step title="Contanos cómo facturar">
-    Completá los datos de la factura y tocá **Empezar a facturar**.
+    Elegí **¿Cómo querés facturar?** (ver abajo), completá los datos de la factura y tocá **Empezar a facturar**.
   </Step>
 </Steps>
+
+## Manual o por WhatsApp
+
+- **Manual**: importás lo que te transfirieron, revisás quién te pagó y generás todas las facturas juntas, en un lote.
+- **Confirmar por WhatsApp**: cada cobro te llega al WhatsApp vinculado con los botones para facturarlo o marcarlo como no facturable, y el PDF te vuelve al chat. Aplica a lo que entre desde que lo activás. Necesitás tener tu número vinculado; ver [WhatsApp](/es/guides/whatsapp#confirmar-ventas-por-whatsapp).
+
+Lo podés cambiar cuando quieras en la pestaña **Configuración**.
 
 ## Datos de la factura
 
@@ -32,7 +39,7 @@ Mercado Pago se factura **por lote**: importás lo que te transfirieron, revisá
 
 ## Cómo llegan los cobros
 
-Cada hora traemos solos los cobros de los últimos días, así los encontrás esperando sin tener que importar. Si querés un período más largo, elegí el **Período** y tocá **Importar**.
+Mercado Pago no avisa cuando te entra una transferencia, así que la buscamos nosotros: cada 5 minutos traemos solos los cobros de los últimos días, y **cada minuto** si la cuenta está en **Confirmar por WhatsApp**. Así los encontrás esperando en la pestaña **Cobros** sin tener que importar. Si querés un período más largo, elegí el **Período** y tocá **Importar**.
 
 Por defecto la lista muestra **Solo transferencias**; destildalo para ver también otros cobros. Las transferencias entre cuentas propias se marcan como **Entre cuentas propias**.
 
@@ -41,11 +48,13 @@ Por defecto la lista muestra **Solo transferencias**; destildalo para ver tambi�
 Para cada transferencia ves la fecha, **Quién pagó**, **CUIT / DNI**, el **Importe**, el estado de la factura y el mail.
 
 1. Revisá el **CUIT / DNI** de quien pagó. Si falta, cargalo; sin CUIT la factura sale a **Consumidor final**. También podés marcar **Consumidor final** a propósito.
-2. Si un cobro no se tiene que facturar, tocá **No facturar**. Queda como **Omitida**; lo podés recuperar con **Incluir**.
-3. Seleccioná las transferencias y tocá **Generar lote de N**.
+2. Si un cobro no es una venta, tocá **No facturar** en su fila. Si son varios, seleccionalos y tocá **No facturar** en la barra de abajo. Quedan como **Omitida** y dejan de aparecer en **Por facturar**; los podés recuperar con **Incluir**.
+3. Seleccioná las transferencias y tocá **Generar lote de N**. La barra de abajo te muestra el total y cuántas salen a Consumidor Final por no tener CUIT/DNI.
 
 Las facturas se emiten como un [lote](/es/guides/facturacion-lotes): tocá **Ver el lote** para seguir el avance. Los filtros **Por facturar**, **Facturadas**, **Con error**, **Omitidas** y **Todas** te ayudan a encontrar cada cobro.
 
 ## Desconectar
 
 Podés desconectar la cuenta cuando quieras. Las facturas ya emitidas no se tocan.
+
+Los cobros pendientes de todas tus integraciones también se ven en [Ventas](/es/guides/desde-integraciones).

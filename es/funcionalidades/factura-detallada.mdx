@@ -9,6 +9,7 @@ Si solo necesitás facturar un importe a consumidor final, la [factura rápida](
 
 ## Dónde está
 
+- En el botón **Nueva factura** de arriba del menú lateral, la opción **Factura detallada**.
 - En **Facturas**, el botón **Factura detallada**.
 - En **Inicio**, el acceso **Factura detallada**.
 
@@ -16,7 +17,9 @@ Si solo necesitás facturar un importe a consumidor final, la [factura rápida](
 
 <Steps>
   <Step title="Configurá el comprobante">
-    Elegí **CUIT**, **Punto de Venta**, **Concepto** (productos, servicios o ambos) y **Tipo** de comprobante. Arrancan con los valores por defecto del CUIT.
+    Elegí **CUIT**, **Punto de Venta**, **Concepto** (productos, servicios o ambos) y **Tipo** de comprobante. Arrancan con los valores por defecto del CUIT. Si elegiste un CUIT en el selector de CUIT de arriba de la pantalla, el formulario usa ese y se cambia desde ahí.
+
+    Si el CUIT no tiene un tipo de comprobante predeterminado, el formulario propone Factura B (a consumidor final) para un responsable inscripto y Factura C para un monotributista.
 
     Los tipos que ves dependen del CUIT: un monotributista emite comprobantes clase C; un responsable inscripto, clase A y B. En la misma lista están las facturas y las notas de crédito y de débito.
   </Step>
@@ -62,6 +65,8 @@ Si en **Tipo** elegís una nota de crédito o de débito, aparece la sección de
 - **Fecha del Comprobante Asociado**.
 
 El resto del formulario se completa igual que una factura. Más detalles en [Notas de crédito y débito](/es/guides/nota-credito-debito).
+
+Para anular una factura entera no hace falta este formulario: abrí la factura en **Facturas** y tocá **Anular**. Facturear emite la nota de crédito por el total. Ver [Anular una factura completa](/es/guides/nota-credito-debito#anular-una-factura-completa).
 
 ## Valores por defecto
 

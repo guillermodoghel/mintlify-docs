@@ -13,6 +13,10 @@ La **facturación en lotes** te permite emitir múltiples facturas electrónicas
 
 Si cargás comprobantes con **archivo CSV** desde la web (sin armar integración propia), el flujo, las columnas y el archivo de ejemplo están detallados en **[Facturación por lotes desde la app](/es/funcionalidades/facturacion-por-lotes)**. Incluye la columna opcional **`cbte_fch`**, correlatividad de fechas dentro del lote y contra ARCA.
 
+En el dashboard, el lote sale siempre del **CUIT activo** (el que elegiste en el selector del header): el CSV ya no lleva columna de CUIT emisor. El CSV también acepta una columna **`email`** (o `mail`/`correo`): cada factura se manda sola a esa dirección apenas ARCA la autoriza.
+
+Por API no hay CUIT activo: cada ítem indica su emisor con `cuitId` o `cuit` y, si no mandás ninguno, se usa el CUIT por defecto de la cuenta.
+
 ---
 
 ## Fecha del comprobante (`cbteFch`) en la API
@@ -65,7 +69,7 @@ Para facturación retroactiva (por ejemplo cerrar un mes anterior), solo es cohe
 POST https://www.facture.ar/api/invoices
 ```
 
-El cuerpo es un array donde cada elemento tiene **el mismo formato que una factura suelta** (ver [Emitir tu primera factura](/es/guides/primera-factura)). Cada ítem puede tener su propio `cuitId`, tipo de comprobante, receptor e importes:
+El cuerpo es un array donde cada elemento tiene **el mismo formato que una factura suelta** (ver [Emitir tu primera factura](/es/guides/primera-factura)). Cada ítem puede tener su propio `cuitId`, tipo de comprobante, receptor e importes, y un `emailTo` opcional (hasta 5 direcciones) para que el PDF se mande solo cuando ARCA la autoriza:
 
 ```javascript
 const facturas = [
@@ -86,7 +90,8 @@ const facturas = [
     impIVA: 5250,
     impTotal: 30250,
     iva: [{ id: 5, baseImp: 25000, importe: 5250 }],
-    description: 'Suscripción Pro - Septiembre 2026'
+    description: 'Suscripción Pro - Septiembre 2026',
+    emailTo: ['facturacion@clienteuno.com.ar']  // opcional: se manda el PDF cuando ARCA la autoriza
   },
   {
     cuitId: 'id-de-tu-cuit',
