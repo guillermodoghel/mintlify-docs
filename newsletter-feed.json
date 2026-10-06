@@ -3,6 +3,17 @@
  "url": "https://docs.facture.ar/es/newsletter/index",
  "notes": [
   {
+   "slug": "factura-electronica-obligatoria-monotributo-social-promovido-2026-10-06",
+   "title": "Monotributo Social y promovidos: la factura electrónica será obligatoria desde el 1° de noviembre de 2026",
+   "description": "ARCA extiende la factura electrónica a los monotributistas sociales y promovidos. Los comprobantes en papel quedan solo para contingencias y los sujetos no alcanzados por IVA tienen plazo hasta marzo de 2027.",
+   "date": "2026-10-06",
+   "category": "facturacion",
+   "category_label": "Facturación electrónica",
+   "impact": "alto",
+   "impact_note": "Si sos monotributista social o promovido, desde el 1° de noviembre de 2026 tenés que emitir tus comprobantes en forma electrónica. Con Facturear podés hacerlo habilitando un punto de venta electrónico y vinculando tu CUIT antes de esa fecha.",
+   "url": "https://docs.facture.ar/es/newsletter/notas/factura-electronica-obligatoria-monotributo-social-promovido-2026-10-06"
+  },
+  {
    "slug": "arca-servicio-web-ganancias-personas-juridicas-declaraciones-2026-10-05",
    "title": "Ganancias Personas Jurídicas: el nuevo servicio web de ARCA para las declaraciones juradas de sociedades",
    "description": "ARCA habilita desde el 19 de octubre de 2026 un nuevo servicio web para confeccionar y presentar Ganancias de sociedades y otros sujetos. Será obligatorio desde marzo de 2027 para ejercicios cerrados a partir de junio de 2026.",
@@ -870,17 +881,6 @@
    "impact": "ninguno",
    "impact_note": null,
    "url": "https://docs.facture.ar/es/newsletter/notas/arca-prorroga-ganancias-2025-presentacion-ddjj-2026-08-25"
-  },
-  {
-   "slug": "clave-fiscal-arca-obtener-recuperar-celular-2026-08-25",
-   "title": "Clave Fiscal de ARCA: cómo obtenerla o recuperarla desde el celular",
-   "description": "Guía práctica para gestionar la Clave Fiscal desde la app ARCA Móvil, un trámite clave para monotributistas y contribuyentes que necesitan operar online.",
-   "date": "2026-08-25",
-   "category": "arca",
-   "category_label": "ARCA y procedimientos",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/clave-fiscal-arca-obtener-recuperar-celular-2026-08-25"
   }
  ]
 }
