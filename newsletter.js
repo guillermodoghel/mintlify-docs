@@ -1,8 +1,8 @@
 /*
  * Newsletter Facturear: subscribe prompts for docs.facture.ar.
  *
- * - Modal: once someone has read a second news note, it offers the newsletter a single time.
- *   Closing it is remembered in localStorage and it never shows again.
+ * - Modal: the first thing anyone who isn't subscribed sees on any newsletter page (front page or a
+ *   note). Closing it hides it for the rest of the visit (sessionStorage); the next visit shows it again.
  * - Banner: a small pill in the corner on every page, until they subscribe. Its × hides it
  *   for the rest of the session only.
  * - Inline: any element with data-fa-newsletter="inline" (front page, end of each note)
@@ -19,9 +19,11 @@
   var STATE_KEY = 'fa-newsletter';
   var VIEWS_KEY = 'fa-newsletter-views';
   var BANNER_KEY = 'fa-newsletter-banner-hidden';
+  var MODAL_KEY = 'fa-newsletter-modal-closed';
+  var NEWSLETTER_PATH = /^\/es\/newsletter(\/|$)/;
   var NOTE_PATH = /^\/es\/newsletter\/notas\/([^/?#]+)/;
-  var VIEWS_BEFORE_MODAL = 2;
-  var MODAL_DELAY_MS = 6000;
+  // Just enough for Mintlify to paint the page behind it
+  var MODAL_DELAY_MS = 700;
 
   // Storage can throw (private mode, blocked site data): every access degrades to "no value"
   function read(store, key) {
@@ -131,7 +133,7 @@
 
   function closeModal(remember) {
     if (!modal) return;
-    if (remember && state() !== 'subscribed') setState('dismissed');
+    if (remember) write('sessionStorage', MODAL_KEY, '1');
     modal.remove();
     modal = null;
     document.removeEventListener('keydown', onKey);
@@ -197,6 +199,10 @@
       setTimeout(function () {
         input.focus();
       }, 50);
+  }
+
+  function modalAllowed() {
+    return state() !== 'subscribed' && read('sessionStorage', MODAL_KEY) !== '1';
   }
 
   // ── Banner ───────────────────────────────────────────────────────────────
@@ -267,15 +273,16 @@
     renderBanner();
 
     var m = path.match(NOTE_PATH);
-    if (!m) return;
-    var seen = views();
-    if (seen.indexOf(m[1]) === -1) {
-      seen.push(m[1]);
-      write('localStorage', VIEWS_KEY, JSON.stringify(seen.slice(-50)));
+    if (m) {
+      var seen = views();
+      if (seen.indexOf(m[1]) === -1) {
+        seen.push(m[1]);
+        write('localStorage', VIEWS_KEY, JSON.stringify(seen.slice(-50)));
+      }
     }
-    if (!state() && seen.length >= VIEWS_BEFORE_MODAL) {
+    if (NEWSLETTER_PATH.test(path) && modalAllowed()) {
       modalTimer = setTimeout(function () {
-        if (!state() && location.pathname === path) openModal('modal');
+        if (modalAllowed() && location.pathname === path) openModal('modal');
       }, MODAL_DELAY_MS);
     }
   }
