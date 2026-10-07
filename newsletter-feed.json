@@ -3,6 +3,28 @@
  "url": "https://docs.facture.ar/es/newsletter/index",
  "notes": [
   {
+   "slug": "anticipos-ganancias-reduccion-octubre-2026-10-07",
+   "title": "Anticipos de Ganancias: quiénes pueden pedir la reducción en octubre 2026 y cómo hacerlo",
+   "description": "En octubre vence el quinto anticipo del Impuesto a las Ganancias. Te explicamos quiénes pueden solicitar la reducción ante ARCA, cuándo conviene hacerlo y cómo realizar el trámite paso a paso.",
+   "date": "2026-10-07",
+   "category": "ganancias",
+   "category_label": "Ganancias",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/anticipos-ganancias-reduccion-octubre-2026-10-07"
+  },
+  {
+   "slug": "inocencia-fiscal-ii-sin-promulgar-prorroga-ganancias-2026-10-07",
+   "title": "Inocencia Fiscal II sin promulgar: qué pasa con la DDJJ de Ganancias y la posible prórroga",
+   "description": "La ley de Inocencia Fiscal II fue sancionada el 17 de septiembre, pero sigue sin promulgación ni reglamentación de ARCA. Qué opciones hay hoy para la declaración jurada de Ganancias y por qué los contadores anticipan otra prórroga.",
+   "date": "2026-10-07",
+   "category": "ganancias",
+   "category_label": "Ganancias",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/inocencia-fiscal-ii-sin-promulgar-prorroga-ganancias-2026-10-07"
+  },
+  {
    "slug": "factura-electronica-obligatoria-monotributo-social-promovido-2026-10-06",
    "title": "Monotributo Social y promovidos: la factura electrónica será obligatoria desde el 1° de noviembre de 2026",
    "description": "ARCA extiende la factura electrónica a los monotributistas sociales y promovidos. Los comprobantes en papel quedan solo para contingencias y los sujetos no alcanzados por IVA tienen plazo hasta marzo de 2027.",
@@ -859,28 +881,6 @@
    "impact": "ninguno",
    "impact_note": null,
    "url": "https://docs.facture.ar/es/newsletter/notas/arca-prorroga-ddjj-ganancias-2025-septiembre-2026-08-26"
-  },
-  {
-   "slug": "rimi-sistema-gestion-inversiones-sgi-pymes-2026-08-26",
-   "title": "RIMI: ARCA habilitó el Sistema de Gestión de Inversiones (SGI) para pymes",
-   "description": "ARCA puso en marcha el SGI, la plataforma digital para registrar proyectos de inversión bajo el Régimen de Medianas Inversiones y acceder a beneficios fiscales.",
-   "date": "2026-08-26",
-   "category": "arca",
-   "category_label": "ARCA y procedimientos",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/rimi-sistema-gestion-inversiones-sgi-pymes-2026-08-26"
-  },
-  {
-   "slug": "arca-prorroga-ganancias-2025-presentacion-ddjj-2026-08-25",
-   "title": "ARCA prorroga la presentación de Ganancias 2025 para Personas Humanas",
-   "description": "El organismo extendió hasta el 22 de septiembre el plazo para presentar la DDJJ de Ganancias período fiscal 2025 y postergó el primer anticipo de 2026, pero mantuvo la fecha de pago del saldo.",
-   "date": "2026-08-25",
-   "category": "vencimientos",
-   "category_label": "Vencimientos",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/arca-prorroga-ganancias-2025-presentacion-ddjj-2026-08-25"
   }
  ]
 }
