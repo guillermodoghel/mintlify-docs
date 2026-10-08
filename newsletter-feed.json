@@ -3,6 +3,28 @@
  "url": "https://docs.facture.ar/es/newsletter/index",
  "notes": [
   {
+   "slug": "caba-elimina-ddjj-anual-registro-empleadores-online-2026-10-08",
+   "title": "CABA elimina la declaración jurada anual del Registro de Empleadores Online: qué cambia para las empresas",
+   "description": "El Gobierno porteño derogó el Decreto 625/09 y dejó sin efecto la presentación anual de información laboral y sociolaboral. Te contamos a quiénes alcanza, qué reemplaza al trámite y qué conviene revisar.",
+   "date": "2026-10-08",
+   "category": "laboral",
+   "category_label": "Laboral y previsional",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/caba-elimina-ddjj-anual-registro-empleadores-online-2026-10-08"
+  },
+  {
+   "slug": "la-rioja-aporte-extraordinario-25-ingresos-brutos-2026-10-08",
+   "title": "La Rioja crea un aporte extraordinario del 25% sobre Ingresos Brutos para grandes contribuyentes",
+   "description": "La provincia aprobó un adicional equivalente al 25% del impuesto sobre los Ingresos Brutos para quienes facturen más de $2.000 millones por mes. A quiénes alcanza, qué se sabe y qué conviene revisar.",
+   "date": "2026-10-08",
+   "category": "iibb",
+   "category_label": "Ingresos Brutos y provincias",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/la-rioja-aporte-extraordinario-25-ingresos-brutos-2026-10-08"
+  },
+  {
    "slug": "anticipos-ganancias-reduccion-octubre-2026-10-07",
    "title": "Anticipos de Ganancias: quiénes pueden pedir la reducción en octubre 2026 y cómo hacerlo",
    "description": "En octubre vence el quinto anticipo del Impuesto a las Ganancias. Te explicamos quiénes pueden solicitar la reducción ante ARCA, cuándo conviene hacerlo y cómo realizar el trámite paso a paso.",
@@ -859,28 +881,6 @@
    "impact": "ninguno",
    "impact_note": null,
    "url": "https://docs.facture.ar/es/newsletter/notas/inocencia-fiscal-ii-media-sancion-diputados-2026-08-27"
-  },
-  {
-   "slug": "transparencia-fiscal-discriminar-ingresos-brutos-ticket-2026-08-26",
-   "title": "Régimen de Transparencia Fiscal en IIBB: se acercan los vencimientos en Chubut, CABA, Mendoza y Entre Ríos",
-   "description": "Cuatro jurisdicciones argentinas avanzan con la implementación del Régimen de Transparencia Fiscal para Ingresos Brutos. Qué implica para la emisión de tickets y facturas, y cómo prepararse.",
-   "date": "2026-08-26",
-   "category": "facturacion",
-   "category_label": "Facturación electrónica",
-   "impact": "alto",
-   "impact_note": "Chubut, CABA, Mendoza y Entre Ríos exigen o van a exigir mostrar Ingresos Brutos en el comprobante. Si vendés a consumidor final en esas jurisdicciones, revisá los tributos configurados en tu CUIT.",
-   "url": "https://docs.facture.ar/es/newsletter/notas/transparencia-fiscal-discriminar-ingresos-brutos-ticket-2026-08-26"
-  },
-  {
-   "slug": "arca-prorroga-ddjj-ganancias-2025-septiembre-2026-08-26",
-   "title": "ARCA prorroga por tercera vez la DDJJ de Ganancias 2025",
-   "description": "El organismo extendió hasta el 22 de septiembre el plazo para presentar la declaración jurada de Ganancias del período fiscal 2025, aunque mantuvo la fecha de pago del saldo. También se postergó el primer anticipo de 2026.",
-   "date": "2026-08-26",
-   "category": "vencimientos",
-   "category_label": "Vencimientos",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/arca-prorroga-ddjj-ganancias-2025-septiembre-2026-08-26"
   }
  ]
 }
