@@ -3,6 +3,39 @@
  "url": "https://docs.facture.ar/es/newsletter/index",
  "notes": [
   {
+   "slug": "arca-prorroga-30-octubre-ddjj-ganancias-2025-personas-humana-2026-10-09",
+   "title": "Ganancias 2025: ARCA prorroga hasta el 30 de octubre la presentación de la DDJJ de personas humanas",
+   "description": "La RG 5911/2026 extiende el plazo para presentar las declaraciones juradas de Ganancias 2025 de personas humanas y sucesiones indivisas, en el régimen general y en el simplificado. El vencimiento del pago no cambia.",
+   "date": "2026-10-09",
+   "category": "ganancias",
+   "category_label": "Ganancias",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/arca-prorroga-30-octubre-ddjj-ganancias-2025-personas-humana-2026-10-09"
+  },
+  {
+   "slug": "fal-fondo-asistencia-laboral-unico-empleado-director-2026-10-09",
+   "title": "Fondo de Asistencia Laboral (FAL): qué pasa si el único empleado es un director",
+   "description": "ARCA respondió cómo tratar el FAL cuando el único trabajador registrado es un director en relación de dependencia que no determina contribuciones al SIPA. Qué alcanza la aclaración y qué duda operativa sigue abierta.",
+   "date": "2026-10-09",
+   "category": "laboral",
+   "category_label": "Laboral y previsional",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/fal-fondo-asistencia-laboral-unico-empleado-director-2026-10-09"
+  },
+  {
+   "slug": "inocencia-fiscal-ii-reglamentacion-ganancias-simplificada-mu-2026-10-09",
+   "title": "Inocencia Fiscal II reglamentada: qué cambia en Ganancias simplificada, multas y fiscalización de ARCA",
+   "description": "El Gobierno promulgó y reglamentó la ley de Inocencia Fiscal II. Repasamos la declaración jurada simplificada de Ganancias sin topes, la reducción de multas, la carga de la prueba sobre ARCA y la exigencia de bancarizar operaciones.",
+   "date": "2026-10-09",
+   "category": "ganancias",
+   "category_label": "Ganancias",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/inocencia-fiscal-ii-reglamentacion-ganancias-simplificada-mu-2026-10-09"
+  },
+  {
    "slug": "caba-elimina-ddjj-anual-registro-empleadores-online-2026-10-08",
    "title": "CABA elimina la declaración jurada anual del Registro de Empleadores Online: qué cambia para las empresas",
    "description": "El Gobierno porteño derogó el Decreto 625/09 y dejó sin efecto la presentación anual de información laboral y sociolaboral. Te contamos a quiénes alcanza, qué reemplaza al trámite y qué conviene revisar.",
@@ -848,39 +881,6 @@
    "impact": "ninguno",
    "impact_note": null,
    "url": "https://docs.facture.ar/es/newsletter/notas/arca-extendio-plazo-ganancias-2025-2026-08-28"
-  },
-  {
-   "slug": "bid-financia-posco-litio-salar-hombre-muerto-2026-08-28",
-   "title": "BID financia USD 700 millones a Posco para litio en Argentina",
-   "description": "El Banco Interamericano de Desarrollo aprobó un crédito clave para el proyecto Sal de Oro en el Salar del Hombre Muerto. Qué implica para el sector minero y la actividad económica en Salta y Catamarca.",
-   "date": "2026-08-28",
-   "category": "economia",
-   "category_label": "Economía y contexto",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/bid-financia-posco-litio-salar-hombre-muerto-2026-08-28"
-  },
-  {
-   "slug": "girard-arba-reforma-tributaria-uia-2026-08-27",
-   "title": "ARBA propone una reforma tributaria nacional ante la UIA",
-   "description": "Cristian Girard, titular de ARBA, planteó ante la UIA la necesidad de una reforma tributaria que reduzca impuestos distorsivos y fortalezca los directos, aunque condicionada al crecimiento económico previo.",
-   "date": "2026-08-27",
-   "category": "iibb",
-   "category_label": "Ingresos Brutos y provincias",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/girard-arba-reforma-tributaria-uia-2026-08-27"
-  },
-  {
-   "slug": "inocencia-fiscal-ii-media-sancion-diputados-2026-08-27",
-   "title": "Inocencia Fiscal II: qué cambia para los contribuyentes tras la media sanción en Diputados",
-   "description": "Análisis del proyecto aprobado en Diputados que modifica el ingreso al Régimen Simplificado de Ganancias, el cálculo de diferencia de impuesto y los plazos para exteriorizar dólares.",
-   "date": "2026-08-27",
-   "category": "arca",
-   "category_label": "ARCA y procedimientos",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/inocencia-fiscal-ii-media-sancion-diputados-2026-08-27"
   }
  ]
 }
