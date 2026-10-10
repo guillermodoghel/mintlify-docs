@@ -30,7 +30,7 @@ Las notas de crédito/débito siguen el **mismo tipo** que la factura que ajusta
 | Factura E | Nota de Crédito E (tipo 21) | Nota de Débito E (tipo 20) |
 
 <Note>
-  Las notas de la Factura E (tipos 20 y 21) todavía no se pueden emitir con la API de Facturear. Ver [Factura E](/es/guides/factura-exportacion).
+  Para anular una Factura E usá **Anular con nota de crédito** o `POST /api/invoices/{id}/credit-note`: emite la Nota de Crédito E (tipo 21) con el bloque `export` de la factura. Ver [Factura al exterior](/es/guides/factura-exportacion).
 </Note>
 
 ---

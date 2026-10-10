@@ -1,77 +1,126 @@
 ---
-title: 'Emitir Factura E (exportación) con Facturear'
-description: 'Qué es la Factura E (exportación), qué datos lleva (receptor del exterior, país, moneda extranjera y tipo de cambio) y en qué estado está su emisión con Facturear.'
+title: 'Factura al exterior (Factura E) con Facturear'
+description: 'Cómo habilitar y emitir Factura E (exportación de servicios y bienes) con Facturear: el alta en ARCA la hacemos nosotros, después facturás en dólares o euros a clientes de otros países desde el dashboard, la API o tu agente de IA.'
 ---
 
-# Emitir Factura E con Facturear
+# Factura al exterior (Factura E)
 
-La **Factura E** (tipo 19 en ARCA) es el comprobante para exportaciones de servicios y bienes al exterior. Tanto Monotributistas como Responsables Inscriptos pueden emitirla.
+La **Factura E** (tipo 19 en ARCA) es el comprobante para cobrarle a clientes de otros países: exportación de servicios (lo más común si trabajás para afuera y cobrás por Deel, PayPal, Payoneer, Wise o transferencia) y exportación de bienes. La pueden emitir **Monotributistas y Responsables Inscriptos**, y no lleva IVA.
+
+Facturear la emite con **WSFEX**, el webservice de exportación de ARCA, con el mismo circuito que el resto de tus facturas: CAE, PDF con QR, envío por mail y nota de crédito para anularla.
+
+---
+
+## 1. Habilitar la factura al exterior
+
+La Factura E necesita dos cosas en ARCA que las facturas A, B y C no usan: el **servicio de exportación (wsfex)** autorizado para tu certificado y un **punto de venta de exportación**. Las hacemos nosotros:
+
+- **Si te registrás ahora**, quedan listas solas apenas termina el alta de tu CUIT.
+- **Si ya tenías cuenta**, entrá a **Nueva factura → Factura al exterior** y tocá **Habilitar factura al exterior**. Tarda unos 3 minutos y usa la clave fiscal que ya nos diste (si elegiste no guardarla, te la pedimos de nuevo en el mismo recuadro aislado de siempre).
+
+Mientras corre ves cada paso:
+
+1. Entramos a ARCA con tu clave fiscal.
+2. Autorizamos el servicio de exportación para el certificado de Facturear.
+3. Creamos el punto de venta de exportación (o usamos el que ya tengas).
+
+Cuando termina, el punto de venta queda guardado en tu CUIT y ya podés emitir.
 
 <Note>
-  **La emisión de Factura E todavía no está disponible en Facturear.** ARCA autoriza los comprobantes de exportación con un webservice propio (WSFEX), distinto del que usa Facturear para las facturas A, B, C y M, y la API todavía no lo integra: `POST /api/invoices` no emite comprobantes tipo 19 (ni sus notas de crédito y débito, tipos 20 y 21). Mientras tanto, podés emitirla desde **Comprobantes en línea** en el sitio de ARCA. Esta guía explica qué datos lleva para que los tengas listos.
+  Los CUITs conectados por **delegación** (sin certificado propio) todavía no pueden emitir Factura E: para eso conectá el CUIT con tu clave fiscal.
 </Note>
 
 ---
 
-## Requisitos previos
+## 2. Emitir desde el dashboard
 
-- CUIT configurado en Facturear con certificado de producción activo
-- Punto de venta habilitado en ARCA
-- Datos del cliente del exterior (nombre, país, identificación fiscal)
+En **Nueva factura → Factura al exterior** completás:
+
+| Campo | Qué poner |
+|---|---|
+| **Cliente** | Nombre o razón social del cliente del exterior |
+| **País** | El país de destino |
+| **Tipo de cliente** | Persona jurídica, persona física u otro: con eso elegimos el **CUIT país** que pide ARCA |
+| **ID fiscal** | Opcional: la identificación del cliente en su país (EIN, VAT, NIF…) |
+| **Domicilio** | Domicilio del cliente (ARCA lo pide) |
+| **Qué exportás** | Servicios, bienes u otros |
+| **Moneda** | Dólar, euro o pesos. Te mostramos la cotización de ARCA del día (vendedor BNA del día hábil anterior) y la podés cambiar |
+| **Me pagan en la misma moneda** | Marcalo si el cliente te paga en esa moneda extranjera (RG 5616) |
+| **Ítems** | Descripción, cantidad, precio y bonificación |
+| **Idioma** | Español, inglés o portugués |
+| **Fecha de pago** | Servicios: cuándo te paga el cliente |
+
+Para **bienes** además van los **Incoterms** (FOB, CIF, EXW…) y si hay **permiso de embarque**.
+
+ARCA autoriza la factura en segundos y la ves en **Facturas** con su CAE y su PDF.
 
 ---
 
-## Datos que lleva una Factura E
+## 3. Emitir por API
 
-- **Punto de venta** habilitado en ARCA para comprobantes de exportación
-- **Receptor**: nombre o razón social del cliente del exterior
-- **País** de destino (código de país de ARCA, ver tabla abajo)
-- **Identificación fiscal** del cliente en su país (o la indicación de que no tiene)
-- **Moneda** de la operación (USD, EUR, etc.) y su **tipo de cambio**
-- **Detalle** de los servicios o bienes exportados, **sin IVA** (la exportación está exenta)
+Es el mismo `POST /api/invoices` de siempre, con `invoiceType: 19`, la moneda y el bloque `export`:
 
-Con esos datos, ARCA otorga el CAE y el comprobante lleva su código QR como cualquier factura electrónica.
+```bash
+curl -X POST https://www.facture.ar/api/invoices \
+  -H "x-api-key: prod_sk_..." \
+  -H "Idempotency-Key: 6f1c2a9e-0b7d-4a51-9a3e-1f2d3c4b5a60" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "invoiceType": 19,
+    "clientName": "Acme Inc.",
+    "impTotal": 2500,
+    "monId": "DOL",
+    "description": "Desarrollo de software - septiembre 2026",
+    "export": {
+      "kind": 2,
+      "country": 212,
+      "countryCuit": 55000002126,
+      "taxId": "12-3456789",
+      "clientAddress": "1 Market St, San Francisco, CA",
+      "language": 2,
+      "paidInSameCurrency": true
+    }
+  }'
+```
+
+- `kind`: `2` servicios (por defecto), `1` bienes, `4` otros.
+- `country`: código de país de ARCA (ver la tabla de abajo).
+- `countryCuit`: el **CUIT país** del cliente. ARCA tiene uno por país y tipo de persona (ver la tabla de abajo).
+- `monCotiz` es opcional: si no lo mandás usamos la cotización de ARCA.
+- Para bienes: `incoterms` y `permit` (`"S"` o `"N"`) son obligatorios.
+- El punto de venta sale del que creamos al habilitar la factura al exterior. También lo podés mandar en `ptoVta`.
+
+Desde un agente de IA, la herramienta MCP `create_invoice` acepta los mismos campos (`invoiceType: 19` y `export`).
 
 ---
 
-## Factura E y la API de Facturear
+## 4. Anular una Factura E
 
-La API de Facturear (`https://www.facture.ar/api`) emite hoy facturas, notas de crédito y notas de débito A, B, C y M con el webservice WSFE de ARCA. La Factura E necesita WSFEX, que Facturear todavía no integra, así que no hay un endpoint ni campos de la API para emitirla. Si necesitás facturar exportaciones de forma automatizada, escribinos a [support@facture.ar](mailto:support@facture.ar).
+Igual que cualquier factura: **Anular con nota de crédito** en el detalle, o `POST /api/invoices/{id}/credit-note`. Emite una **Nota de Crédito E** (tipo 21) con el mismo cliente, moneda, cotización e importes, asociada a la factura.
 
 ---
 
 ## Códigos de país más usados
 
-| País | Código ARCA |
-|---|---|
-| Estados Unidos | 212 |
-| España | 203 |
-| Alemania | 143 |
-| Chile | 152 |
-| Brasil | 101 |
-| México | 160 |
-| Uruguay | 225 |
-| Colombia | 159 |
-| Francia | 139 |
-| Italia | 175 |
-| Países Bajos | 191 |
-| Reino Unido | 220 |
+| País | Código ARCA | CUIT país persona jurídica | CUIT país persona física |
+|---|---|---|---|
+| Estados Unidos | 212 | 55000002126 | 50000002124 |
+| España | 410 | 55000004102 | 50000004100 |
+| Alemania | 438 | 55000004382 | 50000004380 |
+| Reino Unido | 426 | 55000004269 | 50000004267 |
+| Francia | 412 | 55000004129 | 50000004127 |
+| Italia | 417 | 55000003548 | 50000003546 |
+| Países Bajos | 423 | 55000004234 | 50000004232 |
+| Canadá | 204 | 55000002045 | 50000002043 |
+| México | 218 | 55000002185 | 50000002183 |
+| Brasil | 203 | 55000000050 | 50000000059 |
+| Chile | 208 | 55000000034 | 50000000032 |
+| Uruguay | 225 | 55000000018 | 50000000016 |
+| Colombia | 205 | 55000002053 | 50000002051 |
+| Paraguay | 221 | 55000000026 | 50000000024 |
+| Perú | 222 | 55000002223 | 50000002221 |
 
-La lista completa de países está en las tablas de parámetros de exportación de ARCA.
-
----
-
-## Tipo de cambio en la Factura E
-
-El tipo de cambio que usás en la Factura E debe ser el **tipo de cambio vendedor del BCRA** del día de emisión.
-
-Podés consultar la cotización que publica ARCA para una moneda con `GET https://www.facture.ar/api/arca/FEPARAMGETCOTIZACION?codId=DOL` (ver [Parámetros de ARCA](/es/guides/parametros-arca)). Si por algún motivo necesitás un tipo de cambio diferente (por ejemplo, en contratos que especifican una tasa pactada), revisá con tu contador qué corresponde informar.
-
----
-
-## Receptor sin identificación fiscal
-
-En algunos casos el cliente del exterior no tiene identificación fiscal (persona física extranjera, etc.). En ese caso la Factura E se emite igual, con el nombre y el país del receptor, e indicando que no tiene identificación fiscal en lugar del número.
+Para otras entidades (ni persona física ni jurídica) ARCA tiene un tercer CUIT país que empieza con 516. En el dashboard elegís el país por nombre; la lista completa sale de ARCA.
 
 ---
 
@@ -79,10 +128,16 @@ En algunos casos el cliente del exterior no tiene identificación fiscal (person
 
 <AccordionGroup>
   <Accordion title="¿La Factura E necesita un punto de venta especial?">
-    Sí. ARCA pide un punto de venta dado de alta para comprobantes de exportación, distinto del que usás para las facturas A, B o C por webservice. Lo das de alta en **Administración de puntos de venta y domicilios** en ARCA.
+    Sí: un punto de venta de sistema **Exportación - Web Services**, distinto del que usás para las facturas A, B o C. Lo creamos al habilitar la factura al exterior; si ya tenías uno, lo usamos.
   </Accordion>
   <Accordion title="¿Puedo emitir Factura E siendo Monotributista?">
-    Sí. Los Monotributistas pueden emitir Factura E para exportación de servicios. Ver [Monotributista que exporta servicios](/es/monotributo/exportacion-servicios).
+    Sí. Los Monotributistas emiten Factura E por exportación de servicios. Ver [Monotributista que exporta servicios](/es/monotributo/exportacion-servicios).
+  </Accordion>
+  <Accordion title="¿Qué cotización uso?">
+    La que publica ARCA para la moneda (vendedor del Banco Nación del día hábil anterior). Es la que te proponemos; si tu contrato fija otra, revisalo con tu contador.
+  </Accordion>
+  <Accordion title="¿Puedo probar en Modo Testing?">
+    Sí. En Modo Testing la factura va a homologación de ARCA y no tiene validez fiscal.
   </Accordion>
 </AccordionGroup>
 
@@ -92,10 +147,11 @@ En algunos casos el cliente del exterior no tiene identificación fiscal (person
 
 - [Factura E: todo sobre exportación de servicios](/es/exportacion/factura-e)
 - [Cobro en divisas](/es/exportacion/cobro-en-divisas)
+- [Notas de crédito y débito](/es/guides/nota-credito-debito)
 - [API Reference](/es/api-reference)
 
 ---
 
-<Card title="Emití facturas electrónicas con Facturear" icon="rocket" href="https://facture.ar">
-  Conectate a ARCA y automatizá tus facturas A, B, C y M. La Factura E todavía no está disponible.
+<Card title="Facturá al exterior con Facturear" icon="globe" href="https://www.facture.ar/app/facturacion/nueva/exterior">
+  Habilitá la Factura E en 3 minutos y cobrale a tus clientes de afuera con CAE en segundos.
 </Card>

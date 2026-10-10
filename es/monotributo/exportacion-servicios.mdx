@@ -36,26 +36,28 @@ Si sos Monotributista y exportás servicios, emitís una **Factura E** (tipo 19 
 
 ### Cómo emitir Factura E con Facturear
 
-```javascript
+En el dashboard: **Nueva factura → Factura al exterior**. La primera vez habilitamos la exportación en tu CUIT (servicio de exportación y punto de venta en ARCA, unos 3 minutos) y después cargás cliente, país, moneda e ítems. Por API:
+
+```json
 {
-  "tipo": 19,  // Factura E
-  "puntoVenta": 1,
-  "receptor": {
-    "razonSocial": "Client Company LLC",
-    "paisCodigo": 212,  // Estados Unidos (código ARCA)
-    "identificacion": "EIN-123456789"  // Identificación fiscal del país del cliente
-  },
-  "moneda": "DOL",  // Dólares (o la moneda del contrato)
-  "tipoCambio": 1000.50,  // Tipo de cambio oficial del día
-  "items": [
-    {
-      "descripcion": "Web development services - March 2025",
-      "cantidad": 1,
-      "precioUnitario": 2500
-    }
-  ]
+  "invoiceType": 19,
+  "clientName": "Digital Services Inc.",
+  "impTotal": 3000,
+  "monId": "DOL",
+  "description": "Software development - September 2026",
+  "export": {
+    "kind": 2,
+    "country": 212,
+    "countryCuit": 55000002126,
+    "taxId": "12-3456789",
+    "clientAddress": "1 Market St, San Francisco, CA",
+    "language": 2,
+    "paidInSameCurrency": true
+  }
 }
 ```
+
+Es el cuerpo de `POST /api/invoices`. El paso a paso completo (habilitación, campos y cotización) está en [Factura al exterior con Facturear](/es/guides/factura-exportacion).
 
 ---
 
