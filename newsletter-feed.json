@@ -3,6 +3,17 @@
  "url": "https://docs.facture.ar/es/newsletter/index",
  "notes": [
   {
+   "slug": "dolares-del-colchon-regularizacion-inocencia-fiscal-ii-biene-2026-10-10",
+   "title": "Dólares del colchón con Inocencia Fiscal II: cómo ingresarlos al sistema y qué pasa en Bienes Personales",
+   "description": "Guía práctica para usar ahorros no declarados tras la entrada en vigencia de Inocencia Fiscal II: quiénes pueden hacerlo, cómo depositar los fondos y cómo impactan en la declaración jurada de Bienes Personales.",
+   "date": "2026-10-10",
+   "category": "bienes-personales",
+   "category_label": "Bienes Personales",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/dolares-del-colchon-regularizacion-inocencia-fiscal-ii-biene-2026-10-10"
+  },
+  {
    "slug": "arca-prorroga-30-octubre-ddjj-ganancias-2025-personas-humana-2026-10-09",
    "title": "Ganancias 2025: ARCA prorroga hasta el 30 de octubre la presentación de la DDJJ de personas humanas",
    "description": "La RG 5911/2026 extiende el plazo para presentar las declaraciones juradas de Ganancias 2025 de personas humanas y sucesiones indivisas, en el régimen general y en el simplificado. El vencimiento del pago no cambia.",
@@ -870,17 +881,6 @@
    "impact": "ninguno",
    "impact_note": null,
    "url": "https://docs.facture.ar/es/newsletter/notas/monotributo-septiembre-2025-cuotas-topes-2026-08-29"
-  },
-  {
-   "slug": "arca-extendio-plazo-ganancias-2025-2026-08-28",
-   "title": "ARCA extendió el plazo para presentar Ganancias 2025: nuevas fechas clave",
-   "description": "ARCA prorrogó el vencimiento de la declaración jurada de Ganancias 2025. Repasamos qué implica la extensión, a quiénes alcanza y cómo organizar la presentación.",
-   "date": "2026-08-28",
-   "category": "ganancias",
-   "category_label": "Ganancias",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/arca-extendio-plazo-ganancias-2025-2026-08-28"
   }
  ]
 }
