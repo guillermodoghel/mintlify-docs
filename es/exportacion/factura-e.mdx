@@ -49,40 +49,34 @@ Para que la operación sea exportación de servicios, el servicio debe:
 
 ### Desde el Dashboard
 
-1. Nueva Factura → Tipo: **"E — Exportación"**
-2. Seleccioná el **país del receptor** (código de país ARCA)
-3. Ingresá la **identificación fiscal** del cliente en su país
-4. Completá los ítems (sin alícuota de IVA, tasa 0%)
-5. Indicá la **moneda** del contrato (puede ser USD, EUR, etc.) y el tipo de cambio
-6. Emití la factura
+1. **Nueva factura → Factura al exterior**. La primera vez tocás **Habilitar factura al exterior**: autorizamos el servicio de exportación en ARCA y creamos el punto de venta de exportación (unos 3 minutos).
+2. Cargá el **cliente**, su **país** y si es persona jurídica o física (con eso sale el CUIT país que pide ARCA)
+3. Opcional: la **identificación fiscal** del cliente en su país (EIN, VAT, NIF…) y su domicilio
+4. Elegí la **moneda** (dólar, euro o pesos): te proponemos la cotización de ARCA
+5. Completá los ítems (sin IVA) y emití
 
-### Via API
+### Vía API
 
-```javascript
+```json
 {
-  "cuitId": "id-de-tu-cuit",
-  "comprobante": {
-    "tipo": 19,
-    "puntoVenta": 1,
-    "receptor": {
-      "razonSocial": "Digital Services Inc.",
-      "paisCodigo": 212,      // 212 = Estados Unidos
-      "identificacion": "12-3456789",
-      "tipoDoc": 80           // Código NIF/tax ID según país
-    },
-    "moneda": "DOL",           // Dólares
-    "tipoCambio": 1005.50,     // Tipo de cambio oficial
-    "items": [
-      {
-        "descripcion": "Software development - April 2025",
-        "cantidad": 1,
-        "precioUnitario": 3000,
-        "alicuotaIva": 0
-      }
-    ]
+  "invoiceType": 19,
+  "clientName": "Digital Services Inc.",
+  "impTotal": 3000,
+  "monId": "DOL",
+  "description": "Software development - September 2026",
+  "export": {
+    "kind": 2,
+    "country": 212,
+    "countryCuit": 55000002126,
+    "taxId": "12-3456789",
+    "clientAddress": "1 Market St, San Francisco, CA",
+    "language": 2,
+    "paidInSameCurrency": true
   }
 }
 ```
+
+Es el cuerpo de `POST /api/invoices`. El paso a paso completo (habilitación, campos y cotización) está en [Factura al exterior con Facturear](/es/guides/factura-exportacion).
 
 ---
 
@@ -90,16 +84,15 @@ Para que la operación sea exportación de servicios, el servicio debe:
 
 Podés facturar en distintas monedas:
 
-| Código | Moneda |
+| Código ARCA | Moneda |
 |---|---|
 | PES | Pesos argentinos |
 | DOL | Dólar estadounidense |
-| EUR | Euro |
-| 060 | Libra esterlina |
-| 123 | Real brasileño |
-| Y otros | Según la tabla ARCA |
+| 060 | Euro |
+| 021 | Libra esterlina |
+| 012 | Real |
 
-El tipo de cambio que usés debe ser el **tipo de cambio oficial del BCRA** del día de emisión. Facturear obtiene automáticamente el tipo de cambio vigente.
+Hay más monedas en la tabla de ARCA. Facturear te propone la cotización que publica ARCA para la moneda (vendedor del Banco Nación del día hábil anterior) y la podés cambiar.
 
 ---
 
@@ -129,6 +122,6 @@ Como exportador de servicios, podés tener obligaciones adicionales:
 
 ---
 
-<Card title="Emití tu Factura E de exportación con Facturear" icon="rocket" href="https://facture.ar">
+<Card title="Emití tu Factura E de exportación con Facturear" icon="rocket" href="https://www.facture.ar/app/facturacion/nueva/exterior">
   Facturear soporta exportación de servicios y bienes. Conectate a ARCA y empezá a facturar al exterior en minutos.
 </Card>
