@@ -3,6 +3,17 @@
  "url": "https://docs.facture.ar/es/newsletter/index",
  "notes": [
   {
+   "slug": "arca-fiscaliza-creadores-de-contenido-plataformas-digitales--2026-10-11",
+   "title": "ARCA fiscaliza a creadores de contenido en plataformas digitales: cómo regularizar ingresos y facturar correctamente",
+   "description": "ARCA puso la mira sobre creadoras de contenido en OnlyFans. Qué obligaciones tienen quienes cobran desde plataformas del exterior, qué riesgos corren si no declaran y cómo regularizarse paso a paso.",
+   "date": "2026-10-11",
+   "category": "arca",
+   "category_label": "ARCA y procedimientos",
+   "impact": "medio",
+   "impact_note": "Si cobrás desde plataformas del exterior, el comprobante que corresponde es la Factura E por exportación de servicios, no la B o la C. Además, esos ingresos cuentan para tu categoría de Monotributo, así que conviene controlar la facturación acumulada antes de cada recategorización.",
+   "url": "https://docs.facture.ar/es/newsletter/notas/arca-fiscaliza-creadores-de-contenido-plataformas-digitales--2026-10-11"
+  },
+  {
    "slug": "dolares-del-colchon-regularizacion-inocencia-fiscal-ii-biene-2026-10-10",
    "title": "Dólares del colchón con Inocencia Fiscal II: cómo ingresarlos al sistema y qué pasa en Bienes Personales",
    "description": "Guía práctica para usar ahorros no declarados tras la entrada en vigencia de Inocencia Fiscal II: quiénes pueden hacerlo, cómo depositar los fondos y cómo impactan en la declaración jurada de Bienes Personales.",
@@ -870,17 +881,6 @@
    "impact": "ninguno",
    "impact_note": null,
    "url": "https://docs.facture.ar/es/newsletter/notas/arca-prorroga-ganancias-2025-nuevas-fechas-2026-08-29"
-  },
-  {
-   "slug": "monotributo-septiembre-2025-cuotas-topes-2026-08-29",
-   "title": "Monotributo septiembre 2025: cuotas actualizadas y nuevos topes por categoría",
-   "description": "ARCA confirmó los valores del monotributo para septiembre, sosteniendo la actualización aplicada en agosto. Repasamos cuánto paga cada categoría y los nuevos límites de facturación.",
-   "date": "2026-08-29",
-   "category": "monotributo",
-   "category_label": "Monotributo",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/monotributo-septiembre-2025-cuotas-topes-2026-08-29"
   }
  ]
 }
