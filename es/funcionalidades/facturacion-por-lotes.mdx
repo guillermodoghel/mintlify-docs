@@ -75,6 +75,26 @@ Para mandarle cada factura a tu cliente, agregá una columna `email` (también v
 
 Los envíos cuentan para el límite de mails de tu plan y quedan en **Facturas → Mails enviados**. Ver [Enviar una factura por email](/es/guides/enviar-factura-email).
 
+## Archivos grandes (más de 500 filas)
+
+La tabla del lote llega hasta 500 facturas. Para un archivo más grande (por ejemplo, todas las ventas del mes), tocá **Subir CSV grande** en **Cargar desde CSV**. Si elegís con **Cargar CSV** un archivo de más de 500 filas, la pantalla te pasa sola a este camino.
+
+<Steps>
+  <Step title="Elegí el archivo">
+    Un `.csv` de hasta **50 MB**, con el mismo formato de arriba (incluida la columna `email`). Todas las facturas salen del CUIT elegido arriba.
+  </Step>
+  <Step title="Tocá Emitir las facturas del archivo">
+    El archivo se sube directo a nuestro almacenamiento y lo leemos en el servidor **de a 500 filas**: cada parte se encola como un lote propio. No hace falta que dejes la pantalla abierta: si la cerrás, sigue solo, y al volver a **Subir CSV grande** ves el avance en **Subidas recientes**.
+  </Step>
+  <Step title="Seguí el avance">
+    La pantalla muestra cuántas filas leímos, cuántas facturas quedaron encoladas, cuántas filas tuvieron error y los links a cada lote creado. Cada factura sigue su curso en el detalle de su lote, como en un lote normal.
+  </Step>
+</Steps>
+
+Las filas con errores (punto de venta no habilitado, monto en cero, email inválido, fecha fuera de orden, etc.) **no se emiten** y no frenan al resto: aparecen en **Filas que no se emitieron** con el número de línea del archivo y el motivo, y con **Descargar errores (CSV)** te bajás la lista para corregirlas y subirlas de nuevo en otro archivo.
+
+Cada factura cuenta para el límite de tu plan. Si el archivo lo supera, la subida se frena con lo que ya entró en camino; cuando amplíes el plan, tocá **Reanudar** y sigue desde la misma fila, sin repetir ninguna factura.
+
 ## Fechas y correlatividad (ARCA)
 
 Facturear valida la fecha del comprobante contra las reglas de **correlatividad** de ARCA:
@@ -97,7 +117,7 @@ Si ARCA no responde a tiempo, puede haber autorizado la factura igual. En ese ca
 
 ## Límites
 
-- Hasta **500** facturas por lote.
+- Hasta **500** facturas por lote cargado en la tabla. Para más, **Subir CSV grande**: archivos de hasta **50 MB**, que se emiten en lotes de 500.
 - Un lote sale de un solo CUIT, y el punto de venta tiene que estar habilitado para ese CUIT.
 - Cada factura cuenta para el límite de tu plan.
 
