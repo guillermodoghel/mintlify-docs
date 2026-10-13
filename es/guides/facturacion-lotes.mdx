@@ -11,7 +11,7 @@ La **facturación en lotes** te permite emitir múltiples facturas electrónicas
 
 ## Lotes desde el dashboard (CSV)
 
-Si cargás comprobantes con **archivo CSV** desde la web (sin armar integración propia), el flujo, las columnas y el archivo de ejemplo están detallados en **[Facturación por lotes desde la app](/es/funcionalidades/facturacion-por-lotes)**. Para archivos de más de 500 filas (hasta 50 MB) está **Subir CSV grande**: el archivo se sube una sola vez y lo emitimos en lotes de 500; ver [Archivos grandes](/es/funcionalidades/facturacion-por-lotes#archivos-grandes-más-de-500-filas). Incluye la columna opcional **`cbte_fch`**, correlatividad de fechas dentro del lote y contra ARCA.
+Si cargás comprobantes con **archivo CSV** desde la web (sin armar integración propia), el flujo, las columnas y el archivo de ejemplo están detallados en **[Facturación por lotes desde la app](/es/funcionalidades/facturacion-por-lotes)**. En la web hay dos caminos: **Cargar CSV** (hasta 2 MB / 500 filas, pasa por la tabla) y **Subir CSV grande** (más de 2 MB, hasta 50 MB: el archivo se sube una sola vez y lo emitimos en lotes de 500). Ver [Dos formas de subir el CSV](/es/funcionalidades/facturacion-por-lotes#dos-formas-de-subir-el-csv). Incluye la columna opcional **`cbte_fch`**, correlatividad de fechas dentro del lote y contra ARCA.
 
 En el dashboard, el lote sale siempre del **CUIT activo** (el que elegiste en el selector del header): el CSV ya no lleva columna de CUIT emisor. El CSV también acepta una columna **`email`** (o `mail`/`correo`): cada factura se manda sola a esa dirección apenas ARCA la autoriza.
 

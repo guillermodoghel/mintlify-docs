@@ -21,7 +21,7 @@ Si tenés más de un CUIT y en el selector de arriba está **Todos los CUITs**, 
   <Step title="Cargá las facturas">
     Tenés dos formas, que se pueden combinar:
 
-    - **Cargar CSV**: subí un archivo `.csv` con el formato de abajo. Con **Descargar ejemplo** bajás uno armado con tu punto de venta y tu IVA por defecto.
+    - **Cargar CSV** (hasta **2 MB / 500 filas**): subí un archivo `.csv` con el formato de abajo y queda en la tabla. Con **Descargar ejemplo** bajás uno armado con tu punto de venta y tu IVA por defecto. Para archivos más grandes está **Subir CSV grande**, ver [Archivos grandes](#archivos-grandes-más-de-2-mb-o-500-filas).
     - **Agregar fila**: cargás cada factura en la tabla: **Pto. venta**, **Concepto**, **Receptor** y **Monto**. En el detalle de cada fila (**Descripción, fecha, IVA y tributos**) completás la descripción, a quién mandarle la factura (**Enviar por email a**), la fecha del comprobante, la condición IVA del receptor, la tasa de IVA y los tributos.
 
     Lo que importás del CSV queda en la tabla, así que podés corregir cualquier valor antes de emitir.
@@ -75,25 +75,36 @@ Para mandarle cada factura a tu cliente, agregá una columna `email` (también v
 
 Los envíos cuentan para el límite de mails de tu plan y quedan en **Facturas → Mails enviados**. Ver [Enviar una factura por email](/es/guides/enviar-factura-email).
 
-## Archivos grandes (más de 500 filas)
+## Dos formas de subir el CSV
 
-La tabla del lote llega hasta 500 facturas. Para un archivo más grande (por ejemplo, todas las ventas del mes), tocá **Subir CSV grande** en **Cargar desde CSV**. Si elegís con **Cargar CSV** un archivo de más de 500 filas, la pantalla te pasa sola a este camino.
+En la tarjeta **Cargar desde CSV** hay dos botones, cada uno con su límite debajo:
+
+| Botón | Límite | Qué pasa |
+| --- | --- | --- |
+| **Cargar CSV** | hasta **2 MB / 500 filas** | El archivo se lee en tu navegador y queda en la tabla: corregís lo que haga falta, revisás el resumen y emitís un lote. |
+| **Subir CSV grande** | más de **2 MB**, hasta **50 MB** | El archivo se sube entero y lo emitimos nosotros, en lotes de 500. No pasa por la tabla. |
+
+Si con **Cargar CSV** elegís un archivo de más de 2 MB o de más de 500 filas, la pantalla te pasa sola a **Subir CSV grande**. Al lado de los botones, el ícono de información resume cómo hacer lo mismo [por API](#por-api).
+
+## Archivos grandes (más de 2 MB o 500 filas)
+
+Para un archivo grande (por ejemplo, todas las ventas del mes) tocá **Subir CSV grande**.
 
 <Steps>
   <Step title="Elegí el archivo">
     Un `.csv` de hasta **50 MB**, con el mismo formato de arriba (incluida la columna `email`). Todas las facturas salen del CUIT elegido arriba.
   </Step>
   <Step title="Tocá Emitir las facturas del archivo">
-    El archivo se sube directo a nuestro almacenamiento y lo leemos en el servidor **de a 500 filas**: cada parte se encola como un lote propio. No hace falta que dejes la pantalla abierta: si la cerrás, sigue solo, y al volver a **Subir CSV grande** ves el avance en **Subidas recientes**.
+    El archivo se sube directo a nuestro almacenamiento (ves el porcentaje de subida) y lo leemos en el servidor **de a 500 filas**: cada parte de 500 se encola como **un lote propio**. No hace falta que dejes la pantalla abierta: si la cerrás, sigue solo, y al volver a **Subir CSV grande** lo encontrás en **Subidas recientes**.
   </Step>
   <Step title="Seguí el avance">
-    La pantalla muestra cuántas filas leímos, cuántas facturas quedaron encoladas, cuántas filas tuvieron error y los links a cada lote creado. Cada factura sigue su curso en el detalle de su lote, como en un lote normal.
+    La pantalla muestra qué porcentaje del archivo leímos, cuántas facturas quedaron encoladas, cuántas filas tuvieron error y un link a cada lote creado. Cada factura sigue su curso en el detalle de su lote, como en un lote normal.
   </Step>
 </Steps>
 
-Las filas con errores (punto de venta no habilitado, monto en cero, email inválido, fecha fuera de orden, etc.) **no se emiten** y no frenan al resto: aparecen en **Filas que no se emitieron** con el número de línea del archivo y el motivo, y con **Descargar errores (CSV)** te bajás la lista para corregirlas y subirlas de nuevo en otro archivo.
+Las filas con errores (punto de venta no habilitado, monto en cero, email inválido, alícuota de IVA que ARCA no tiene, `doc_tipo` sin `doc_nro`, fecha anterior a la de una fila previa del mismo punto de venta, etc.) **no se emiten** y no frenan al resto. Aparecen en **Filas que no se emitieron** con el número de línea del archivo (el encabezado es la línea 1) y el motivo. Con **Descargar errores (CSV)** te bajás la lista (`fila,motivo`) para corregir esas filas y subirlas en otro archivo.
 
-Cada factura cuenta para el límite de tu plan. Si el archivo lo supera, la subida se frena con lo que ya entró en camino; cuando amplíes el plan, tocá **Reanudar** y sigue desde la misma fila, sin repetir ninguna factura.
+Cada factura cuenta para el límite de tu plan. Si el archivo lo supera, la subida se frena y lo que ya entró sigue su curso. Cuando amplíes el plan, tocá **Reanudar**: sigue desde la misma fila, sin repetir ninguna factura. Si algo falla de nuestro lado, reintentamos solos cada minuto.
 
 ## Fechas y correlatividad (ARCA)
 
@@ -117,9 +128,34 @@ Si ARCA no responde a tiempo, puede haber autorizado la factura igual. En ese ca
 
 ## Límites
 
-- Hasta **500** facturas por lote cargado en la tabla. Para más, **Subir CSV grande**: archivos de hasta **50 MB**, que se emiten en lotes de 500.
+- **Cargar CSV**: hasta **2 MB / 500 filas**, un lote.
+- **Subir CSV grande**: más de 2 MB, hasta **50 MB**; se emite en lotes de 500.
+- Por API: hasta **500** facturas por request.
 - Un lote sale de un solo CUIT, y el punto de venta tiene que estar habilitado para ese CUIT.
 - Cada factura cuenta para el límite de tu plan.
+
+## Por API
+
+Si las facturas salen de tu sistema, podés mandarlas por API en vez de armar un CSV:
+
+- **`POST /api/invoices`** con un **array de hasta 500 facturas** por request. Cada elemento tiene el mismo formato que una factura suelta (ver [Emitir tu primera factura](/es/guides/primera-factura)). Con más de 500 la API responde `400` (`El lote no puede exceder 500 facturas`); partí el envío en bloques de 500.
+- Un header **`Idempotency-Key` por request**, armado con tu propia referencia (por ejemplo `cierre-2026-10-bloque-7` o el id del bloque de pedidos en tu sistema). Si reenviás el mismo request con la misma clave, recibís el mismo `batchId` y no se duplica nada: cada factura queda identificada como `<clave>:<posición>`. Si corregís el bloque, mandalo con una clave nueva. Ver [Idempotency-Key](/es/guides/idempotencia#lotes).
+- **De 2 a 4 requests en paralelo**, no más.
+- Los resultados te llegan por **[webhooks](/es/guides/webhook-integracion)**: `invoice.completed` y `invoice.failed` por cada factura, y `batch.completed` cuando termina cada lote. También podés consultar `GET /api/invoices/batches/{batchId}`.
+- Cada factura cuenta para el límite de tu plan: si el request lo supera, la API responde `403` con `SUBSCRIPTION_LIMIT_EXCEEDED` y no encola ninguna.
+
+```bash
+curl -X POST https://www.facture.ar/api/invoices \
+  -H "x-api-key: tu_api_key" \
+  -H "Content-Type: application/json" \
+  -H "Idempotency-Key: cierre-2026-10-bloque-1" \
+  -d '[
+    { "cuitId": "id-de-tu-cuit", "ptoVta": 1, "concepto": 1, "docTipo": 99, "docNro": 0, "condicionIVAReceptorId": 5, "impNeto": 15000, "impTotal": 15000, "emailTo": ["cliente@ejemplo.com"] },
+    { "cuitId": "id-de-tu-cuit", "ptoVta": 1, "concepto": 1, "docTipo": 99, "docNro": 0, "condicionIVAReceptorId": 5, "impNeto": 22000, "impTotal": 22000 }
+  ]'
+```
+
+La respuesta trae el `batchId` del lote (`"status": "processing"`). El header `Content-Type` tiene que ser exactamente `application/json`. La guía completa, con el formato de cada campo, errores y reintentos, está en [Facturación masiva en lotes (API)](/es/guides/facturacion-lotes).
 
 ## Relación con otros métodos
 
