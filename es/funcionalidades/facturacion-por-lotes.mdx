@@ -144,7 +144,7 @@ Si las facturas salen de tu sistema, podés mandarlas por API en vez de armar un
 
 - **`POST /api/invoices`** con un **array de hasta 500 facturas** por request. Cada elemento tiene el mismo formato que una factura suelta (ver [Emitir tu primera factura](/es/guides/primera-factura)). Con más de 500 la API responde `400` (`El lote no puede exceder 500 facturas`); partí el envío en bloques de 500.
 - Un header **`Idempotency-Key` por request**, armado con tu propia referencia (por ejemplo `cierre-2026-10-bloque-7` o el id del bloque de pedidos en tu sistema). Si reenviás el mismo request con la misma clave, recibís el mismo `batchId` y no se duplica nada: cada factura queda identificada como `<clave>:<posición>`. Si corregís el bloque, mandalo con una clave nueva. Ver [Idempotency-Key](/es/guides/idempotencia#lotes).
-- **De 2 a 4 requests en paralelo**, no más.
+- **De 2 a 4 requests en paralelo**, no más. Cada API key tiene además un tope de 1800 requests por minuto: si lo pasás, la API responde `429` con `Retry-After`; esperá y reenviá con la misma `Idempotency-Key`.
 - Los resultados te llegan por **[webhooks](/es/guides/webhook-integracion)**: `invoice.completed` y `invoice.failed` por cada factura, y `batch.completed` cuando termina cada lote. También podés consultar `GET /api/invoices/batches/{batchId}`.
 - Cada factura cuenta para el límite de tu plan: si el request lo supera, la API responde `403` con `SUBSCRIPTION_LIMIT_EXCEEDED` y no encola ninguna.
 
