@@ -21,7 +21,7 @@ Si tenés más de un CUIT y en el selector de arriba está **Todos los CUITs**, 
   <Step title="Cargá las facturas">
     Tenés dos formas, que se pueden combinar:
 
-    - **Cargar CSV** (hasta **2 MB / 500 filas**): subí un archivo `.csv` con el formato de abajo y queda en la tabla. Con **Descargar ejemplo** bajás uno armado con tu punto de venta y tu IVA por defecto. Para archivos más grandes está **Subir CSV grande**, ver [Archivos grandes](#archivos-grandes-más-de-2-mb-o-500-filas).
+    - **Cargar CSV** (hasta **500 facturas o 2 MB**): subí un archivo `.csv` con el formato de abajo y queda en la tabla. Con **Descargar ejemplo** bajás uno armado con tu punto de venta y tu IVA por defecto. Para archivos más grandes está **Subir CSV grande**, ver [Archivos grandes](#archivos-grandes-más-de-2-mb-o-500-filas).
     - **Agregar fila**: cargás cada factura en la tabla: **Pto. venta**, **Concepto**, **Receptor** y **Monto**. En el detalle de cada fila (**Descripción, fecha, IVA y tributos**) completás la descripción, a quién mandarle la factura (**Enviar por email a**), la fecha del comprobante, la condición IVA del receptor, la tasa de IVA y los tributos.
 
     Lo que importás del CSV queda en la tabla, así que podés corregir cualquier valor antes de emitir.
@@ -81,8 +81,10 @@ En la tarjeta **Cargar desde CSV** hay dos botones, cada uno con su límite deba
 
 | Botón | Límite | Qué pasa |
 | --- | --- | --- |
-| **Cargar CSV** | hasta **2 MB / 500 filas** | El archivo se lee en tu navegador y queda en la tabla: corregís lo que haga falta, revisás el resumen y emitís un lote. |
-| **Subir CSV grande** | más de **2 MB**, hasta **50 MB** | El archivo se sube entero y lo emitimos nosotros, en lotes de 500. No pasa por la tabla. |
+| **Cargar CSV** | hasta **500 facturas** o **2 MB** | El archivo se lee en tu navegador y queda en la tabla: corregís lo que haga falta, revisás el resumen y emitís un lote. |
+| **Subir CSV grande** | hasta **512 MB**, unas **4,8 millones de facturas** | El archivo se sube entero y lo emitimos nosotros, en lotes de 500. No pasa por la tabla. |
+
+La cantidad de facturas es una estimación: suponemos unos **110 bytes por fila**, lo que ocupa una fila típica (consumidor final con IVA, fecha, una descripción corta y un email). 512 MB / 110 bytes ≈ 4,8 millones. Si tus filas son más largas (descripciones extensas, varios emails, tributos), entran menos; el límite real es el tamaño del archivo.
 
 Si con **Cargar CSV** elegís un archivo de más de 2 MB o de más de 500 filas, la pantalla te pasa sola a **Subir CSV grande**. Al lado de los botones, el ícono de información resume cómo hacer lo mismo [por API](#por-api).
 
@@ -92,10 +94,12 @@ Para un archivo grande (por ejemplo, todas las ventas del mes) tocá **Subir CSV
 
 <Steps>
   <Step title="Elegí el archivo">
-    Un `.csv` de hasta **50 MB**, con el mismo formato de arriba (incluida la columna `email`). Todas las facturas salen del CUIT elegido arriba.
+    Un `.csv` de hasta **512 MB**, con el mismo formato de arriba (incluida la columna `email`). Todas las facturas salen del CUIT elegido arriba.
   </Step>
   <Step title="Tocá Emitir las facturas del archivo">
-    El archivo se sube directo a nuestro almacenamiento (ves el porcentaje de subida) y lo leemos en el servidor **de a 500 filas**: cada parte de 500 se encola como **un lote propio**. No hace falta que dejes la pantalla abierta: si la cerrás, sigue solo, y al volver a **Subir CSV grande** lo encontrás en **Subidas recientes**.
+    El archivo se sube directo a nuestro almacenamiento en partes de 10 MB, varias a la vez; si una parte falla se reintenta sola. Mientras sube ves una barra con el porcentaje, cuántos MB van de cuántos, la velocidad y el tiempo que falta. Con **Cancelar** frenás la subida y se descarta lo que ya había subido. **Dejá la pantalla abierta hasta que termine de subir.**
+
+    Apenas termina de subir lo leemos en el servidor **de a 500 filas**: cada parte de 500 se encola como **un lote propio**. Desde ese momento podés cerrar la pantalla y sigue solo; al volver a **Subir CSV grande** lo encontrás en **Subidas recientes**.
   </Step>
   <Step title="Seguí el avance">
     La pantalla muestra qué porcentaje del archivo leímos, cuántas facturas quedaron encoladas, cuántas filas tuvieron error y un link a cada lote creado. Cada factura sigue su curso en el detalle de su lote, como en un lote normal.
@@ -128,8 +132,8 @@ Si ARCA no responde a tiempo, puede haber autorizado la factura igual. En ese ca
 
 ## Límites
 
-- **Cargar CSV**: hasta **2 MB / 500 filas**, un lote.
-- **Subir CSV grande**: más de 2 MB, hasta **50 MB**; se emite en lotes de 500.
+- **Cargar CSV**: hasta **500 facturas** o **2 MB**, un lote.
+- **Subir CSV grande**: hasta **512 MB** (unas 4,8 millones de facturas a 110 bytes por fila); se emite en lotes de 500.
 - Por API: hasta **500** facturas por request.
 - Un lote sale de un solo CUIT, y el punto de venta tiene que estar habilitado para ese CUIT.
 - Cada factura cuenta para el límite de tu plan.
