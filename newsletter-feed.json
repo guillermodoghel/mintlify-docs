@@ -3,6 +3,28 @@
  "url": "https://docs.facture.ar/es/newsletter/index",
  "notes": [
   {
+   "slug": "certificado-mipyme-renovacion-fal-arca-datos-2026-10-14",
+   "title": "Certificado MiPyME y FAL: ARCA notifica los datos para la renovación y cómo revisarlos",
+   "description": "ARCA empezó a notificar los datos con los que renovará el Certificado MiPyME, que define qué parte de las contribuciones patronales se deriva al Fondo de Asistencia Laboral. Qué revisar y cómo corregirlo.",
+   "date": "2026-10-14",
+   "category": "laboral",
+   "category_label": "Laboral y previsional",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/certificado-mipyme-renovacion-fal-arca-datos-2026-10-14"
+  },
+  {
+   "slug": "inmobiliario-arba-ultima-cuota-descuento-10-2026-10-14",
+   "title": "Inmobiliario Urbano ARBA: vence la última cuota con 10% de descuento por pago en término",
+   "description": "ARBA bonifica un 10% la última cuota del Impuesto Inmobiliario Urbano bonaerense si se abona hasta el vencimiento de este martes. Quiénes acceden, cómo obtener la boleta y qué revisar antes de pagar.",
+   "date": "2026-10-14",
+   "category": "vencimientos",
+   "category_label": "Vencimientos",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/inmobiliario-arba-ultima-cuota-descuento-10-2026-10-14"
+  },
+  {
    "slug": "arca-fiscaliza-creadores-de-contenido-plataformas-digitales--2026-10-11",
    "title": "ARCA fiscaliza a creadores de contenido en plataformas digitales: cómo regularizar ingresos y facturar correctamente",
    "description": "ARCA puso la mira sobre creadoras de contenido en OnlyFans. Qué obligaciones tienen quienes cobran desde plataformas del exterior, qué riesgos corren si no declaran y cómo regularizarse paso a paso.",
@@ -859,28 +881,6 @@
    "impact": "ninguno",
    "impact_note": null,
    "url": "https://docs.facture.ar/es/newsletter/notas/corte-suprema-limita-pagos-cuenta-ingresos-brutos-2026-08-30"
-  },
-  {
-   "slug": "ganancias-calculo-anticipos-arca-rentas-dolares-2026-08-30",
-   "title": "Ganancias: cómo se calculan los anticipos según ARCA y qué pasa con las rentas en dólares",
-   "description": "ARCA actualizó la metodología de cálculo de los anticipos de Ganancias. Analizamos el impacto del ajuste por IPC y las diferencias que puede generar en contribuyentes con rentas en moneda extranjera.",
-   "date": "2026-08-30",
-   "category": "ganancias",
-   "category_label": "Ganancias",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/ganancias-calculo-anticipos-arca-rentas-dolares-2026-08-30"
-  },
-  {
-   "slug": "arca-prorroga-ganancias-2025-nuevas-fechas-2026-08-29",
-   "title": "ARCA prorroga Ganancias 2025: nuevas fechas de presentación y anticipos",
-   "description": "ARCA extendió el vencimiento de la DDJJ de Ganancias 2025 hasta septiembre y postergó el primer anticipo de 2026. Repasamos las nuevas fechas y su impacto operativo.",
-   "date": "2026-08-29",
-   "category": "vencimientos",
-   "category_label": "Vencimientos",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/arca-prorroga-ganancias-2025-nuevas-fechas-2026-08-29"
   }
  ]
 }
