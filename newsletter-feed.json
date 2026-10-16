@@ -3,6 +3,17 @@
  "url": "https://docs.facture.ar/es/newsletter/index",
  "notes": [
   {
+   "slug": "agip-plan-pagos-deudas-abl-patentes-quita-intereses-12-cuota-2026-10-16",
+   "title": "AGIP lanza un plan de pagos para deudas de ABL y Patentes con condonación de intereses y hasta 12 cuotas",
+   "description": "Del 15 de octubre al 31 de diciembre de 2026, AGIP permite regularizar deudas de ABL y Patentes en CABA al contado sin intereses resarcitorios o en hasta 12 cuotas sin interés de financiación.",
+   "date": "2026-10-16",
+   "category": "vencimientos",
+   "category_label": "Vencimientos",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/agip-plan-pagos-deudas-abl-patentes-quita-intereses-12-cuota-2026-10-16"
+  },
+  {
    "slug": "monotributo-a-responsable-inscripto-cuanto-mas-facturar-2026-10-15",
    "title": "Del Monotributo al Responsable Inscripto: cuánto más hay que facturar para ganar lo mismo",
    "description": "Qué pasa cuando superás el tope de la categoría K, cómo impactan el IVA y Ganancias en tus precios y márgenes, y cuánto más tenés que vender para mantener la misma ganancia neta.",
@@ -870,17 +881,6 @@
    "impact": "alto",
    "impact_note": "Monotributo Social y exentos de IVA pasan a emitir comprobantes electrónicos. En Facturear se emiten como clase C, sin configuración extra.",
    "url": "https://docs.facture.ar/es/newsletter/notas/arca-factura-electronica-obligatoria-monotributo-social-exen-2026-09-01"
-  },
-  {
-   "slug": "ganancias-2025-nuevo-vencimiento-ddjj-septiembre-2026-09-01",
-   "title": "Ganancias 2025: ARCA extendió el plazo de presentación de las DDJJ",
-   "description": "ARCA prorrogó el vencimiento para presentar las declaraciones juradas del Impuesto a las Ganancias 2025. Conocé la nueva fecha límite y qué tenés que preparar.",
-   "date": "2026-09-01",
-   "category": "vencimientos",
-   "category_label": "Vencimientos",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/ganancias-2025-nuevo-vencimiento-ddjj-septiembre-2026-09-01"
   }
  ]
 }
