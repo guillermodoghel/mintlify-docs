@@ -3,6 +3,17 @@
  "url": "https://docs.facture.ar/es/newsletter/index",
  "notes": [
   {
+   "slug": "ganancias-nueva-declaracion-jurada-web-arca-vencimiento-novi-2026-10-17",
+   "title": "Ganancias sociedades: cómo presentar la nueva declaración jurada web de ARCA con vencimiento en noviembre",
+   "description": "Guía práctica para empresas y contadores sobre la nueva declaración jurada web de Ganancias para ejercicios cerrados en junio de 2026: acceso, paso a paso, datos a revisar y vencimientos.",
+   "date": "2026-10-17",
+   "category": "ganancias",
+   "category_label": "Ganancias",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/ganancias-nueva-declaracion-jurada-web-arca-vencimiento-novi-2026-10-17"
+  },
+  {
    "slug": "agip-plan-pagos-deudas-abl-patentes-quita-intereses-12-cuota-2026-10-16",
    "title": "AGIP lanza un plan de pagos para deudas de ABL y Patentes con condonación de intereses y hasta 12 cuotas",
    "description": "Del 15 de octubre al 31 de diciembre de 2026, AGIP permite regularizar deudas de ABL y Patentes en CABA al contado sin intereses resarcitorios o en hasta 12 cuotas sin interés de financiación.",
@@ -870,17 +881,6 @@
    "impact": "ninguno",
    "impact_note": null,
    "url": "https://docs.facture.ar/es/newsletter/notas/reintegro-iva-productores-resolucion-5894-sisa-2026-09-02"
-  },
-  {
-   "slug": "arca-factura-electronica-obligatoria-monotributo-social-exen-2026-09-01",
-   "title": "ARCA extiende la factura electrónica obligatoria a Monotributo Social y exentos de IVA",
-   "description": "La RG 5893/2026 incorpora al Monotributo Social y a los sujetos exentos de IVA al régimen de comprobantes electrónicos. Analizamos el alcance y qué deben hacer los nuevos obligados.",
-   "date": "2026-09-01",
-   "category": "facturacion",
-   "category_label": "Facturación electrónica",
-   "impact": "alto",
-   "impact_note": "Monotributo Social y exentos de IVA pasan a emitir comprobantes electrónicos. En Facturear se emiten como clase C, sin configuración extra.",
-   "url": "https://docs.facture.ar/es/newsletter/notas/arca-factura-electronica-obligatoria-monotributo-social-exen-2026-09-01"
   }
  ]
 }
