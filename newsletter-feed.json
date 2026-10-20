@@ -3,6 +3,39 @@
  "url": "https://docs.facture.ar/es/newsletter/index",
  "notes": [
   {
+   "slug": "dolares-colchon-inocencia-fiscal-retencion-ingresos-brutos-p-2026-10-20",
+   "title": "Dólares del colchón e Inocencia Fiscal: por qué las provincias pueden retener Ingresos Brutos al depositarlos",
+   "description": "La Ley de Inocencia Fiscal prevé la adhesión provincial, pero ninguna provincia adhirió. Qué contribuyentes están expuestos a retenciones de IIBB sobre acreditaciones bancarias y cómo actuar si se generan retenciones indebidas.",
+   "date": "2026-10-20",
+   "category": "iibb",
+   "category_label": "Ingresos Brutos y provincias",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/dolares-colchon-inocencia-fiscal-retencion-ingresos-brutos-p-2026-10-20"
+  },
+  {
+   "slug": "rimi-pymes-amortizacion-acelerada-ganancias-devolucion-antic-2026-10-20",
+   "title": "RIMI para pymes: cómo aprovechar la amortización acelerada en Ganancias y la devolución anticipada de IVA",
+   "description": "Qué es el Régimen de Incentivo para Medianas Inversiones, qué beneficios fiscales ofrece, qué hay que revisar antes de invertir y por qué muchas pymes lo están dejando pasar.",
+   "date": "2026-10-20",
+   "category": "ganancias",
+   "category_label": "Ganancias",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/rimi-pymes-amortizacion-acelerada-ganancias-devolucion-antic-2026-10-20"
+  },
+  {
+   "slug": "supermercados-piden-adhesion-provincias-retencion-ingresos-b-2026-10-20",
+   "title": "Supermercados piden que CABA, Santa Fe y La Pampa retengan Ingresos Brutos en billeteras virtuales",
+   "description": "ASU pidió al Ministerio de Economía que interceda ante tres jurisdicciones para que adhieran al régimen de retención de anticipos de IIBB sobre cobros en billeteras virtuales. Qué se pide, cómo funciona el mecanismo y qué deberían revisar los contribuyentes.",
+   "date": "2026-10-20",
+   "category": "iibb",
+   "category_label": "Ingresos Brutos y provincias",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/supermercados-piden-adhesion-provincias-retencion-ingresos-b-2026-10-20"
+  },
+  {
    "slug": "arba-moratoria-plan-de-pagos-excepcional-deudas-impositivas-2026-10-18",
    "title": "ARBA lanza un plan de pagos excepcional para deudas impositivas desde el 26 de octubre",
    "description": "La Agencia de Recaudación bonaerense habilita una moratoria con descuentos que premian la adhesión temprana y financiación en cuotas. Qué se sabe, cómo compararla con los planes tradicionales y qué conviene preparar.",
@@ -848,39 +881,6 @@
    "impact": "ninguno",
    "impact_note": null,
    "url": "https://docs.facture.ar/es/newsletter/notas/empresas-exentas-ingresos-brutos-requisitos-pymes-2026-09-04"
-  },
-  {
-   "slug": "embargos-arca-pymes-alerta-uia-2026-09-03",
-   "title": "Embargos de ARCA a pymes: qué está pasando y cómo protegerse",
-   "description": "La UIA alertó por la ola de embargos de ARCA sobre pymes. Repasamos qué implica, qué derechos tienen las empresas y cómo actuar para evitar el corte del flujo de fondos.",
-   "date": "2026-09-03",
-   "category": "arca",
-   "category_label": "ARCA y procedimientos",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/embargos-arca-pymes-alerta-uia-2026-09-03"
-  },
-  {
-   "slug": "monotributo-aportes-jubilacion-categorias-2026-2026-09-03",
-   "title": "Monotributo 2026: cuánto aporta cada categoría para la jubilación",
-   "description": "Guía práctica sobre los aportes previsionales del monotributo en 2026, cómo se calcula el haber jubilatorio y qué deben considerar los monotributistas al elegir su categoría.",
-   "date": "2026-09-03",
-   "category": "monotributo",
-   "category_label": "Monotributo",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/monotributo-aportes-jubilacion-categorias-2026-2026-09-03"
-  },
-  {
-   "slug": "obras-sociales-monotributistas-septiembre-2025-2026-09-02",
-   "title": "Obras sociales para monotributistas: listado actualizado a septiembre 2025",
-   "description": "Guía práctica sobre las obras sociales disponibles para monotributistas, cómo se integra el aporte de salud en la cuota mensual y el procedimiento para elegir o cambiar de prestadora ante ARCA.",
-   "date": "2026-09-02",
-   "category": "monotributo",
-   "category_label": "Monotributo",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/obras-sociales-monotributistas-septiembre-2025-2026-09-02"
   }
  ]
 }
