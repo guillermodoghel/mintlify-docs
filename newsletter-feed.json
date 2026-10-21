@@ -3,6 +3,39 @@
  "url": "https://docs.facture.ar/es/newsletter/index",
  "notes": [
   {
+   "slug": "arca-elimina-retencion-seguridad-social-empresas-servicios-e-2026-10-21",
+   "title": "ARCA elimina la retención de Seguridad Social sobre facturas de empresas de servicios eventuales",
+   "description": "Las empresas usuarias dejan de retener contribuciones patronales al pagar facturas de agencias de personal eventual. Qué cambia en pagos, facturación y cargas sociales, en línea con el Decreto 407/2026.",
+   "date": "2026-10-21",
+   "category": "laboral",
+   "category_label": "Laboral y previsional",
+   "impact": "medio",
+   "impact_note": "La emisión de comprobantes no cambia. Si facturás como empresa de servicios eventuales, tus clientes ya no deberían retenerte contribuciones de Seguridad Social, así que revisá la conciliación de cobros y planificá el ingreso directo de tus cargas sociales.",
+   "url": "https://docs.facture.ar/es/newsletter/notas/arca-elimina-retencion-seguridad-social-empresas-servicios-e-2026-10-21"
+  },
+  {
+   "slug": "arba-posterga-vencimientos-inmobiliario-rural-complementario-2026-10-21",
+   "title": "ARBA posterga hasta el 12 de noviembre los vencimientos del Inmobiliario Rural, Complementario y Automotor",
+   "description": "Por el feriado largo de noviembre, ARBA extendió hasta el 12 de noviembre los plazos de pago del Inmobiliario Rural, el Inmobiliario Complementario y el Impuesto a los Automotores, sin recargos y conservando los beneficios vigentes.",
+   "date": "2026-10-21",
+   "category": "vencimientos",
+   "category_label": "Vencimientos",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/arba-posterga-vencimientos-inmobiliario-rural-complementario-2026-10-21"
+  },
+  {
+   "slug": "postergacion-fal-impacto-contribuciones-seguridad-social-2026-10-21",
+   "title": "Postergación del FAL: qué cambia para las empresas y cómo impacta en las contribuciones de Seguridad Social",
+   "description": "El Gobierno publicó en el Boletín Oficial la postergación del Fondo de Asistencia Laboral. Qué se posterga, cómo afecta la liquidación de cargas sociales y qué deben revisar empleadores y contadores.",
+   "date": "2026-10-21",
+   "category": "laboral",
+   "category_label": "Laboral y previsional",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/postergacion-fal-impacto-contribuciones-seguridad-social-2026-10-21"
+  },
+  {
    "slug": "dolares-colchon-inocencia-fiscal-retencion-ingresos-brutos-p-2026-10-20",
    "title": "Dólares del colchón e Inocencia Fiscal: por qué las provincias pueden retener Ingresos Brutos al depositarlos",
    "description": "La Ley de Inocencia Fiscal prevé la adhesión provincial, pero ninguna provincia adhirió. Qué contribuyentes están expuestos a retenciones de IIBB sobre acreditaciones bancarias y cómo actuar si se generan retenciones indebidas.",
@@ -848,39 +881,6 @@
    "impact": "ninguno",
    "impact_note": null,
    "url": "https://docs.facture.ar/es/newsletter/notas/arca-cruces-datos-multas-monotributo-categorias-inexactas-2026-09-07"
-  },
-  {
-   "slug": "ley-inocencia-fiscal-ii-tapon-fiscal-regularizacion-activos-2026-09-05",
-   "title": "Ley de Inocencia Fiscal II: tapón fiscal y regularización de activos omitidos",
-   "description": "Análisis de los beneficios de la Ley de Inocencia Fiscal II para contribuyentes argentinos: alcance del tapón fiscal para períodos anteriores y oportunidades para regularizar activos no declarados.",
-   "date": "2026-09-05",
-   "category": "arca",
-   "category_label": "ARCA y procedimientos",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/ley-inocencia-fiscal-ii-tapon-fiscal-regularizacion-activos-2026-09-05"
-  },
-  {
-   "slug": "arca-embargo-billeteras-virtuales-cuentas-digitales-2026-09-04",
-   "title": "¿ARCA puede embargar billeteras virtuales y cuentas digitales?",
-   "description": "Análisis del alcance de las facultades de ARCA sobre cuentas con CVU y billeteras virtuales como Mercado Pago o Ualá, el rol del juez y las obligaciones de las fintech ante deudas fiscales.",
-   "date": "2026-09-04",
-   "category": "arca",
-   "category_label": "ARCA y procedimientos",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/arca-embargo-billeteras-virtuales-cuentas-digitales-2026-09-04"
-  },
-  {
-   "slug": "empresas-exentas-ingresos-brutos-requisitos-pymes-2026-09-04",
-   "title": "Ingresos Brutos: qué empresas quedarán exentas y cómo acceder al beneficio automático para PyMEs",
-   "description": "Guía práctica sobre los nuevos requisitos para eximirse de Ingresos Brutos y el mecanismo automático de exención destinado a PyMEs, con foco en el impacto para contadores y empresas emisoras de facturas.",
-   "date": "2026-09-04",
-   "category": "iibb",
-   "category_label": "Ingresos Brutos y provincias",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/empresas-exentas-ingresos-brutos-requisitos-pymes-2026-09-04"
   }
  ]
 }
