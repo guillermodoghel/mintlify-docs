@@ -3,6 +3,17 @@
  "url": "https://docs.facture.ar/es/newsletter/index",
  "notes": [
   {
+   "slug": "vencimiento-ganancias-30-octubre-inocencia-fiscal-ii-sin-reg-2026-10-22",
+   "title": "Ganancias vence el 30 de octubre sin reglamentación de la Inocencia Fiscal II: cómo presentar",
+   "description": "El viernes 30 de octubre vence la declaración jurada de Ganancias y ARCA todavía no reglamentó la Inocencia Fiscal II. Qué está pendiente, cómo decidir entre régimen general y simplificado, y qué riesgos tiene esperar.",
+   "date": "2026-10-22",
+   "category": "ganancias",
+   "category_label": "Ganancias",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/vencimiento-ganancias-30-octubre-inocencia-fiscal-ii-sin-reg-2026-10-22"
+  },
+  {
    "slug": "arca-elimina-retencion-seguridad-social-empresas-servicios-e-2026-10-21",
    "title": "ARCA elimina la retención de Seguridad Social sobre facturas de empresas de servicios eventuales",
    "description": "Las empresas usuarias dejan de retener contribuciones patronales al pagar facturas de agencias de personal eventual. Qué cambia en pagos, facturación y cargas sociales, en línea con el Decreto 407/2026.",
@@ -870,17 +881,6 @@
    "impact": "medio",
    "impact_note": "Suben los topes de facturación por categoría. No cambia cómo emitís la Factura C, sí cuánto podés facturar sin cambiar de categoría.",
    "url": "https://docs.facture.ar/es/newsletter/notas/monotributo-septiembre-topes-facturacion-cuotas-actualizadas-2026-09-07"
-  },
-  {
-   "slug": "arca-cruces-datos-multas-monotributo-categorias-inexactas-2026-09-07",
-   "title": "ARCA intensifica los controles al Monotributo: multas del 50% por categorías inexactas",
-   "description": "ARCA cruza facturación electrónica, acreditaciones bancarias y consumos con tarjeta para detectar monotributistas mal categorizados. Recategorización de oficio y multas del 50% por diferencias.",
-   "date": "2026-09-07",
-   "category": "monotributo",
-   "category_label": "Monotributo",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/arca-cruces-datos-multas-monotributo-categorias-inexactas-2026-09-07"
   }
  ]
 }
