@@ -1,0 +1,90 @@
+---
+title: 'Facturar desde Monday'
+sidebarTitle: 'Monday'
+description: 'Conectá un tablero de Monday y facturá en ARCA cada ítem que pasa a "Facturar", con el número de factura y el CAE escritos en el mismo ítem.'
+---
+
+Con la integración de **Monday**, tu tablero de ventas, proyectos o servicios factura solo: cuando un ítem cambia a **Facturar**, **Cobrado** o **Pagado**, facture.ar emite la factura electrónica en ARCA (con CAE y código QR), se la manda por mail a tu cliente y escribe el número en la columna **Factura** del ítem.
+
+**Antes de empezar** necesitás:
+
+- Una cuenta de Monday con acceso al tablero que querés facturar.
+- Un CUIT conectado con ARCA en facture.ar. Si todavía no lo tenés, la sección **CUITs** te guía paso a paso. Ver [Tu primera factura](/es/guides/primera-factura).
+
+## Preparar el tablero
+
+No hace falta cambiar tu forma de trabajar: reconocemos las columnas por su nombre. El tablero necesita dos:
+
+| Columna | Tipo en Monday | Para qué |
+| --- | --- | --- |
+| **Importe** (o Monto, Total, Precio) | Números | El total de la factura, con IVA incluido. Si no hay ninguna con esos nombres, usamos la primera columna de números. |
+| **Estado** (cualquier nombre) | Estado | La etiqueta **Facturar**, **A facturar**, **Listo para facturar**, **Cobrado** o **Pagado** es la que dispara la factura. |
+
+Y si las tiene, también usamos estas:
+
+| Columna | Tipo | Para qué |
+| --- | --- | --- |
+| **CUIT**, **CUIL**, **DNI** o **Documento** | Texto | El documento de tu cliente. Sin documento, la factura sale a **Consumidor final**. |
+| **Cliente**, **Razón social** o **Empresa** | Texto, desplegable o conexión | El nombre de tu cliente. |
+| **Concepto**, **Descripción**, **Detalle**, **Servicio** o **Producto** | Texto | El detalle de la factura. Si no hay, va el nombre del ítem. |
+| **Email**, **Mail** o **Correo** | Email o texto | A dónde le mandamos la factura. |
+| **Moneda** | Estado, desplegable o texto | **USD** o **Dólares** para facturar en dólares, **EUR** en euros. Sin esta columna, en pesos. |
+
+<Tip>
+La etiqueta **Facturado** no dispara nada: podés usarla para marcar a mano lo que ya facturaste.
+</Tip>
+
+## Conectar el tablero
+
+<Steps>
+  <Step title="Copiá el link del tablero">
+    Abrí el tablero en Monday y copiá la dirección del navegador, por ejemplo `https://tuempresa.monday.com/boards/1234567890`.
+  </Step>
+  <Step title="Pegalo en facture.ar">
+    Entrá a **Integraciones → Monday**, pegá el link y tocá **Conectar con Monday**.
+  </Step>
+  <Step title="Autorizá la app">
+    Monday te pide instalar la app **facture.ar** en tu cuenta y aceptar sus permisos: leer tus tableros, escribir el número de factura en los ítems y avisarnos cuando cambia un estado.
+  </Step>
+  <Step title="Contanos cómo facturar">
+    De vuelta en facture.ar, elegí el modo, el **CUIT que factura** y el **Punto de venta**, y tocá **Empezar a facturar**.
+  </Step>
+</Steps>
+
+Si al conectar te avisamos que falta la columna de importe o la de estado, agregala en Monday y volvé a conectar.
+
+## Elegir cómo facturar
+
+- **Automática**: cada ítem que pasa a **Facturar** se factura solo, en el momento. Aplica a los cambios de estado desde que la activás; lo anterior lo facturás a mano.
+- **Confirmar por WhatsApp**: cada ítem te llega por WhatsApp para facturarlo o marcarlo como **No facturable**. Ver [WhatsApp](/es/guides/whatsapp#confirmar-ventas-por-whatsapp).
+- **Manual**: importás un período, revisás y elegís qué facturar.
+
+Lo podés cambiar cuando quieras en la pestaña **Configuración**.
+
+## Qué factura sale
+
+- Si sos **monotributista**, **Factura C**.
+- Si sos **responsable inscripto**, **Factura A** cuando el cliente tiene CUIT inscripto o monotributista, y **Factura B** en los demás casos. El importe del tablero se toma como precio final: separamos el neto y el IVA con la **Alícuota de IVA** que elegís en **Configuración**.
+- Los ítems en dólares o euros se facturan en esa moneda, con la cotización oficial de ARCA.
+
+## La factura en el ítem
+
+Cuando ARCA autoriza la factura, la escribimos en la columna **Factura** del ítem, por ejemplo `Factura C 00003-00004761 · CAE 86390930166085`, con un link a la integración en facture.ar. Si el tablero no tiene esa columna, la creamos la primera vez. Si ya tenés una columna de texto o de link que se llama **Factura**, usamos esa.
+
+## Facturar a mano o ítems anteriores
+
+En la pestaña **Pedidos** de la integración, elegí el **Período** y tocá **Importar pedidos del período**: traemos los ítems que están en **Facturar**, **Cobrado** o **Pagado** y cambiaron en ese período. Marcá los que querés y tocá **Facturar**. Un ítem nunca se factura dos veces.
+
+## Probar sin emitir facturas reales
+
+En facture.ar el ambiente es uno solo para toda la cuenta: **Producción** emite facturas reales y **Testing** usa la homologación de ARCA (facturas sin validez fiscal). Se cambia arriba a la derecha. Ver [Entorno de testing](/es/guides/entorno-testing).
+
+## Desconectar
+
+Tocá **Desconectar** en la integración de facture.ar, o desinstalá la app **facture.ar** desde **Administración → Apps** en Monday. Las facturas ya emitidas no se tocan.
+
+## Planes y soporte
+
+La integración no se cobra aparte: se prueba gratis en modo Testing y factura en producción desde el plan Monotributo. Ver los [planes de facture.ar](https://www.facture.ar/#pricing).
+
+¿Dudas? Escribinos por WhatsApp con el botón **Necesito ayuda** dentro de la app.
