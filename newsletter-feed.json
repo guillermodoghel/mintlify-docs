@@ -3,6 +3,28 @@
  "url": "https://docs.facture.ar/es/newsletter/index",
  "notes": [
   {
+   "slug": "arca-investiga-publicidad-meta-pagos-sin-iva-riesgos-empresa-2026-10-23",
+   "title": "Publicidad en Facebook e Instagram sin IVA: qué investiga ARCA y qué riesgos corren las empresas",
+   "description": "ARCA investiga una presunta evasión de más de u$s120 millones canalizada por una fintech brasileña que ofrece pagar anuncios de Meta 'libres de impuestos'. Cómo tributan estos servicios, qué se arriesga al usar intermediarios y cómo documentar bien el gasto.",
+   "date": "2026-10-23",
+   "category": "iva",
+   "category_label": "IVA",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/arca-investiga-publicidad-meta-pagos-sin-iva-riesgos-empresa-2026-10-23"
+  },
+  {
+   "slug": "corte-suprema-beneficio-fiscal-error-formal-aplicativo-2026-10-23",
+   "title": "La Corte limita la 'dictadura del aplicativo': un beneficio fiscal no se pierde por un error formal",
+   "description": "La Corte Suprema priorizó el cumplimiento sustancial de la ley por encima de la omisión de un paso formal en los sistemas de ARCA. Qué implica, cómo defender un beneficio rechazado y qué recaudos tomar al presentar declaraciones juradas.",
+   "date": "2026-10-23",
+   "category": "arca",
+   "category_label": "ARCA y procedimientos",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/corte-suprema-beneficio-fiscal-error-formal-aplicativo-2026-10-23"
+  },
+  {
    "slug": "vencimiento-ganancias-30-octubre-inocencia-fiscal-ii-sin-reg-2026-10-22",
    "title": "Ganancias vence el 30 de octubre sin reglamentación de la Inocencia Fiscal II: cómo presentar",
    "description": "El viernes 30 de octubre vence la declaración jurada de Ganancias y ARCA todavía no reglamentó la Inocencia Fiscal II. Qué está pendiente, cómo decidir entre régimen general y simplificado, y qué riesgos tiene esperar.",
@@ -859,28 +881,6 @@
    "impact": "ninguno",
    "impact_note": null,
    "url": "https://docs.facture.ar/es/newsletter/notas/arca-aclara-zonas-grises-regimen-simplificado-ganancias-2026-09-09"
-  },
-  {
-   "slug": "corte-suprema-exencion-ingresos-brutos-obras-estrategicas-2026-09-08",
-   "title": "La Corte Suprema avaló que el Congreso exima de Ingresos Brutos a obras estratégicas",
-   "description": "Un fallo clave de la CSJN habilita que leyes nacionales dispongan exenciones de impuestos provinciales como IIBB para obras estratégicas. Impacto en RIGI y planificación fiscal.",
-   "date": "2026-09-08",
-   "category": "iibb",
-   "category_label": "Ingresos Brutos y provincias",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/corte-suprema-exencion-ingresos-brutos-obras-estrategicas-2026-09-08"
-  },
-  {
-   "slug": "monotributo-septiembre-topes-facturacion-cuotas-actualizadas-2026-09-07",
-   "title": "Monotributo septiembre 2025: nuevos topes de facturación y cuotas actualizadas",
-   "description": "ARCA aplicó una actualización del 16,8% en los parámetros del Monotributo. Repasamos las nuevas escalas de facturación y los importes mensuales vigentes.",
-   "date": "2026-09-07",
-   "category": "monotributo",
-   "category_label": "Monotributo",
-   "impact": "medio",
-   "impact_note": "Suben los topes de facturación por categoría. No cambia cómo emitís la Factura C, sí cuánto podés facturar sin cambiar de categoría.",
-   "url": "https://docs.facture.ar/es/newsletter/notas/monotributo-septiembre-topes-facturacion-cuotas-actualizadas-2026-09-07"
   }
  ]
 }
