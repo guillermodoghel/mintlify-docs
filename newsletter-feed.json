@@ -3,6 +3,28 @@
  "url": "https://docs.facture.ar/es/newsletter/index",
  "notes": [
   {
+   "slug": "decreto-1253-2026-reglamentacion-inocencia-fiscal-ii-gananci-2026-10-24",
+   "title": "Inocencia Fiscal II: qué cambia con el Decreto 1253/2026 en el régimen simplificado de Ganancias",
+   "description": "El Decreto 1253/2026 elimina los topes para adherir a la declaración jurada simplificada de Ganancias, define la 'discrepancia significativa', habilita a rectificar la DDJJ 2025 y reglamenta la reducción de multas de hasta el 50%.",
+   "date": "2026-10-24",
+   "category": "ganancias",
+   "category_label": "Ganancias",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/decreto-1253-2026-reglamentacion-inocencia-fiscal-ii-gananci-2026-10-24"
+  },
+  {
+   "slug": "ganancias-personas-juridicas-web-archivos-csv-importacion-re-2026-10-24",
+   "title": "Ganancias Personas Jurídicas web: cómo armar los CSV de ARCA para impuesto al cheque, retenciones y percepciones",
+   "description": "Guía práctica para preparar los archivos CSV del nuevo formulario web de Ganancias para sociedades a partir de tus registros contables, y para evitar los rechazos de validación más comunes.",
+   "date": "2026-10-24",
+   "category": "ganancias",
+   "category_label": "Ganancias",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/ganancias-personas-juridicas-web-archivos-csv-importacion-re-2026-10-24"
+  },
+  {
    "slug": "arca-investiga-publicidad-meta-pagos-sin-iva-riesgos-empresa-2026-10-23",
    "title": "Publicidad en Facebook e Instagram sin IVA: qué investiga ARCA y qué riesgos corren las empresas",
    "description": "ARCA investiga una presunta evasión de más de u$s120 millones canalizada por una fintech brasileña que ofrece pagar anuncios de Meta 'libres de impuestos'. Cómo tributan estos servicios, qué se arriesga al usar intermediarios y cómo documentar bien el gasto.",
@@ -859,28 +881,6 @@
    "impact": "ninguno",
    "impact_note": null,
    "url": "https://docs.facture.ar/es/newsletter/notas/arca-aclaraciones-regimen-simplificado-ganancias-2026-09-10"
-  },
-  {
-   "slug": "arca-controles-mercaderia-documentacion-comercios-2026-09-10",
-   "title": "ARCA intensifica controles de mercadería: qué documentación deben tener los comercios",
-   "description": "Operativos de ARCA en comercios e importadores para detectar mercadería sin respaldo documental. Qué papeles hay que tener a mano para evitar el secuestro.",
-   "date": "2026-09-10",
-   "category": "arca",
-   "category_label": "ARCA y procedimientos",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/arca-controles-mercaderia-documentacion-comercios-2026-09-10"
-  },
-  {
-   "slug": "arca-aclara-zonas-grises-regimen-simplificado-ganancias-2026-09-09",
-   "title": "Régimen Simplificado de Ganancias: ARCA aclara las dudas clave antes del vencimiento",
-   "description": "A pocos días del vencimiento, ARCA respondió las consultas del Consejo de Ciencias Económicas porteño sobre el régimen simplificado de Ganancias. Repasamos los puntos prácticos que contadores y contribuyentes deben tener en cuenta.",
-   "date": "2026-09-09",
-   "category": "vencimientos",
-   "category_label": "Vencimientos",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/arca-aclara-zonas-grises-regimen-simplificado-ganancias-2026-09-09"
   }
  ]
 }
