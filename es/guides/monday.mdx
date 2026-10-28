@@ -110,6 +110,26 @@ En **Configuración → Enviar la factura al cliente**:
 - **Automático**: apenas ARCA autoriza la factura, se la mandamos al mail de la columna **Email** del ítem.
 - **Manual**: no le mandamos nada. La podés mandar vos desde la pestaña **Pedidos** cuando quieras.
 
+## Varios tableros
+
+Si facturás desde más de un tablero de la misma cuenta de Monday (por ejemplo uno por empresa), conectá uno y agregá los demás en **Configuración → Más tableros**, un link por línea. Todos se facturan con la misma configuración: las mismas etiquetas, las mismas columnas y el mismo CUIT, salvo que uses la columna **Emisor**. Al guardar, revisamos que tu usuario de Monday tenga acceso a cada tablero.
+
+## Importes netos y alícuota por ítem
+
+- **Los importes son**: **Precio final, con IVA** (lo de siempre) o **Netos, sin IVA**. Con importes netos, en las facturas A y B sumamos el IVA arriba. En la Factura C no hay IVA, así que el neto es el precio.
+- **Alícuota por ítem**: si el tablero tiene una columna **Alícuota** (o **IVA %**) con `21`, `10,5`, `27` o `Exento`, cada ítem usa la suya. Sin esa columna, va la **Alícuota de IVA** de Configuración.
+
+## Período facturado
+
+Si el tablero tiene una columna de fechas para el período, la factura sale como **servicios**, con **Período desde**, **hasta** y **Vencimiento del pago**:
+
+- Una columna de **línea de tiempo** (por ejemplo **Período**) con el desde y el hasta.
+- O dos columnas de fecha, **Desde** y **Hasta**.
+- O una sola columna de fecha, como **Mes**: la tomamos como todo ese mes. Por ejemplo, el 10/11/2026 factura del 1/11 al 30/11.
+- Una columna de fecha **Vencimiento**, si la tenés. Sin ella, vence el día de la factura.
+
+Si las columnas tienen otros nombres, indicalas en **Configuración → Columnas**. Sin columna de período, la factura sale como hasta ahora.
+
 ## Facturar subelementos
 
 Si en tu tablero cada ítem es un cliente y cada subelemento es una factura (un período de abono como **Noviembre**, o un trabajo puntual), elegí **Configuración → Qué se factura → Cada subelemento**:
@@ -128,7 +148,7 @@ Si el tablero tiene una columna **Condición IVA** con **Responsable inscripto**
 
 ## Si tus columnas se llaman distinto
 
-Reconocemos las columnas por su nombre. Si en tu tablero se llaman de otra forma, en **Configuración → Columnas** escribí el título de cada una: importe, concepto, cliente, CUIT o DNI, condición IVA, mail, moneda, la columna de archivos del PDF y la del número de factura.
+Reconocemos las columnas por su nombre. Si en tu tablero se llaman de otra forma, en **Configuración → Columnas** escribí el título de cada una: importe, concepto, cliente, CUIT o DNI, condición IVA, mail, moneda, alícuota, período (desde, hasta y vencimiento), la columna de archivos del PDF y la del número de factura.
 
 ## Facturar a mano o ítems anteriores
 
