@@ -18,17 +18,23 @@ No hace falta cambiar tu forma de trabajar: reconocemos las columnas por su nomb
 | Columna | Tipo en Monday | Para qué |
 | --- | --- | --- |
 | **Importe** (o Monto, Total, Precio) | Números | El total de la factura, con IVA incluido. Si no hay ninguna con esos nombres, usamos la primera columna de números. |
-| **Estado** (cualquier nombre) | Estado | La etiqueta **Facturar**, **A facturar**, **Listo para facturar**, **Cobrado** o **Pagado** es la que dispara la factura. |
+| **Estado** (cualquier nombre) | Estado | La etiqueta **Facturar**, **A facturar**, **Listo para facturar**, **Cobrado** o **Pagado** es la que dispara la factura. Podés elegir otras en **Configuración** (ver [Elegir las etiquetas que facturan](#elegir-las-etiquetas-que-facturan)). |
 
 Y si las tiene, también usamos estas:
 
 | Columna | Tipo | Para qué |
 | --- | --- | --- |
-| **CUIT**, **CUIL**, **DNI** o **Documento** | Texto | El documento de tu cliente. Sin documento, la factura sale a **Consumidor final**. |
-| **Cliente**, **Razón social** o **Empresa** | Texto, desplegable o conexión | El nombre de tu cliente. |
+| **CUIT**, **CUIL**, **DNI** o **Documento** | Texto o espejo | El documento de tu cliente. Sin documento, la factura sale a **Consumidor final**. |
+| **Cliente**, **Razón social** o **Empresa** | Texto, desplegable, conexión o espejo | El nombre de tu cliente. |
 | **Concepto**, **Descripción**, **Detalle**, **Servicio** o **Producto** | Texto | El detalle de la factura. Si no hay, va el nombre del ítem. |
 | **Email**, **Mail** o **Correo** | Email o texto | A dónde le mandamos la factura. |
 | **Moneda** | Estado, desplegable o texto | **USD** o **Dólares** para facturar en dólares, **EUR** en euros. Sin esta columna, en pesos. |
+| **Emisor** | Texto, desplegable o espejo | Si facturás con varios CUITs: el CUIT o la razón social que emite cada ítem. Ver [Varios CUITs en un tablero](#varios-cuits-en-un-tablero). |
+| **Factura**, **PDF** o **Comprobante** | Archivos | Acá subimos el PDF de la factura. |
+
+<Tip>
+Las columnas **espejo** y de **conexión** se leen como se ven en el tablero: podés tener los datos del cliente en otro tablero y traerlos con una columna espejo.
+</Tip>
 
 <Tip>
 La etiqueta **Facturado** no dispara nada: podés usarla para marcar a mano lo que ya facturaste.
@@ -61,6 +67,23 @@ Si al conectar te avisamos que falta la columna de importe o la de estado, agreg
 
 Lo podés cambiar cuando quieras en la pestaña **Configuración**.
 
+## Elegir las etiquetas que facturan
+
+En **Configuración → Tu tablero de Monday**:
+
+- **Etiquetas que facturan**: las etiquetas que emiten la factura, separadas por coma, por ejemplo `Pagado`. Si lo dejás vacío, son **Facturar**, **A facturar**, **Listo para facturar**, **Cobrado** y **Pagado**.
+- **Columna de estado**: si tu tablero tiene más de una columna de estado (por ejemplo **Estado del trabajo** y **Estado de cobro**), escribí el título de la que tiene que mirar. Vacío: todas.
+
+Un ítem nunca se factura dos veces, aunque pase por más de una de esas etiquetas.
+
+## Varios CUITs en un tablero
+
+Si facturás con varios CUITs (por ejemplo una SRL y monotributistas), agregá al tablero una columna **Emisor** con el CUIT (11 números) o la razón social, tal como figura en ARCA, de quien factura cada ítem. Cada ítem sale con ese CUIT y su punto de venta por defecto. Si tu columna tiene otro nombre, escribilo en **Configuración → Columna del emisor**.
+
+- Los ítems sin emisor salen con el **CUIT que factura** que elegiste en **Configuración**.
+- Si el emisor no es uno de los CUITs de tu cuenta, el ítem queda con error y te decimos por qué.
+- Todos los CUITs tienen que estar cargados y conectados con ARCA en facture.ar. Para facturar con varios CUITs necesitás el plan **Pro**.
+
 ## Qué factura sale
 
 - Si sos **monotributista**, **Factura C**.
@@ -69,7 +92,20 @@ Lo podés cambiar cuando quieras en la pestaña **Configuración**.
 
 ## La factura en el ítem
 
-Cuando ARCA autoriza la factura, la escribimos en la columna **Factura** del ítem, por ejemplo `Factura C 00003-00004761 · CAE 86390930166085`, con un link a la integración en facture.ar. Si el tablero no tiene esa columna, la creamos la primera vez. Si ya tenés una columna de texto o de link que se llama **Factura**, usamos esa.
+Cuando ARCA autoriza la factura, la escribimos en la columna **Factura** del ítem, por ejemplo `Factura C 00003-00004761 · CAE 86390930166085`, con un link a la integración en facture.ar. Si ya tenés una columna de texto o de link que se llama **Factura**, usamos esa.
+
+Si el tablero tiene una columna de **Archivos** llamada **Factura**, **PDF** o **Comprobante**, subimos ahí el PDF de la factura. Si tiene esa columna y ninguna de texto o link **Factura**, no creamos otra. Si no tiene ninguna de las dos, creamos la columna **Factura** la primera vez.
+
+## El mail a tu cliente
+
+En **Configuración → Enviar la factura al cliente**:
+
+- **Automático**: apenas ARCA autoriza la factura, se la mandamos al mail de la columna **Email** del ítem.
+- **Manual**: no le mandamos nada. La podés mandar vos desde la pestaña **Pedidos** cuando quieras.
+
+## Subelementos
+
+Facturamos los ítems del tablero, no sus subelementos: cada ítem es una factura, con el importe de su columna **Importe**.
 
 ## Facturar a mano o ítems anteriores
 
