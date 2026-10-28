@@ -80,6 +80,13 @@ Un ítem nunca se factura dos veces, aunque pase por más de una de esas etiquet
 
 Si facturás con varios CUITs (por ejemplo una SRL y monotributistas), agregá al tablero una columna **Emisor** con el CUIT (11 números) o la razón social, tal como figura en ARCA, de quien factura cada ítem. Cada ítem sale con ese CUIT y su punto de venta por defecto. Si tu columna tiene otro nombre, escribilo en **Configuración → Columna del emisor**.
 
+Si la columna ya existe con otros textos (por ejemplo una columna de estado **Cuenta** con la etiqueta `Estudio Treo SRL (Factura B)`), no hace falta cambiarla: en **Configuración → Emisor por etiqueta** escribí una línea por etiqueta con el CUIT que factura:
+
+```
+Estudio Treo SRL (Factura B) = 30-71111111-1
+Juan Pérez (Factura C) = 20-12345678-6
+```
+
 - Los ítems sin emisor salen con el **CUIT que factura** que elegiste en **Configuración**.
 - Si el emisor no es uno de los CUITs de tu cuenta, el ítem queda con error y te decimos por qué.
 - Todos los CUITs tienen que estar cargados y conectados con ARCA en facture.ar. Para facturar con varios CUITs necesitás el plan **Pro**.
@@ -103,9 +110,25 @@ En **Configuración → Enviar la factura al cliente**:
 - **Automático**: apenas ARCA autoriza la factura, se la mandamos al mail de la columna **Email** del ítem.
 - **Manual**: no le mandamos nada. La podés mandar vos desde la pestaña **Pedidos** cuando quieras.
 
-## Subelementos
+## Facturar subelementos
 
-Facturamos los ítems del tablero, no sus subelementos: cada ítem es una factura, con el importe de su columna **Importe**.
+Si en tu tablero cada ítem es un cliente y cada subelemento es una factura (un período de abono como **Noviembre**, o un trabajo puntual), elegí **Configuración → Qué se factura → Cada subelemento**:
+
+- Lo que dispara la factura es el estado del **subelemento**, con las etiquetas que elijas.
+- El importe sale de la columna de números del subelemento (**Importe**, **Monto**, **Total** o **Precio**).
+- Los datos del cliente salen del **ítem**: el nombre (o su columna **Cliente**), el **CUIT** o **DNI**, la **Condición IVA** y el **Email**. Son los mismos para todos sus subelementos.
+- El concepto es el nombre del ítem y el del subelemento, por ejemplo `Colegio X – Noviembre`, salvo que el subelemento tenga una columna **Concepto**.
+- El emisor sale de la columna del subelemento (o del ítem, si el subelemento no la tiene).
+- El número, el CAE y el PDF se escriben en el **subelemento**.
+- Un subelemento nunca se factura dos veces, aunque después pase a **Pagado**.
+
+## Condición frente al IVA del cliente
+
+Si el tablero tiene una columna **Condición IVA** con **Responsable inscripto**, **Monotributo**, **Exento** o **Consumidor final**, la usamos para elegir Factura A o B. Sin esa columna, la consultamos en ARCA con el CUIT del cliente.
+
+## Si tus columnas se llaman distinto
+
+Reconocemos las columnas por su nombre. Si en tu tablero se llaman de otra forma, en **Configuración → Columnas** escribí el título de cada una: importe, concepto, cliente, CUIT o DNI, condición IVA, mail, moneda, la columna de archivos del PDF y la del número de factura.
 
 ## Facturar a mano o ítems anteriores
 
