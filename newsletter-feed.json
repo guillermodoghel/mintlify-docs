@@ -3,6 +3,17 @@
  "url": "https://docs.facture.ar/es/newsletter/index",
  "notes": [
   {
+   "slug": "directores-deben-facturar-honorarios-monotributo-iva-2026-10-29",
+   "title": "Directores de sociedades ya deben facturar sus honorarios: guía práctica para monotributistas e inscriptos en IVA",
+   "description": "Rige la obligación de emitir factura electrónica por los honorarios de directores. Qué comprobante corresponde según la condición fiscal, cómo impacta en el Monotributo y el IVA, y qué deben controlar las empresas.",
+   "date": "2026-10-29",
+   "category": "facturacion",
+   "category_label": "Facturación electrónica",
+   "impact": "alto",
+   "impact_note": "Si integrás un directorio, tenés que emitir factura electrónica por tus honorarios: Factura C si sos monotributista o el comprobante que corresponda según tu condición si sos responsable inscripto. Esos montos suman a tus ingresos brutos para la recategorización del Monotributo o generan débito fiscal de IVA, según el caso.",
+   "url": "https://docs.facture.ar/es/newsletter/notas/directores-deben-facturar-honorarios-monotributo-iva-2026-10-29"
+  },
+  {
    "slug": "ganancias-simplificada-adherir-ratificar-convalidar-arca-2026-10-28",
    "title": "Ganancias Simplificada: cuándo adherir, ratificar o convalidar la declaración jurada",
    "description": "Guía práctica sobre los tres procedimientos del régimen de Declaración Jurada Simplificada de Ganancias: qué implica cada uno, a quién le corresponde y por qué conviene no confundirlos.",
@@ -870,17 +881,6 @@
    "impact": "ninguno",
    "impact_note": null,
    "url": "https://docs.facture.ar/es/newsletter/notas/cnv-resolucion-1166-frena-elusion-impuesto-cheque-pymes-2026-09-15"
-  },
-  {
-   "slug": "corte-suprema-limita-tasas-municipales-empresas-2026-09-15",
-   "title": "Fallo de la Corte Suprema: los municipios deberán probar la prestación del servicio para cobrar tasas",
-   "description": "La Corte Suprema limitó el poder tributario municipal y exigió demostrar la efectiva prestación del servicio para reclamar tasas a empresas y contribuyentes.",
-   "date": "2026-09-15",
-   "category": "iibb",
-   "category_label": "Ingresos Brutos y provincias",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/corte-suprema-limita-tasas-municipales-empresas-2026-09-15"
   }
  ]
 }
