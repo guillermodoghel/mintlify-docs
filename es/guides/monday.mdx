@@ -26,15 +26,20 @@ Y si las tiene, también usamos estas:
 | --- | --- | --- |
 | **CUIT**, **CUIL**, **DNI** o **Documento** | Texto o espejo | El documento de tu cliente. Sin documento, la factura sale a **Consumidor final**. |
 | **Cliente**, **Razón social** o **Empresa** | Texto, desplegable, conexión o espejo | El nombre de tu cliente. |
-| **Concepto**, **Descripción**, **Detalle**, **Servicio** o **Producto** | Texto | El detalle de la factura. Si no hay, va el nombre del ítem. |
+| **Concepto**, **Descripción**, **Detalle**, **Servicio** o **Producto** | Texto, fórmula o espejo | El detalle de la factura. Si no hay, va el nombre del ítem. |
+| **Condición de venta** | Estado, desplegable o texto | Lo que sale impreso como condición de venta: **Contado**, **Cuenta corriente**, **Transferencia**, **Tarjeta de débito o crédito** o **Cheque**. Ver **Condición de venta** más abajo. |
 | **Email**, **Mail** o **Correo** | Email o texto | A dónde le mandamos la factura. |
 | **Moneda** | Estado, desplegable o texto | **USD** o **Dólares** para facturar en dólares, **EUR** en euros. Sin esta columna, en pesos. |
 | **Emisor** | Texto, desplegable o espejo | Si facturás con varios CUITs: el CUIT o la razón social que emite cada ítem. Ver [Varios CUITs en un tablero](#varios-cuits-en-un-tablero). |
 | **Factura**, **PDF** o **Comprobante** | Archivos | Acá subimos el PDF de la factura. |
 
 <Tip>
-Las columnas **espejo** y de **conexión** se leen como se ven en el tablero: podés tener los datos del cliente en otro tablero y traerlos con una columna espejo.
+Las columnas **espejo**, de **conexión** y de **fórmula** se leen como se ven en el tablero: podés tener los datos del cliente en otro tablero y traerlos con una columna espejo, o armar el concepto con una fórmula.
 </Tip>
+
+<Warning>
+Monday no entrega por API el resultado de una **fórmula que usa una columna espejo**: en el tablero se ve, pero a nosotros nos llega vacía y la factura sale con el nombre del ítem. Si tu concepto depende de otro tablero, indicá como **Columna del concepto** la columna espejo directamente, o usá una columna de texto.
+</Warning>
 
 <Tip>
 La etiqueta **Facturado** no dispara nada: podés usarla para marcar a mano lo que ya facturaste.
@@ -76,6 +81,14 @@ En **Configuración → Tu tablero de Monday**:
 
 Un ítem nunca se factura dos veces, aunque pase por más de una de esas etiquetas.
 
+### Facturar solo algunos ítems
+
+Si en el mismo tablero hay ítems que no llevan factura (por ejemplo una columna **Iniciales** con `FACTURA`, `PROFORMA` o `RECIBO`), completá **Facturar solo si la columna** con el título de esa columna y **dice** con los valores que facturan, separados por coma (`FACTURA`). Con cualquier otro valor, o vacía, el ítem no se factura aunque tenga la etiqueta. Con subelementos, la columna puede estar en el subelemento o en su ítem.
+
+### Volver a poner la etiqueta es seguro
+
+Cada ítem (o subelemento) se factura una sola vez. Si ponés **Facturar** dos veces, si Monday nos manda el mismo aviso repetido o si hay una demora, no se emite otra factura. Si el ítem quedó con error, corregilo y volvé a poner la etiqueta: ahí sí se factura.
+
 ## Varios CUITs en un tablero
 
 Si facturás con varios CUITs (por ejemplo una SRL y monotributistas), agregá al tablero una columna **Emisor** con el CUIT (11 números) o la razón social, tal como figura en ARCA, de quien factura cada ítem. Cada ítem sale con ese CUIT y su punto de venta por defecto. Si tu columna tiene otro nombre, escribilo en **Configuración → Columna del emisor**.
@@ -102,6 +115,14 @@ Juan Pérez (Factura C) = 20-12345678-6
 Cuando ARCA autoriza la factura, la escribimos en la columna **Factura** del ítem, por ejemplo `Factura C 00003-00004761 · CAE 86390930166085`, con un link a la integración en facture.ar. Si ya tenés una columna de texto o de link que se llama **Factura**, usamos esa.
 
 Si el tablero tiene una columna de **Archivos** llamada **Factura**, **PDF** o **Comprobante**, subimos ahí el PDF de la factura. Si tiene esa columna y ninguna de texto o link **Factura**, no creamos otra. Si no tiene ninguna de las dos, creamos la columna **Factura** la primera vez.
+
+### Si la factura no sale
+
+Con el modo **Automática**, si ARCA rechaza la factura o al ítem le falta algo (por ejemplo el importe), escribimos el motivo en la columna **Factura** del ítem, por ejemplo `No emitida: El pedido no tiene importes para facturar.` Si el tablero no tiene esa columna, la creamos. Corregí el ítem y volvé a poner la etiqueta: cuando la factura sale, el número reemplaza al aviso.
+
+## Condición de venta
+
+En **Configuración → Condición de venta** elegí la que sale impresa en todas las facturas, por ejemplo **Cuenta corriente**. Si varía por cliente, agregá al ítem una columna **Condición de venta** con `Contado`, `Cuenta corriente`, `Transferencia`, `Tarjeta de débito`, `Tarjeta de crédito` o `Cheque`: la de la columna vale más que la de **Configuración**. Si la columna tiene otro nombre, indicalo en **Configuración → Columnas**. Sin ninguna de las dos, la factura no indica condición de venta.
 
 ## El mail a tu cliente
 
@@ -137,7 +158,8 @@ Si en tu tablero cada ítem es un cliente y cada subelemento es una factura (un 
 - Lo que dispara la factura es el estado del **subelemento**, con las etiquetas que elijas.
 - El importe sale de la columna de números del subelemento (**Importe**, **Monto**, **Total** o **Precio**).
 - Los datos del cliente salen del **ítem**: el nombre (o su columna **Cliente**), el **CUIT** o **DNI**, la **Condición IVA** y el **Email**. Son los mismos para todos sus subelementos.
-- El concepto es el nombre del ítem y el del subelemento, por ejemplo `Colegio X – Noviembre`, salvo que el subelemento tenga una columna **Concepto**.
+- El concepto es el nombre del ítem y el del subelemento, por ejemplo `Colegio X – Noviembre`, salvo que haya una columna **Concepto** (la buscamos en el subelemento y, si no la tiene, en el ítem).
+- Si tus subelementos se llaman como el mes (`Octubre 2026`) y querés que se vea en la factura, elegí **Configuración → Columnas → Nombre del subelemento en el concepto → Agregarlo al final**: el concepto queda `AE - Servicio de Higiene y Seguridad – Octubre 2026`.
 - El emisor sale de la columna del subelemento (o del ítem, si el subelemento no la tiene).
 - El número, el CAE y el PDF se escriben en el **subelemento**.
 - Un subelemento nunca se factura dos veces, aunque después pase a **Pagado**.
@@ -148,7 +170,7 @@ Si el tablero tiene una columna **Condición IVA** con **Responsable inscripto**
 
 ## Si tus columnas se llaman distinto
 
-Reconocemos las columnas por su nombre. Si en tu tablero se llaman de otra forma, en **Configuración → Columnas** escribí el título de cada una: importe, concepto, cliente, CUIT o DNI, condición IVA, mail, moneda, alícuota, período (desde, hasta y vencimiento), la columna de archivos del PDF y la del número de factura.
+Reconocemos las columnas por su nombre. Si en tu tablero se llaman de otra forma, en **Configuración → Columnas** escribí el título de cada una: importe, concepto, cliente, CUIT o DNI, condición IVA, condición de venta, mail, moneda, alícuota, período (desde, hasta y vencimiento), la columna de archivos del PDF y la del número de factura.
 
 ## Facturar a mano o ítems anteriores
 
