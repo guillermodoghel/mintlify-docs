@@ -3,6 +3,39 @@
  "url": "https://docs.facture.ar/es/newsletter/index",
  "notes": [
   {
+   "slug": "arca-oficializa-prorroga-ddjj-ganancias-personas-humanas-16--2026-10-30",
+   "title": "Ganancias personas humanas: ARCA oficializó la sexta prórroga y el nuevo vencimiento es el 16 de noviembre",
+   "description": "ARCA volvió a postergar la declaración jurada de Ganancias para personas humanas y sucesiones indivisas. Por qué se extendió el plazo, qué sigue pendiente y cómo aprovechar estas semanas.",
+   "date": "2026-10-30",
+   "category": "ganancias",
+   "category_label": "Ganancias",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/arca-oficializa-prorroga-ddjj-ganancias-personas-humanas-16--2026-10-30"
+  },
+  {
+   "slug": "casas-particulares-arca-actualizo-aportes-contribuciones-art-2026-10-30",
+   "title": "Casas particulares: ARCA actualizó aportes, contribuciones y ART para noviembre y diciembre",
+   "description": "Qué cambió en los montos que pagan los empleadores de personal de casas particulares en noviembre y diciembre, cómo generar el VEP y qué controlar antes del vencimiento.",
+   "date": "2026-10-30",
+   "category": "laboral",
+   "category_label": "Laboral y previsional",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/casas-particulares-arca-actualizo-aportes-contribuciones-art-2026-10-30"
+  },
+  {
+   "slug": "ganancias-cuando-se-pueden-deducir-multas-fallo-2026-10-30",
+   "title": "Ganancias: cuándo se pueden deducir las multas según un nuevo fallo",
+   "description": "Un fallo distinguió entre multas fiscales, que no son deducibles, y multas vinculadas a la actividad que genera ingresos gravados, que podrían deducirse en el impuesto a las Ganancias. Qué implica para el balance impositivo.",
+   "date": "2026-10-30",
+   "category": "ganancias",
+   "category_label": "Ganancias",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/ganancias-cuando-se-pueden-deducir-multas-fallo-2026-10-30"
+  },
+  {
    "slug": "directores-deben-facturar-honorarios-monotributo-iva-2026-10-29",
    "title": "Directores de sociedades ya deben facturar sus honorarios: guía práctica para monotributistas e inscriptos en IVA",
    "description": "Rige la obligación de emitir factura electrónica por los honorarios de directores. Qué comprobante corresponde según la condición fiscal, cómo impacta en el Monotributo y el IVA, y qué deben controlar las empresas.",
@@ -848,39 +881,6 @@
    "impact": "ninguno",
    "impact_note": null,
    "url": "https://docs.facture.ar/es/newsletter/notas/arca-debito-directo-planes-facilidades-pago-2026-09-16"
-  },
-  {
-   "slug": "caba-devolucion-expres-saldos-favor-ingresos-brutos-2026-09-16",
-   "title": "Devolución exprés de saldos a favor de Ingresos Brutos en CABA: cómo funciona el nuevo sistema",
-   "description": "La Ciudad de Buenos Aires ya devolvió más de $50.000 millones en saldos a favor de Ingresos Brutos mediante un circuito digital que alcanzó a 31.000 contribuyentes. Guía práctica para contadores y empresas.",
-   "date": "2026-09-16",
-   "category": "iibb",
-   "category_label": "Ingresos Brutos y provincias",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/caba-devolucion-expres-saldos-favor-ingresos-brutos-2026-09-16"
-  },
-  {
-   "slug": "monotributo-aportes-jubilacion-minima-2026-09-16",
-   "title": "Jubilación del monotributista: por qué los aportes no alcanzan para el haber mínimo",
-   "description": "Análisis del componente previsional del monotributo y por qué resulta insuficiente para financiar una jubilación mínima. Diferencias por categoría y alternativas para complementar aportes.",
-   "date": "2026-09-16",
-   "category": "monotributo",
-   "category_label": "Monotributo",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/monotributo-aportes-jubilacion-minima-2026-09-16"
-  },
-  {
-   "slug": "cnv-resolucion-1166-frena-elusion-impuesto-cheque-pymes-2026-09-15",
-   "title": "CNV RG 1166: fin del circuito pyme para evitar el impuesto al cheque",
-   "description": "La Comisión Nacional de Valores exige que el fondeo de cuentas en ALyCs provenga de cuentas bancarias o CVU del propio titular, cerrando un mecanismo usado por pymes del agro para reducir el impuesto a los débitos y créditos.",
-   "date": "2026-09-15",
-   "category": "arca",
-   "category_label": "ARCA y procedimientos",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/cnv-resolucion-1166-frena-elusion-impuesto-cheque-pymes-2026-09-15"
   }
  ]
 }
