@@ -3,6 +3,17 @@
  "url": "https://docs.facture.ar/es/newsletter/index",
  "notes": [
   {
+   "slug": "arca-prorroga-30-diciembre-planes-pago-mipymes-sector-salud--2026-10-31",
+   "title": "ARCA extendió hasta el 30 de diciembre la adhesión a los planes de pago para MiPyMEs y sector salud",
+   "description": "La RG 5920/2026 prorrogó el plazo para adherir a dos regímenes especiales de facilidades de pago. Quiénes pueden adherir, qué conviene evaluar antes de hacerlo y cómo se relaciona con otros vencimientos de fin de año.",
+   "date": "2026-10-31",
+   "category": "vencimientos",
+   "category_label": "Vencimientos",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/arca-prorroga-30-diciembre-planes-pago-mipymes-sector-salud--2026-10-31"
+  },
+  {
    "slug": "arca-oficializa-prorroga-ddjj-ganancias-personas-humanas-16--2026-10-30",
    "title": "Ganancias personas humanas: ARCA oficializó la sexta prórroga y el nuevo vencimiento es el 16 de noviembre",
    "description": "ARCA volvió a postergar la declaración jurada de Ganancias para personas humanas y sucesiones indivisas. Por qué se extendió el plazo, qué sigue pendiente y cómo aprovechar estas semanas.",
@@ -870,17 +881,6 @@
    "impact": "ninguno",
    "impact_note": null,
    "url": "https://docs.facture.ar/es/newsletter/notas/inocencia-fiscal-ii-claves-proyecto-exteriorizacion-2026-09-17"
-  },
-  {
-   "slug": "arca-debito-directo-planes-facilidades-pago-2026-09-16",
-   "title": "ARCA amplía el débito directo en planes de facilidades: alcanza cuotas desde $100 millones",
-   "description": "La RG ARCA 5896/2026 modifica el régimen de planes de pago y extiende el débito directo a cuotas de gran monto que antes se cancelaban por transferencia electrónica. Qué implica para contribuyentes y contadores.",
-   "date": "2026-09-16",
-   "category": "arca",
-   "category_label": "ARCA y procedimientos",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/arca-debito-directo-planes-facilidades-pago-2026-09-16"
   }
  ]
 }
