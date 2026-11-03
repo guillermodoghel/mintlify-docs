@@ -3,6 +3,39 @@
  "url": "https://docs.facture.ar/es/newsletter/index",
  "notes": [
   {
+   "slug": "asociaciones-civiles-santa-fe-estado-recursos-gastos-rgc-591-2026-11-03",
+   "title": "Asociaciones civiles de Santa Fe: ARCA habilita un Estado de Recursos y Gastos simplificado (RGC 5919)",
+   "description": "La Resolución General Conjunta 5919 de ARCA y el Registro de Personas Jurídicas de Santa Fe aprueba un modelo simplificado de Estado de Recursos y Gastos y abre una ventana hasta el 30/06/2027 para regularizar ejercicios anteriores.",
+   "date": "2026-11-03",
+   "category": "arca",
+   "category_label": "ARCA y procedimientos",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/asociaciones-civiles-santa-fe-estado-recursos-gastos-rgc-591-2026-11-03"
+  },
+  {
+   "slug": "inocencia-fiscal-uif-reglamento-controles-antilavado-regimen-2026-11-03",
+   "title": "Inocencia Fiscal: la UIF reglamentó los controles antilavado y la adhesión al Régimen Simplificado de Ganancias pasa a ser un antecedente favorable",
+   "description": "La UIF reglamentó los controles antilavado vinculados a la Ley de Inocencia Fiscal. Qué implica para quienes evalúan adherir al Régimen Simplificado de Ganancias y depositar ahorros no declarados en bancos y billeteras virtuales.",
+   "date": "2026-11-03",
+   "category": "ganancias",
+   "category_label": "Ganancias",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/inocencia-fiscal-uif-reglamento-controles-antilavado-regimen-2026-11-03"
+  },
+  {
+   "slug": "recaudacion-tributaria-octubre-suba-real-caida-iva-2026-11-03",
+   "title": "Recaudación de octubre: leve suba real, pero el IVA ya suma 12 meses en baja",
+   "description": "ARCA recaudó $21,61 billones en octubre, con una suba nominal del 33,7% y un crecimiento real cercano al 0,7%. Ganancias, seguridad social y derechos de exportación compensaron otra caída del IVA.",
+   "date": "2026-11-03",
+   "category": "economia",
+   "category_label": "Economía y contexto",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/recaudacion-tributaria-octubre-suba-real-caida-iva-2026-11-03"
+  },
+  {
    "slug": "arca-intima-colegios-privados-aportes-ips-fal-2026-11-02",
    "title": "ARCA intima a colegios privados bonaerenses por aportes previsionales: el conflicto con el IPS y el FAL",
    "description": "ARCA reclama a colegios privados de la provincia de Buenos Aires los aportes del personal no docente y de los docentes extracurriculares que hoy van al IPS. Qué se discute, quiénes quedan alcanzados, la duda sobre el FAL y qué revisar ante una intimación.",
@@ -848,39 +881,6 @@
    "impact": "ninguno",
    "impact_note": null,
    "url": "https://docs.facture.ar/es/newsletter/notas/beneficios-impositivos-concesiones-rutas-presupuesto-2027-2026-09-18"
-  },
-  {
-   "slug": "ganancias-fechas-clave-septiembre-ddjj-anticipo-2026-09-18",
-   "title": "Ganancias 2025: ARCA fijó el 22 y 24 de septiembre como fechas clave",
-   "description": "ARCA reprogramó el calendario del Impuesto a las Ganancias: la DDJJ 2025 vence el 22 de septiembre y el primer anticipo 2026 el 24. Guía para contadores y empresas.",
-   "date": "2026-09-18",
-   "category": "ganancias",
-   "category_label": "Ganancias",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/ganancias-fechas-clave-septiembre-ddjj-anticipo-2026-09-18"
-  },
-  {
-   "slug": "monotributo-nueva-fecha-limite-pago-septiembre-2026-09-18",
-   "title": "Monotributo septiembre 2026: ARCA reprogramó el vencimiento mensual",
-   "description": "ARCA confirmó la nueva fecha límite para el pago del monotributo de septiembre 2026. Enterate cómo quedan los plazos y qué alternativas hay para abonar en término.",
-   "date": "2026-09-18",
-   "category": "vencimientos",
-   "category_label": "Vencimientos",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/monotributo-nueva-fecha-limite-pago-septiembre-2026-09-18"
-  },
-  {
-   "slug": "beneficios-impositivos-concesiones-viales-presupuesto-2027-2026-09-17",
-   "title": "Presupuesto 2027: régimen permanente de beneficios impositivos para concesiones viales",
-   "description": "El proyecto de Presupuesto 2027 incorpora un paquete de incentivos fiscales para las empresas que operen más de 9.000 km de rutas nacionales, con amortización acelerada, tratamiento especial de IVA y adhesión provincial condicionada.",
-   "date": "2026-09-17",
-   "category": "economia",
-   "category_label": "Economía y contexto",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/beneficios-impositivos-concesiones-viales-presupuesto-2027-2026-09-17"
   }
  ]
 }
