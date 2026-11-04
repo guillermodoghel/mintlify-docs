@@ -3,6 +3,39 @@
  "url": "https://docs.facture.ar/es/newsletter/index",
  "notes": [
   {
+   "slug": "monotributo-noviembre-cuotas-topes-recategorizacion-2026-11-04",
+   "title": "Monotributo en noviembre 2026: cuota por categoría, topes de facturación y próxima recategorización",
+   "description": "Cómo leer la cuota mensual del monotributo para noviembre según actividad, cuándo vence el pago y qué controlar en la facturación acumulada antes de la recategorización de enero.",
+   "date": "2026-11-04",
+   "category": "monotributo",
+   "category_label": "Monotributo",
+   "impact": "medio",
+   "impact_note": "La emisión de comprobantes no cambia, pero conviene revisar en Facturear la facturación acumulada de los últimos 12 meses y compararla con el tope de tu categoría. Así podés anticipar la recategorización de enero y evitar superar el máximo del régimen.",
+   "url": "https://docs.facture.ar/es/newsletter/notas/monotributo-noviembre-cuotas-topes-recategorizacion-2026-11-04"
+  },
+  {
+   "slug": "sire-obligatorio-retenciones-percepciones-iva-2026-11-04",
+   "title": "SIRE obligatorio para retenciones y percepciones de IVA: qué cambia y cómo prepararse",
+   "description": "ARCA formalizó el uso obligatorio del SIRE para determinar e ingresar retenciones y percepciones de IVA. Quiénes están alcanzados, qué pasa con SICORE y qué conviene revisar desde ahora.",
+   "date": "2026-11-04",
+   "category": "iva",
+   "category_label": "IVA",
+   "impact": "medio",
+   "impact_note": "La forma de emitir comprobantes no cambia, pero si sos agente de percepción de IVA, las percepciones que discriminás en tus facturas deberán informarse e ingresarse a través del SIRE. Conviene verificar que los datos de tus comprobantes coincidan con lo que vas a declarar.",
+   "url": "https://docs.facture.ar/es/newsletter/notas/sire-obligatorio-retenciones-percepciones-iva-2026-11-04"
+  },
+  {
+   "slug": "arca-suspende-embargos-pymes-hasta-mayo-2027-planes-de-pago-2026-11-04",
+   "title": "ARCA suspende embargos a empresas y pymes hasta mayo de 2027: qué se anunció y qué falta definir",
+   "description": "Caputo anunció en la Conferencia Industrial de la UIA la suspensión de embargos de ARCA, la extensión de planes de pago de hasta 18 cuotas y la compensación de saldos a favor por exportaciones. Qué implica para empresas y estudios contables.",
+   "date": "2026-11-04",
+   "category": "arca",
+   "category_label": "ARCA y procedimientos",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/arca-suspende-embargos-pymes-hasta-mayo-2027-planes-de-pago-2026-11-04"
+  },
+  {
    "slug": "asociaciones-civiles-santa-fe-estado-recursos-gastos-rgc-591-2026-11-03",
    "title": "Asociaciones civiles de Santa Fe: ARCA habilita un Estado de Recursos y Gastos simplificado (RGC 5919)",
    "description": "La Resolución General Conjunta 5919 de ARCA y el Registro de Personas Jurídicas de Santa Fe aprueba un modelo simplificado de Estado de Recursos y Gastos y abre una ventana hasta el 30/06/2027 para regularizar ejercicios anteriores.",
@@ -848,39 +881,6 @@
    "impact": "ninguno",
    "impact_note": null,
    "url": "https://docs.facture.ar/es/newsletter/notas/monotributo-octubre-2026-nuevos-valores-topes-arca-2026-09-20"
-  },
-  {
-   "slug": "arca-fecha-limite-cambios-facturas-electronicas-2026-09-19",
-   "title": "ARCA fijó fecha límite para adaptar las facturas electrónicas: qué cambios aplicar",
-   "description": "ARCA estableció un plazo para que empresas y profesionales actualicen sus sistemas de facturación electrónica y cumplan con los nuevos requerimientos fiscales. Repasamos qué hay que revisar para evitar la cancelación de comprobantes.",
-   "date": "2026-09-19",
-   "category": "facturacion",
-   "category_label": "Facturación electrónica",
-   "impact": "alto",
-   "impact_note": "ARCA puede cancelar comprobantes que no cumplan los nuevos requisitos después de la fecha límite. Facturear adecua la emisión; revisá punto de venta, condición fiscal y tipo de comprobante de cada CUIT.",
-   "url": "https://docs.facture.ar/es/newsletter/notas/arca-fecha-limite-cambios-facturas-electronicas-2026-09-19"
-  },
-  {
-   "slug": "monotributo-aporte-jubilatorio-octubre-categorias-2026-09-19",
-   "title": "Monotributo octubre 2026: aporte jubilatorio por categoría y requisitos para jubilarse",
-   "description": "Conocé los valores actualizados del aporte jubilatorio del Monotributo para octubre de 2026 según cada categoría y los requisitos que exige ARCA para acceder a la jubilación.",
-   "date": "2026-09-19",
-   "category": "monotributo",
-   "category_label": "Monotributo",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/monotributo-aporte-jubilatorio-octubre-categorias-2026-09-19"
-  },
-  {
-   "slug": "beneficios-impositivos-concesiones-rutas-presupuesto-2027-2026-09-18",
-   "title": "Presupuesto 2027: beneficios impositivos para concesionarias de rutas nacionales",
-   "description": "El Gobierno propone un régimen permanente con amortización acelerada, tratamiento especial del IVA, cómputo total del impuesto al cheque y alivios provinciales para las empresas que tomen la concesión de más de 9.000 km de rutas.",
-   "date": "2026-09-18",
-   "category": "economia",
-   "category_label": "Economía y contexto",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/beneficios-impositivos-concesiones-rutas-presupuesto-2027-2026-09-18"
   }
  ]
 }
