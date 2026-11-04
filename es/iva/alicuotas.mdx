@@ -4,6 +4,8 @@ sidebarTitle: "Alícuotas de IVA"
 description: "Qué se factura al 21%, al 10,5% y al 27%, qué está exento y cuándo va tasa 0. Tabla por rubro y cómo cargar la alícuota correcta en tu factura."
 ---
 
+import { CtaFacturear } from '/snippets/cta-facturear.jsx';
+
 # Alícuotas de IVA en Argentina
 
 El IVA en Argentina no tiene una única alícuota: existen tres alícuotas positivas y una categoría de exentos. Conocer qué alícuota aplica a tus productos o servicios es crucial para facturar correctamente.
@@ -21,8 +23,10 @@ El IVA en Argentina no tiene una única alícuota: existen tres alícuotas posit
 | **Exento** | Sin IVA | Educación, ciertos alimentos, libros |
 
 <Tip>
-  **Herramienta:** con la [calculadora de IVA](https://www.facture.ar/herramientas/calculadora-iva) le sumás el IVA a un precio neto o se lo separás a un precio final, al 21%, 10,5% o 27%, y ves cómo queda en una Factura A y en una B.
+  **Herramienta:** con la [calculadora de IVA](https://www.facture.ar/herramientas/calculadora-iva?utm_source=docs&utm_medium=referral&utm_campaign=iva-alicuotas&utm_content=link) le sumás el IVA a un precio neto o se lo separás a un precio final, al 21%, 10,5% o 27%, y ves cómo queda en una Factura A y en una B.
 </Tip>
+
+<CtaFacturear page="iva-alicuotas" tema="general" />
 
 ---
 
@@ -173,10 +177,3 @@ Una misma factura puede tener ítems con diferentes alícuotas. Facturear discri
 - [Crédito y débito fiscal](/es/iva/credito-debito-fiscal)
 - [Exenciones de IVA](/es/iva/exenciones)
 - [Tipos de comprobantes AFIP/ARCA](/es/fundamentos/tipos-de-comprobantes)
-
-
----
-
-<Card title="Emití facturas electrónicas con Facturear" icon="rocket" href="https://facture.ar">
-  Conectate a ARCA en minutos y empezá a facturar sin complicaciones.
-</Card>
