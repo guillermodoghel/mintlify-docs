@@ -755,8 +755,8 @@
     ],
     "primary": {
       "type": "button",
-      "label": "ir a Facture.ar",
-      "href": "https://facture.ar"
+      "label": "Crear cuenta gratis",
+      "href": "https://www.facture.ar/auth/signin?utm_source=docs&utm_medium=referral&utm_campaign=navbar&utm_content=button"
     }
   },
   "contextual": {

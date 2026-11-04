@@ -1,0 +1,52 @@
+/* Call to action to www.facture.ar on tax pages and newsletter notes (snippets/cta-facturear.jsx,
+   and the newsletter generator in facturear). Mintlify loads every .css on every page: scoped to .fa-cta */
+
+.fa-cta {
+  margin: 28px 0;
+  padding: 20px 22px;
+  border: 1px solid #c7d5e7;
+  border-radius: 12px;
+  background: #f2f6fa;
+  color: #0f172a;
+}
+.fa-cta-title {
+  margin: 0 0 6px;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+.fa-cta-text {
+  margin: 0 0 14px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: #334155;
+}
+.fa-cta-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+}
+.fa-cta a.fa-cta-button {
+  display: inline-flex;
+  align-items: center;
+  padding: 9px 16px;
+  border-radius: 8px;
+  background: #29476c;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  border: 0;
+}
+.fa-cta a.fa-cta-button:hover {
+  background: #233c5a;
+}
+.fa-cta a.fa-cta-link {
+  font-size: 13.5px;
+  color: #29476c;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  border: 0;
+}

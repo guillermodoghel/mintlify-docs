@@ -3,6 +3,8 @@ title: 'Tipos de comprobantes AFIP/ARCA en Argentina'
 description: 'Guía completa de todos los tipos de facturas y comprobantes electrónicos en Argentina: A, B, C, E, Factura A con leyenda (ex M), Notas de Crédito, Notas de Débito y más.'
 ---
 
+import { CtaFacturear } from '/snippets/cta-facturear.jsx';
+
 # Tipos de comprobantes AFIP/ARCA en Argentina
 
 En Argentina, el tipo de comprobante que debés emitir depende de tu **condición frente al IVA** y de la **condición del receptor**. Elegir el tipo incorrecto puede generar problemas ante ARCA (ex AFIP) e inconvenientes con tu cliente.
@@ -22,8 +24,10 @@ Esta guía cubre todos los tipos de comprobantes electrónicos vigentes.
 | Cualquier categoría | Exportación al exterior | **Factura E** |
 
 <Tip>
-  **Guía:** si todavía dudás, en [Factura A, B o C: cuál te corresponde emitir](https://www.facture.ar/guias/factura-a-b-c) está el cuadro oficial de ARCA según tu condición y la de tu cliente.
+  **Guía:** si todavía dudás, en [Factura A, B o C: cuál te corresponde emitir](https://www.facture.ar/guias/factura-a-b-c?utm_source=docs&utm_medium=referral&utm_campaign=fundamentos-tipos-de-comprobantes&utm_content=link) está el cuadro oficial de ARCA según tu condición y la de tu cliente.
 </Tip>
+
+<CtaFacturear page="fundamentos-tipos-de-comprobantes" tema="general" />
 
 ---
 
@@ -159,7 +163,7 @@ Se emite para **aumentar** el importe de una factura original:
 </Info>
 
 <Tip>
-  **Guía:** cuándo corresponde una nota de crédito, qué letra lleva y cómo asociarla a la factura, paso a paso en [Nota de crédito en ARCA](https://www.facture.ar/guias/nota-de-credito).
+  **Guía:** cuándo corresponde una nota de crédito, qué letra lleva y cómo asociarla a la factura, paso a paso en [Nota de crédito en ARCA](https://www.facture.ar/guias/nota-de-credito?utm_source=docs&utm_medium=referral&utm_campaign=fundamentos-tipos-de-comprobantes&utm_content=link).
 </Tip>
 
 ---
@@ -239,9 +243,3 @@ Esto devuelve la lista actualizada de tipos de comprobante directamente desde AR
 - [Facturar siendo monotributista](/es/fundamentos/monotributo)
 - [Facturar siendo responsable inscripto](/es/fundamentos/responsable-inscripto)
 - [Factura de Crédito Electrónica MiPyMEs](/es/newsletter/notas/factura-credito-electronica-mipymes)
-
----
-
-<Card title="Emití facturas electrónicas con Facturear" icon="rocket" href="https://facture.ar">
-  Conectate a ARCA en minutos y empezá a facturar sin complicaciones.
-</Card>

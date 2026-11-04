@@ -4,6 +4,8 @@ sidebarTitle: "Tabla de categorías"
 description: "Categorías A a K vigentes desde el 1/08/2026: tope de ingresos, cuota mensual, SIPA y obra social. Datos de ARCA, controlados todos los días."
 ---
 
+import { CtaFacturear } from '/snippets/cta-facturear.jsx';
+
 # Tabla de categorías del Monotributo
 
 El Monotributo tiene **11 categorías** (A a K) que se determinan principalmente por los **ingresos brutos anuales**. La cuota incluye el impuesto integrado (reemplaza IVA y Ganancias), aportes al SIPA (jubilación) y a la obra social.
@@ -37,10 +39,12 @@ Valores vigentes desde el 1/08/2026, según la [tabla oficial de ARCA](https://w
 {/* /escala-arca */}
 
 <Tip>
-  **Herramienta:** en la [calculadora de categoría del Monotributo](https://www.facture.ar/herramientas/calculadora-categoria-monotributo) cargás lo que facturaste en los últimos 12 meses y te dice qué categoría te corresponde, la cuota mensual y cuánto te queda hasta el tope.
+  **Herramienta:** en la [calculadora de categoría del Monotributo](https://www.facture.ar/herramientas/calculadora-categoria-monotributo?utm_source=docs&utm_medium=referral&utm_campaign=monotributo-categorias-tabla&utm_content=link) cargás lo que facturaste en los últimos 12 meses y te dice qué categoría te corresponde, la cuota mensual y cuánto te queda hasta el tope.
 </Tip>
 
 La cuota de **servicios** corresponde a locaciones y prestaciones de servicios; la de **venta de cosas muebles**, a quienes venden productos. Todas las categorías, de la A a la K, están disponibles para las dos actividades.
+
+<CtaFacturear page="monotributo-categorias-tabla" tema="general" />
 
 ---
 
@@ -125,9 +129,3 @@ Facture.ar usa la misma tabla de ARCA para avisarte cuánto te queda hasta el to
 - [Recategorización semestral](/es/monotributo/recategorizacion)
 - [Cuándo pasarse al Régimen General](/es/monotributo/pase-regimen-general)
 - [Obra social del Monotributista](/es/monotributo/obra-social)
-
----
-
-<Card title="Emití facturas electrónicas con Facturear" icon="rocket" href="https://facture.ar">
-  Conectate a ARCA en minutos y empezá a emitir tus Facturas C como Monotributista sin complicaciones.
-</Card>

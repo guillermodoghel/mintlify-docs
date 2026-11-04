@@ -4,6 +4,8 @@ sidebarTitle: "Límites de facturación"
 description: "Cuánto podés facturar en cada categoría desde el 1/08/2026, el promedio mensual equivalente, cómo se cuentan los 12 meses y qué pasa si te pasás del tope."
 ---
 
+import { CtaFacturear } from '/snippets/cta-facturear.jsx';
+
 # Límites de facturación del Monotributo
 
 Uno de los aspectos más importantes del Monotributo es respetar los **límites de ingresos** de cada categoría. Superarlos implica recategorizarse o, si superás el tope máximo, pasarte al Régimen General.
@@ -23,6 +25,8 @@ Los **ingresos brutos** del Monotributo incluyen:
 - IVA facturado (pero los monotributistas no discriminan IVA, así que esto aplica solo si pasaste al RI)
 - Ingresos por venta de bienes de uso o inversiones propias (no de la actividad habitual)
 - Ingresos de relación de dependencia (se declaran separado)
+
+<CtaFacturear page="monotributo-limite-facturacion" tema="general" />
 
 ---
 
@@ -49,7 +53,7 @@ Valores vigentes desde el 1/08/2026, según la [tabla oficial de ARCA](https://w
 {/* /escala-arca */}
 
 <Tip>
-  **Herramienta:** en la [calculadora de categoría del Monotributo](https://www.facture.ar/herramientas/calculadora-categoria-monotributo) cargás lo que facturaste en los últimos 12 meses y te dice qué categoría te corresponde, la cuota mensual y cuánto te queda hasta el tope.
+  **Herramienta:** en la [calculadora de categoría del Monotributo](https://www.facture.ar/herramientas/calculadora-categoria-monotributo?utm_source=docs&utm_medium=referral&utm_campaign=monotributo-limite-facturacion&utm_content=link) cargás lo que facturaste en los últimos 12 meses y te dice qué categoría te corresponde, la cuota mensual y cuánto te queda hasta el tope.
 </Tip>
 
 <Info>
@@ -110,10 +114,3 @@ La exclusión es automática y retroactiva al mes en que superaste el tope.
 - [Tabla de categorías del Monotributo](/es/monotributo/categorias-tabla)
 - [Recategorización del Monotributo](/es/monotributo/recategorizacion)
 - [Cuándo pasarse al Régimen General](/es/monotributo/pase-regimen-general)
-
-
----
-
-<Card title="Emití facturas electrónicas con Facturear" icon="rocket" href="https://facture.ar">
-  Conectate a ARCA en minutos y empezá a facturar sin complicaciones.
-</Card>
