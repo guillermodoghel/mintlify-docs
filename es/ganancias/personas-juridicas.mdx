@@ -1,23 +1,48 @@
 ---
-title: 'Ganancias para personas jurídicas (SRL, SA, SAS)'
-description: 'Cómo tributa el Impuesto a las Ganancias una empresa en Argentina: tasa del 35%, cierre de ejercicio, anticipos y distribución de dividendos.'
+title: 'Escala de Ganancias personas jurídicas 2026'
+sidebarTitle: 'Ganancias para personas jurídicas'
+description: 'Escala de Ganancias para sociedades (SA, SRL, SAS) 2026 y 2025: 25%, 30% y 35% por tramos según ARCA, ejemplo de cálculo, anticipos y dividendos al 7%.'
 ---
 
 # Ganancias para personas jurídicas
 
-Las **sociedades comerciales** (SRL, SA, SAS, sociedades en comandita, etc.) tributan el Impuesto a las Ganancias de forma diferente a las personas físicas: aplican una **tasa proporcional del 35%** sobre la ganancia neta del ejercicio.
+Las **sociedades** (SRL, SA, SAS, sociedades en comandita, etc.) tributan el Impuesto a las Ganancias con una **escala de tres tramos: 25%, 30% y 35%**, sobre la ganancia neta imponible acumulada del ejercicio. Rige desde la [Ley 27.630](https://biblioteca.arca.gob.ar/dcp/LEY_C_027630_2021_06_02) para ejercicios iniciados a partir del 1/1/2021; antes la tasa era fija.
 
 ---
 
-## Tasa del 35%
+## Escala para ejercicios iniciados en 2026
 
-Las personas jurídicas tributan a la **tasa fija del 35%** sobre la ganancia neta imponible del ejercicio. No hay escala progresiva como en personas físicas.
+| Ganancia neta imponible acumulada | Pagarán | Más el % | Sobre el excedente de |
+|---|---|---|---|
+| $0 a $133.514.185,74 | $0 | 25% | $0 |
+| $133.514.185,74 a $1.335.141.857,38 | $33.378.546,43 | 30% | $133.514.185,74 |
+| Más de $1.335.141.857,38 | $393.866.847,93 | 35% | $1.335.141.857,38 |
+
+Fuente: [ARCA, Ganancias personas jurídicas, escala 2026 (PDF)](https://www.arca.gob.ar/gananciasYBienes/ganancias/personas-juridicas/determinacion/documentos/Ganancias-Escala-PJ-2026.pdf) · Actualizado: 4/11/2026
+
+## Escala para ejercicios iniciados en 2025
+
+| Ganancia neta imponible acumulada | Pagarán | Más el % | Sobre el excedente de |
+|---|---|---|---|
+| $0 a $101.679.575,26 | $0 | 25% | $0 |
+| $101.679.575,26 a $1.016.795.752,62 | $25.419.893,82 | 30% | $101.679.575,26 |
+| Más de $1.016.795.752,62 | $299.954.747,02 | 35% | $1.016.795.752,62 |
+
+Fuente: [ARCA, Ganancias personas jurídicas, escala 2025 (PDF)](https://www.arca.gob.ar/gananciasYBienes/ganancias/personas-juridicas/determinacion/documentos/Ganancias-Escala-PJ-2025.pdf) · Actualizado: 4/11/2026
+
+<Info>
+  Los montos se ajustan cada año por la variación del IPC de octubre contra octubre del año anterior, y cada escala se aplica a los ejercicios que **empiezan** después de esa actualización. Un ejercicio del 1/7/2025 al 30/6/2026 usa la escala 2025. Las escalas de 2021 a 2024 están en la [página de escalas de ARCA](https://www.afip.gob.ar/gananciasYBienes/ganancias/personas-juridicas/determinacion/escala.asp).
+</Info>
+
+### Ejemplo de cálculo (ejercicio iniciado en 2026)
 
 ```
-Ganancia bruta del ejercicio:  $10.000.000
-(-) Gastos deducibles:         -$6.000.000
-Ganancia neta imponible:        $4.000.000
-Impuesto (35%):                 $1.400.000
+Ganancia neta imponible:                    $200.000.000
+Tramo: más de $133.514.185,74 (30%)
+Impuesto fijo del tramo:                    $33.378.546,43
+30% × ($200.000.000 − $133.514.185,74):     $19.945.744,28
+Impuesto determinado:                       $53.324.290,71
+Alícuota efectiva:                          26,7%
 ```
 
 ---
@@ -52,11 +77,12 @@ Las diferencias entre el resultado contable y el impositivo pueden ser significa
 
 ## Anticipos de Ganancias para personas jurídicas
 
-Las sociedades pagan **10 anticipos mensuales** de Ganancias durante el año en curso, calculados en base al impuesto del ejercicio anterior:
+Las sociedades pagan anticipos mensuales a cuenta del ejercicio siguiente, calculados sobre el impuesto determinado del ejercicio anterior:
 
-- Los anticipos representan el **25% del impuesto del año anterior** distribuidos en 10 cuotas
-- Vencen entre el 1° y el 25 de cada mes según el CUIT
+- Para ejercicios que cierran desde diciembre de 2025 son **9 anticipos del 11,11%** cada uno ([RG 5685/2025](https://www.boletinoficial.gob.ar/detalleAviso/primera/324684/20250430)). Antes eran 10: el primero del 25% y los otros nueve del 8,33%.
+- Vencen según la terminación del CUIT, en las fechas del calendario de vencimientos de ARCA
 - Se descuentan del saldo final de la DDJJ
+- Si estimás que el impuesto del ejercicio va a ser menor, podés pedir la reducción de anticipos
 
 ---
 
@@ -76,10 +102,10 @@ La DDJJ de Ganancias de personas jurídicas vence a los **5 meses y 15 días** d
 
 Cuando la sociedad distribuye dividendos a los socios/accionistas:
 
-- La sociedad ya tributó el 35% sobre la ganancia
-- Los dividendos distribuidos pagan un **impuesto adicional del 7%** a cargo del receptor
+- La sociedad ya tributó entre el 25% y el 35% sobre la ganancia, según su tramo
+- Los dividendos distribuidos pagan un **impuesto adicional del 7%** a cargo del receptor (persona humana o beneficiario del exterior), que la sociedad retiene al pagarlos. Lo fijó la [Ley 27.630](https://biblioteca.arca.gob.ar/dcp/LEY_C_027630_2021_06_02), que bajó la tasa del 13% al 7%.
 
-Este sistema (impuesto a nivel sociedad + impuesto sobre dividendos) evita la doble imposición completa pero aún genera una carga combinada.
+Este sistema (impuesto a nivel sociedad + impuesto sobre dividendos) genera una carga combinada sobre la ganancia que llega al socio.
 
 ---
 
@@ -91,6 +117,7 @@ Los directores, gerentes y administradores pueden ser **solidariamente responsab
 
 ## Recursos relacionados
 
+- [Escalas de Ganancias 2025 y 2026](/es/ganancias/tablas-escalas)
 - [Impuesto a las Ganancias: guía completa](/es/ganancias/que-es-ganancias)
 - [Ajuste por inflación impositivo](/es/ganancias/ajuste-inflacion)
 - [DDJJ anual de Ganancias](/es/ganancias/ddjj-anual)
