@@ -797,6 +797,216 @@
   },
   "redirects": [
     {
+      "source": "/cuits",
+      "destination": "/api-reference/cuits/obtener-cuits",
+      "permanent": true
+    },
+    {
+      "source": "/invoices",
+      "destination": "/api-reference/facturas/listar-facturas",
+      "permanent": true
+    },
+    {
+      "source": "/invoices/stats",
+      "destination": "/api-reference/facturas/resumen-de-facturas",
+      "permanent": true
+    },
+    {
+      "source": "/invoices/batches",
+      "destination": "/api-reference/lotes/listar-lotes-de-facturas",
+      "permanent": true
+    },
+    {
+      "source": "/webhooks",
+      "destination": "/api-reference/webhooks/listar-webhooks",
+      "permanent": true
+    },
+    {
+      "source": "/reports/libro-iva",
+      "destination": "/api-reference/reportes/libro-iva-ventas-csv",
+      "permanent": true
+    },
+    {
+      "source": "/documents",
+      "destination": "/api-reference/borradores/proponer-facturas-desde-un-documento",
+      "permanent": true
+    },
+    {
+      "source": "/documents/drafts",
+      "destination": "/api-reference/borradores/listar-borradores",
+      "permanent": true
+    },
+    {
+      "source": "/documents/drafts/invoice",
+      "destination": "/api-reference/borradores/emitir-borradores",
+      "permanent": true
+    },
+    {
+      "source": "/documents/drafts/discard",
+      "destination": "/api-reference/borradores/descartar-borradores",
+      "permanent": true
+    },
+    {
+      "source": "/documents/templates",
+      "destination": "/api-reference/plantillas/listar-plantillas",
+      "permanent": true
+    },
+    {
+      "source": "/arca-imports",
+      "destination": "/api-reference/importar-desde-arca/último-relevamiento-de-un-cuit",
+      "permanent": true
+    },
+    {
+      "source": "/arca-imports/vouchers",
+      "destination": "/api-reference/importar-desde-arca/comprobantes-importados-desde-arca",
+      "permanent": true
+    },
+    {
+      "source": "/es/api-reference/pdf",
+      "destination": "/api-reference/facturas/obtener-pdf-de-factura",
+      "permanent": true
+    },
+    {
+      "source": "/es/api-reference/cuits",
+      "destination": "/api-reference/cuits/obtener-cuits",
+      "permanent": true
+    },
+    {
+      "source": "/es/api-reference/invoices",
+      "destination": "/api-reference/facturas/crear-facturas",
+      "permanent": true
+    },
+    {
+      "source": "/es/guides/personalizacion",
+      "destination": "/es/guides/diseno-factura",
+      "permanent": true
+    },
+    {
+      "source": "/cuits/{cuitId}",
+      "destination": "/api-reference/cuits/obtener-un-cuit",
+      "permanent": true
+    },
+    {
+      "source": "/cuits/{cuitId}/set-default",
+      "destination": "/api-reference/cuits/marcar-como-cuit-por-defecto",
+      "permanent": true
+    },
+    {
+      "source": "/cuits/{cuitId}/setup-status",
+      "destination": "/api-reference/cuits/estado-de-la-configuración-en-arca",
+      "permanent": true
+    },
+    {
+      "source": "/cuits/{cuitId}/pos",
+      "destination": "/api-reference/cuits/listar-puntos-de-venta",
+      "permanent": true
+    },
+    {
+      "source": "/cuits/{cuitId}/pos/last-vouchers",
+      "destination": "/api-reference/cuits/último-comprobante-por-punto-de-venta",
+      "permanent": true
+    },
+    {
+      "source": "/cuits/{cuitId}/default-pos",
+      "destination": "/api-reference/cuits/configurar-punto-de-venta-por-defecto",
+      "permanent": true
+    },
+    {
+      "source": "/cuits/{cuitId}/default-invoice-type",
+      "destination": "/api-reference/cuits/configurar-tipo-de-comprobante-por-defecto",
+      "permanent": true
+    },
+    {
+      "source": "/cuits/{cuitId}/default-concept",
+      "destination": "/api-reference/cuits/configurar-concepto-por-defecto",
+      "permanent": true
+    },
+    {
+      "source": "/cuits/{cuitId}/default-iva",
+      "destination": "/api-reference/cuits/configurar-alícuota-de-iva-por-defecto",
+      "permanent": true
+    },
+    {
+      "source": "/cuits/{cuitId}/invoice-branding",
+      "destination": "/api-reference/cuits/obtener-el-diseño-de-factura",
+      "permanent": true
+    },
+    {
+      "source": "/cuits/{cuitId}/email-design",
+      "destination": "/api-reference/cuits/obtener-el-diseño-del-mail",
+      "permanent": true
+    },
+    {
+      "source": "/invoices/{invoiceId}/email",
+      "destination": "/api-reference/facturas/enviar-la-factura-por-email",
+      "permanent": true
+    },
+    {
+      "source": "/invoices/{invoiceId}/credit-note",
+      "destination": "/api-reference/facturas/anular-una-factura-con-nota-de-crédito",
+      "permanent": true
+    },
+    {
+      "source": "/invoices/{invoiceId}",
+      "destination": "/api-reference/facturas/obtener-factura-por-id",
+      "permanent": true
+    },
+    {
+      "source": "/arca/{name}",
+      "destination": "/api-reference/utilidades/obtener-parámetro-arca-específico",
+      "permanent": true
+    },
+    {
+      "source": "/invoices/batches/{batchId}",
+      "destination": "/api-reference/lotes/obtener-lote-por-id",
+      "permanent": true
+    },
+    {
+      "source": "/invoices/{invoiceId}/pdf",
+      "destination": "/api-reference/facturas/obtener-pdf-de-factura",
+      "permanent": true
+    },
+    {
+      "source": "/invoices/{invoiceId}/xml",
+      "destination": "/api-reference/facturas/obtener-el-xml-de-la-factura",
+      "permanent": true
+    },
+    {
+      "source": "/webhooks/{webhookId}",
+      "destination": "/api-reference/webhooks/editar-un-webhook",
+      "permanent": true
+    },
+    {
+      "source": "/documents/drafts/{draftId}",
+      "destination": "/api-reference/borradores/obtener-un-borrador",
+      "permanent": true
+    },
+    {
+      "source": "/documents/drafts/{draftId}/email",
+      "destination": "/api-reference/borradores/enviar-la-factura-de-un-borrador-por-email",
+      "permanent": true
+    },
+    {
+      "source": "/documents/templates/{templateId}",
+      "destination": "/api-reference/plantillas/obtener-una-plantilla",
+      "permanent": true
+    },
+    {
+      "source": "/documents/templates/{templateId}/run",
+      "destination": "/api-reference/plantillas/emitir-ya-la-factura-recurrente-del-mes",
+      "permanent": true
+    },
+    {
+      "source": "/arca-imports/{importId}",
+      "destination": "/api-reference/importar-desde-arca/avanzar-un-relevamiento",
+      "permanent": true
+    },
+    {
+      "source": "/cuits/{cuitId}/defaults",
+      "destination": "/es/guides/configurar-defaults-cuit",
+      "permanent": true
+    },
+    {
       "source": "/es/funcionalidades/facturacion-excel",
       "destination": "/es/funcionalidades/documentos-ia"
     },
