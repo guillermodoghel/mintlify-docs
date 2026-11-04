@@ -1,6 +1,6 @@
 ---
 title: 'Tipos de comprobantes AFIP/ARCA en Argentina'
-description: 'Guía completa de todos los tipos de facturas y comprobantes electrónicos en Argentina: A, B, C, E, M, Notas de Crédito, Notas de Débito y más.'
+description: 'Guía completa de todos los tipos de facturas y comprobantes electrónicos en Argentina: A, B, C, E, Factura A con leyenda (ex M), Notas de Crédito, Notas de Débito y más.'
 ---
 
 # Tipos de comprobantes AFIP/ARCA en Argentina
@@ -65,9 +65,10 @@ La **Factura B** es emitida por **Responsables Inscriptos** cuando su cliente es
 
 | Monto de la operación | Identificación del receptor |
 |---|---|
-| Hasta $27.000 (aprox.) | No requerida |
-| Más de $27.000 | Nombre y apellido (o razón social) requeridos |
-| Más de $27.000 con pedido expreso | CUIT/DNI del receptor requerido |
+| Menos de $10.000.000 | No requerida (leyenda "A CONSUMIDOR FINAL") |
+| $10.000.000 o más | CUIT, CUIL, CDI o DNI del comprador (extranjeros: documento del país de origen o pasaporte) |
+
+Fuente: [ARCA, datos de los comprobantes (RG 1415, según RG 5700/2025)](https://www.arca.gob.ar/fe/emision-autorizacion/datos-comprobantes.asp) · Actualizado: 4/11/2026
 
 <Info>
   El umbral de identificación se actualiza periódicamente por resolución de ARCA. Facturear aplica automáticamente los valores vigentes.
@@ -114,27 +115,31 @@ Para exportaciones de bienes, la Factura E generalmente se complementa con:
 
 ---
 
-## Facturas del Tipo M
+## Factura M: eliminada desde el 1/12/2025
 
-La **Factura M** es una variante de la Factura A para operaciones con **potencial riesgo fiscal**.
+La **Factura M** ya no existe. La [RG 5762/2025 de ARCA](https://www.boletinoficial.gob.ar/detalleAviso/primera/331947/20250925) la eliminó desde el **1 de diciembre de 2025** y la reemplazó por dos variantes de la **Factura A con leyenda**:
 
-### Características
-- Similar a la Factura A pero con retención de IVA obligatoria para el receptor
-- ARCA la asigna automáticamente a contribuyentes con ciertos perfiles de riesgo
-- El receptor debe retener el 100% del IVA facturado
+| Leyenda en la Factura A | Quién la emite | Qué pasa con el pago |
+|---|---|---|
+| **"OPERACIÓN SUJETA A RETENCIÓN"** | Quien antes tenía que emitir Factura M (ARCA lo habilita así de forma automática) | El comprador inscripto en IVA retiene el **100% del IVA** y el **6% de Ganancias** al pagar (arts. 12 y 13) |
+| **"PAGO EN CBU INFORMADA"** | Quien cumple los demás requisitos pero no acredita solvencia patrimonial suficiente, y elige esta opción | El comprador paga por transferencia o depósito a la CBU que el emisor informó a ARCA (art. 22) |
 
-### Cuándo aplica
-ARCA puede requerir la emisión de Facturas M cuando detecta inconsistencias en el perfil fiscal del contribuyente. No es una elección del emisor, sino una categorización automática del sistema.
+Fuente: [RG 5762/2025, Boletín Oficial del 25/9/2025](https://www.boletinoficial.gob.ar/detalleAviso/primera/331947/20250925) · [Comunicado de ARCA](https://www.argentina.gob.ar/noticias/arca-moderniza-el-regimen-de-facturacion-y-elimina-las-facturas-clase-m) · Actualizado: 4/11/2026
+
+### Lo que tenés que saber
+- Las referencias a la clase M en otras normas se leen como Factura A con leyenda "OPERACIÓN SUJETA A RETENCIÓN" (art. 31).
+- ARCA reevalúa a los contribuyentes cada cuatrimestre (febrero, junio y octubre) y puede cambiar la modalidad que te corresponde (arts. 23 a 25). Si no estás de acuerdo, podés manifestar disconformidad (art. 26).
+- Según ARCA, la Factura A con leyenda mantiene la codificación y la numeración de la ex Factura M (códigos 51, 52 y 53), salvo que habilites un punto de venta nuevo. Se imprime como "A" con la leyenda.
 
 <Warning>
-  Si tu empresa debe emitir Facturas M y no cumple con el régimen, puede ser sancionada por ARCA. Consultá con tu contador si te aparece esta opción.
+  Si ARCA te pasó a "OPERACIÓN SUJETA A RETENCIÓN", tus clientes inscriptos te van a retener IVA y Ganancias al pagarte. Revisá en ARCA el motivo y consultá con tu contador cómo regularizarlo.
 </Warning>
 
 ---
 
 ## Notas de Crédito y Notas de Débito
 
-Las Notas de Crédito y Débito son comprobantes de **ajuste** sobre facturas ya emitidas. Siguen el mismo tipo que la factura original (A, B, C, E o M).
+Las Notas de Crédito y Débito son comprobantes de **ajuste** sobre facturas ya emitidas. Siguen el mismo tipo que la factura original (A, B, C o E).
 
 ### Nota de Crédito
 Se emite para **reducir** el importe de una factura original:
@@ -183,9 +188,9 @@ Ver la guía completa: [Factura de Crédito Electrónica MiPyMEs](/es/newsletter
 | 19 | Facturas E |
 | 20 | Notas de Débito E |
 | 21 | Notas de Crédito E |
-| 51 | Facturas M |
-| 52 | Notas de Débito M |
-| 53 | Notas de Crédito M |
+| 51 | Facturas A con leyenda (ex Facturas M) |
+| 52 | Notas de Débito A con leyenda (ex M) |
+| 53 | Notas de Crédito A con leyenda (ex M) |
 | 201 | Facturas de Crédito Electrónica MiPyMEs A |
 | 202 | Notas de Débito Electrónica MiPyMEs A |
 | 203 | Notas de Crédito Electrónica MiPyMEs A |
