@@ -3,6 +3,17 @@
  "url": "https://docs.facture.ar/es/newsletter/index",
  "notes": [
   {
+   "slug": "rg-830-retenciones-ganancias-montos-desactualizados-2026-11-05",
+   "title": "RG 830: por qué los mínimos de retención de Ganancias quedaron desactualizados",
+   "description": "Qué regula la RG 830/2000, por qué se reclama actualizar sus montos no sujetos a retención y cómo cuidar tu flujo de fondos si sufrís o practicás retenciones.",
+   "date": "2026-11-05",
+   "category": "ganancias",
+   "category_label": "Ganancias",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/rg-830-retenciones-ganancias-montos-desactualizados-2026-11-05"
+  },
+  {
    "slug": "monotributo-noviembre-cuotas-topes-recategorizacion-2026-11-04",
    "title": "Monotributo en noviembre 2026: cuota por categoría, topes de facturación y próxima recategorización",
    "description": "Cómo leer la cuota mensual del monotributo para noviembre según actividad, cuándo vence el pago y qué controlar en la facturación acumulada antes de la recategorización de enero.",
@@ -870,17 +881,6 @@
    "impact": "ninguno",
    "impact_note": null,
    "url": "https://docs.facture.ar/es/newsletter/notas/arca-montos-control-transferencias-octubre-2026-2026-09-20"
-  },
-  {
-   "slug": "monotributo-octubre-2026-nuevos-valores-topes-arca-2026-09-20",
-   "title": "Monotributo octubre 2026: nuevos valores y topes tras la actualización de ARCA",
-   "description": "ARCA aplicó un ajuste del 16,8% sobre los valores del Monotributo. Conocé los nuevos importes mensuales y topes de facturación vigentes desde octubre 2026.",
-   "date": "2026-09-20",
-   "category": "monotributo",
-   "category_label": "Monotributo",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/monotributo-octubre-2026-nuevos-valores-topes-arca-2026-09-20"
   }
  ]
 }
