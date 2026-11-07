@@ -69,9 +69,7 @@ Es el cuerpo de `POST /api/invoices`. El paso a paso completo (habilitación, ca
 
 Una de las dudas más frecuentes: **¿las exportaciones de servicios cuentan para el tope de categoría?**
 
-**Respuesta**: Sí, los ingresos por exportación de servicios **suman al total de ingresos brutos** para determinar la categoría del Monotributo.
-
-Sin embargo, existe un beneficio especial: a partir de la **RG 5008/2021 y modificatorias**, los Monotributistas que exportan servicios pueden tener un **incremento del tope de ingresos** hasta 2 veces el máximo de la categoría K.
+**Respuesta**: Sí, los ingresos por exportación de servicios **suman al total de ingresos brutos** para determinar la categoría del Monotributo, convertidos a pesos. El tope es el mismo que para cualquier monotributista: el de la categoría K de la [tabla vigente](/es/monotributo/categorias-tabla).
 
 ---
 
@@ -112,7 +110,7 @@ Cuando emitís una Factura E en dólares:
 - Debés indicar el **tipo de cambio oficial** del día de emisión
 - ARCA valida el tipo de cambio contra la tabla del BCRA
 
-Facturear obtiene automáticamente el tipo de cambio oficial vigente al momento de la emisión.
+Facturear te propone la cotización de ARCA del día (vendedor BNA del día hábil anterior) y la podés cambiar; por API, si no mandás `monCotiz`, usa esa misma cotización.
 
 ---
 
@@ -120,13 +118,13 @@ Facturear obtiene automáticamente el tipo de cambio oficial vigente al momento 
 
 <AccordionGroup>
   <Accordion title="¿Necesito un punto de venta especial para exportaciones?">
-    No necesariamente. El mismo punto de venta que usás para facturas C puede usarse para facturas E. Sin embargo, algunas empresas prefieren tener puntos de venta separados para mejor organización.
+    Sí. La Factura E usa un punto de venta de sistema **Exportación - Web Services**, distinto del que usás para las facturas C. Facturear lo crea cuando habilitás la factura al exterior (si ya tenías uno, lo usa). Ver [Factura al exterior con Facturear](/es/guides/factura-exportacion).
   </Accordion>
   <Accordion title="¿Tengo que presentar alguna declaración especial por exportar servicios?">
     Además de las facturas E, puede haber obligaciones de información ante el BCRA y el INDEC (Instituto Nacional de Estadística). Consultá con tu contador.
   </Accordion>
   <Accordion title="¿Puedo seguir en el Monotributo si tengo muchos clientes del exterior?">
-    Sí, siempre que no superes los topes del régimen. Recordá que hay un beneficio de hasta 2x el tope para exportadores de servicios.
+    Sí, siempre que lo que facturás en 12 meses (exportaciones incluidas) no supere el tope de la categoría K.
   </Accordion>
 </AccordionGroup>
 
@@ -136,5 +134,5 @@ Facturear obtiene automáticamente el tipo de cambio oficial vigente al momento 
 
 - [Tipos de comprobantes AFIP/ARCA](/es/fundamentos/tipos-de-comprobantes)
 - [Factura E: exportación con Facturear](/es/guides/factura-exportacion)
-- [Tabla de categorías Monotributo 2025](/es/monotributo/categorias-tabla)
+- [Tabla de categorías Monotributo 2026](/es/monotributo/categorias-tabla)
 - [Cobro en divisas por exportación](/es/exportacion/cobro-en-divisas)

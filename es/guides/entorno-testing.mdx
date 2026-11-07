@@ -23,9 +23,9 @@ ARCA ofrece un entorno de **homologación** (también llamado "testing") que rep
 
 No tenés que configurar nada aparte: al [conectar tu CUIT con ARCA](/es/getting-started/index) generamos dos certificados, uno de homologación y otro de producción.
 
-Para pasar a testing, entrá a tu cuenta (tu nombre, abajo en el menú) y en **Entorno** prendé el **Modo Testing**. Es para toda la cuenta: mientras está prendido, todo se factura en el entorno de pruebas de ARCA, sin valor fiscal, incluido lo que llega por tus integraciones y por WhatsApp. Arriba de la pantalla vas a ver el aviso **Modo Testing activo**. Para volver, apagalo.
+Para pasar a testing, entrá a tu cuenta (tu nombre, abajo en el menú) y en **Entorno** prendé el **Modo Testing**. Es para toda la cuenta: mientras está prendido, todo se factura en el entorno de pruebas de ARCA, sin valor fiscal, incluido lo que llega por tus integraciones y por WhatsApp. Arriba de la pantalla vas a ver el aviso **Modo testing activo**. Para volver, apagalo.
 
-Las facturas de prueba no cuentan para el límite mensual de tu plan.
+Las facturas de prueba no cuentan para el límite mensual de tu plan, y el entorno de testing está abierto en todos los planes: con el plan Free podés probar la API, las integraciones, WhatsApp, la IA y los lotes en homologación antes de pagar. Para usarlos en producción necesitás un plan pago. Ver [Cuenta y plan](/es/guides/cuenta-y-plan#planes).
 
 ---
 
@@ -89,10 +89,10 @@ Antes de pasar a producción, testeá al menos estos escenarios:
 - Factura B con datos del receptor
 - Nota de Crédito sobre una factura existente
 - Factura con múltiples ítems y alícuotas diferentes
-- Error intencional (CUIT receptor inválido) — verificar manejo de errores
+- Error intencional (CUIT receptor inválido), para verificar el manejo de errores
 - Lote con múltiples facturas
 - Lote con algún ítem que falla
-- Condición frente al IVA del receptor que no corresponde a la clase (por ejemplo, Factura A con `condicionIVAReceptorId: 5`) — debe responder `400`. Ver [Condición frente al IVA del receptor](/es/guides/condicion-iva-receptor)
+- Condición frente al IVA del receptor que no corresponde a la clase (por ejemplo, Factura A con `condicionIVAReceptorId: 5`): debe responder `400`. Ver [Condición frente al IVA del receptor](/es/guides/condicion-iva-receptor)
 
 ---
 

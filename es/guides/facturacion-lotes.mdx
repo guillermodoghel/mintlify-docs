@@ -50,13 +50,13 @@ Para facturación retroactiva (por ejemplo cerrar un mes anterior), solo es cohe
 ## Flujo de trabajo con lotes
 
 <Steps>
-  **Crear el lote**: `POST /api/invoices` con un **array** de facturas (hasta 500) — el lote se crea y se encola en una sola llamada
+  **Crear el lote**: `POST /api/invoices` con un **array** de facturas (hasta 500): el lote se crea y se encola en una sola llamada
 
   **Agregar facturas** (opcional): `PATCH /api/invoices/batches/{batchId}` con otro array, mientras el lote no haya terminado
 
   **Procesar**: Facturear procesa cada factura con ARCA automáticamente
 
-  **Consultar estado**: `GET /api/invoices/batches/{batchId}` — verificá el progreso y el CAE de cada ítem
+  **Consultar estado**: `GET /api/invoices/batches/{batchId}`: verificá el progreso y el CAE de cada ítem
 
   **Manejar errores**: reintentá los ítems fallidos con `POST /api/invoices/batches/{batchId}/items/{itemId}/retry`
 </Steps>
@@ -139,7 +139,7 @@ Respuesta:
 }
 ```
 
-Antes de encolar, Facturear valida **todos** los ítems. Si alguno tiene datos inválidos, la API responde `400` con `{ "error": "Datos inválidos en el lote", "details": [...] }` y no encola ninguno.
+Antes de encolar, Facturear valida **todos** los ítems. Si alguno tiene datos inválidos, la API responde `400` (`application/problem+json`) con `"error": "Datos inválidos en el lote"`, `details` con los problemas de cada ítem y un `detail` que los resume, y no encola ninguno. Un array vacío también responde `400`.
 
 ---
 
@@ -258,7 +258,7 @@ await fetch(
 
 El reintento vuelve a encolar el ítem **con los mismos datos**: sirve para errores transitorios (ARCA caído, timeouts, un certificado que ya corregiste). Cada ítem admite hasta 5 reintentos manuales.
 
-Si el error está en los datos (por ejemplo, un CUIT de receptor equivocado), emití una factura nueva con los datos corregidos con `POST /api/invoices` y un `Idempotency-Key` nuevo. Si el ítem falló con `errorCategory: "ARCA_OUTCOME_UNKNOWN"` (ARCA no respondió y la factura puede estar autorizada), no la emitas de nuevo: reintentá el ítem, que consulta a ARCA antes de volver a emitir.
+Si el error está en los datos (por ejemplo, un CUIT de receptor equivocado), emití una factura nueva con los datos corregidos con `POST /api/invoices` y un `Idempotency-Key` nuevo. Si ARCA no respondió (la factura puede estar autorizada), el ítem no pasa a `error`: vuelve a `pending` con `errorCategory: "ARCA_OUTCOME_UNKNOWN"` en `responseBody` y Facturear lo reintenta solo, consultando a ARCA antes de volver a emitir. No la emitas de nuevo con otra clave.
 
 ---
 
@@ -365,7 +365,8 @@ async function facturacionMensual(clientes, mes) {
 |---|---|
 | Facturas por request (`POST /api/invoices` o `PATCH`) | 500 |
 | Reintentos manuales por ítem | 5 |
-| Facturas por período | Según tu plan (si lo superás, la API responde `403` con `SUBSCRIPTION_LIMIT_EXCEEDED`) |
+| Facturas por período | Según tu plan, solo en producción (si lo superás, la API responde `403` con `SUBSCRIPTION_LIMIT_EXCEEDED`; el plan Free no emite lotes en producción: `403` con `PLAN_REQUIRED`). En homologación no hay límite |
+| Requests por minuto | 1800 por cuenta y entorno (`429` con `Retry-After`) |
 
 <Warning>
   Aunque los lotes son asincrónicos, ARCA puede tener límites de tasa. Si procesás volúmenes muy altos, implementá backoff exponencial en los reintentos de errores de ARCA.
@@ -400,7 +401,7 @@ async function facturacionMensual(clientes, mes) {
 - [Facturación por lotes desde la app (CSV)](/es/funcionalidades/facturacion-por-lotes)
 - [Emitir tu primera factura](/es/guides/primera-factura)
 - [Reintentar sin duplicar facturas (Idempotency-Key)](/es/guides/idempotencia)
-- [API Reference — Lotes](/es/api-reference)
+- [API Reference: Lotes](/es/api-reference)
 - [Tipos de comprobantes AFIP/ARCA](/es/fundamentos/tipos-de-comprobantes)
 
 ---

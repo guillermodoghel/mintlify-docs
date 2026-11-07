@@ -24,6 +24,10 @@ Al dar de alta un CUIT, después de conectar ARCA pasás por este mismo editor (
 
 La factura ocupa una hoja A4 completa, con el código QR y el CAE al pie.
 
+### Diseño por punto de venta
+
+Si cada punto de venta corresponde a un negocio distinto, apagá **Mismo diseño en todos los puntos de venta** y dale a cada uno su plantilla, hoja, color, logo, nombre de fantasía, domicilio y nota al pie (hasta 10 puntos de venta con diseño propio). Lo que no cambies en un punto de venta toma el diseño del CUIT.
+
 ### Plantillas
 
 | Plantilla | Estilo |
@@ -81,7 +85,9 @@ curl https://www.facture.ar/api/cuits/cmg0a1b2c0000abc/invoice-branding \
   "tradeName": null,
   "activityStart": null,
   "address": null,
-  "footerNote": null
+  "footerNote": null,
+  "pointsOfSale": {},
+  "sharedDesign": true
 }
 ```
 
@@ -112,8 +118,10 @@ curl -X PUT https://www.facture.ar/api/cuits/cmg0a1b2c0000abc/invoice-branding \
 | `activityStart` | string \| null | `AAAA-MM-DD` |
 | `address` | string \| null | Hasta 200 caracteres |
 | `footerNote` | string \| null | Hasta 500 caracteres |
+| `pointsOfSale` | object \| null | Diseño por punto de venta: `{ "3": { "template", "paperSize", "accentColor", "logo", "tradeName", "address", "footerNote", "noLogo" } }`, hasta 10. Reemplaza el mapa entero; `null` lo borra |
+| `sharedDesign` | boolean | `true` usa el diseño del CUIT en todos los puntos de venta (y guarda `pointsOfSale` para cuando lo apagues) |
 
-La respuesta es el diseño completo, igual que el `GET`. Si un valor no es válido, `400` con el motivo; si el CUIT no es tuyo, `404`.
+La respuesta es el diseño completo, igual que el `GET`. Si un valor no es válido, `400` con el motivo; si el CUIT no es tuyo, `404`. Los `PUT` (de la factura y del mail) piden la API Key de producción: con la de testing responden `403` con `code: "TEST_KEY_READ_ONLY"`.
 
 ---
 

@@ -26,19 +26,27 @@ Tu sistema envía los datos de la factura a `POST https://www.facture.ar/api/inv
 ## Flujo de integración típico
 
 <Steps>
-  El ERP genera un pedido de factura al cerrar una venta o servicio
-
-  El ERP llama a la API de Facturear con los datos del comprobante
-
-  Facturear valida los datos, encola la factura y responde con un `batchId`
-
-  Facturear contacta a ARCA y obtiene el CAE
-
-  El ERP consulta `GET /api/invoices/batches/{batchId}` y obtiene el CAE, su vencimiento y el número de comprobante
-
-  El ERP almacena el CAE y actualiza el registro de la factura
-
-  El ERP muestra o envía el PDF de la factura al cliente
+  <Step title="Venta en el ERP">
+    El ERP genera un pedido de factura al cerrar una venta o servicio
+  </Step>
+  <Step title="Pedido a la API">
+    El ERP llama a la API de Facturear con los datos del comprobante
+  </Step>
+  <Step title="Facturear encola">
+    Facturear valida los datos, encola la factura y responde con un `batchId`
+  </Step>
+  <Step title="CAE de ARCA">
+    Facturear contacta a ARCA y obtiene el CAE
+  </Step>
+  <Step title="Consulta del lote">
+    El ERP consulta `GET /api/invoices/batches/{batchId}` y obtiene el CAE, su vencimiento y el número de comprobante
+  </Step>
+  <Step title="Registro en el ERP">
+    El ERP almacena el CAE y actualiza el registro de la factura
+  </Step>
+  <Step title="PDF al cliente">
+    El ERP muestra o envía el PDF de la factura al cliente
+  </Step>
 </Steps>
 
 ---
@@ -106,7 +114,11 @@ class AccountMove(models.Model):
         return result
 
     def _emitir_con_facturear(self):
-        headers = {"x-api-key": self.company_id.facturear_api_key}
+        headers = {
+            "x-api-key": self.company_id.facturear_api_key,
+            # Mismo valor en cada reintento: Facturear no encola la factura dos veces
+            "Idempotency-Key": f"odoo-{self.id}",
+        }
         payload = self._build_facturear_payload()  # campos como en el ejemplo de arriba
 
         response = requests.post(f"{API}/invoices", json=payload, headers=headers)
@@ -153,16 +165,21 @@ Para SAP (B1 o S/4HANA), la integración se implementa mediante:
 
 ## Manejo de errores en la integración
 
-Hay dos momentos en que una factura puede fallar: al enviarla (la API responde `400` si los datos no son válidos, o `403` con `code: "SUBSCRIPTION_LIMIT_EXCEEDED"` si superaste el límite de tu plan) y al procesarla (el ítem del lote queda en `error` con los mensajes de ARCA en `responseBody`).
+Hay dos momentos en que una factura puede fallar: al enviarla (la API responde `400` si los datos no son válidos, o `403` con `code: "SUBSCRIPTION_LIMIT_EXCEEDED"` si superaste el límite del mes, `PLAN_REQUIRED` si tu plan no factura por API en producción o `PLAN_REGIME` si no emite esa clase de factura) y al procesarla (el ítem del lote queda en `error` con los mensajes de ARCA en `responseBody`). Los rechazos de la API vienen como `application/problem+json` (RFC 9457): `detail` explica qué corregir y siguen estando `error` y, si hay errores por campo, `details`.
 
 ```javascript
 const API = 'https://www.facture.ar/api';
 
-async function emitirFactura(facturaData) {
+// idInterno: el id de la factura en tu ERP, el mismo en cada reintento
+async function emitirFactura(idInterno, facturaData) {
   try {
     const response = await fetch(`${API}/invoices`, {
       method: 'POST',
-      headers: { 'x-api-key': apiKey, 'Content-Type': 'application/json' },
+      headers: {
+        'x-api-key': apiKey,
+        'Content-Type': 'application/json',
+        'Idempotency-Key': `erp-${idInterno}`
+      },
       body: JSON.stringify(facturaData)
     });
 
@@ -170,7 +187,7 @@ async function emitirFactura(facturaData) {
       const error = await response.json();
       // Registrar el error para revisión manual
       await registrarErrorFacturacion(facturaData, error);
-      throw new Error(`Factura rechazada (${response.status}): ${error.error}`);
+      throw new Error(`Factura rechazada (${response.status} ${error.code}): ${error.detail ?? error.error}`);
     }
 
     // La factura quedó encolada: guardá el batchId para consultar el CAE

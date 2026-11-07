@@ -52,13 +52,13 @@ curl "https://www.facture.ar/api/reports/libro-iva?desde=2026-01-01&hasta=2026-0
   -H "x-api-key: TU_API_KEY" -o libro-iva.csv
 ```
 
-Sumá `&cuit=<id del CUIT>` para filtrar por un CUIT.
+Sumá `&cuit=<id del CUIT>` para filtrar por un CUIT. Con la API Key de producción sale el libro de producción; con la de testing, el de homologación.
 
 ## Recibidos
 
 En la pestaña **Recibidos** ves lo que te facturaron tus proveedores en el período, según **Mis Comprobantes** de ARCA: cuánto **Te facturaron**, el **Neto gravado**, el **IVA crédito fiscal** (solo lo discriminan las facturas A y M) y la cantidad de **Proveedores**, con el detalle **Por mes**, **Por proveedor** y la lista de **Comprobantes**. Las notas de crédito restan.
 
-Con un CUIT elegido en el selector de arriba, **Actualizar desde ARCA** trae lo que ARCA tenga para ese período; los que ya estaban no se duplican. Ahí también está el interruptor **Actualización diaria** del plan Pro. Más detalles en [Importar desde ARCA](/es/guides/importar-desde-arca#comprobantes-recibidos).
+Con un CUIT elegido en el selector de arriba, **Actualizar desde ARCA** trae lo que ARCA tenga para ese período; los que ya estaban no se duplican. Ahí también está el interruptor **Sincronización diaria** de los planes Básica, Pro y Enterprise. Más detalles en [Importar desde ARCA](/es/guides/importar-desde-arca#comprobantes-recibidos).
 
 ## Completar con lo emitido en otra plataforma
 

@@ -91,17 +91,14 @@ Cuando emitís facturas por operaciones exentas:
 Ver: [Prorrata de IVA para actividades mixtas](/es/iva/prorata)
 
 ### En Facturear
-Para ítems exentos en una Factura A o B:
+Para operaciones exentas en una Factura A o B, por API el importe exento va en `impOpEx` y no en el array `iva` (que es para lo gravado, incluida la tasa 0%):
 ```javascript
-items: [
-  {
-    descripcion: 'Servicio educativo exento',
-    cantidad: 1,
-    precioUnitario: 50000,
-    alicuotaIva: 0,
-    condicion: 'exento'  // Identifica como exento, no como tasa 0%
-  }
-]
+{
+  impOpEx: 50000,  // exento, no tasa 0%
+  impIVA: 0,
+  impTotal: 50000,
+  description: 'Servicio educativo exento'
+}
 ```
 
 ---

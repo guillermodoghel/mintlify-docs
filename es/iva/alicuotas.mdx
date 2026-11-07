@@ -141,33 +141,30 @@ Están **exentos de IVA** (y no generan crédito fiscal):
 
 ## Cómo aplica esto en Facturear
 
-Al crear una factura en Facturear podés especificar la alícuota para cada ítem:
+Al crear una factura en Facturear podés especificar la alícuota para cada ítem (`ivaRate`, en porcentaje):
 
 ```javascript
 items: [
   {
-    descripcion: 'Servicio de consultoría',
-    cantidad: 1,
-    precioUnitario: 100000,
-    alicuotaIva: 21  // 21%
+    description: 'Servicio de consultoría',
+    quantity: 1,
+    unitPrice: 100000,
+    discount: 0,
+    ivaRate: 21,  // 21%
+    subtotal: 100000
   },
   {
-    descripcion: 'Medicamento recetado',
-    cantidad: 10,
-    precioUnitario: 5000,
-    alicuotaIva: 10.5  // 10,5%
-  },
-  {
-    descripcion: 'Manual de instrucciones (libro)',
-    cantidad: 1,
-    precioUnitario: 8000,
-    alicuotaIva: 0,
-    condicion: 'exento'
+    description: 'Producto al 10,5%',
+    quantity: 10,
+    unitPrice: 5000,
+    discount: 0,
+    ivaRate: 10.5,  // 10,5%
+    subtotal: 50000
   }
 ]
 ```
 
-Una misma factura puede tener ítems con diferentes alícuotas. Facturear discrimina cada base imponible automáticamente.
+Una misma factura puede tener ítems con diferentes alícuotas. Por API, el array `iva` lleva una línea por alícuota con su base imponible (`5` = 21%, `4` = 10,5%, `6` = 27%, `3` = 0%) y el importe exento va en `impOpEx`. Ver [Primera factura con Facturear](/es/guides/primera-factura).
 
 ---
 

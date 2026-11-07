@@ -30,7 +30,7 @@ Las notas de crédito/débito siguen el **mismo tipo** que la factura que ajusta
 | Factura E | Nota de Crédito E (tipo 21) | Nota de Débito E (tipo 20) |
 
 <Note>
-  Para anular una Factura E usá **Anular con nota de crédito** o `POST /api/invoices/{id}/credit-note`: emite la Nota de Crédito E (tipo 21) con el bloque `export` de la factura. Ver [Factura al exterior](/es/guides/factura-exportacion).
+  Para anular una Factura E usá **Anular** (en el detalle de la factura) o `POST /api/invoices/{id}/credit-note`: emite la Nota de Crédito E (tipo 21) con el bloque `export` de la factura. Ver [Factura al exterior](/es/guides/factura-exportacion).
 </Note>
 
 ---
@@ -51,7 +51,7 @@ Las notas de crédito/débito siguen el **mismo tipo** que la factura que ajusta
 Si querés anular la factura entera, no hace falta cargar nada a mano:
 
 - **Desde el dashboard**: en **Facturas**, abrí la factura y tocá **Anular**. Te muestra qué nota de crédito se va a emitir y por cuánto; confirmás con **Emitir** y el nombre de la nota. Facturear emite la nota de crédito que corresponde (Factura A → NC A, B → NC B, C → NC C, M → NC M) por el total, con el mismo cliente, ítems, importes y moneda, asociada a la factura y con fecha de hoy. El detalle muestra después que la factura quedó anulada y enlaza la nota, y en la lista de **Facturas** aparece como **Anulada**, con el importe tachado.
-- **Con la API**: `POST /api/invoices/{invoiceId}/credit-note`, sin cuerpo. La respuesta (`202`) trae el `batchId` para seguir la nota hasta el CAE.
+- **Con la API**: `POST /api/invoices/{invoiceId}/credit-note`, sin cuerpo. La respuesta (`202`) trae `status: "processing"`, el `batchId` para seguir la nota hasta el CAE y `voids` (por ejemplo `"Factura C 0003-00000012"`).
 
 ```bash
 curl -X POST https://www.facture.ar/api/invoices/ID_DE_LA_FACTURA/credit-note \
@@ -59,7 +59,7 @@ curl -X POST https://www.facture.ar/api/invoices/ID_DE_LA_FACTURA/credit-note \
   -H "Idempotency-Key: $(uuidgen)"
 ```
 
-Solo se pueden anular así las facturas A, B, C y M autorizadas por ARCA. Una factura se anula una sola vez: si ya tiene su nota de crédito (o está en camino), el pedido responde `409`. Anular no cuenta contra el límite de facturas de tu plan. Para reintentar sin riesgo, mandá un `Idempotency-Key` (ver [Reintentar sin duplicar](/es/guides/idempotencia#anular-una-factura)).
+Solo se pueden anular así las facturas A, B, C, E y M autorizadas por ARCA. Una factura se anula una sola vez: si ya tiene su nota de crédito autorizada, el pedido responde `409` con `creditNoteId`; si la nota todavía está en la cola o en ARCA, `409` con el `batchId` para seguirla. Los límites del plan nunca frenan una anulación. Para reintentar sin riesgo, mandá un `Idempotency-Key` (ver [Reintentar sin duplicar](/es/guides/idempotencia#anular-una-factura)).
 
 ### Desde el dashboard
 
@@ -70,7 +70,7 @@ Para una nota parcial (o una de débito), usá la **Factura detallada** y asoci�
 
   Elegí el **CUIT** y el **Punto de Venta**, y en **Tipo** elegí la nota que corresponde (Nota de Crédito A, B o C según la factura original)
 
-  Aparece el recuadro **Comprobante asociado**. Completá el **Tipo de Comprobante Asociado** (Factura A, B, C o M), su **Punto de Venta** y el **Número de Comprobante**. El CUIT del comprobante asociado se completa solo con el CUIT emisor, y la fecha arranca en la de hoy: cambiala por la de la factura original
+  Aparece el recuadro **Nota de crédito: comprobante asociado** (o **Nota de débito: comprobante asociado**). Completá el **Tipo de comprobante asociado** (Factura A, B, C o M), su **Punto de venta** y el **Número de Comprobante**. El CUIT del comprobante asociado se completa solo con el CUIT emisor, y la fecha arranca en la de hoy: cambiala por la de la factura original
 
   Cargá el mismo receptor de la factura original y los ítems con el **importe** que querés acreditar (puede ser parcial o total)
 

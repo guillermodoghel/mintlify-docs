@@ -16,7 +16,7 @@ curl https://www.facture.ar/api/invoices \
   -H "x-api-key: test_sk_..."
 ```
 
-Sin key, o con una key que ya no es válida, la API responde `401` con `code: "unauthorized"`.
+Sin key, o con una key que ya no es válida, la API responde `401` con `code: "unauthorized"`. La API REST no acepta otra credencial: siempre va la API key en `x-api-key`.
 
 ### Una key por entorno
 
@@ -52,37 +52,77 @@ https://www.facture.ar/api
 
 Usá siempre la dirección con `www`. Si llamás a `facture.ar` sin `www` y el pedido pasa por una redirección, algunos clientes HTTP convierten el `POST` en `GET` o pierden el body.
 
+## Formato del body
+
+Mandá el body como `application/json` (podés agregar parámetros como `; charset=utf-8`). `POST /invoices` acepta además `application/xml`. Un JSON mal formado responde `400`.
+
+Para emitir, el importe va en `impTotal`, el total del comprobante con IVA y tributos incluidos. El campo `amount` ya no se acepta: un pedido que lo manda sin `impTotal` responde `400`.
+
+```bash
+curl -X POST https://www.facture.ar/api/invoices \
+  -H "x-api-key: test_sk_..." \
+  -H "Content-Type: application/json" \
+  -H "Idempotency-Key: 6f1c2b0e-8a43-4c5e-9d2a-3b7f1e0c9a11" \
+  -d '{ "impTotal": 12100, "concepto": 2, "docTipo": 80, "docNro": 20123456789 }'
+```
+
 ## Errores
 
-Los errores de autenticación, de validación y los internos siguen el formato **RFC 9457** (`Content-Type: application/problem+json`):
+Todos los errores `4xx` de la API (y los `503` temporales) siguen el formato **RFC 9457** (`Content-Type: application/problem+json`):
 
 ```json
 {
-  "type": "https://www.facture.ar/problems/invalid_request",
-  "title": "Bad Request",
-  "status": 400,
-  "code": "invalid_request",
-  "detail": "Content-Type must be application/json or application/xml",
-  "error": "Content-Type must be application/json or application/xml",
-  "message": "Content-Type must be application/json or application/xml",
-  "resolution": "Compare the body with https://www.facture.ar/openapi.json and resend the corrected fields."
+  "type": "https://www.facture.ar/problems/plan_required",
+  "title": "Forbidden",
+  "status": 403,
+  "code": "PLAN_REQUIRED",
+  "detail": "...",
+  "error": "...",
+  "message": "...",
+  "resolution": "...",
+  "upgradeUrl": "https://www.facture.ar/..."
 }
 ```
 
 | Campo | Qué es |
 |---|---|
-| `code` | Código estable para tu programa: `unauthorized` (401), `invalid_request` (400), `cuit_not_found` (404), `conflict` (409), `internal_error` (500) |
-| `message` / `detail` | Qué pasó, en texto |
+| `code` | Código estable para tu programa (ver la tabla de abajo) |
+| `detail` / `message` | Qué pasó, en texto |
 | `resolution` | Qué hacer para resolverlo |
 | `error` | El mismo texto de siempre, para los clientes que ya leían `error` |
+| `details`, `upgradeUrl`, `creditNoteId`, `batchId`, `maxCuits` | Los campos de antes, cuando corresponden: errores de validación, dónde cambiar de plan, la nota de crédito que ya anuló una factura o el lote donde sigue en curso |
 
-Los errores de `Idempotency-Key` también traen un `code` propio: `IDEMPOTENCY_KEY_INVALID` (400), `IDEMPOTENCY_KEY_IN_PROGRESS` (409) e `IDEMPOTENCY_KEY_REUSED` (422). Ver [Reintentar sin duplicar facturas](/es/guides/idempotencia).
+Los `code` que te conviene manejar:
 
-Algunas respuestas todavía son JSON común con `error` y, a veces, `details` y `code`. Por ejemplo, al superar el límite de tu plan la API responde `403` con `code: "SUBSCRIPTION_LIMIT_EXCEEDED"`. En los dos formatos siempre está `error`, así que leer ese campo te sirve para todos los casos.
+| Estado | `code` | Cuándo |
+|---|---|---|
+| 400 | `invalid_request` | Body o parámetros inválidos; `details` lista los campos |
+| 401 | `unauthorized` | Falta la API key o no es válida |
+| 403 | `PLAN_REQUIRED` | El plan Free emite en producción solo a mano desde la web: la API, el MCP y los lotes en producción necesitan un plan pago |
+| 403 | `PLAN_REGIME` | El plan Monotributo mandando un tipo que no es C ni E |
+| 403 | `SUBSCRIPTION_LIMIT_EXCEEDED` | Se agotaron las facturas o el monto del mes de tu plan, o llegaste al límite de CUITs (`maxCuits`) |
+| 403 | `TEST_KEY_READ_ONLY` | Una key de testing intentó cambiar la configuración de la cuenta (CUITs, webhooks, plantillas) |
+| 404 | `not_found`, `cuit_not_found` | El ID no existe en tu cuenta o es del otro entorno |
+| 409 / 422 / 400 | `IDEMPOTENCY_KEY_IN_PROGRESS`, `IDEMPOTENCY_KEY_REUSED`, `IDEMPOTENCY_KEY_INVALID` | Problemas con el `Idempotency-Key`. Ver [Reintentar sin duplicar facturas](/es/guides/idempotencia) |
+| 429 | `rate_limited` | Pasaste el límite de pedidos por minuto |
+| 429 | `email_limit_reached` | Límite de envíos por email de una factura o del mes |
+| 503 | `service_unavailable` | ARCA o la importación no están disponibles en este momento; reintentá en unos minutos |
+
+Los límites del plan solo aplican en producción: en homologación podés emitir sin límite con cualquier plan.
+
+Si el cuerpo no es JSON válido, la respuesta es un `400` con `code: "invalid_request"`.
+
+## Límite de pedidos
+
+Todas las API keys de una cuenta y un entorno comparten un tope de **1800 pedidos por minuto**. Si lo pasás, la API responde `429` con `code: "rate_limited"` y los headers `Retry-After` (segundos a esperar) y `RateLimit-Limit`. Para emitir muchas facturas, mandá un array de hasta 500 en un solo `POST /invoices` en vez de un pedido por factura.
 
 ## Especificación OpenAPI
 
-La sección **API Endpoints** sale de la especificación completa de esta documentación. Además, la app publica en [`https://www.facture.ar/openapi.json`](https://www.facture.ar/openapi.json) una versión reducida pensada para agentes de IA: crear y listar facturas, anular con nota de crédito y los documentos públicos de descubrimiento (`/api/v1`, `/api/v1/sandbox`). Es la que citan los mensajes de error en `resolution`.
+La sección **API Endpoints** sale de la especificación completa de esta documentación. Además, la app publica en [`https://www.facture.ar/openapi.json`](https://www.facture.ar/openapi.json) la especificación pensada para agentes de IA: facturas (crear, listar, consultar, PDF, XML, enviar por email y anular con nota de crédito), lotes, webhooks con sus eventos y firma, y los documentos públicos de descubrimiento (`/api/v1`, `/api/v1/sandbox`). Es la que citan los mensajes de error en `resolution`. Ahí las rutas llevan el prefijo `/api` completo (`/api/invoices`); acá la URL base ya lo incluye.
+
+## Webhooks
+
+Para enterarte de lo que pasa con tus facturas sin consultar la API, registrá un webhook. Eventos, payloads, cómo verificar la firma y reintentos: [Webhooks](/es/api-reference/webhooks).
 
 ## Playground
 
@@ -90,4 +130,4 @@ Cada endpoint de la sección **API Endpoints** tiene un playground para mandar e
 
 ## Soporte
 
-Si necesitás ayuda con la API, escribinos a **support@facture.ar** o por el chat del panel.
+Si necesitás ayuda con la API, escribinos a **hola@facture.ar** o por WhatsApp desde el botón **Necesito ayuda** del panel.

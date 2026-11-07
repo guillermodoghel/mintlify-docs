@@ -41,8 +41,10 @@ El header es **opcional**: sin él, la API funciona igual que siempre.
 
 Qué respuestas se guardan:
 
-- Las `2xx` (la factura quedó encolada) y los errores de validación (`400`, `404`, `422`): el mismo pedido daría siempre lo mismo.
-- Los `5xx`, el `403` por límite del plan, los `409` y los `429` **no se guardan**: la clave queda libre y podés reintentar con la misma.
+- Las `2xx` (la factura quedó encolada) y los errores de validación (`400`, `404`, `422`): el mismo pedido daría siempre lo mismo. Excepción: un cuerpo que no es JSON válido o un `Content-Type` no soportado se rechaza antes de mirar la clave, así que no queda nada guardado.
+- Los `5xx`, los `403` (límite o plan), los `409` y los `429` **no se guardan**: la clave queda libre y podés reintentar con la misma.
+
+Si el primer pedido murió sin responder (por ejemplo, se cayó el proceso), la clave queda libre a los 5 minutos.
 
 Las claves son por cuenta y por entorno: la misma clave en homologación y en producción son pedidos distintos. Pasados los 7 días, la clave se considera nueva.
 
@@ -60,7 +62,7 @@ La regla: **la clave identifica la factura, no el intento**.
 | `429` o `403` por límite del plan | Cuando corresponda, reenviá **con la misma clave** |
 | `400` por datos inválidos | Corregí los datos y mandá el pedido corregido **con una clave nueva** |
 | La factura quedó encolada (`200`) y después falló en forma definitiva (`invoice.failed` con un error de validación o un rechazo de ARCA) | Corregí lo que haga falta y emitila **con una clave nueva** |
-| La factura falló con `errorCategory: "ARCA_OUTCOME_UNKNOWN"` (ARCA no respondió y el comprobante puede estar autorizado) | **No** la emitas con una clave nueva. Reintentá el ítem con `POST /api/invoices/batches/{batchId}/items/{itemId}/retry`, que consulta a ARCA antes de volver a emitir. Si reenviás el pedido original, usá **la misma clave** |
+| El ítem quedó en `pending` con `errorCategory: "ARCA_OUTCOME_UNKNOWN"` (ARCA no respondió y el comprobante puede estar autorizado) | **No** la emitas con una clave nueva. Facturear reintenta el ítem solo y consulta a ARCA antes de volver a emitir. Si reenviás el pedido original, usá **la misma clave** |
 
 <Warning>
   Una clave nueva siempre es una factura nueva. Si no sabés si la factura anterior se emitió (timeout, `5xx`, `ARCA_OUTCOME_UNKNOWN`), **no cambies la clave**.
@@ -115,7 +117,7 @@ Con ese `batchId` seguís como siempre: consultás `GET /api/invoices/batches/{b
 
 ## Ejemplo en JavaScript con reintentos
 
-Guardá la clave junto con la venta en tu sistema (por ejemplo, en la fila del pedido) para que un reintento —aunque sea de otro proceso o después de reiniciar— use la misma.
+Guardá la clave junto con la venta en tu sistema (por ejemplo, en la fila del pedido) para que un reintento, aunque sea de otro proceso o después de reiniciar, use la misma.
 
 ```javascript
 import { randomUUID } from 'node:crypto'

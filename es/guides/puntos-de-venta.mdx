@@ -29,7 +29,9 @@ No tenés que darlo de alta vos. Cuando [conectás tu CUIT](/es/getting-started/
 
 ## Agregar otro punto de venta
 
-Si querés usar más de un punto de venta (por sucursal, por canal, etc.), el nuevo se da de alta en ARCA:
+Si querés usar más de un punto de venta (por sucursal, por canal, etc.), el nuevo se da de alta en ARCA. Lo podemos hacer nosotros: en **CUITs** → tu CUIT → **Puntos de venta**, elegí qué vas a emitir (**Facturas A y B**, **Facturas C** o **Facturas E (exportación)**) y tocá **Crear punto de venta**. Usa la clave fiscal que ya nos diste (si no la guardaste, te la pide) y tarda unos minutos; cuando termina, aparece en la lista. No está disponible para CUITs conectados por delegación.
+
+Si preferís hacerlo vos en ARCA:
 
 <Steps>
   Entrá a **arca.gob.ar** con tu clave fiscal → **Administración de puntos de venta y domicilios**
@@ -40,7 +42,7 @@ Si querés usar más de un punto de venta (por sucursal, por canal, etc.), el nu
 
   Confirmá el alta
 
-  En Facturear, andá a **CUITs** → tu CUIT → **Puntos de Venta** y tocá **Actualizar** para traerlo
+  En Facturear, andá a **CUITs** → tu CUIT → **Puntos de venta** y tocá **Actualizar** para traerlo
 </Steps>
 
 ---
@@ -124,7 +126,7 @@ curl -X POST https://www.facture.ar/api/cuits/cmg0a1b2c0000abc/pos \
 }
 ```
 
-La consulta se hace siempre contra ARCA **producción**. Si ARCA no devuelve ningún punto de venta, la respuesta es `400`: primero tenés que dar de alta uno en ARCA.
+La consulta se hace siempre contra ARCA **producción**, así que pide la API Key de producción (con la de testing, `403` con `code: "TEST_KEY_READ_ONLY"`). Si ARCA no devuelve ningún punto de venta, la respuesta es `400`: primero tenés que dar de alta uno en ARCA.
 
 ### Último comprobante en ARCA
 
@@ -145,7 +147,7 @@ curl https://www.facture.ar/api/cuits/cmg0a1b2c0000abc/pos/last-vouchers \
 
 `date` es la fecha del comprobante en ARCA (`AAAA-MM-DD`) e `invoiceId` es la factura en Facturear, o `null` si no se emitió desde acá. Consulta a ARCA, así que tarda unos segundos. La primera vez que se cargan, el primero de la lista queda como punto de venta por defecto; lo podés cambiar con `POST /api/cuits/{id}/default-pos` (ver [Configurar defaults por CUIT](/es/guides/configurar-defaults-cuit)).
 
-Desde el dashboard, lo mismo está en **CUITs** → tu CUIT → **Puntos de Venta**, con el botón **Actualizar**. Ahí también cambiás el punto de venta por defecto con **Establecer como predeterminado**.
+Desde el dashboard, lo mismo está en **CUITs** → tu CUIT → **Puntos de venta**, con el botón **Actualizar**. Ahí también cambiás el punto de venta por defecto con **Establecer como predeterminado**.
 
 ---
 

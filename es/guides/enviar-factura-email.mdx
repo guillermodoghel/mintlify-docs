@@ -25,7 +25,7 @@ En un [lote](/es/funcionalidades/facturacion-por-lotes#columna-email), agregá u
 
 ## Límites
 
-- **Por mes**: podés mandar por mail tantas facturas distintas como emite tu plan por mes (como mínimo, las del plan gratuito). En los planes sin límite de facturas, tampoco hay límite de mails. Reenviar una factura que ya mandaste este mes no suma.
+- **Por mes**: podés mandar por mail tantas facturas distintas como emite tu plan por mes (como mínimo 10, las del plan gratuito). En los planes sin límite de facturas, tampoco hay límite de mails. Reenviar una factura que ya mandaste este mes no suma.
 - **Por factura**: hasta 5 envíos cada 24 horas.
 
 Valen igual para los envíos a mano, los automáticos y los de la API.
@@ -52,7 +52,7 @@ curl -X POST https://www.facture.ar/api/invoices/cmuikenv10007kz045cbmekr0/email
 
 | Campo | Tipo | Qué es |
 |---|---|---|
-| `to` | string[] o string | Hasta 5 destinatarios. También acepta un string con direcciones separadas por coma |
+| `to` | string[] o string | Entre 1 y 5 destinatarios. También acepta un string con direcciones separadas por coma, punto y coma o espacios |
 | `message` | string | Opcional, hasta 2000 caracteres. Se agrega debajo del saludo, antes del resto del mensaje del diseño; no lo reemplaza |
 
 Para que la factura se mande sola cuando ARCA la autorice, al emitir con `POST /api/invoices` sumá `emailTo` con hasta 5 direcciones (`"emailTo": ["cliente@ejemplo.com"]`).
@@ -65,9 +65,11 @@ Para que la factura se mande sola cuando ARCA la autorice, al emitir con `POST /
 
 | Estado | Cuándo |
 |---|---|
-| `400` | Un email inválido, más de 5 destinatarios, o la factura no está autorizada por ARCA |
-| `404` | La factura no existe o no es tuya |
-| `429` | Llegaste al límite de mails del mes de tu plan, o esa factura ya se envió 5 veces en las últimas 24 horas |
+| `400` | Un email inválido, ningún destinatario o más de 5, un mensaje de más de 2000 caracteres, o la factura no está autorizada por ARCA |
+| `404` | La factura no existe, no es tuya o es del otro entorno que tu API Key |
+| `429` | `code: "email_limit_reached"`: llegaste al límite de mails del mes de tu plan, o esa factura ya se envió 5 veces en las últimas 24 horas. Con `code: "rate_limited"`, superaste las 1800 requests por minuto |
+
+Los errores vienen como `application/problem+json` (RFC 9457): leé `detail` (o `error`, que se mantiene) para el motivo.
 
 ---
 

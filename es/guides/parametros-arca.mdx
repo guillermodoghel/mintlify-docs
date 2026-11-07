@@ -45,7 +45,7 @@ Valores soportados para `{name}`:
 | `FEPARAMGETTIPOSTRIBUTOS` | Tipos de tributo |
 | `FEPARAMGETCONDICIONIVARECEPTOR` | Condiciones frente al IVA del receptor (acepta `?claseCmp=`) |
 
-Cualquier otro nombre responde `400` con la lista de valores soportados. Si ARCA no está disponible para devolver el parámetro, la respuesta es `503`.
+Cualquier otro nombre responde `400` con la lista de valores soportados, y `FEPARAMGETCOTIZACION` sin `codId` también responde `400`. Si ARCA no está disponible para devolver el parámetro, la respuesta es `503`.
 
 <Note>
   La respuesta es la de ARCA tal cual: un objeto con `ResultGet`, que adentro trae la lista (por ejemplo `ResultGet.IvaTipo`). Facturear guarda en caché los parámetros por 30 días y la cotización hasta el fin del día.
@@ -86,7 +86,9 @@ GET https://www.facture.ar/api/arca/FEPARAMGETTIPOSIVA
       { "Id": 3, "Desc": "0%", "FchDesde": "20090220", "FchHasta": "NULL" },
       { "Id": 4, "Desc": "10.5%", "FchDesde": "20090220", "FchHasta": "NULL" },
       { "Id": 5, "Desc": "21%", "FchDesde": "20090220", "FchHasta": "NULL" },
-      { "Id": 6, "Desc": "27%", "FchDesde": "20090220", "FchHasta": "NULL" }
+      { "Id": 6, "Desc": "27%", "FchDesde": "20090220", "FchHasta": "NULL" },
+      { "Id": 8, "Desc": "5%", "FchDesde": "20141020", "FchHasta": "NULL" },
+      { "Id": 9, "Desc": "2.5%", "FchDesde": "20141020", "FchHasta": "NULL" }
     ]
   }
 }

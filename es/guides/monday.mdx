@@ -85,6 +85,8 @@ Un ítem nunca se factura dos veces, aunque pase por más de una de esas etiquet
 
 Si en el mismo tablero hay ítems que no llevan factura (por ejemplo una columna **Iniciales** con `FACTURA`, `PROFORMA` o `RECIBO`), completá **Facturar solo si la columna** con el título de esa columna y **dice** con los valores que facturan, separados por coma (`FACTURA`). Con cualquier otro valor, o vacía, el ítem no se factura aunque tenga la etiqueta. Con subelementos, la columna puede estar en el subelemento o en su ítem.
 
+Si además querés una proforma para algunos valores, completá **Generar proforma si dice** (por ejemplo `PROFORMA`): con ese valor, la etiqueta genera una proforma en PDF, sin validez fiscal y sin pasar por ARCA, y la deja en el ítem en vez de la factura.
+
 ### Volver a poner la etiqueta es seguro
 
 Cada ítem (o subelemento) se factura una sola vez. Si ponés **Facturar** dos veces, si Monday nos manda el mismo aviso repetido o si hay una demora, no se emite otra factura. Si el ítem quedó con error, corregilo y volvé a poner la etiqueta: ahí sí se factura.
@@ -174,7 +176,7 @@ Reconocemos las columnas por su nombre. Si en tu tablero se llaman de otra forma
 
 ## Facturar a mano o ítems anteriores
 
-En la pestaña **Pedidos** de la integración, elegí el **Período** y tocá **Importar pedidos del período**: traemos los ítems que están en **Facturar**, **Cobrado** o **Pagado** y cambiaron en ese período. Marcá los que querés y tocá **Facturar**. Un ítem nunca se factura dos veces.
+En la pestaña **Pedidos** de la integración, elegí el **Período** y tocá **Importar pedidos del período** (con el modo **Automática**, **Traer pedidos anteriores**): traemos los ítems que tienen alguna de las etiquetas que facturan y cambiaron en ese período. Marcá los que querés y tocá **Facturar**. Un ítem nunca se factura dos veces.
 
 ## Probar sin emitir facturas reales
 
@@ -186,6 +188,6 @@ Tocá **Desconectar** en la integración de facture.ar, o desinstalá la app **f
 
 ## Planes y soporte
 
-La integración no se cobra aparte: se prueba gratis en modo Testing y factura en producción desde el plan Monotributo. Ver los [planes de facture.ar](https://www.facture.ar/?utm_source=docs&utm_medium=referral&utm_campaign=guides-monday&utm_content=link#pricing).
+La integración no se cobra aparte: se prueba gratis en modo Testing y factura en producción con los planes Monotributo (solo Factura C), Básica y Pro. Ver los [planes de facture.ar](https://www.facture.ar/?utm_source=docs&utm_medium=referral&utm_campaign=guides-monday&utm_content=link#pricing).
 
 ¿Dudas? Escribinos por WhatsApp con el botón **Necesito ayuda** dentro de la app.

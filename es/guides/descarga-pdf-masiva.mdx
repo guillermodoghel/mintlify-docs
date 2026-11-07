@@ -8,7 +8,7 @@ description: 'Cómo descargar PDFs de facturas desde Facturear: descarga individ
 Facturear permite descargar el PDF de cada factura emitida, desde el dashboard o con la API. Esta guía cubre cómo descargar una factura y cómo armar una descarga masiva recorriendo tus facturas con la API.
 
 <Note>
-  Facturear no tiene un endpoint de exportación masiva (un ZIP por período). La descarga masiva se arma pidiendo el PDF de cada factura, como se muestra más abajo.
+  La API no tiene un endpoint de exportación masiva (un ZIP por período): la descarga masiva por API se arma pidiendo el PDF de cada factura, como se muestra más abajo. Desde el dashboard sí podés bajar varias juntas en un ZIP (ver [Varias facturas en un ZIP desde el dashboard](#varias-facturas-en-un-zip-desde-el-dashboard)).
 </Note>
 
 ---
@@ -49,7 +49,13 @@ curl "https://www.facture.ar/api/invoices/cmg1a2b3e0002xyz/pdf" \
 
 Si abrís ese mismo link (`/api/invoices/{id}/pdf`) en el navegador, con tu sesión iniciada, va directo al PDF en vez de mostrar el JSON. Pasa, por ejemplo, con el link que te devuelve un [agente de IA](/es/guides/agentes-ia).
 
-Si la factura no existe o no es tuya, la respuesta es `404`.
+Si la factura no existe, no es tuya o es del otro entorno que tu API Key, la respuesta es `404`. Si el generador de PDFs está ocupado, la respuesta es `503` con un header `Retry-After` (en segundos): esperá y reintentá.
+
+---
+
+## Varias facturas en un ZIP desde el dashboard
+
+En **Facturas**, pestaña **Emitidas**, marcá las facturas (o tocá **Seleccionar las de esta página**) y tocá **Descargar**: bajás un ZIP con los PDFs, hasta 50 facturas por descarga. Solo entran las autorizadas por ARCA. Esta descarga es solo del dashboard: no acepta API Key.
 
 ---
 

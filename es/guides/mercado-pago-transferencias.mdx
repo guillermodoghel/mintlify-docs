@@ -4,7 +4,7 @@ sidebarTitle: 'Mercado Pago'
 description: 'Conectá tu cuenta de Mercado Pago, traé las transferencias que recibís y facturalas en un lote después de revisar quién te pagó, o confirmá cada una por WhatsApp.'
 ---
 
-Si cobrás por transferencia a tu cuenta de Mercado Pago, Facturear trae esos cobros para que los factures sin copiar datos a mano.
+Si cobrás por transferencia a tu cuenta de Mercado Pago, Facturear trae esos cobros para que los factures sin copiar datos a mano. También trae lo que cobrás con tu **Point** (tarjeta de crédito, débito y contactless), que se factura igual.
 
 Mercado Pago nunca se factura solo: cada cobro lo confirmás vos, en un lote o por WhatsApp. Así nunca se factura un cobro que no correspondía (una devolución, plata entre tus cuentas).
 
@@ -35,13 +35,13 @@ Lo podés cambiar cuando quieras en la pestaña **Configuración**.
 - **Concepto**: Servicios, Productos o Productos y servicios.
 - **Alícuota de IVA**, si tu CUIT discrimina IVA. El importe recibido se toma con IVA incluido: sale A si quien paga es inscripto o monotributista, si no B.
 - **Detalle en cada factura**: cada transferencia se factura como un ítem con este texto (por ejemplo, "Servicios profesionales") por el importe recibido.
-- **Enviar cada factura por mail a quien pagó**, cuando Mercado Pago comparte su mail o si lo cargás en la transferencia. Opcionalmente, **Enviarme copia a** un mail tuyo.
+- **Envío a quien pagó**: **Automático** le manda la factura apenas se emite, cuando Mercado Pago comparte su mail o si lo cargás en la transferencia; **Manual** la mandás vos. Opcionalmente, **Enviarme copia a** un mail tuyo.
 
 ## Cómo llegan los cobros
 
-Mercado Pago no avisa cuando te entra una transferencia, así que la buscamos nosotros: cada 5 minutos traemos solos los cobros de los últimos días, y **cada minuto** si la cuenta está en **Confirmar por WhatsApp**. Así los encontrás esperando en la pestaña **Cobros** sin tener que importar. Si querés un período más largo, elegí el **Período** y tocá **Importar**.
+Mercado Pago no avisa cuando te entra una transferencia, así que la buscamos nosotros: cada 5 minutos traemos solos los cobros de los últimos días (en **Confirmar por WhatsApp**, es ahí cuando te llega la pregunta al chat). Así los encontrás esperando en la pestaña **Cobros** sin tener que importar; si no querés esperar la próxima búsqueda, tocá **Actualizar ahora**. Si querés un período más largo, elegí el **Período** y tocá **Importar**.
 
-Por defecto la lista muestra **Solo transferencias**; destildalo para ver también otros cobros. Las transferencias entre cuentas propias se marcan como **Entre cuentas propias**.
+Por defecto la lista muestra **Transferencias**; elegí **Point** para ver los cobros con tu Point, o **Todos** para ver también los demás cobros. Las transferencias entre cuentas propias se marcan como **Entre cuentas propias**.
 
 ## Revisar y generar el lote
 
@@ -52,6 +52,10 @@ Para cada transferencia ves la fecha, **Quién pagó**, **CUIT / DNI**, el **Imp
 3. Seleccioná las transferencias y tocá **Generar lote de N**. La barra de abajo te muestra el total y cuántas salen a Consumidor Final por no tener CUIT/DNI.
 
 Las facturas se emiten como un [lote](/es/guides/facturacion-lotes): tocá **Ver el lote** para seguir el avance. Los filtros **Por facturar**, **Facturadas**, **Con error**, **Omitidas** y **Todas** te ayudan a encontrar cada cobro.
+
+## Plan
+
+Mercado Pago factura en producción con los planes Monotributo (solo Factura C), Básica y Pro. Con el plan Free la conectás y probás en modo Testing. Ver [Cuenta y plan](/es/guides/cuenta-y-plan).
 
 ## Desconectar
 

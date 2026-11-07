@@ -36,6 +36,8 @@ Si tenés más de un CUIT y en el selector de arriba está **Todos los CUITs**, 
 
 El resumen te recuerda en qué modo estás: en Producción las facturas salen con validez fiscal; con el **Modo Testing** de tu cuenta prendido, no. El modo es de toda la cuenta, no de cada lote: se cambia en **Cuenta y plan**. Ver [Entorno de testing](/es/guides/entorno-testing).
 
+En producción, los lotes necesitan un plan pago (Monotributo, Básica o Pro). Con el plan Free los probás en Modo Testing. Ver [Cuenta y plan](/es/guides/cuenta-y-plan#planes).
+
 ## Correcciones sugeridas por IA
 
 Cuando subís un CSV, la IA lo revisa comparándolo con cómo facturás habitualmente (tus últimas facturas, tus CUITs, puntos de venta y valores por defecto). Si encuentra algo para arreglar, por ejemplo un encabezado que no coincide con el formato, un punto de venta que no tiene ese CUIT (lo cambia por el predeterminado) o fechas fuera de orden, aparece el recuadro **Correcciones sugeridas por IA** con la lista de cambios.
@@ -137,6 +139,7 @@ Si ARCA no responde a tiempo, puede haber autorizado la factura igual. En ese ca
 - Por API: hasta **500** facturas por request.
 - Un lote sale de un solo CUIT, y el punto de venta tiene que estar habilitado para ese CUIT.
 - Cada factura cuenta para el límite de tu plan.
+- En producción, con un plan pago (Monotributo, Básica o Pro). Con Free, solo en Modo Testing.
 
 ## Por API
 
@@ -144,9 +147,9 @@ Si las facturas salen de tu sistema, podés mandarlas por API en vez de armar un
 
 - **`POST /api/invoices`** con un **array de hasta 500 facturas** por request. Cada elemento tiene el mismo formato que una factura suelta (ver [Emitir tu primera factura](/es/guides/primera-factura)). Con más de 500 la API responde `400` (`El lote no puede exceder 500 facturas`); partí el envío en bloques de 500.
 - Un header **`Idempotency-Key` por request**, armado con tu propia referencia (por ejemplo `cierre-2026-10-bloque-7` o el id del bloque de pedidos en tu sistema). Si reenviás el mismo request con la misma clave, recibís el mismo `batchId` y no se duplica nada: cada factura queda identificada como `<clave>:<posición>`. Si corregís el bloque, mandalo con una clave nueva. Ver [Idempotency-Key](/es/guides/idempotencia#lotes).
-- **De 2 a 4 requests en paralelo**, no más. Cada API key tiene además un tope de 1800 requests por minuto: si lo pasás, la API responde `429` con `Retry-After`; esperá y reenviá con la misma `Idempotency-Key`.
+- **De 2 a 4 requests en paralelo**, no más. Además hay un tope de 1800 requests por minuto por cuenta y entorno (todas tus API keys de ese entorno lo comparten): si lo pasás, la API responde `429` con `Retry-After`; esperá y reenviá con la misma `Idempotency-Key`.
 - Los resultados te llegan por **[webhooks](/es/guides/webhook-integracion)**: `invoice.completed` y `invoice.failed` por cada factura, y `batch.completed` cuando termina cada lote. También podés consultar `GET /api/invoices/batches/{batchId}`.
-- Cada factura cuenta para el límite de tu plan: si el request lo supera, la API responde `403` con `SUBSCRIPTION_LIMIT_EXCEEDED` y no encola ninguna.
+- Cada factura cuenta para el límite de tu plan: si el request lo supera, la API responde `403` con `SUBSCRIPTION_LIMIT_EXCEEDED` y no encola ninguna. Con el plan Free, en producción responde `403` con `PLAN_REQUIRED`.
 
 ```bash
 curl -X POST https://www.facture.ar/api/invoices \
@@ -167,4 +170,4 @@ La respuesta trae el `batchId` del lote (`"status": "processing"`). El header `C
 - [Documentos con IA](/es/funcionalidades/documentos-ia): para planillas con tus propias columnas, remitos, fotos o texto.
 - [API de lotes](/es/guides/facturacion-lotes): para crear lotes desde tu sistema.
 
-Si necesitás ayuda: [support@facture.ar](mailto:support@facture.ar).
+Si necesitás ayuda, tocá **Necesito ayuda** en la app (te abre nuestro WhatsApp) o escribinos a [hola@facture.ar](mailto:hola@facture.ar).

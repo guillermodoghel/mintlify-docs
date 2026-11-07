@@ -724,7 +724,8 @@
             "group": "Overview",
             "pages": [
               "es/api-reference/index",
-              "es/api-reference/playground"
+              "es/api-reference/playground",
+              "es/api-reference/webhooks"
             ]
           },
           {
@@ -744,7 +745,7 @@
       },
       {
         "anchor": "Soporte",
-        "href": "mailto:support@facture.ar",
+        "href": "mailto:hola@facture.ar",
         "icon": "life-ring"
       }
     ]
@@ -757,7 +758,7 @@
       },
       {
         "label": "Soporte",
-        "href": "mailto:support@facture.ar"
+        "href": "mailto:hola@facture.ar"
       }
     ],
     "primary": {

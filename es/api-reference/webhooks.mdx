@@ -1,0 +1,395 @@
+---
+title: 'Webhooks'
+description: 'Referencia de los webhooks de Facturear: eventos, payloads, headers, cómo verificar la firma HMAC, reintentos y entregas.'
+---
+
+# Webhooks
+
+Un webhook es una URL de tu servidor a la que Facturear le manda un `POST` cada vez que pasa algo en tu cuenta: ARCA autorizó una factura, una factura falló, terminó un lote, llegó una comunicación de ARCA. Así tu sistema se entera en el momento, sin tener que consultar la API cada tanto.
+
+## Crear y administrar webhooks
+
+Tenés dos caminos:
+
+- **Desde el panel**: en [facture.ar/app/webhooks](https://www.facture.ar/app/webhooks?utm_source=docs&utm_medium=referral&utm_campaign=api-reference-webhooks&utm_content=link) tocá **Agregar webhook**, poné la URL, elegí los eventos y, si querés, headers propios. Desde la lista podés pausarlo o activarlo, editarlo, eliminarlo, ver el **Secreto de firma** y las **Entregas**.
+- **Desde la API**:
+
+| Método | Endpoint | Qué hace |
+|---|---|---|
+| `GET` | `/api/webhooks` | Lista los webhooks de la cuenta (sin el secreto) |
+| `POST` | `/api/webhooks` | Crea uno. Body: `url`, `events` y, opcional, `headers`. Responde `201` con el webhook y su `secret` |
+| `PUT` | `/api/webhooks/{id}` | Cambia solo los campos que mandás: `url`, `events`, `headers` (`null` los borra) o `isActive` (`false` lo pausa) |
+| `DELETE` | `/api/webhooks/{id}` | Lo borra; no se le mandan más eventos |
+
+La URL tiene que ser `https` y con una dirección pública (no se aceptan `localhost` ni IPs privadas).
+
+Los webhooks son configuración de la cuenta y los comparten los dos entornos: cada evento dice en `environment` si viene de homologación o de producción. Por eso, para crearlos, editarlos o borrarlos por API hace falta la **key de producción**: con una key de testing, esos pedidos responden `403` con `code: "TEST_KEY_READ_ONLY"` (listarlos sí se puede).
+
+```bash
+curl -X POST https://www.facture.ar/api/webhooks \
+  -H "x-api-key: prod_sk_..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "url": "https://tu-servidor.com/webhooks/facturear",
+    "events": ["invoice.completed", "invoice.failed"]
+  }'
+```
+
+<Note>
+  La respuesta del `POST` trae el secreto de firma (`whsec_...`). Es la única vez que la API lo devuelve: guardalo. Después lo ves en el panel, en **Secreto de firma**.
+</Note>
+
+## Eventos
+
+| Evento | Cuándo se manda |
+|---|---|
+| `invoice.completed` | ARCA autorizó una factura (tiene CAE). Una sola vez por factura |
+| `invoice.failed` | Una factura falló definitivamente: ARCA la rechazó o se agotaron los reintentos automáticos. Si la reintentás a mano y vuelve a fallar, llega otro |
+| `batch.completed` | Un lote terminó (`completed`, `completed_with_errors` o `error`). También una factura suelta, que es un lote de una |
+| `draft.review_required` | Un borrador espera tu revisión: quedó con observaciones, no se pudo leer el documento, o en modo automático no se pudo emitir |
+| `dfe.message.received` | Llegó una comunicación nueva al Domicilio Fiscal Electrónico de un CUIT (sincronización diaria con ARCA). Siempre `environment: "production"` |
+| `tax_account.updated` | Cambió el saldo del Sistema de Cuentas Tributarias de un CUIT (sincronización diaria con ARCA). Siempre `environment: "production"` |
+
+## Payload
+
+Cada envío es un `POST` con `Content-Type: application/json`. El body siempre trae estos campos, más los del evento:
+
+| Campo | Qué es |
+|---|---|
+| `id` | ID del evento (`evt_...`). Es el mismo si la entrega se reintenta: usalo para no procesar dos veces el mismo evento |
+| `event` | El nombre del evento |
+| `environment` | `production` o `homologation` |
+| `timestamp` | Cuándo se armó el evento, ISO 8601 |
+
+### invoice.completed
+
+```json
+{
+  "id": "evt_5f0c2a9d81b4e3c7a6d2f190",
+  "event": "invoice.completed",
+  "invoice": {
+    "id": "cm3f8k2l90001qz8x4n7p5r2t",
+    "invoiceType": 11,
+    "ptoVta": 3,
+    "voucherNumber": 145,
+    "cae": "75123456789012",
+    "caeFchVto": "20261117",
+    "impTotal": 12100,
+    "docTipo": 80,
+    "docNro": 20123456789,
+    "batchId": "cm3f8k2l40000qz8xh1c2d3e4",
+    "jobId": "cm3f8k2l50002qz8x9a8b7c6d"
+  },
+  "cuit": { "id": "cm1a2b3c4d5e6f7g8h9i0j", "number": "20111111112" },
+  "environment": "production",
+  "timestamp": "2026-11-07T14:32:10.512Z"
+}
+```
+
+### invoice.failed
+
+Los mismos campos de la factura que en `invoice.completed`, sin `cae` ni `caeFchVto` (cualquiera puede venir en `null`, por ejemplo `invoice.id` si la factura falló antes de crearse), más el motivo:
+
+```json
+{
+  "id": "evt_9a1b2c3d4e5f60718293a4b5",
+  "event": "invoice.failed",
+  "invoice": {
+    "id": "cm3f8m1n20003qz8x7y6z5w4v",
+    "invoiceType": 6,
+    "ptoVta": 3,
+    "voucherNumber": null,
+    "impTotal": 12100,
+    "docTipo": 80,
+    "docNro": 20123456789,
+    "batchId": "cm3f8m1n00001qz8xa1b2c3d4",
+    "jobId": "cm3f8m1n10002qz8xe5f6g7h8"
+  },
+  "cuit": { "id": "cm1a2b3c4d5e6f7g8h9i0j", "number": "20111111112" },
+  "errorCategory": "VALIDATION_ERROR",
+  "attempts": 1,
+  "errors": [{ "code": "10242", "message": "El campo Condicion Frente al IVA del receptor resulta obligatorio" }],
+  "observations": [],
+  "environment": "production",
+  "timestamp": "2026-11-07T14:35:02.118Z"
+}
+```
+
+`errors` son los errores de ARCA y `observations`, las observaciones del comprobante; cada uno con `code` (puede ser `null`) y `message`. Si la factura falló antes de llegar a ARCA, `errors` trae un solo mensaje sin código.
+
+### batch.completed
+
+```json
+{
+  "id": "evt_0d1e2f3a4b5c6d7e8f9a0b1c",
+  "event": "batch.completed",
+  "batch": {
+    "id": "cm3f8k2l40000qz8xh1c2d3e4",
+    "status": "completed_with_errors",
+    "totalItems": 50,
+    "processedItems": 50,
+    "successfulItems": 48,
+    "failedItems": 2,
+    "createdAt": "2026-11-07T14:30:00.000Z",
+    "completedAt": "2026-11-07T14:33:41.250Z"
+  },
+  "environment": "production",
+  "timestamp": "2026-11-07T14:33:41.300Z"
+}
+```
+
+Para ver el resultado de cada factura del lote, consultá `GET /api/invoices/batches/{id}`.
+
+### draft.review_required
+
+Trae el borrador completo en `draft`, con los mismos campos que `GET /api/documents/drafts/{id}`:
+
+```json
+{
+  "id": "evt_1a2b3c4d5e6f7a8b9c0d1e2f",
+  "event": "draft.review_required",
+  "draft": {
+    "id": "cm3g0a1b20000qz8x1y2z3a4b",
+    "status": "review",
+    "mode": "manual",
+    "source": "api",
+    "sourceRef": "Pedido 1234",
+    "fileName": "pedido-1234.pdf",
+    "mimeType": "application/pdf",
+    "hasFile": true,
+    "templateId": null,
+    "templateName": null,
+    "cuitId": "cm1a2b3c4d5e6f7g8h9i0j",
+    "ptoVta": 3,
+    "environment": "production",
+    "data": { "lines": [{ "description": "Servicio de mantenimiento", "quantity": 1, "unitPrice": 12100, "ivaRate": 21 }] },
+    "total": 12100,
+    "voucherLetter": null,
+    "confidence": 0.62,
+    "issues": [{ "code": "unidentified_receiver", "message": "No se encontró el CUIT del cliente" }],
+    "errorMessage": null,
+    "invoice": null,
+    "emailStatus": null,
+    "url": "https://www.facture.ar/app/documentos?draft=cm3g0a1b20000qz8x1y2z3a4b",
+    "createdAt": "2026-11-07T15:00:00.000Z",
+    "updatedAt": "2026-11-07T15:00:12.400Z"
+  },
+  "environment": "production",
+  "timestamp": "2026-11-07T15:00:12.450Z"
+}
+```
+
+### dfe.message.received
+
+```json
+{
+  "id": "evt_3c4d5e6f7a8b9c0d1e2f3a4b",
+  "event": "dfe.message.received",
+  "cuit": { "id": "cm1a2b3c4d5e6f7g8h9i0j", "number": "20111111112" },
+  "message": {
+    "id": "cm3h1c2d30000qz8x5e6f7g8h",
+    "arcaId": "987654321",
+    "publishedAt": "2026-11-06",
+    "sender": "Dirección Regional",
+    "subject": "Intimación de pago",
+    "body": "...",
+    "attachments": [{ "name": "acta.pdf", "stored": true }],
+    "readInArca": false,
+    "urgency": "critico",
+    "summary": "ARCA te intima a pagar el saldo de IVA de septiembre.",
+    "action": "Pagá o presentá un descargo antes del plazo.",
+    "deadline": "2026-11-21"
+  },
+  "environment": "production",
+  "timestamp": "2026-11-07T06:10:00.000Z"
+}
+```
+
+`urgency` es `info`, `accion_requerida` o `critico`. `summary`, `action` y `deadline` los completa una lectura con IA y pueden venir en `null`. Cada sincronización manda como mucho 50 de estos eventos por CUIT.
+
+### tax_account.updated
+
+```json
+{
+  "id": "evt_4d5e6f7a8b9c0d1e2f3a4b5c",
+  "event": "tax_account.updated",
+  "cuit": { "id": "cm1a2b3c4d5e6f7g8h9i0j", "number": "20111111112" },
+  "taxAccount": {
+    "readAt": "2026-11-07T06:05:00.000Z",
+    "noDebt": false,
+    "debt": 45230.5,
+    "credit": 0,
+    "previousDebt": 0,
+    "lines": [
+      { "tax": "IVA", "period": "2026-09", "concept": "Saldo de declaración jurada", "dueDate": "2026-10-20", "amount": 45230.5, "side": "deudor" }
+    ],
+    "notes": null
+  },
+  "environment": "production",
+  "timestamp": "2026-11-07T06:05:01.000Z"
+}
+```
+
+`debt` y `credit` son el saldo deudor y acreedor en pesos; `previousDebt` es el saldo deudor de la lectura anterior (`null` si es la primera). En cada línea, `side` es `deudor` o `acreedor`, y `period`, `concept` y `dueDate` pueden faltar.
+
+## Headers
+
+| Header | Qué es |
+|---|---|
+| `Facturear-Signature` | `t=<segundos unix>,v1=<firma en hex>`. La firma es un HMAC-SHA256 de `"<t>.<body crudo>"` con el secreto `whsec_...` del webhook |
+| `Facturear-Event` | El nombre del evento, igual que `event` en el body |
+| `Facturear-Delivery` | ID de esta entrega. Los reintentos automáticos de una entrega lo mantienen; un reintento manual desde el panel es una entrega nueva, con otro ID |
+| `Content-Type` | `application/json` |
+| `User-Agent` | `Facturear-Webhook/1.0` |
+
+Además van los headers propios que configuraste en el webhook. No pueden reemplazar `Facturear-Signature`, `Facturear-Event` ni `Facturear-Delivery`.
+
+## Verificar la firma
+
+Verificá cada envío antes de hacerle caso. Los pasos:
+
+1. Leé el body **crudo**, tal cual llegó, sin parsearlo.
+2. Del header `Facturear-Signature`, sacá `t` y los `v1` (separados por coma).
+3. Calculá el HMAC-SHA256 en hex de `"<t>.<body crudo>"` con tu secreto `whsec_...` (el secreto completo, con el prefijo).
+4. Comparalo con cada `v1` en tiempo constante.
+5. Rechazá el envío si `t` está a más de **300 segundos** de tu reloj: así nadie puede reenviarte una entrega vieja.
+
+### Node.js (Express)
+
+```javascript
+const crypto = require('crypto');
+const express = require('express');
+
+const SECRET = process.env.FACTUREAR_WEBHOOK_SECRET; // whsec_...
+const TOLERANCE_SECONDS = 300;
+
+function verifyFacturearSignature(secret, rawBody, header) {
+  if (!header) return false;
+  let timestamp = null;
+  const signatures = [];
+  for (const part of header.split(',')) {
+    const [key, value] = part.trim().split('=', 2);
+    if (key === 't' && /^\d+$/.test(value || '')) timestamp = Number(value);
+    if (key === 'v1' && value) signatures.push(value);
+  }
+  if (timestamp === null || signatures.length === 0) return false;
+
+  const expected = Buffer.from(
+    crypto.createHmac('sha256', secret).update(`${timestamp}.${rawBody}`, 'utf8').digest('hex'),
+    'hex'
+  );
+  const matches = signatures.some(signature => {
+    const received = Buffer.from(signature, 'hex');
+    return received.length === expected.length && crypto.timingSafeEqual(received, expected);
+  });
+  if (!matches) return false;
+
+  const now = Math.floor(Date.now() / 1000);
+  return Math.abs(now - timestamp) <= TOLERANCE_SECONDS;
+}
+
+const app = express();
+
+// express.raw: el body llega como Buffer, sin parsear
+app.post('/webhooks/facturear', express.raw({ type: 'application/json' }), (req, res) => {
+  const rawBody = req.body.toString('utf8');
+  if (!verifyFacturearSignature(SECRET, rawBody, req.get('Facturear-Signature'))) {
+    return res.status(400).send('Firma inválida');
+  }
+
+  const event = JSON.parse(rawBody);
+  res.status(200).send('ok'); // respondé rápido y procesá aparte
+
+  // Usá event.id para no procesar dos veces el mismo evento
+  if (event.event === 'invoice.completed') {
+    console.log('Factura autorizada', event.invoice.id, event.invoice.cae);
+  }
+});
+
+app.listen(3000);
+```
+
+### Python (Flask)
+
+```python
+import hashlib
+import hmac
+import json
+import os
+import time
+
+from flask import Flask, request
+
+SECRET = os.environ["FACTUREAR_WEBHOOK_SECRET"]  # whsec_...
+TOLERANCE_SECONDS = 300
+
+
+def verify_facturear_signature(secret: str, raw_body: bytes, header: str | None) -> bool:
+    if not header:
+        return False
+    timestamp = None
+    signatures = []
+    for part in header.split(","):
+        key, _, value = part.strip().partition("=")
+        if key == "t" and value.isdigit():
+            timestamp = int(value)
+        if key == "v1" and value:
+            signatures.append(value)
+    if timestamp is None or not signatures:
+        return False
+
+    signed = f"{timestamp}.".encode("utf-8") + raw_body
+    expected = hmac.new(secret.encode("utf-8"), signed, hashlib.sha256).hexdigest()
+    if not any(hmac.compare_digest(expected, signature) for signature in signatures):
+        return False
+
+    return abs(int(time.time()) - timestamp) <= TOLERANCE_SECONDS
+
+
+app = Flask(__name__)
+
+
+@app.post("/webhooks/facturear")
+def facturear_webhook():
+    raw_body = request.get_data()  # bytes crudos, antes de cualquier parseo
+    if not verify_facturear_signature(SECRET, raw_body, request.headers.get("Facturear-Signature")):
+        return "Firma inválida", 400
+
+    event = json.loads(raw_body)
+    # Usá event["id"] para no procesar dos veces el mismo evento
+    if event["event"] == "invoice.completed":
+        print("Factura autorizada", event["invoice"]["id"], event["invoice"]["cae"])
+    return "ok", 200
+```
+
+### Errores comunes
+
+- **Parsear el JSON antes de verificar.** Si tu framework ya parseó el body y lo volvés a serializar, cambian espacios u orden de los campos y la firma no coincide. Verificá sobre los bytes que llegaron (`express.raw`, `request.get_data()`, `await request.body()` en FastAPI).
+- **Usar el secreto sin el prefijo.** El secreto es el texto completo, `whsec_` incluido.
+- **Comparar con `==`.** Usá una comparación en tiempo constante (`crypto.timingSafeEqual`, `hmac.compare_digest`).
+- **Reloj del servidor corrido.** Con más de 300 segundos de diferencia, las firmas válidas se rechazan. Sincronizá la hora con NTP.
+- **Usar un secreto viejo.** Si rotaste el secreto, el anterior deja de servir en el acto.
+
+## Entregas y reintentos
+
+- **Éxito**: cualquier respuesta `2xx` dentro de los **10 segundos**. Un `3xx` cuenta como falla: las redirecciones no se siguen, así que usá la URL final.
+- **Reintentos automáticos**: si tu servidor no responde a tiempo, falla la conexión o responde algo que no es `2xx`, se reintenta enseguida (a 1 y 2 segundos), hasta **3 intentos** en total. Cada intento se firma con su propio `t`; el `Facturear-Delivery` y el body son los mismos.
+- **Después de 3 intentos** la entrega queda como fallida y no se reintenta sola.
+- **Entregas en el panel**: en [facture.ar/app/webhooks](https://www.facture.ar/app/webhooks?utm_source=docs&utm_medium=referral&utm_campaign=api-reference-webhooks&utm_content=link), **Ver entregas** muestra cada envío con su evento, estado, código de respuesta, el payload y los headers que mandamos, y el principio del body que respondiste. Con **Reintentar** volvés a mandar una entrega: va con el mismo body (mismo `id` de evento), la URL, los headers y el secreto actuales del webhook, y un `Facturear-Delivery` nuevo.
+- **Sin duplicados de nuestro lado**: cada evento se arma una sola vez (por ejemplo, un `invoice.completed` por factura). Igual pueden llegarte repetidos por los reintentos o por un reintento manual, así que deduplicá por el `id` del body.
+
+<Tip>
+  Respondé `200` apenas verificaste la firma y procesá el evento aparte (una cola, un job). Si tu proceso tarda más de 10 segundos, la entrega se da por fallida y se reintenta aunque la hayas procesado.
+</Tip>
+
+## Secreto de firma
+
+- Se genera al crear el webhook: `whsec_` y 48 caracteres hexadecimales.
+- La API lo devuelve solo en la respuesta del `POST /api/webhooks`. `GET` y `PUT` no lo incluyen.
+- En el panel lo ves con **Secreto de firma**, y con **Rotar secreto** generás uno nuevo. La rotación es inmediata: el secreto anterior deja de verificar en el acto, así que actualizalo en tu servidor enseguida.
+
+## Recursos relacionados
+
+- [Integrar webhooks paso a paso](/es/guides/webhook-integracion)
+- [API Reference](/es/api-reference/index)
+- [Facturación por lotes](/es/guides/facturacion-lotes)
