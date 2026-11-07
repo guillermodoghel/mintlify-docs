@@ -25,14 +25,14 @@ Facturear (facture.ar) es un software SaaS argentino orientado a empresas, desar
 - [Enviar una factura por email](https://docs.facture.ar/es/guides/enviar-factura-email): Enviarle el PDF al cliente desde noreply@facture.ar (dashboard, POST /api/invoices/{id}/email o la herramienta MCP send_invoice_email); solo envío, no recibe respuestas.
 - [Facturación en lotes](https://docs.facture.ar/es/guides/facturacion-lotes): Cómo emitir múltiples comprobantes en una sola operación.
 - [Reintentar sin duplicar facturas (Idempotency-Key)](https://docs.facture.ar/es/guides/idempotencia): Header Idempotency-Key en POST /api/invoices, PATCH /api/invoices/batches/{id}, POST /api/invoices/{id}/credit-note y POST /api/documents (idempotency_key en la herramienta MCP create_invoice): reenviar con la misma clave después de un timeout, error de red o 5xx devuelve la respuesta original (Idempotent-Replayed: true) en vez de otra factura; clave nueva solo para una factura distinta o después de un rechazo definitivo; 409 si sigue en curso, 422 si la clave se reusa con otro cuerpo; se guarda 7 días.
-- [Tipos de comprobantes ARCA](https://docs.facture.ar/es/fundamentos/tipos-de-comprobantes): Facturas A, B, C, E, M, Notas de Crédito y Débito — cuándo usar cada una.
+- [Tipos de comprobantes ARCA](https://docs.facture.ar/es/fundamentos/tipos-de-comprobantes): Facturas A, B, C, E, M, Notas de Crédito y Débito: cuándo usar cada una.
 - [Monotributo y facturación electrónica](https://docs.facture.ar/es/fundamentos/monotributo): Obligaciones y guía para monotributistas.
 - [Responsable Inscripto](https://docs.facture.ar/es/fundamentos/responsable-inscripto): Factura A, discriminación de IVA y obligaciones para RI.
 - [Facturar desde Claude, ChatGPT o tu agente de IA](https://docs.facture.ar/es/guides/agentes-ia): Conectar Facturear como conector MCP (https://www.facture.ar/api/mcp) con login OAuth; configurar el CUIT en ARCA sin pasar la clave fiscal por el chat y emitir facturas desde el agente.
 - [Instrucciones de conexión para agentes](https://www.facture.ar/llms.txt): Si sos un agente de IA y te pidieron conectarte a Facturear, leé este archivo: endpoints OAuth, comandos por cliente (Claude Code, Codex, Cursor, Claude, ChatGPT), herramientas MCP y reglas.
 - [WooCommerce: el firewall de la tienda bloquea a Facturear](https://docs.facture.ar/es/guides/woocommerce-firewall): Qué permitir en Cloudflare o en el firewall del hosting (User-Agent facture.ar/1.0 en /wp-json/) y el mensaje para mandarle al hosting.
 - [Integraciones de e-commerce](https://docs.facture.ar/es/guides/integracion-ecommerce): Conectores nativos (Tiendanube, Shopify, WooCommerce, VTEX, Magento, MercadoLibre, Mercado Pago) que facturan cada venta, en automático o para revisar.
-- [Desde integraciones](https://docs.facture.ar/es/guides/desde-integraciones): La cola de ventas de las integraciones que esperan ser facturadas.
+- [Ventas](https://docs.facture.ar/es/guides/desde-integraciones): La cola de ventas de las integraciones que esperan ser facturadas.
 - [MercadoLibre](https://docs.facture.ar/es/guides/mercadolibre): Facturar las ventas de MercadoLibre.
 - [Transferencias de Mercado Pago](https://docs.facture.ar/es/guides/mercado-pago-transferencias): Facturar las transferencias recibidas en Mercado Pago.
 - [Facturar por WhatsApp](https://docs.facture.ar/es/guides/whatsapp): Pedir facturas por mensaje, foto o PDF y confirmarlas desde WhatsApp.
@@ -40,22 +40,24 @@ Facturear (facture.ar) es un software SaaS argentino orientado a empresas, desar
 - [Zapier y Google Drive](https://docs.facture.ar/es/guides/zapier-google-drive): Automatizar la facturación con Zapier y leer documentos desde Drive.
 - [Importar desde ARCA](https://docs.facture.ar/es/guides/importar-desde-arca): Traer a Facturear los comprobantes ya emitidos en ARCA.
 - [Reportes y Libro IVA](https://docs.facture.ar/es/guides/reportes-libro-iva): Totales por período y exportación del Libro IVA.
-- [Cuenta y plan](https://docs.facture.ar/es/guides/cuenta-y-plan): Planes, suscripción con Mercado Pago, facturas extra y Modo Testing.
+- [Cuenta y plan](https://docs.facture.ar/es/guides/cuenta-y-plan): Planes (Free, Monotributo, Básica, Pro, Enterprise; prueba de 14 días de Pro), suscripción con Mercado Pago, facturas y CUITs extra y Modo Testing. Free factura a mano en la web; API, MCP, lotes, WhatsApp, IA e integraciones en producción necesitan un plan pago (en homologación están abiertos a todos).
 - [API Keys](https://docs.facture.ar/es/guides/api-keys): Una key por entorno (test_sk_ homologación, prod_sk_ producción) en el header x-api-key; se muestra completa una sola vez al generarla (se guarda hasheada) y si se pierde se regenera.
-- [Webhooks](https://docs.facture.ar/es/guides/webhook-integracion): Eventos delegation.completed, invoice.completed, invoice.failed, batch.completed y draft.review_required, firmados con HMAC-SHA256.
+- [Webhooks](https://docs.facture.ar/es/guides/webhook-integracion): Guía para recibir avisos de facturas autorizadas o rechazadas, lotes terminados, borradores para revisar y novedades de ARCA, firmados con HMAC-SHA256.
+- [Referencia de webhooks](https://docs.facture.ar/es/api-reference/webhooks): Eventos invoice.completed, invoice.failed, batch.completed, draft.review_required, dfe.message.received y tax_account.updated; formato de cada aviso, verificación de la firma y reintentos.
 - [API Reference](https://docs.facture.ar/es/api-reference/index): Documentación completa de la API REST de Facturear para integraciones. Errores en application/problem+json (RFC 9457) con code, message y resolution; especificación reducida para agentes en https://www.facture.ar/openapi.json.
 
 ## Datos clave del producto
 
 - **País**: Argentina
-- **Organismo fiscal**: ARCA (ex-AFIP) — webservices WSFE, WSFEX, WSASS
+- **Organismo fiscal**: ARCA (ex-AFIP), webservices WSFE, WSFEX, WSASS
 - **Tecnología**: API REST, webhooks, dashboard web
 - **Idioma**: Español (Argentina)
 - **Clientes**: Empresas, e-commerce, estudios contables, desarrolladores, SaaS
 - **Cumplimiento normativo**: RG 2485, RG 4290, RG 4804 (QR), RG 4367 (monotributistas)
 - **Sitio web**: https://facture.ar
 - **Documentación**: https://docs.facture.ar
-- **Soporte**: support@facture.ar
+- **Precios**: https://www.facture.ar/precios
+- **Soporte**: por WhatsApp (https://www.facture.ar/soporte) o hola@facture.ar
 
 <!-- newsletter:start -->
 ## Newsletter Facturear (novedades impositivas)

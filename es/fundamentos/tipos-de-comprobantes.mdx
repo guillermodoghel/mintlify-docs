@@ -20,7 +20,7 @@ Esta guía cubre todos los tipos de comprobantes electrónicos vigentes.
 | Responsable Inscripto | Responsable Inscripto | **Factura A** |
 | Responsable Inscripto | Consumidor Final / Monotributista / Exento | **Factura B** |
 | Monotributista | Cualquier destinatario | **Factura C** |
-| Exento en IVA | Cualquier destinatario | **Factura B** o **Factura C** según el caso |
+| Exento en IVA | Cualquier destinatario | **Factura C** |
 | Cualquier categoría | Exportación al exterior | **Factura E** |
 
 <Tip>
@@ -205,19 +205,13 @@ Ver la guía completa: [Factura de Crédito Electrónica MiPyMEs](/es/newsletter
 
 ## Consultar tipos de comprobante vía API
 
-Facturear expone los parámetros de ARCA (incluyendo todos los tipos de comprobante vigentes) a través del endpoint de parámetros:
+Facturear expone los parámetros de ARCA, incluidos los tipos de comprobante vigentes, con un único endpoint al que le pasás el nombre del método de ARCA:
 
 ```bash
-GET /arca-parameters
+GET https://www.facture.ar/api/arca/FEPARAMGETTIPOSCBTE
 ```
 
-También podés consultar un parámetro específico:
-
-```bash
-GET /arca/Cbte_Tipo
-```
-
-Esto devuelve la lista actualizada de tipos de comprobante directamente desde ARCA, sin necesidad de mantener tablas hardcodeadas en tu sistema.
+Devuelve la respuesta de ARCA tal cual (Facturear la guarda en caché por 30 días), así no tenés que mantener tablas fijas en tu sistema. Los demás parámetros están en [Parámetros de ARCA](/es/guides/parametros-arca).
 
 ---
 

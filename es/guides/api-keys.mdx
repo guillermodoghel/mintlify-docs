@@ -148,9 +148,13 @@ Si una key se comprometió, regenerala:
 |---|---|---|
 | `401 Unauthorized`, con `code: "unauthorized"` | API Key inválida, regenerada o no enviada | Verificá que enviás el header `x-api-key` con la key vigente |
 | `403 Forbidden` al emitir, con `code: "SUBSCRIPTION_LIMIT_EXCEEDED"` | Superaste el límite de facturas de tu plan | Revisá tu plan en el dashboard |
+| `403 Forbidden` al emitir, con `code: "PLAN_REQUIRED"` | El plan Free no emite en producción por API ni MCP (la key de testing, en homologación, no tiene límite) | Pasá a un plan pago (`upgradeUrl` en la respuesta) |
+| `429 Too Many Requests`, con `code: "rate_limited"` | Más de 1800 requests por minuto en la cuenta y ese entorno | Esperá los segundos del header `Retry-After`; para muchas facturas, mandá un array (lote) |
+
+Los errores 4xx vienen como `application/problem+json` (RFC 9457) con `type`, `title`, `status`, `detail`, `code`, `message` y `resolution`, y conservan el campo `error` de siempre.
 
 <Note>
-  Algunas funciones se manejan solo desde el dashboard y no aceptan API Key: generar y regenerar keys, ver o rotar el secreto de firma de un webhook y su historial de entregas, y cargar tributos por CUIT. Crear, editar y borrar webhooks sí se puede hacer con la API Key.
+  Algunas funciones se manejan solo desde el dashboard y no aceptan API Key: generar y regenerar keys, ver o rotar el secreto de firma de un webhook y su historial de entregas, y cargar tributos por CUIT. Crear, editar y borrar webhooks sí se puede hacer con la API Key de producción (la de testing responde `403` con `code: "TEST_KEY_READ_ONLY"`).
 </Note>
 
 ---

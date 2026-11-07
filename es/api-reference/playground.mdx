@@ -16,13 +16,15 @@ Cada página de la sección **API Endpoints** tiene un playground: completás lo
     <Warning>
       Usá la key de testing. Con la de producción (`prod_sk_`), el playground emite comprobantes reales ante ARCA.
     </Warning>
+
+    Con la key de testing podés leer la configuración de la cuenta, pero no cambiarla: crear o editar CUITs, webhooks o plantillas responde `403` con `code: "TEST_KEY_READ_ONLY"`. Para eso usá la key de producción o el panel.
   </Step>
 
   <Step title="Elegí un endpoint">
     Algunos para empezar:
 
     - `GET /cuits`: tus CUITs, con su id en Facturear
-    - `POST /invoices`: emitir una factura (o varias, mandando un array)
+    - `POST /invoices`: emitir una factura (o varias, mandando un array de hasta 500). El importe va en `impTotal`, el total con IVA incluido
     - `GET /invoices/batches/{batchId}`: el resultado de la emisión, con el CAE
     - `GET /invoices`: listar y buscar facturas. Para buscar, usá los parámetros `search`, `receptor`, `cuit`, `cuitId`, `tipo`, `comprobante` y `status`
     - `GET /invoices/{invoiceId}/pdf`: el PDF de una factura

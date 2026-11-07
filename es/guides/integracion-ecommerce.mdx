@@ -14,36 +14,46 @@ Si vendés online, Facturear puede traer las ventas de tu tienda y facturarlas: 
 | Plataforma | Cómo se conecta | Modo automático |
 |---|---|---|
 | Tiendanube | Autorizás a Facturear en tu tienda | Al instante |
-| Shopify | Escribís tu tienda (`mitienda.myshopify.com`) y aprobás el acceso | Al instante |
+| Shopify | Creás en Shopify un webhook de **Pago de pedido** con la dirección que te damos y pegás su clave de firma junto con tu tienda (`mitienda.myshopify.com`) | Al instante |
 | WooCommerce | Escribís la dirección de tu tienda y aprobás el acceso en WordPress | Al instante |
 | VTEX | Cargás el nombre de la cuenta, una App Key y su App Token | Dentro de la hora |
 | Magento 2 / Adobe Commerce | Cargás la dirección de la tienda y el Access Token de una integración | Dentro de la hora |
 | MercadoLibre | Conectás tu cuenta de MercadoLibre. Ver [MercadoLibre](/es/guides/mercadolibre) | Al instante |
 | Mercado Pago | Conectás tu cuenta. Manual (traés las transferencias y elegís cuáles facturar) o confirmando cada cobro por WhatsApp. Ver [Mercado Pago](/es/guides/mercado-pago-transferencias) | No |
 
-Tiendanube, Shopify y WooCommerce avisan a Facturear en cada pedido pagado, por eso el modo automático factura al instante. VTEX y Magento no mandan avisos: Facturear revisa los pedidos una vez por hora.
+Tiendanube, Shopify y WooCommerce avisan a Facturear en cada pedido pagado, por eso el modo automático factura al instante. VTEX y Magento no mandan avisos: Facturear revisa los pedidos una vez por hora. Con Shopify llegan solo los pedidos pagados desde que lo conectás: los anteriores no se pueden traer.
+
+<Note>
+  Las integraciones facturan en producción con los planes Monotributo (solo Factura C), Básica y Pro. Con el plan Free las conectás y probás en modo Testing. Ver [Cuenta y plan](/es/guides/cuenta-y-plan).
+</Note>
 
 ---
 
 ## Conectar tu tienda
 
 <Steps>
-  En el menú, entrá a **Configuración → Integraciones** y elegí tu plataforma
-
-  Conectá la cuenta. En Tiendanube, Shopify y WooCommerce tocás **Conectar con …** y aprobás el acceso en tu tienda. En VTEX y Magento seguís los pasos de la pantalla para generar la clave y la pegás
-
-  En **Datos de la factura**, elegí el **CUIT** que factura, el **Punto de venta** y la **Alícuota de IVA de tus productos**
-
-  En **Envío al comprador**, marcá **Enviar la factura por mail** si querés que le llegue al mail que dejó en la tienda (y, si querés, una copia para vos)
-
-  Elegí **¿Cómo querés facturar?** y tocá **Empezar a facturar**
+  <Step title="Elegí la plataforma">
+    En el menú, entrá a **Configuración → Integraciones** y elegí tu plataforma
+  </Step>
+  <Step title="Conectá la cuenta">
+    Conectá la cuenta. En Tiendanube y WooCommerce tocás **Conectar con …** y aprobás el acceso en tu tienda. En Shopify, VTEX y Magento seguís los pasos de la pantalla, pegás las claves y tocás **Conectar …**
+  </Step>
+  <Step title="Datos de la factura">
+    En **Datos de la factura**, elegí el **CUIT** que factura, el **Punto de venta** y la **Alícuota de IVA de tus productos**
+  </Step>
+  <Step title="Envío al comprador">
+    En **Envío al comprador**, elegí **Automático** para que la factura le llegue apenas se emite al mail que dejó en la tienda, o **Manual** para mandarla vos. Si querés una copia, completá **Enviarme copia a**
+  </Step>
+  <Step title="Empezá a facturar">
+    Elegí **¿Cómo querés facturar?** y tocá **Empezar a facturar**
+  </Step>
 </Steps>
 
 ### Automática, por WhatsApp o manual
 
 - **Automática**: cada pedido pagado se factura solo. Aplica a lo que entra desde que la activás; lo anterior lo facturás a mano.
 - **Confirmar por WhatsApp**: cada pedido pagado te llega al WhatsApp vinculado para que lo factures o lo marques como no facturable desde el chat, y el PDF te vuelve ahí. Ver [WhatsApp](/es/guides/whatsapp#confirmar-ventas-por-whatsapp).
-- **Manual**: importás los pedidos de un período, los revisás y elegís cuáles facturar. Sirve si no todo lo que vendés se factura igual.
+- **Manual**: importás los pedidos de un período, los revisás y elegís cuáles facturar. Sirve si no todo lo que vendés se factura igual. En Shopify no hay que importar: cada pedido pagado aparece en la lista apenas llega.
 
 Lo podés cambiar cuando quieras. Las ventas de todas tus integraciones, las que esperan revisión y las que se facturaron solas, las ves en **Facturación → Ventas**. Ver [Ventas](/es/guides/desde-integraciones).
 
@@ -85,12 +95,14 @@ app.post('/webhook/nueva-venta', async (req, res) => {
   const neto = Math.round((total / 1.21) * 100) / 100
   const iva = Math.round((total - neto) * 100) / 100
 
-  // Emitir factura en Facturear (queda encolada)
+  // Emitir factura en Facturear (queda encolada). La misma Idempotency-Key en cada
+  // reintento de esta orden devuelve el mismo batchId en vez de facturarla dos veces
   const respuesta = await fetch('https://www.facture.ar/api/invoices', {
     method: 'POST',
     headers: {
       'x-api-key': process.env.FACTUREAR_API_KEY,
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Idempotency-Key': `orden-${orden.id}`
     },
     body: JSON.stringify({
       cuitId: process.env.FACTUREAR_CUIT_ID,
@@ -122,7 +134,8 @@ app.post('/webhook/nueva-venta', async (req, res) => {
 
   const resultado = await respuesta.json()
   if (!respuesta.ok) {
-    throw new Error(`${resultado.error}: ${JSON.stringify(resultado.details)}`)
+    // Errores en formato problem+json (RFC 9457): `detail` explica qué corregir
+    throw new Error(`${respuesta.status} ${resultado.code}: ${resultado.detail ?? resultado.error}`)
   }
 
   // Guardar el batchId en la orden: el CAE llega después
@@ -172,7 +185,7 @@ Una buena integración de e-commerce le pide al cliente sus datos fiscales al ha
 
 ## Manejo de errores en producción
 
-Las integraciones de e-commerce deben manejar los casos donde la facturación falla. Hay dos momentos: la API puede rechazar el pedido al enviarlo (`400` con `error` y `details` si los datos no son válidos, `403` con `SUBSCRIPTION_LIMIT_EXCEEDED` si superaste el límite del plan), o ARCA puede rechazar el comprobante cuando se procesa (el ítem del lote queda en `status: "error"`).
+Las integraciones de e-commerce deben manejar los casos donde la facturación falla. Hay dos momentos: la API puede rechazar el pedido al enviarlo, o ARCA puede rechazar el comprobante cuando se procesa (el ítem del lote queda en `status: "error"`). Los rechazos de la API vienen como `application/problem+json` (RFC 9457), con `detail` y `code`, y conservan `error` (y `details` cuando hay errores por campo): `400` si los datos no son válidos, `403` con `code: "SUBSCRIPTION_LIMIT_EXCEEDED"` si superaste el límite del mes, o con `PLAN_REQUIRED` o `PLAN_REGIME` si tu plan no factura por API en producción o no emite esa clase de factura.
 
 ```javascript
 try {
@@ -187,7 +200,7 @@ try {
   // Notificar al equipo (Slack, email, etc.)
   await notificarError(error, orden)
   
-  // La venta igual fue exitosa — no bloquear al cliente
+  // La venta igual fue exitosa: no bloquear al cliente
   res.json({ ok: true, advertencia: 'Factura pendiente de emisión' })
 }
 ```

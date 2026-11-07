@@ -53,13 +53,13 @@ curl -X POST https://www.facture.ar/api/cuits/cmg0a1b2c0000abc/default-pos \
 }
 ```
 
-`default-invoice-type` y `default-concept` responden igual, con su propio mensaje. `default-iva` devuelve el CUIT actualizado y `set-default` devuelve `{ "success": true }`. Si el CUIT no existe o no es tuyo, la respuesta es `404`; si el valor no es un número válido, `400`.
+`default-invoice-type` y `default-concept` responden igual, con su propio mensaje. `default-iva` devuelve `{ "id", "default_iva" }` del CUIT y `set-default` devuelve `{ "success": true }`. Si el CUIT no existe o no es tuyo, la respuesta es `404`; si el valor no es un número válido, `400`. Estos endpoints cambian la configuración de la cuenta, así que piden la API Key de producción: con la de testing responden `403` con `code: "TEST_KEY_READ_ONLY"`.
 
 <Tip>
   `set-default` acepta en `{id}` tanto el id del CUIT en Facturear como su número (`20123456789`).
 </Tip>
 
-También podés configurarlos desde el dashboard, en **CUITs** → tu CUIT, en las pestañas **Puntos de Venta**, **Conceptos**, **Tipos de Comprobante** e **IVA**. La pestaña **IVA** aparece solo en los CUITs de Responsables Inscriptos: un monotributista emite facturas C, que no discriminan IVA.
+También podés configurarlos desde el dashboard, en **CUITs** → tu CUIT, en las pestañas **Puntos de venta**, **Conceptos**, **Tipos de comprobante** e **IVA**. La pestaña **IVA** aparece solo en los CUITs de Responsables Inscriptos: un monotributista emite facturas C, que no discriminan IVA.
 
 ---
 
@@ -127,7 +127,7 @@ Si tu empresa tiene múltiples puntos de venta, podés:
 1. Configurar un punto de venta como default
 2. Sobreescribirlo con `ptoVta` en las facturas que correspondan a otro punto de venta
 
-O alternativamente, no configurar un default de punto de venta y enviar `ptoVta` explícitamente en cada request. Si el CUIT no tiene punto de venta por defecto y la factura no trae `ptoVta`, la API responde `400`. Lo mismo pasa con el concepto.
+O alternativamente, no configurar un default de punto de venta y enviar `ptoVta` explícitamente en cada request. Si el CUIT no tiene punto de venta por defecto y la factura no trae `ptoVta`, la API responde `400`. Lo mismo pasa con el concepto (`1`, `2` o `3`: cualquier otro valor en `concepto` también responde `400`). Si no mandás `description`, sale del concepto: `Venta de productos`, `Venta de servicios` o `Venta de productos y servicios`.
 
 ---
 

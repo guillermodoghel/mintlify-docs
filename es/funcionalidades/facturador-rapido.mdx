@@ -23,7 +23,7 @@ Si necesitás facturarle a un cliente con CUIT o DNI, cargar varios ítems o emi
     Hasta 200 caracteres. Si la dejás vacía, la factura dice "Venta de servicios".
   </Step>
   <Step title="Cargá el monto">
-    Entre $1 y $10.000.000. Si el CUIT es responsable inscripto, un interruptor te deja indicar si el monto es **Total sin IVA** o **Total con IVA**; abajo ves el subtotal, el IVA y el total con la alícuota predeterminada del CUIT. Si es monotributista, el monto va sin IVA.
+    Entre $1 y $10.000.000. Si el CUIT es responsable inscripto, un interruptor **Sin IVA** / **Con IVA** te deja indicar si el monto incluye IVA; abajo ves el subtotal, el IVA y el total con la alícuota predeterminada del CUIT. Si es monotributista, el monto va sin IVA.
   </Step>
   <Step title="Tocá Generar Factura">
     El botón pasa a **Procesando con ARCA...** y, cuando ARCA autoriza, te lleva al detalle de la factura, con el CAE y el PDF.
@@ -34,7 +34,7 @@ La factura se procesa en segundo plano como un lote de un comprobante. Si ARCA t
 
 ## Cambiar los valores por defecto
 
-El botón **Ajustes**, al lado del selector de CUIT, abre la ficha del CUIT. Ahí, en las pestañas **Puntos de Venta**, **Conceptos**, **Tipos de Comprobante** e **IVA**, marcás cuál es el predeterminado con **Establecer como predeterminado**. Lo que elijas es lo que usa la factura rápida.
+El botón **Ajustes del CUIT**, arriba a la derecha de la pantalla, abre la ficha del CUIT. Ahí, en las pestañas **Puntos de Venta**, **Conceptos**, **Tipos de Comprobante** e **IVA**, marcás cuál es el predeterminado con **Establecer como predeterminado**. Lo que elijas es lo que usa la factura rápida.
 
 Más detalles en [Configurar defaults por CUIT](/es/guides/configurar-defaults-cuit).
 
@@ -45,4 +45,4 @@ Más detalles en [Configurar defaults por CUIT](/es/guides/configurar-defaults-c
 - **ARCA rechazó la factura**: el mensaje muestra el código y el motivo que devolvió ARCA. Si la factura quedó guardada con errores, podés tocar **Ver detalles de la factura** o **Intentar de nuevo**.
 - **Error temporal**: si ARCA no responde, el sistema reintenta solo.
 
-Si seguís trabado, escribinos a [support@facture.ar](mailto:support@facture.ar) o por el chat dentro de la plataforma.
+Si seguís trabado, tocá **Necesito ayuda** en la app (te abre nuestro WhatsApp) o escribinos a [hola@facture.ar](mailto:hola@facture.ar).

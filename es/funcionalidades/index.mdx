@@ -4,7 +4,7 @@ sidebarTitle: 'Funcionalidades'
 description: 'Las formas de emitir facturas desde la web de Facturear: factura rápida, factura detallada, lotes y documentos con IA.'
 ---
 
-En Facturear hay cuatro formas de emitir desde la web. Todas usan el CUIT que tengas conectado con ARCA y emiten en el modo de tu cuenta (Producción o Testing). Si tenés más de un CUIT y elegiste uno en el selector de CUIT de arriba de la pantalla, emiten con ese.
+En Facturear hay cuatro formas de emitir desde la web, más la [factura al exterior](/es/guides/factura-exportacion) (Factura E). Todas usan el CUIT que tengas conectado con ARCA y emiten en el modo de tu cuenta (Producción o Testing). Si tenés más de un CUIT y elegiste uno en el selector de CUIT de arriba de la pantalla, emiten con ese.
 
 <CardGroup cols={2}>
   <Card title="Factura rápida" icon="bolt" href="/es/funcionalidades/facturador-rapido">
@@ -30,19 +30,21 @@ En Facturear hay cuatro formas de emitir desde la web. Todas usan el CUIT que te
 | Emitir una nota de crédito o de débito | [Factura detallada](/es/funcionalidades/factura-detallada) |
 | Emitir muchas facturas con un CSV en el formato de Facturear | [Lotes](/es/funcionalidades/facturacion-por-lotes) |
 | Facturar desde tu propia planilla Excel, remitos en PDF o fotos, o un texto con tus ventas | [Documentos con IA](/es/funcionalidades/documentos-ia) |
+| Facturarle a un cliente de otro país (Factura E) | [Factura al exterior](/es/guides/factura-exportacion) |
 | Emitir la misma factura todos los meses | [Plantillas recurrentes](/es/funcionalidades/documentos-ia#facturas-recurrentes) |
 
 ## Dónde están en la app
 
-- **Nueva factura**: el botón que está arriba del menú lateral, siempre a mano. Abre las cuatro opciones: **Factura rápida**, **Factura detallada**, **Nuevo lote** y **Desde documentos**.
-- **Inicio**: los mismos cuatro accesos.
+- **Nueva factura**: el botón que está arriba del menú lateral, siempre a mano. Abre las opciones **Factura rápida**, **Factura detallada**, **Factura al exterior**, **Nuevo lote** y **Desde documentos**.
+- **Inicio**: los mismos accesos.
 - **Facturas**: los botones **Nueva factura** (abre la factura rápida) y **Factura detallada**. En la pestaña **Lotes** está el botón **Nuevo lote**.
 - **Documentos**: la carga de documentos con IA. Las plantillas están en su pestaña **Plantillas**.
 
 ## Antes de empezar
 
 - Tu CUIT tiene que estar conectado con ARCA. Si todavía no lo hiciste, seguí [Conectá tu CUIT con ARCA](/es/getting-started/index).
+- La factura rápida y la detallada se pueden usar en producción con cualquier plan, también con Free. Los lotes y los documentos con IA emiten en producción con un plan pago (Monotributo, Básica o Pro); con Free los probás en Modo Testing. Ver [Cuenta y plan](/es/guides/cuenta-y-plan#planes).
 - Para probar sin emitir facturas reales, prendé el **Modo Testing** en tu cuenta. Vale para toda la cuenta: lo que emitas desde cualquiera de estas pantallas sale en el entorno de pruebas de ARCA. Más detalles en [Entorno de testing](/es/guides/entorno-testing).
 - Los valores por defecto de cada CUIT (punto de venta, concepto, tipo de comprobante, IVA y tributos) se configuran en la ficha del CUIT. Ver [Configurar defaults por CUIT](/es/guides/configurar-defaults-cuit).
 
-Si necesitás ayuda, escribinos a [support@facture.ar](mailto:support@facture.ar) o por el chat dentro de la plataforma.
+Si necesitás ayuda, tocá **Necesito ayuda** en la app (te abre nuestro WhatsApp) o escribinos a [hola@facture.ar](mailto:hola@facture.ar).

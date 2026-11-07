@@ -38,7 +38,7 @@ No le das tu contraseña ni tu API Key al agente. La conexión usa **OAuth**, el
     Pegás la URL del conector en tu agente (los pasos para cada uno están abajo).
   </Step>
   <Step title="El agente te manda a Facturear">
-    Se abre facture.ar en tu navegador. Entrás con Google o con un link a tu email. Si no tenías cuenta, se crea en ese momento, con el plan Free.
+    Se abre facture.ar en tu navegador. Entrás con Google o con un link a tu email. Si no tenías cuenta, se crea en ese momento, con 14 días de prueba del plan Pro.
   </Step>
   <Step title="Aprobás el acceso">
     Facturear te muestra qué agente pide acceso y qué va a poder hacer. Tocás **Permitir** y volvés al chat.
@@ -148,8 +148,8 @@ El link vence a los 30 minutos y sirve una sola vez. Si usás un agente en la te
 | `add_cuit` | Dar de alta un CUIT (lo valida con el padrón de ARCA) |
 | `setup_cuit` | Configurarlo en ARCA con el link seguro para la clave fiscal |
 | `get_cuit_setup_status` | Ver en qué paso está la configuración |
-| `create_invoice` | Emitir una factura, en homologación o en producción |
-| `get_invoice_batch` | Ver si ARCA la autorizó (CAE) o por qué la rechazó |
+| `create_invoice` | Emitir una factura, en homologación o en producción. Espera a ARCA hasta 25 segundos y devuelve el CAE o el motivo del rechazo; si ARCA tarda más, devuelve un `batchId` para seguirla con `get_invoice_batch` |
+| `get_invoice_batch` | Ver si ARCA autorizó una emisión que seguía en proceso (CAE) o por qué la rechazó |
 | `list_invoices` / `get_invoice` | Buscar facturas y obtener el detalle y el link al PDF |
 | `send_invoice_email` | Mandar el PDF de una factura autorizada por email (hasta 5 destinatarios, con un mensaje opcional) |
 | `list_templates` | Ver tus plantillas: CUIT, punto de venta, modo, cliente fijo, lista de precios e instrucciones |
@@ -160,6 +160,10 @@ El link vence a los 30 minutos y sirve una sola vez. Si usás un agente en la te
 `create_invoice`, `list_invoices` y `propose_invoice` reciben `environment` (`homologation` o `production`). Con login OAuth el agente lo tiene que indicar en cada llamada; con una API Key lo fija la key y no puede pedir el otro entorno.
 
 `create_invoice` acepta además `idempotency_key`: el agente manda un UUID nuevo por factura y, si la llamada falla por red o timeout, la repite con la misma clave; Facturear devuelve la emisión original en vez de emitir otra. `propose_invoice` cumple la misma función con `externalId`. Ver [Reintentar sin duplicar facturas](/es/guides/idempotencia).
+
+<Note>
+  En homologación el agente funciona con cualquier plan, también con Free. Para emitir en **producción** desde el agente necesitás un plan pago (Monotributo, Básica o Pro): con Free, `create_invoice` en producción responde que hace falta un plan. Ver [Cuenta y plan](/es/guides/cuenta-y-plan#planes).
+</Note>
 
 <Tip>
   Probá primero en **homologación**: el agente emite facturas de prueba, sin valor fiscal. En producción, el agente te confirma importe, receptor y tipo de comprobante antes de emitir.
@@ -180,6 +184,6 @@ El link vence a los 30 minutos y sirve una sola vez. Si usás un agente en la te
     Desde el panel, en **Configuración → Agentes IA**, tocá **Desconectar** en **Agentes conectados**. El agente pierde el acceso en su próxima llamada. También podés quitarlo desde la configuración de conectores de tu agente.
   </Accordion>
   <Accordion title="Me aparece un error al conectar">
-    Revisá que la URL sea exactamente `https://www.facture.ar/api/mcp` (con `www`) y que no hayas cargado un Client ID o Client Secret. Si sigue fallando, escribinos desde el chat de soporte del panel.
+    Revisá que la URL sea exactamente `https://www.facture.ar/api/mcp` (con `www`) y que no hayas cargado un Client ID o Client Secret. Si sigue fallando, tocá **Necesito ayuda** en el panel (te abre nuestro WhatsApp) o escribinos a [hola@facture.ar](mailto:hola@facture.ar).
   </Accordion>
 </AccordionGroup>

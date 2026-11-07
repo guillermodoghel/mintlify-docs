@@ -9,7 +9,7 @@ description: 'Desde el 1 de diciembre de 2026 ARCA rechaza los comprobantes sin 
   **Fecha límite: 30 de noviembre de 2026.** Desde el 1 de diciembre ARCA rechaza el pedido de CAE si falta la condición frente al IVA del receptor o si no corresponde a la clase del comprobante (por ejemplo, una Factura A a un Consumidor Final).
 </Warning>
 
-Cada comprobante informa a ARCA la condición frente al IVA del cliente en el campo `condicionIVAReceptorId`. En la API de Facturear se envía en el mismo cuerpo de `POST /invoices` (y en cada ítem de un lote).
+Cada comprobante informa a ARCA la condición frente al IVA del cliente en el campo `condicionIVAReceptorId`. En la API de Facturear se envía en el mismo cuerpo de `POST /api/invoices` (y en cada ítem de un lote).
 
 ## Cómo lo resuelve Facturear
 
@@ -18,8 +18,10 @@ Si enviás `condicionIVAReceptorId`, Facturear usa ese valor. Si no lo enviás:
 | Receptor | Qué hace Facturear |
 | --- | --- |
 | Sin identificar (`docTipo: 99`) o con DNI | Usa `5` (Consumidor Final) |
-| Con CUIT o CUIL (`docTipo: 80` / `86`) | Consulta el padrón de ARCA y usa la condición registrada (Responsable Inscripto, Monotributo, Monotributo Social o Exento) |
-| CUIT sin condición determinable en el padrón | Responde `400` y te pide enviar `condicionIVAReceptorId` |
+| Con CUIT o CUIL (`docTipo: 80` / `86`) | Consulta el padrón de ARCA (con caché de un día) y usa la condición registrada (Responsable Inscripto, Monotributo, Monotributo Social o Exento). Si figura sin IVA ni monotributo, usa `5` (Consumidor Final) |
+| CUIT o CUIL que el padrón no tiene | Usa `5` (Consumidor Final) y, como ARCA lo rechazaría, lo identifica por el DNI que trae adentro (CUIT/CUIL que empieza con 20, 23, 24 o 27) o, si no tiene, como consumidor final sin identificar (`docTipo: 99`) |
+| No se pudo consultar el padrón | Responde `400` y te pide enviar `condicionIVAReceptorId` |
+| Factura E (tipos 19, 20 y 21) | Siempre Cliente del Exterior; no se valida contra esta tabla |
 
 <Note>
   Hasta este cambio, la API completaba `5` (Consumidor Final) cuando el campo no venía, también en facturas a un CUIT. Si facturás a empresas sin enviar el campo, a partir de ahora la condición sale del padrón.
@@ -64,11 +66,18 @@ curl -X POST https://www.facture.ar/api/invoices \
   }'
 ```
 
-Si la condición no corresponde a la clase:
+Si la condición no corresponde a la clase, la respuesta es `400` en formato `application/problem+json`:
 
 ```json
 {
-  "error": "condicionIVAReceptorId 5 (Consumidor Final) no es válido para un comprobante clase A (tipo 1). Valores permitidos: 1 (IVA Responsable Inscripto), 6 (Responsable Monotributo), 13 (Monotributista Social), 16 (Monotributo Trabajador Independiente Promovido)."
+  "type": "https://www.facture.ar/problems/invalid_request",
+  "title": "Bad Request",
+  "status": 400,
+  "code": "invalid_request",
+  "detail": "condicionIVAReceptorId 5 (Consumidor Final) no es válido para un comprobante clase A (tipo 1). Valores permitidos: 1 (IVA Responsable Inscripto), 6 (Responsable Monotributo), 13 (Monotributista Social), 16 (Monotributo Trabajador Independiente Promovido).",
+  "error": "condicionIVAReceptorId 5 (Consumidor Final) no es válido para un comprobante clase A (tipo 1). Valores permitidos: 1 (IVA Responsable Inscripto), 6 (Responsable Monotributo), 13 (Monotributista Social), 16 (Monotributo Trabajador Independiente Promovido).",
+  "message": "condicionIVAReceptorId 5 (Consumidor Final) no es válido para un comprobante clase A (tipo 1). Valores permitidos: 1 (IVA Responsable Inscripto), 6 (Responsable Monotributo), 13 (Monotributista Social), 16 (Monotributo Trabajador Independiente Promovido).",
+  "resolution": "Compare the body with https://www.facture.ar/openapi.json and resend the corrected fields."
 }
 ```
 

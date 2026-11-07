@@ -45,9 +45,9 @@ Si siempre cobrás el mismo tributo (por ejemplo, una percepción de IIBB), guar
 <Steps>
   Entrá a **CUITs**, abrí el CUIT y andá a la pestaña **Tributos**
 
-  Tocá **+ Agregar Tributo** y elegí el **Tipo de Tributo** (la lista sale de ARCA)
+  Tocá **+ Agregar Tributo** y elegí el **Tipo de tributo** (la lista sale de ARCA)
 
-  Completá el **Nombre** (es la descripción que se informa a ARCA y sale en la factura), la **Alícuota (%)** y, si querés, una **Base Imponible** fija. Si la dejás vacía, se usa el importe del comprobante sin IVA
+  Completá el **Nombre** (es la descripción que se informa a ARCA y sale en la factura), la **Alícuota (%)** y, si querés, una **Base imponible** fija. Si la dejás vacía, se usa el importe del comprobante sin IVA
 
   Marcá **Predeterminado** si querés que se aplique solo en cada factura nueva
 </Steps>
@@ -55,10 +55,10 @@ Si siempre cobrás el mismo tributo (por ejemplo, una percepción de IIBB), guar
 En la **Factura detallada** aparece la sección **Tributos** con los tributos del CUIT elegido: los predeterminados ya vienen marcados y podés marcar o desmarcar cada uno. Facturear calcula el importe (base × alícuota / 100) y lo suma al total.
 
 <Note>
-  El tributo de tipo **Ingresos brutos** (código 5) es especial: en vez de un nombre pide el **Número IIBB**, que se imprime en la factura. Ver [Diseño de la factura](/es/guides/diseno-factura#ingresos-brutos).
+  El tributo de tipo **Ingresos brutos** (código 5) es especial: en vez de un nombre pide el **Número de IIBB**, que se imprime en la factura. Ver [Diseño de la factura](/es/guides/diseno-factura#ingresos-brutos).
 </Note>
 
-Los tributos guardados se usan desde el dashboard. Con la API, mandás los tributos en cada factura, como se explica abajo.
+Los tributos guardados se usan desde el dashboard (y se cargan solo desde ahí: no aceptan API Key). Con la API, mandás los tributos en cada factura, como se explica abajo.
 
 ---
 

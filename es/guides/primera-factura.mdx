@@ -22,11 +22,12 @@ Si todavía no lo conectaste, seguí primero la [guía de inicio](/es/getting-st
 
 ## Opción 1: Emitir desde el dashboard
 
-Entrá a [facture.ar](https://www.facture.ar/?utm_source=docs&utm_medium=referral&utm_campaign=guides-primera-factura&utm_content=link). Arriba del menú tenés siempre el botón **Nueva factura**, con cuatro opciones:
+Entrá a [facture.ar](https://www.facture.ar/?utm_source=docs&utm_medium=referral&utm_campaign=guides-primera-factura&utm_content=link). Arriba del menú tenés siempre el botón **Nueva factura**, con estas opciones:
 
 - **Factura rápida**: un monto y una descripción, a consumidor final. Es lo más rápido para empezar.
 - **Factura detallada**: elegís el tipo de comprobante, identificás al cliente, cargás ítems y tributos.
-- **Nuevo lote**: muchas facturas desde una planilla. Ver [Facturación en lotes](/es/guides/facturacion-lotes).
+- **Factura al exterior**: Factura E para clientes de otros países. Ver [Factura al exterior](/es/guides/factura-exportacion).
+- **Nuevo lote**: muchas facturas desde una planilla. Ver [Facturación por lotes](/es/funcionalidades/facturacion-por-lotes).
 - **Desde documentos**: la IA lee remitos y pedidos y arma la factura.
 
 En **Facturas** también tenés **Nueva factura** (la rápida) y **Factura detallada** arriba de la lista.
@@ -38,9 +39,9 @@ Si tenés más de un CUIT, la factura sale del **CUIT activo**, el que elegiste 
 ### Factura rápida
 
 1. Tocá **Nueva factura** → **Factura rápida**.
-2. Revisá el **CUIT** (es el activo). El punto de venta, el concepto y el tipo de comprobante salen de los predeterminados del CUIT; para cambiarlos, tocá **Ajustes**. Si el CUIT no tiene un tipo predeterminado, sale Factura C si sos monotributista o Factura B si sos responsable inscripto.
+2. Revisá el **CUIT** (es el activo). El punto de venta, el concepto y el tipo de comprobante salen de los predeterminados del CUIT; para cambiarlos, tocá **Ajustes del CUIT**. Si el CUIT no tiene un tipo predeterminado, sale Factura C si sos monotributista o Factura B si sos responsable inscripto.
 3. Escribí una descripción (opcional: si la dejás vacía, sale "Venta de servicios").
-4. Cargá el **Monto** y elegí si es **Total sin IVA** o **Total con IVA**.
+4. Cargá el **Monto**. Si sos responsable inscripto, indicá con el interruptor **Sin IVA** / **Con IVA** si el monto incluye IVA.
 5. Tocá **Generar Factura**.
 
 La factura rápida no pide datos del receptor: sale a consumidor final sin identificar. Si tenés que identificar al cliente, usá la factura detallada.
@@ -363,10 +364,10 @@ El PDF incluye:
 
 ## ¿Qué pasa si ARCA devuelve un error?
 
-Hay dos momentos en que una factura puede fallar:
+Hay tres momentos en que una factura puede fallar:
 
 - **Sin respuesta**: si se cortó la conexión, hubo un timeout o la API respondió `5xx`, no sabés si la factura quedó encolada. Reenviá el pedido con el mismo `Idempotency-Key`: nunca se duplica. Ver [Reintentar sin duplicar facturas](/es/guides/idempotencia).
-- **Al enviarla**: si el cuerpo no es válido (importes que no cierran, condición frente al IVA que no corresponde a la clase, un consumidor final sin identificar en una venta de $10.000.000 o más, etc.), la API responde `400` con `{ "error": "...", "details": ... }`. Si superaste el límite de tu plan, responde `403` con `code: "SUBSCRIPTION_LIMIT_EXCEEDED"`.
+- **Al enviarla**: si el cuerpo no es válido (importes que no cierran, condición frente al IVA que no corresponde a la clase, un consumidor final sin identificar en una venta de $10.000.000 o más, etc.), la API responde `400` con `{ "error": "...", "details": ... }`. Si superaste el límite de tu plan, responde `403` con `code: "SUBSCRIPTION_LIMIT_EXCEEDED"`. Con el plan Free, la API emite solo en homologación: en producción responde `403` con `code: "PLAN_REQUIRED"`. Con el plan Monotributo, la API emite solo Factura C (o E): otro tipo responde `403` con `code: "PLAN_REGIME"`.
 - **Al procesarla**: si ARCA rechaza el comprobante, el ítem queda en `status: "error"` y el `responseBody` trae los mensajes de ARCA.
 
 Los errores de ARCA más comunes al emitir:
@@ -379,7 +380,7 @@ Los errores de ARCA más comunes al emitir:
 | 10044 | CAE vencido | Reintentá la emisión |
 | 10067 | Error en alícuota de IVA | Verificá el código de alícuota |
 
-Si encontrás errores persistentes, consultá la [documentación de la API](/es/api-reference) o contactá a [support@facture.ar](mailto:support@facture.ar).
+Si encontrás errores persistentes, consultá la [documentación de la API](/es/api-reference) o tocá **Necesito ayuda** en la app (te abre nuestro WhatsApp) o escribinos a [hola@facture.ar](mailto:hola@facture.ar).
 
 ---
 

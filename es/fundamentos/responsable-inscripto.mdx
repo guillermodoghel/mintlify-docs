@@ -85,9 +85,10 @@ Cuando tu cliente recibe una Factura A, el monto de IVA que pagó se convierte e
 
 | Monto | Identificación requerida |
 |---|---|
-| Hasta $27.000 aprox. | "Consumidor Final" — sin datos |
-| Entre $27.000 y $108.000 aprox. | Nombre/Razón Social del receptor |
-| Más de $108.000 aprox. | CUIT/CUIL + Nombre/Razón Social |
+| Menos de $10.000.000 | No requerida (leyenda "A CONSUMIDOR FINAL") |
+| $10.000.000 o más | CUIT, CUIL, CDI o DNI del comprador (extranjeros: documento del país de origen o pasaporte) |
+
+Fuente: [ARCA, datos de los comprobantes (RG 1415, según RG 5700/2025)](https://www.arca.gob.ar/fe/emision-autorizacion/datos-comprobantes.asp)
 
 <Info>
   Los umbrales de identificación se actualizan por ARCA. Facturear aplica automáticamente los valores vigentes al momento de la emisión.

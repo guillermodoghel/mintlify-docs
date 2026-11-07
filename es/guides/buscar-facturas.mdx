@@ -14,7 +14,7 @@ La API de Facturear incluye endpoints para **consultar el historial de facturas*
 En **Facturas**, pestaña **Emitidas**, ves todo lo que emitiste, de la más nueva a la más vieja, en el modo de tu cuenta (Producción o Testing) y del CUIT elegido en el selector de CUIT de arriba. Cada fila muestra el tipo y número de comprobante, el receptor, la descripción, la fecha y el importe, con un punto de color según el estado. Tocá la fila para abrir la factura.
 
 - **Buscador**: busca por CUIT, comprobante, tipo o receptor.
-- **Filtros Avanzados**: **Comprobante** (número), **Tipo de Comprobante** (facturas, notas de crédito y notas de débito A, B y C), **Receptor** (DNI, CUIT o nombre) y **Estado** (**Exitoso** o **Error**). El filtro **CUIT** aparece solo si tenés más de un CUIT y arriba está elegido **Todos los CUITs**.
+- **Filtros avanzados**: **Comprobante** (número), **Tipo de comprobante** (facturas, notas de crédito y notas de débito A, B y C), **Receptor** (DNI, CUIT o nombre) y **Estado** (**Autorizadas** o **Con error**). El filtro **CUIT** aparece solo si tenés más de un CUIT y arriba está elegido **Todos los CUITs**.
 - **Con error**: las facturas que ARCA rechazó llevan esa etiqueta. Tocala para ver el motivo que devolvió ARCA.
 - **Anulada**: las facturas anuladas con una [nota de crédito](/es/guides/nota-credito-debito#anular-una-factura-completa) muestran el importe tachado.
 
@@ -44,14 +44,15 @@ curl "https://www.facture.ar/api/invoices?cuit=20123456789&tipo=6&status=success
 
 | Parámetro | Tipo | Descripción | Ejemplo |
 |---|---|---|---|
-| `cuit` | string | CUIT emisor (o parte de él) | `20123456789` |
+| `cuit` | string | CUIT emisor (o parte de él, con o sin guiones) | `20123456789` |
+| `cuitId` | string | CUIT emisor por su id en Facturear (coincidencia exacta) | `cmg0a1b2c0000abc` |
 | `receptor` | string | Documento del receptor (CUIT, CUIL o DNI, con o sin guiones) o parte de su nombre | `20-12345678-9`, `Acme` |
-| `tipo` | integer | Código de ARCA del tipo de comprobante | `1` (A), `6` (B), `11` (C) |
-| `comprobante` | string | Número de comprobante (se toman solo los dígitos) | `145` |
-| `status` | string | Estado de la factura | `success`, `error`, `processing` |
+| `tipo` | integer | Código de ARCA del tipo de comprobante (si no es un número, se ignora) | `1` (A), `6` (B), `11` (C) |
+| `comprobante` | string | Número de comprobante exacto. Se toman solo los dígitos, así que mandá el número solo (`145`), no con el punto de venta (`0001-00000145`) | `145` |
+| `status` | string | Estado de la factura. Cualquier otro valor responde `400` | `success`, `error`, `processing` |
 | `search` | string | Busca en CUIT emisor, número de comprobante, código de tipo de comprobante y descripción | `consultoría` |
 | `page` | integer | Página (desde `1`) | `1` |
-| `limit` | integer | Resultados por página (default `10`, máx. `100`) | `50` |
+| `limit` | integer | Resultados por página (default `10`, de `1` a `100`; si no es un número, `10`) | `50` |
 
 Todos los filtros se combinan: si mandás varios, la factura tiene que cumplir con todos.
 
@@ -72,7 +73,7 @@ curl "https://www.facture.ar/api/invoices?receptor=20-12345678-9&tipo=6" \
 
 ## Respuesta de listado
 
-Cada factura trae sus datos en Facturear, el pedido enviado a ARCA (`feCAEReq`) y la respuesta de ARCA (`feCabResp`), donde está el CAE:
+Cada factura trae sus datos en Facturear, el pedido enviado a ARCA (`feCAEReq`), la respuesta de ARCA (`feCabResp`), donde está el CAE, y `voidedBy`: el id de la nota de crédito autorizada que la anuló, o `null`:
 
 ```json
 {
@@ -92,7 +93,8 @@ Cada factura trae sus datos en Facturear, el pedido enviado a ARCA (`feCAEReq`) 
       "feCabResp": { "FeCabResp": { "Resultado": "A" }, "FeDetResp": { "FECAEDetResponse": [ { "Resultado": "A", "CAE": "76123456789012", "CAEFchVto": "20260925" } ] } },
       "createdAt": "2026-09-15T13:30:00.000Z",
       "updatedAt": "2026-09-15T13:30:05.000Z",
-      "cuit": { "number": "20123456789" }
+      "cuit": { "number": "20123456789" },
+      "voidedBy": null
     }
   ],
   "pagination": {
@@ -117,7 +119,7 @@ curl "https://www.facture.ar/api/invoices/cmg1a2b3e0002xyz" \
   -H "x-api-key: tu_api_key"
 ```
 
-Devuelve la factura con los mismos campos que el listado, o `404` si no existe o no es tuya.
+Devuelve la factura con los mismos campos que el listado (sin `voidedBy`), o `404` si no existe, no es tuya o es del otro entorno que tu API Key.
 
 O por número de comprobante:
 

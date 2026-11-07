@@ -1,25 +1,40 @@
 ---
 title: 'Cuenta, plan y facturas extra'
 sidebarTitle: 'Cuenta y plan'
-description: 'Los planes de Facturear, cómo suscribirte con Mercado Pago, cambiar o cancelar el plan, comprar facturas extra y dónde ver tu consumo.'
+description: 'Los planes de Facturear, cómo suscribirte con Mercado Pago, cambiar o cancelar el plan, comprar facturas o CUITs extra y dónde ver tu consumo.'
 ---
 
 Tu cuenta está en **Cuenta y plan**: tocá tu nombre, abajo en el menú. Ahí ves tu plan, cuánto usaste en el mes, tus datos de facturación, el [Modo Testing](/es/guides/entorno-testing) y las claves fiscales que guardamos.
 
 ## Planes
 
-Todas las cuentas arrancan en **Free**, sin tarjeta: no tenés que elegir plan para empezar. Cuando lo necesites, lo cambiás desde **Cuenta y plan**.
+Probar es gratis, automatizar es pago. Todas las cuentas nuevas arrancan con **14 días del plan Pro**, sin tarjeta. La prueba incluye hasta 10 facturas en producción o el tope de facturación del plan Free (lo que llegue primero): si llegás a cualquiera de los dos, la prueba termina en el momento. Cuando termina, seguís gratis en **Free**, salvo que hayas elegido un plan.
 
-| Plan | CUITs emisores | Facturas por mes | Soporte |
-|---|---|---|---|
-| **Free** | 1 | 10 | Documentación y guías |
-| **Básica** | 1 | 1.000 | Soporte en horario hábil |
-| **Pro** | 25 | 25.000 | Soporte personalizado por videollamada |
-| **Enterprise** | A medida | A medida | Propuesta a medida |
+| Plan | Para quién | CUITs emisores | Facturas por mes | Qué incluye | Soporte |
+|---|---|---|---|---|---|
+| **Free** | Facturar a mano | 1 | Hasta 10 facturas o $1.000.000 por mes, lo que llegue primero | Facturación a mano en la web. API, integraciones, WhatsApp, IA y lotes, solo para probar en [Modo Testing](/es/guides/entorno-testing) | Por WhatsApp |
+| **Monotributo** | Monotributistas | 1 (monotributista, Factura C) | 50 | Integraciones, WhatsApp, IA, lotes y API en producción | Por WhatsApp |
+| **Básica** | Responsables inscriptos y negocios con más volumen | 1 | 200 | Factura A, B y C. Integraciones, WhatsApp, IA, lotes y API en producción | En horario hábil |
+| **Pro** | Contadores y empresas con varios CUITs | 25 | 5.000 | Todo automatizado, en todos los CUITs | Personalizado por videollamada |
+| **Enterprise** | Estudios contables y grandes volúmenes | A medida | A medida | Propuesta a medida | Propuesta a medida |
 
-Básica cuesta USD 9,99 por mes (USD 99 por año) y Pro USD 59,99 por mes (USD 599,90 por año). Se cobran **en pesos por Mercado Pago**; el precio en pesos lo ves al elegir el plan. Pagando anual ahorrás un 17%.
+El tope en pesos del plan Free es el de la categoría A del monotributo dividido 12 (redondeado), así que se mueve cuando ARCA actualiza la escala.
 
-El precio en pesos de tu suscripción queda fijo por un semestre si pagás mensual, o por un año si pagás anual.
+**Precios:**
+
+- **Monotributo**: $9.990 por mes o $99.900 por año, fijos en pesos.
+- **Básica**: USD 9,99 por mes o USD 99 por año.
+- **Pro**: USD 59,99 por mes o USD 599,90 por año.
+
+Todo se cobra **en pesos por Mercado Pago**. Los precios en dólares se pasan a pesos al tipo de cambio de Facturear, y el monto exacto lo ves al elegir el plan y en [facture.ar/precios](https://www.facture.ar/precios?utm_source=docs&utm_medium=referral&utm_campaign=guides-cuenta-y-plan&utm_content=link). Pagando anual ahorrás un 17%. El precio en pesos de tu suscripción queda fijo por 6 meses si pagás mensual, o por 12 meses si pagás anual: en **Cuenta y plan** ves hasta qué fecha.
+
+El plan Monotributo es solo para CUITs en el monotributo: emite Factura C (y Factura E al exterior). Si sos responsable inscripto, te corresponde Básica.
+
+La sincronización diaria con ARCA (domicilio fiscal electrónico y cuenta tributaria) está en Básica, Pro y Enterprise.
+
+<Note>
+  Las cuentas creadas antes del 15 de octubre de 2026 no tuvieron la prueba de Pro: mantienen el Free anterior, con facturación automática incluida, hasta el 15 de noviembre de 2026. Desde esa fecha, Free es solo facturación a mano en la web.
+</Note>
 
 Las facturas de prueba (Modo Testing) no cuentan para el límite.
 
@@ -37,7 +52,7 @@ Cuando te acercás al límite, te avisamos arriba de la pantalla. Si llegás, la
 
 <Steps>
   <Step title="Elegí el plan">
-    En **Cuenta y plan**, en **Mejorá tu plan**, elegí **Mensual** o **Anual** y tocá **Elegir Básica** o **Elegir Pro**.
+    En **Cuenta y plan**, en **Mejorá tu plan**, elegí **Mensual** o **Anual** y tocá **Elegir Monotributo**, **Elegir Básica** o **Elegir Pro** (si sos responsable inscripto, el plan Monotributo no aparece).
   </Step>
   <Step title="Pagá en Mercado Pago">
     Te llevamos a Mercado Pago para autorizar la suscripción. El cobro es automático: en **Cuenta y plan** ves el monto y la fecha del próximo cobro.
@@ -54,12 +69,18 @@ Por cada cobro te hacemos una **Factura C** y te la mandamos por mail. En **Dato
 
 ## Facturas extra
 
-¿Un pico de ventas? Podés sumar facturas a tu límite sin cambiar de plan. Entrá desde **Facturas extra** en el aviso de límite (o desde **Comprar facturas extra**):
+¿Un pico de ventas? Podés sumar facturas a tu límite sin cambiar de plan. Entrá a **Extras** (en el menú, sección **Plan**), o desde **Facturas extra** en el aviso de límite o **Comprar facturas extra**:
 
-- Se compran en paquetes de **1.000 facturas**, a USD 9,99 cada uno cobrados en pesos por Mercado Pago. Podés llevar hasta 50 paquetes juntos.
+- Se compran en paquetes de **100 facturas**, a $9.990 cada uno, cobrados por Mercado Pago. Podés llevar hasta 50 paquetes juntos.
 - Es un pago único y **valen solo para el mes en que las comprás**: el mes siguiente tu límite vuelve al de tu plan.
 
-En la misma pantalla de **Complementos** está **No entiendo nada, me lo configuran?**: un pago único para que configuremos tu cuenta con vos, con guía por videollamada.
+## CUITs extra
+
+Si necesitás más CUITs sin pasar a Pro, en **Extras** podés sumar un paquete de **3 CUITs** ($11.990 por mes) o de **10 CUITs** ($29.990 por mes). Es una suscripción mensual de Mercado Pago aparte del plan, que das de baja cuando quieras. Solo se suma a un plan pago: con Free o durante la prueba no está disponible.
+
+## Recategorización del monotributo
+
+En **Configuración → Recategorización** podés pedir que una persona del equipo haga la recategorización de un CUIT en la próxima ventana semestral de ARCA. Se cobra aparte, con un pago único por Mercado Pago, y el precio lo ves antes de pagar.
 
 ## Modo Testing
 
