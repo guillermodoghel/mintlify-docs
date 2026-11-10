@@ -3,6 +3,28 @@
  "url": "https://docs.facture.ar/es/newsletter/index",
  "notes": [
   {
+   "slug": "exclusion-monotributo-causales-tres-anos-2026-11-10",
+   "title": "Exclusión del monotributo: las causales que pueden dejarte afuera por 3 años aunque no superes el tope de facturación",
+   "description": "ARCA puede excluir del régimen simplificado a quien no supera el límite de ingresos. Repasamos las causales vinculadas a gastos, depósitos, compras, actividades, locales y precio unitario, y cómo prevenirlas antes de la próxima recategorización.",
+   "date": "2026-11-10",
+   "category": "monotributo",
+   "category_label": "Monotributo",
+   "impact": "medio",
+   "impact_note": "La emisión de comprobantes no cambia, pero lo que facturás con Facturear es la base con la que ARCA compara tus gastos, depósitos y compras. Revisá tu historial de comprobantes antes de recategorizarte para confirmar que tus ingresos declarados sean coherentes con tu movimiento económico real.",
+   "url": "https://docs.facture.ar/es/newsletter/notas/exclusion-monotributo-causales-tres-anos-2026-11-10"
+  },
+  {
+   "slug": "regimen-simplificado-ganancias-respuestas-arca-consejo-profe-2026-11-10",
+   "title": "Régimen Simplificado de Ganancias: qué aclaró ARCA ante las consultas del Consejo Profesional porteño",
+   "description": "ARCA respondió las consultas técnicas del CPCECABA sobre el Régimen Simplificado de Ganancias. Repasamos qué temas abarcan los criterios y cómo usarlos para decidir la adhesión y presentar bien la declaración jurada simplificada.",
+   "date": "2026-11-10",
+   "category": "ganancias",
+   "category_label": "Ganancias",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/regimen-simplificado-ganancias-respuestas-arca-consejo-profe-2026-11-10"
+  },
+  {
    "slug": "sircupa-caba-agip-retenciones-ingresos-brutos-billeteras-vir-2026-11-07",
    "title": "SIRCUPA en la Ciudad: AGIP adhiere al régimen de retenciones de Ingresos Brutos sobre billeteras virtuales",
    "description": "La Ciudad de Buenos Aires se suma a SIRCUPA, el sistema que retiene Ingresos Brutos sobre los fondos acreditados en billeteras virtuales y cuentas de pago. Qué es, a quiénes alcanza y cómo computar las retenciones.",
@@ -859,28 +881,6 @@
    "impact": "ninguno",
    "impact_note": null,
    "url": "https://docs.facture.ar/es/newsletter/notas/saldos-iva-agro-bonos-negociables-2026-09-25"
-  },
-  {
-   "slug": "ganancias-prorroga-anticipos-2026-2026-09-24",
-   "title": "Ganancias 2025: ARCA prorrogó el vencimiento y fijó las pautas para los anticipos 2026",
-   "description": "ARCA modificó el calendario del Impuesto a las Ganancias para personas humanas y sucesiones indivisas, y definió cómo calcular los anticipos 2026. Guía para contadores y contribuyentes.",
-   "date": "2026-09-24",
-   "category": "vencimientos",
-   "category_label": "Vencimientos",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/ganancias-prorroga-anticipos-2026-2026-09-24"
-  },
-  {
-   "slug": "ganancias-simplificada-manual-declaracion-jurada-2026-09-24",
-   "title": "Ganancias Simplificada: ARCA actualizó el manual para armar la DDJJ",
-   "description": "ARCA renovó las pautas y el manual online para confeccionar la declaración jurada de Ganancias Simplificada. Guía práctica para contribuyentes alcanzados en el período vigente.",
-   "date": "2026-09-24",
-   "category": "ganancias",
-   "category_label": "Ganancias",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/ganancias-simplificada-manual-declaracion-jurada-2026-09-24"
   }
  ]
 }
