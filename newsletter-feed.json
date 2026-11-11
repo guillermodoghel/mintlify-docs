@@ -3,6 +3,17 @@
  "url": "https://docs.facture.ar/es/newsletter/index",
  "notes": [
   {
+   "slug": "ganancias-2027-actualizacion-minimos-deducciones-escalas-2026-11-11",
+   "title": "Ganancias 2027: cómo se actualizarán los mínimos no imponibles, deducciones y escalas desde enero",
+   "description": "Desde enero de 2027, el mínimo no imponible, las deducciones personales y las escalas de Ganancias se ajustarán por la inflación del segundo semestre de 2026. Qué conceptos cambian, cuándo publicará ARCA los valores y cómo prepararse.",
+   "date": "2026-11-11",
+   "category": "ganancias",
+   "category_label": "Ganancias",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/ganancias-2027-actualizacion-minimos-deducciones-escalas-2026-11-11"
+  },
+  {
    "slug": "exclusion-monotributo-causales-tres-anos-2026-11-10",
    "title": "Exclusión del monotributo: las causales que pueden dejarte afuera por 3 años aunque no superes el tope de facturación",
    "description": "ARCA puede excluir del régimen simplificado a quien no supera el límite de ingresos. Repasamos las causales vinculadas a gastos, depósitos, compras, actividades, locales y precio unitario, y cómo prevenirlas antes de la próxima recategorización.",
@@ -870,17 +881,6 @@
    "impact": "ninguno",
    "impact_note": null,
    "url": "https://docs.facture.ar/es/newsletter/notas/proyecto-iva-dual-pix-argentino-michel-2026-09-25"
-  },
-  {
-   "slug": "saldos-iva-agro-bonos-negociables-2026-09-25",
-   "title": "Saldos técnicos de IVA en el agro: u$s770 millones inmovilizados y la propuesta de convertirlos en bonos",
-   "description": "El Presupuesto 2026 mantiene retenidos u$s770 millones en saldos técnicos de IVA del sector agropecuario. Analizamos la propuesta de convertirlos en bonos negociables y qué implica para empresas con saldos a favor acumulados.",
-   "date": "2026-09-25",
-   "category": "iva",
-   "category_label": "IVA",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/saldos-iva-agro-bonos-negociables-2026-09-25"
   }
  ]
 }
