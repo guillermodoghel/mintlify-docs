@@ -3,6 +3,28 @@
  "url": "https://docs.facture.ar/es/newsletter/index",
  "notes": [
   {
+   "slug": "arca-reduccion-50-multas-formales-regimen-especial-2026-11-12",
+   "title": "Multas formales con 50% de reducción: cómo funciona el régimen especial que reglamentó ARCA",
+   "description": "ARCA reglamentó el Régimen Especial de Reducción de Multas, que permite reducir a la mitad las sanciones por infracciones formales. Te explicamos qué alcanza, quiénes pueden adherir y cómo prepararse.",
+   "date": "2026-11-12",
+   "category": "arca",
+   "category_label": "ARCA y procedimientos",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/arca-reduccion-50-multas-formales-regimen-especial-2026-11-12"
+  },
+  {
+   "slug": "devolucion-iva-rimi-arca-como-pedir-reintegro-2026-11-12",
+   "title": "Devolución de IVA por el RIMI: cómo pedir el reintegro ante ARCA y qué tener en cuenta",
+   "description": "ARCA habilitó el esquema para que las pymes beneficiarias del Régimen de Incentivo para Medianas Inversiones (RIMI) soliciten la devolución del IVA. Requisitos, pasos y cuidados en la registración de compras de bienes de inversión.",
+   "date": "2026-11-12",
+   "category": "iva",
+   "category_label": "IVA",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/devolucion-iva-rimi-arca-como-pedir-reintegro-2026-11-12"
+  },
+  {
    "slug": "ganancias-2027-actualizacion-minimos-deducciones-escalas-2026-11-11",
    "title": "Ganancias 2027: cómo se actualizarán los mínimos no imponibles, deducciones y escalas desde enero",
    "description": "Desde enero de 2027, el mínimo no imponible, las deducciones personales y las escalas de Ganancias se ajustarán por la inflación del segundo semestre de 2026. Qué conceptos cambian, cuándo publicará ARCA los valores y cómo prepararse.",
@@ -859,28 +881,6 @@
    "impact": "ninguno",
    "impact_note": null,
    "url": "https://docs.facture.ar/es/newsletter/notas/monotributo-recategorizacion-vencimiento-arca-2026-09-26"
-  },
-  {
-   "slug": "nueva-fiscalizacion-arca-control-digital-2026-09-25",
-   "title": "Nueva fiscalización de ARCA: menos papel y más control digital",
-   "description": "ARCA avanza hacia un esquema de fiscalización sin papel pero con mayor cruce de datos sobre los sistemas de los contribuyentes. Qué implica para empresas y contadores.",
-   "date": "2026-09-25",
-   "category": "arca",
-   "category_label": "ARCA y procedimientos",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/nueva-fiscalizacion-arca-control-digital-2026-09-25"
-  },
-  {
-   "slug": "proyecto-iva-dual-pix-argentino-michel-2026-09-25",
-   "title": "IVA Dual y PIX argentino: el proyecto de Guillermo Michel para formalizar micropymes",
-   "description": "El diputado Guillermo Michel presentó una reforma tributaria que combina un IVA Dual, un IVA fijo para micropymes y un sistema de pagos instantáneos al estilo del PIX brasileño.",
-   "date": "2026-09-25",
-   "category": "iva",
-   "category_label": "IVA",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/proyecto-iva-dual-pix-argentino-michel-2026-09-25"
   }
  ]
 }
