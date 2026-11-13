@@ -3,6 +3,28 @@
  "url": "https://docs.facture.ar/es/newsletter/index",
  "notes": [
   {
+   "slug": "blanqueo-laboral-per-etapa-final-fechas-clave-2026-11-13",
+   "title": "Blanqueo laboral PER: últimos días para regularizar empleados antes del 28 de noviembre",
+   "description": "El Régimen de Promoción del Empleo Registrado entra en su etapa final. Fechas clave, alcance, condonación y pasos para regularizar relaciones laborales y cancelar la deuda a tiempo.",
+   "date": "2026-11-13",
+   "category": "laboral",
+   "category_label": "Laboral y previsional",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/blanqueo-laboral-per-etapa-final-fechas-clave-2026-11-13"
+  },
+  {
+   "slug": "plan-pagos-arba-descuento-40-vencimiento-primera-etapa-2026-11-13",
+   "title": "Plan de pagos de ARBA con hasta 40% de descuento: hoy vence la primera etapa",
+   "description": "Este viernes 13 de noviembre cierra la primera etapa del plan especial de ARBA para regularizar deudas bonaerenses, como Ingresos Brutos, con descuentos de hasta el 40%. Quiénes pueden adherirse, cómo hacer el trámite y qué pasa si no llegás.",
+   "date": "2026-11-13",
+   "category": "iibb",
+   "category_label": "Ingresos Brutos y provincias",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/plan-pagos-arba-descuento-40-vencimiento-primera-etapa-2026-11-13"
+  },
+  {
    "slug": "arca-reduccion-50-multas-formales-regimen-especial-2026-11-12",
    "title": "Multas formales con 50% de reducción: cómo funciona el régimen especial que reglamentó ARCA",
    "description": "ARCA reglamentó el Régimen Especial de Reducción de Multas, que permite reducir a la mitad las sanciones por infracciones formales. Te explicamos qué alcanza, quiénes pueden adherir y cómo prepararse.",
@@ -859,28 +881,6 @@
    "impact": "ninguno",
    "impact_note": null,
    "url": "https://docs.facture.ar/es/newsletter/notas/tapon-fiscal-inocencia-fiscal-inspecciones-en-curso-2026-09-28"
-  },
-  {
-   "slug": "deduccion-pagos-monotributistas-fallo-arca-2026-09-26",
-   "title": "Pagos a monotributistas: la Justicia avala el límite de ARCA para deducir en Ganancias",
-   "description": "Un fallo judicial respaldó la restricción de ARCA para deducir en Ganancias los pagos a monotributistas, admitiendo solo aquellos vinculados a operaciones recurrentes. Qué implica para empresas y contadores.",
-   "date": "2026-09-26",
-   "category": "monotributo",
-   "category_label": "Monotributo",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/deduccion-pagos-monotributistas-fallo-arca-2026-09-26"
-  },
-  {
-   "slug": "monotributo-recategorizacion-vencimiento-arca-2026-09-26",
-   "title": "Recategorización de Monotributo: vencimiento y paso a paso en ARCA",
-   "description": "Guía práctica para realizar la recategorización semestral del Monotributo en ARCA, evitar inconsistencias y prevenir sanciones administrativas.",
-   "date": "2026-09-26",
-   "category": "vencimientos",
-   "category_label": "Vencimientos",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/monotributo-recategorizacion-vencimiento-arca-2026-09-26"
   }
  ]
 }
