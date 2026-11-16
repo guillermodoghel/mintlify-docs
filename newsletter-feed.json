@@ -3,6 +3,28 @@
  "url": "https://docs.facture.ar/es/newsletter/index",
  "notes": [
   {
+   "slug": "arca-suspension-embargos-pymes-compensacion-saldos-2026-11-16",
+   "title": "ARCA suspende embargos a pymes hasta mayo de 2027: qué cambia y cómo compensar saldos a favor",
+   "description": "Economía anunció la suspensión de embargos de ARCA a pymes hasta mayo de 2027 y nuevas facilidades para regularizar deudas y compensar saldos a favor. A quiénes alcanza, qué conviene revisar y cómo prepararse.",
+   "date": "2026-11-16",
+   "category": "arca",
+   "category_label": "ARCA y procedimientos",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/arca-suspension-embargos-pymes-compensacion-saldos-2026-11-16"
+  },
+  {
+   "slug": "plan-facilidades-arca-pymes-18-cuotas-2026-11-16",
+   "title": "Plan de facilidades de ARCA para pymes: cómo regularizar deudas en hasta 18 cuotas",
+   "description": "Desde el lunes 16 de noviembre rige un plan de pagos de ARCA para regularizar en hasta 18 cuotas deudas vencidas hasta el 31 de octubre. Qué se sabe, cómo prepararse y qué conviene revisar antes de adherir.",
+   "date": "2026-11-16",
+   "category": "arca",
+   "category_label": "ARCA y procedimientos",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/plan-facilidades-arca-pymes-18-cuotas-2026-11-16"
+  },
+  {
    "slug": "obras-sociales-monotributistas-listado-actualizado-como-eleg-2026-11-15",
    "title": "Obras sociales para monotributistas: cómo elegir o cambiar de cobertura con el listado de noviembre 2026",
    "description": "Qué entidades pueden elegir los monotributistas, cómo ejercer la opción o el cambio, cómo sumar familiares con aportes adicionales y qué revisar en la cuota mensual.",
@@ -859,28 +881,6 @@
    "impact": "ninguno",
    "impact_note": null,
    "url": "https://docs.facture.ar/es/newsletter/notas/inocencia-fiscal-arca-reglamento-extincion-accion-penal-2026-09-30"
-  },
-  {
-   "slug": "anticipos-ganancias-2026-calculo-arca-2026-09-29",
-   "title": "Anticipos de Ganancias 2026: cómo calcularlos según las nuevas pautas de ARCA",
-   "description": "ARCA modificó el calendario del Impuesto a las Ganancias para personas humanas y sucesiones indivisas y fijó nuevas pautas para el cálculo de los anticipos 2026.",
-   "date": "2026-09-29",
-   "category": "ganancias",
-   "category_label": "Ganancias",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/anticipos-ganancias-2026-calculo-arca-2026-09-29"
-  },
-  {
-   "slug": "arca-manual-rifl-incorporar-empleados-2026-09-29",
-   "title": "RIFL: ARCA publicó el manual para incorporar empleados al régimen de formalización laboral",
-   "description": "ARCA sumó al ABC de preguntas frecuentes un manual con las condiciones que deben cumplir los trabajadores para adherirse al Régimen de Incentivo a la Formalización Laboral.",
-   "date": "2026-09-29",
-   "category": "laboral",
-   "category_label": "Laboral y previsional",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/arca-manual-rifl-incorporar-empleados-2026-09-29"
   }
  ]
 }
