@@ -3,6 +3,17 @@
  "url": "https://docs.facture.ar/es/newsletter/index",
  "notes": [
   {
+   "slug": "provincia-buenos-aires-declaracion-jurada-mensual-informacio-2026-11-21",
+   "title": "Provincia de Buenos Aires: nueva declaración jurada mensual con datos salariales y laborales de empleados",
+   "description": "Los empleadores bonaerenses deberán informar todos los meses, con carácter de declaración jurada, datos salariales y laborales de su personal. La presentación será voluntaria desde el mes próximo y obligatoria desde enero de 2027.",
+   "date": "2026-11-21",
+   "category": "laboral",
+   "category_label": "Laboral y previsional",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/provincia-buenos-aires-declaracion-jurada-mensual-informacio-2026-11-21"
+  },
+  {
    "slug": "arba-ley-impositiva-2027-baja-patente-automotor-ingresos-bru-2026-11-20",
    "title": "Ley Impositiva 2027 de Buenos Aires: baja nominal de la patente para el 90% de los autos y alivio en Ingresos Brutos para pymes",
    "description": "El gobierno bonaerense envió a la Legislatura el proyecto de Ley Impositiva 2027. Prevé una reducción nominal del impuesto automotor para casi 9 de cada 10 vehículos y menor carga de Ingresos Brutos para unas 38.000 pymes. Qué se sabe y cómo prepararse.",
@@ -870,17 +881,6 @@
    "impact": "ninguno",
    "impact_note": null,
    "url": "https://docs.facture.ar/es/newsletter/notas/acuerdo-fatca-informacion-arca-cuentas-estados-unidos-2026-10-03"
-  },
-  {
-   "slug": "exclusion-bancos-factura-credito-electronica-mipyme-2026-10-02",
-   "title": "ARCA excluye a bancos no considerados grandes empresas del régimen de FCE MiPyME",
-   "description": "ARCA dejó fuera del régimen de Factura de Crédito Electrónica MiPyME a 39 de las 73 entidades financieras del país, en respuesta a un reclamo de las asociaciones bancarias.",
-   "date": "2026-10-02",
-   "category": "facturacion",
-   "category_label": "Facturación electrónica",
-   "impact": "alto",
-   "impact_note": "Si sos una PyME que emite Facturas de Crédito Electrónicas a bancos, revisá contra qué entidades podés seguir emitiendo FCE MiPyME. Los bancos excluidos ya no están obligados a recibirlas y deberás gestionarlos como clientes comunes bajo el régimen general de facturación.",
-   "url": "https://docs.facture.ar/es/newsletter/notas/exclusion-bancos-factura-credito-electronica-mipyme-2026-10-02"
   }
  ]
 }
