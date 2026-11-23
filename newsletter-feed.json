@@ -3,6 +3,17 @@
  "url": "https://docs.facture.ar/es/newsletter/index",
  "notes": [
   {
+   "slug": "como-darse-de-baja-del-monotributo-arca-paso-a-paso-2026-11-23",
+   "title": "Cómo darse de baja del Monotributo en ARCA: paso a paso, requisitos y qué pasa con tu facturación",
+   "description": "Guía práctica para tramitar la baja del Monotributo desde la web de ARCA: qué revisar antes, qué hacer con los puntos de venta y las deudas, y cuándo conviene pasar al Régimen General.",
+   "date": "2026-11-23",
+   "category": "monotributo",
+   "category_label": "Monotributo",
+   "impact": "medio",
+   "impact_note": "Antes de pedir la baja, emití todos los comprobantes pendientes desde Facturear, porque después no vas a poder facturar como monotributista con esos puntos de venta. Si pasás al Régimen General, vas a tener que actualizar tu condición fiscal antes de volver a emitir.",
+   "url": "https://docs.facture.ar/es/newsletter/notas/como-darse-de-baja-del-monotributo-arca-paso-a-paso-2026-11-23"
+  },
+  {
    "slug": "provincia-buenos-aires-declaracion-jurada-mensual-informacio-2026-11-21",
    "title": "Provincia de Buenos Aires: nueva declaración jurada mensual con datos salariales y laborales de empleados",
    "description": "Los empleadores bonaerenses deberán informar todos los meses, con carácter de declaración jurada, datos salariales y laborales de su personal. La presentación será voluntaria desde el mes próximo y obligatoria desde enero de 2027.",
@@ -870,17 +881,6 @@
    "impact": "ninguno",
    "impact_note": null,
    "url": "https://docs.facture.ar/es/newsletter/notas/obras-sociales-monotributistas-lista-actualizada-2026-10-05"
-  },
-  {
-   "slug": "acuerdo-fatca-informacion-arca-cuentas-estados-unidos-2026-10-03",
-   "title": "Acuerdo FATCA: qué información recibe ARCA sobre tus cuentas en Estados Unidos",
-   "description": "Qué datos le llegan a ARCA desde Estados Unidos sobre cuentas e ingresos de residentes argentinos, por qué no incluye saldos y cómo prepararse ante posibles cruces de información.",
-   "date": "2026-10-03",
-   "category": "arca",
-   "category_label": "ARCA y procedimientos",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/acuerdo-fatca-informacion-arca-cuentas-estados-unidos-2026-10-03"
   }
  ]
 }
