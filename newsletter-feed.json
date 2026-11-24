@@ -3,6 +3,17 @@
  "url": "https://docs.facture.ar/es/newsletter/index",
  "notes": [
   {
+   "slug": "arba-exencion-inmobiliario-jubilados-requisitos-como-pedirla-2026-11-24",
+   "title": "ARBA: cómo verificar si un jubilado accede a la exención total del Inmobiliario y cómo solicitarla",
+   "description": "ARBA habilitó una consulta online para saber qué jubilados y pensionados pueden acceder a la exención total del Impuesto Inmobiliario en PBA. Requisitos, deudas alcanzadas y paso a paso para pedirla.",
+   "date": "2026-11-24",
+   "category": "economia",
+   "category_label": "Economía y contexto",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/arba-exencion-inmobiliario-jubilados-requisitos-como-pedirla-2026-11-24"
+  },
+  {
    "slug": "como-darse-de-baja-del-monotributo-arca-paso-a-paso-2026-11-23",
    "title": "Cómo darse de baja del Monotributo en ARCA: paso a paso, requisitos y qué pasa con tu facturación",
    "description": "Guía práctica para tramitar la baja del Monotributo desde la web de ARCA: qué revisar antes, qué hacer con los puntos de venta y las deudas, y cuándo conviene pasar al Régimen General.",
@@ -870,17 +881,6 @@
    "impact": "ninguno",
    "impact_note": null,
    "url": "https://docs.facture.ar/es/newsletter/notas/arca-servicio-web-ganancias-personas-juridicas-declaraciones-2026-10-05"
-  },
-  {
-   "slug": "obras-sociales-monotributistas-lista-actualizada-2026-10-05",
-   "title": "Obras sociales para monotributistas: cómo consultar la lista vigente y cambiar de cobertura en octubre 2026",
-   "description": "Guía práctica para monotributistas sobre el componente de salud de la cuota mensual: dónde consultar la nómina actualizada de obras sociales, cómo verificar la asignada y cómo hacer el cambio.",
-   "date": "2026-10-05",
-   "category": "monotributo",
-   "category_label": "Monotributo",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/obras-sociales-monotributistas-lista-actualizada-2026-10-05"
   }
  ]
 }
