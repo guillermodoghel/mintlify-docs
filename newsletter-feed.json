@@ -3,6 +3,17 @@
  "url": "https://docs.facture.ar/es/newsletter/index",
  "notes": [
   {
+   "slug": "arca-reintegro-cuota-monotributo-quienes-acceden-como-cobrar-2026-11-25",
+   "title": "Reintegro de una cuota del Monotributo: quiénes lo cobran y cómo no perderlo",
+   "description": "ARCA devuelve una cuota del Monotributo a quienes pagan en término con determinadas modalidades. Requisitos, medios de pago que califican, cómo se acredita y cómo verificarlo.",
+   "date": "2026-11-25",
+   "category": "monotributo",
+   "category_label": "Monotributo",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/arca-reintegro-cuota-monotributo-quienes-acceden-como-cobrar-2026-11-25"
+  },
+  {
    "slug": "arba-exencion-inmobiliario-jubilados-requisitos-como-pedirla-2026-11-24",
    "title": "ARBA: cómo verificar si un jubilado accede a la exención total del Inmobiliario y cómo solicitarla",
    "description": "ARBA habilitó una consulta online para saber qué jubilados y pensionados pueden acceder a la exención total del Impuesto Inmobiliario en PBA. Requisitos, deudas alcanzadas y paso a paso para pedirla.",
@@ -870,17 +881,6 @@
    "impact": "alto",
    "impact_note": "Si sos monotributista social o promovido, desde el 1° de noviembre de 2026 tenés que emitir tus comprobantes en forma electrónica. Con Facturear podés hacerlo habilitando un punto de venta electrónico y vinculando tu CUIT antes de esa fecha.",
    "url": "https://docs.facture.ar/es/newsletter/notas/factura-electronica-obligatoria-monotributo-social-promovido-2026-10-06"
-  },
-  {
-   "slug": "arca-servicio-web-ganancias-personas-juridicas-declaraciones-2026-10-05",
-   "title": "Ganancias Personas Jurídicas: el nuevo servicio web de ARCA para las declaraciones juradas de sociedades",
-   "description": "ARCA habilita desde el 19 de octubre de 2026 un nuevo servicio web para confeccionar y presentar Ganancias de sociedades y otros sujetos. Será obligatorio desde marzo de 2027 para ejercicios cerrados a partir de junio de 2026.",
-   "date": "2026-10-05",
-   "category": "ganancias",
-   "category_label": "Ganancias",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/arca-servicio-web-ganancias-personas-juridicas-declaraciones-2026-10-05"
   }
  ]
 }
