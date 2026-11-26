@@ -3,6 +3,39 @@
  "url": "https://docs.facture.ar/es/newsletter/index",
  "notes": [
   {
+   "slug": "arca-modifica-requisitos-fondo-asistencia-laboral-fal-cooper-2026-11-26",
+   "title": "FAL: qué cambia para cooperativas y entidades sin fines de lucro con la RG 5928 de ARCA",
+   "description": "ARCA actualizó la reglamentación del Fondo de Asistencia Laboral. Las cooperativas y cooperativas efectoras deberán acreditar su condición MiPyME con el certificado, y el resto de las entidades sin fines de lucro mantiene un procedimiento de calificación propio.",
+   "date": "2026-11-26",
+   "category": "laboral",
+   "category_label": "Laboral y previsional",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/arca-modifica-requisitos-fondo-asistencia-laboral-fal-cooper-2026-11-26"
+  },
+  {
+   "slug": "arca-reduccion-50-multas-procedimiento-requisitos-2026-11-26",
+   "title": "Reducción del 50% de multas en ARCA: quiénes pueden acceder y cómo pedirla",
+   "description": "ARCA reglamentó el Régimen Especial de Reducción de Multas, que permite bajar a la mitad las sanciones pendientes. Qué multas alcanza, quiénes pueden pedirlo y cómo organizar la solicitud.",
+   "date": "2026-11-26",
+   "category": "arca",
+   "category_label": "ARCA y procedimientos",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/arca-reduccion-50-multas-procedimiento-requisitos-2026-11-26"
+  },
+  {
+   "slug": "plan-de-pagos-mipyme-arca-nuevas-deudas-incluidas-2026-11-26",
+   "title": "Plan de pagos MiPyME de ARCA: se amplían las deudas que se pueden incluir",
+   "description": "ARCA amplió las obligaciones que pueden incorporarse al régimen especial de facilidades de pago para Micro, Pequeñas y Medianas Empresas. Requisitos, qué revisar antes de adherir y paso a paso.",
+   "date": "2026-11-26",
+   "category": "arca",
+   "category_label": "ARCA y procedimientos",
+   "impact": "ninguno",
+   "impact_note": null,
+   "url": "https://docs.facture.ar/es/newsletter/notas/plan-de-pagos-mipyme-arca-nuevas-deudas-incluidas-2026-11-26"
+  },
+  {
    "slug": "arca-reintegro-cuota-monotributo-quienes-acceden-como-cobrar-2026-11-25",
    "title": "Reintegro de una cuota del Monotributo: quiénes lo cobran y cómo no perderlo",
    "description": "ARCA devuelve una cuota del Monotributo a quienes pagan en término con determinadas modalidades. Requisitos, medios de pago que califican, cómo se acredita y cómo verificarlo.",
@@ -848,39 +881,6 @@
    "impact": "ninguno",
    "impact_note": null,
    "url": "https://docs.facture.ar/es/newsletter/notas/la-rioja-aporte-extraordinario-25-ingresos-brutos-2026-10-08"
-  },
-  {
-   "slug": "anticipos-ganancias-reduccion-octubre-2026-10-07",
-   "title": "Anticipos de Ganancias: quiénes pueden pedir la reducción en octubre 2026 y cómo hacerlo",
-   "description": "En octubre vence el quinto anticipo del Impuesto a las Ganancias. Te explicamos quiénes pueden solicitar la reducción ante ARCA, cuándo conviene hacerlo y cómo realizar el trámite paso a paso.",
-   "date": "2026-10-07",
-   "category": "ganancias",
-   "category_label": "Ganancias",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/anticipos-ganancias-reduccion-octubre-2026-10-07"
-  },
-  {
-   "slug": "inocencia-fiscal-ii-sin-promulgar-prorroga-ganancias-2026-10-07",
-   "title": "Inocencia Fiscal II sin promulgar: qué pasa con la DDJJ de Ganancias y la posible prórroga",
-   "description": "La ley de Inocencia Fiscal II fue sancionada el 17 de septiembre, pero sigue sin promulgación ni reglamentación de ARCA. Qué opciones hay hoy para la declaración jurada de Ganancias y por qué los contadores anticipan otra prórroga.",
-   "date": "2026-10-07",
-   "category": "ganancias",
-   "category_label": "Ganancias",
-   "impact": "ninguno",
-   "impact_note": null,
-   "url": "https://docs.facture.ar/es/newsletter/notas/inocencia-fiscal-ii-sin-promulgar-prorroga-ganancias-2026-10-07"
-  },
-  {
-   "slug": "factura-electronica-obligatoria-monotributo-social-promovido-2026-10-06",
-   "title": "Monotributo Social y promovidos: la factura electrónica será obligatoria desde el 1° de noviembre de 2026",
-   "description": "ARCA extiende la factura electrónica a los monotributistas sociales y promovidos. Los comprobantes en papel quedan solo para contingencias y los sujetos no alcanzados por IVA tienen plazo hasta marzo de 2027.",
-   "date": "2026-10-06",
-   "category": "facturacion",
-   "category_label": "Facturación electrónica",
-   "impact": "alto",
-   "impact_note": "Si sos monotributista social o promovido, desde el 1° de noviembre de 2026 tenés que emitir tus comprobantes en forma electrónica. Con Facturear podés hacerlo habilitando un punto de venta electrónico y vinculando tu CUIT antes de esa fecha.",
-   "url": "https://docs.facture.ar/es/newsletter/notas/factura-electronica-obligatoria-monotributo-social-promovido-2026-10-06"
   }
  ]
 }
